@@ -13,23 +13,24 @@
   - [x] Initialize a package.json file using npm init to manage your project's dependencies.
   - [x] Install Express and other necessary packages like body-parser for parsing requests, and any additional libraries for database integration.
 
-- [ ] **Server Configuration:**
+- [x] **Server Configuration:**
   - [x] Create an Express server file (e.g., app.js) to configure and start your server.
-  - [ ] Set up middleware functions such as body-parser, CORS, and static file serving if needed.
+  - [x] Set up middleware functions such as body-parser, CORS, and static file serving if needed.
 
-- [ ] **Routing:**
-  - [ ] Define routes for different endpoints, such as /api/posts for blog posts and /api/comments for comments.
-  - [ ] Map these routes to corresponding controller functions to handle requests and responses.
+- [x] **Routing:**
+  - [x] Define routes for different endpoints, such as /api/posts for blog posts and /api/comments for comments.
+  - [x] Map these routes to corresponding controller functions to handle requests and responses.
 
-- [ ] **Controllers:**
-  - [ ] Create controller functions to handle the business logic for different routes.
-  - [ ] Implement functions for creating, reading, updating, and deleting blog posts and comments.
-  - [ ] Integrate any necessary validation or data manipulation.
+- [x] **Controllers:**
+  - [x] Create controller functions to handle the business logic for different routes.
+  - [x] Implement functions for creating, reading, updating, and deleting blog posts and comments.
+  - [x] Integrate any necessary validation or data manipulation.
 
 - [x] **Database Integration:**
   - [x] Select PostgreSQL as the database management system.
   - [x] Install Prisma using npm by running the appropriate command.
   - [x] Set up the Prisma Client to enable communication between your Node.js application and the PostgreSQL database.
+  - [x] Deploy the database using AWS and the env setup (other option was render)
 
 - [ ] **User Authentication and Authorization:**
   - [ ] Implement user authentication functionality using libraries like Passport.js or JSON Web Tokens (JWT).
@@ -37,7 +38,7 @@
   - [ ] Implement authorization logic to restrict access to certain routes or actions.
 
 - [ ] **Error Handling:**
-  - [ ] Develop a centralized error handling mechanism to handle exceptions and errors.
+  - [x] Develop a centralized error handling mechanism to handle exceptions and errors.
   - [ ] Implement custom error handling middleware to provide appropriate error responses.
      
 
