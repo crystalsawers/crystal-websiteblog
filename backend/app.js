@@ -17,7 +17,7 @@ const app = express();
 
 const BASE_URL = "api/v1";
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute, or 60000 milliseconds
