@@ -137,7 +137,7 @@
 
 - [ ] **Include a License File:** Create a LICENSE file and include it in your project repository. This file should contain the text of the chosen license.
 
-- [ ] **Add a README:** Create a README.md file that provides an overview of your project, instructions for installation and usage, and any other relevant information.
+- [x] **Add a README:** Create a README.md file that provides an overview of your project, instructions for installation and usage, and any other relevant information.
 
 - [ ] **Attribution and Copyright Notice:** Include proper attribution and copyright notice in your project's source code and documentation.
 
