@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
+
 import users from "./routes/users.js";
 import profiles from "./routes/profiles.js";
 import comments from "./routes/comments.js";
@@ -14,9 +15,7 @@ import blogposts from "./routes/blogposts.js";
 dotenv.config();
 
 const app = express();
-
 const BASE_URL = "api/v1";
-
 const PORT = process.env.PORT || 3001;
 
 const limiter = rateLimit({
@@ -38,6 +37,7 @@ app.use(`/${BASE_URL}/comments`, comments);
 app.use(`/${BASE_URL}/categories`, categories);
 app.use(`/${BASE_URL}/blogposts`, blogposts);
 
+
 //index route displaying all endpoints
 app.get("/", (req, res) => {
   return res.json({
@@ -51,8 +51,5 @@ app.get("/", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
 
 export default app;
