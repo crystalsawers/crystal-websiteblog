@@ -4,6 +4,10 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 
 import users from "./routes/users.js";
+import profiles from "./routes/profiles.js";
+import comments from "./routes/comments.js";
+import categories from "./routes/categories.js";
+import blogposts from "./routes/blogposts.js";
 
 
 import { loadEnv } from "./loadEnv.cjs";
@@ -31,13 +35,20 @@ app.use(limiter);
 app.use(cors());
 
 app.use(`/${BASE_URL}/users`, users);
-
+app.use(`/${BASE_URL}/profiles`, profiles);
+app.use(`/${BASE_URL}/comments`, comments);
+app.use(`/${BASE_URL}/categories`, categories);
+app.use(`/${BASE_URL}/blogposts`, blogposts);
 
 //index route displaying all endpoints
 app.get("/", (req, res) => {
   return res.json({
     endpoints: [
-      `http://localhost:3000/${BASE_URL}/users`,
+      `http://localhost:${PORT}/${BASE_URL}/users`,
+      `http://localhost:${PORT}/${BASE_URL}/profiles`,
+      `http://localhost:${PORT}/${BASE_URL}/comments`,
+      `http://localhost:${PORT}/${BASE_URL}/categories`,
+      `http://localhost:${PORT}/${BASE_URL}/blogposts`,
     ],
   });
 });
