@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express, { urlencoded, json } from "express";
 import cors from "cors";
+import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
 import users from "./routes/users.js";
@@ -29,6 +30,7 @@ app.use(urlencoded({ extended: false }));
 app.use(json());
 app.use(limiter);
 app.use(cors());
+app.use(helmet());
 
 app.use(`/${BASE_URL}/users`, users);
 app.use(`/${BASE_URL}/profiles`, profiles);
