@@ -1,6 +1,13 @@
-FROM postgres:latest
-ENV POSTGRES_USER=${POSTGRES_USER}
-ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-ENV POSTGRES_DB=${POSTGRES_DB}
-COPY init.sql /docker-entrypoint-initdb.d/
+FROM node:alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
 EXPOSE 3001
+
+CMD ["npm", "start"]
