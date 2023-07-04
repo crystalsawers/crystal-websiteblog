@@ -10,10 +10,6 @@ import categories from "./routes/categories.js";
 import blogposts from "./routes/blogposts.js";
 
 
-import { loadEnv } from "./loadEnv.cjs";
-
-loadEnv();
-
 dotenv.config();
 
 const app = express();
