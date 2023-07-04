@@ -9,6 +9,20 @@
 - [x] **Project Structure:**
   - [x] Design the folder structure for your backend codebase, including directories for routes, controllers, models, and utilities.
 
+  Project api context:
+
+  What ADMIN users can do:
+
+  - POST/UPDATE/DELETE a blog post and category
+  - post images in their blog post (i don't know how to do this with api)
+
+  What regular users can do:
+
+  - Create/update/delete/get comments
+  - Update/delete/create account and profile
+  - Users can only do the above when register and login
+  - Regular users can only view a blog post or category and not edit 
+
 - [x] **Dependencies and Packages:**
   - [x] Initialize a package.json file using npm init to manage your project's dependencies.
   - [x] Install Express and other necessary packages like body-parser for parsing requests, and any additional libraries for database integration.
