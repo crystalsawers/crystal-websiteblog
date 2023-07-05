@@ -127,8 +127,6 @@ const createBlogPost = async (req, res) => {
       imageUrl = req.file.path; // Use the file path on the local file system
     }
 
-    // Other validation and data processing code...
-
     // Create the blog post
     const newBlogPost = await prisma.blogPost.create({
       data: {

@@ -115,10 +115,11 @@ const createUser = async (req, res) => {
       });
     }
 
-    const { username, email, password } = value;
+    const { name, username, email, password } = value;
 
     const newUser = await prisma.user.create({
       data: {
+        name,
         username,
         email,
         password,
@@ -141,7 +142,7 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { username, email, password } = req.body;
+    const { name, username, email, password } = req.body;
 
     let user = await prisma.user.findUnique({
       where: { id: Number(id) },
@@ -154,6 +155,7 @@ const updateUser = async (req, res) => {
     user = await prisma.user.update({
       where: { id: Number(id) },
       data: {
+        name,
         username,
         email,
         password,
