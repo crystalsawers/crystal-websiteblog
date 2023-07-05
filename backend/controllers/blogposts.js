@@ -1,12 +1,26 @@
 import Joi from "joi";
+import multer from "multer";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+// Configure multer to store files locally
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Set the destination folder for storing uploaded files
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + "-" + uniqueSuffix);
+  },
+});
+
+const upload = multer({ storage });
 
 const blogPostValidation = Joi.object({
   title: Joi.string().required(),
   content: Joi.string().required(),
   published: Joi.boolean().default(false),
+  image: Joi.string().optional(),
 });
 
 const paginationDefault = {
@@ -106,14 +120,25 @@ const createBlogPost = async (req, res) => {
 
     const { title, content, published } = value;
 
+    // Process the uploaded image file
+    let imageUrl = "";
+    if (req.file) {
+      // The image file was uploaded
+      imageUrl = req.file.path; // Use the file path on the local file system
+    }
+
+    // Other validation and data processing code...
+
+    // Create the blog post
     const newBlogPost = await prisma.blogPost.create({
       data: {
         title,
         content,
         published,
+        imageUrl, // Store the path of the uploaded image
         createdAt: new Date(),
         updatedAt: new Date(),
-        authorId: req.user.id, // Assuming the authenticated user's ID is stored in req.user.id
+        authorId: req.user.id,
       },
       include: {
         author: true,
@@ -122,6 +147,7 @@ const createBlogPost = async (req, res) => {
       },
     });
 
+    // Return the response
     return res.status(201).json({
       msg: "Blog post successfully created",
       data: newBlogPost,
@@ -132,6 +158,8 @@ const createBlogPost = async (req, res) => {
     });
   }
 };
+
+
 
 const updateBlogPost = async (req, res) => {
   try {
@@ -204,5 +232,6 @@ export {
   getABlogPost,
   createBlogPost,
   updateBlogPost,
-  deleteBlogPost
+  deleteBlogPost,
+  upload
 };

@@ -3,16 +3,14 @@ import express, { urlencoded, json } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-// import pg from "pg";
 
-// const { Pool } = pg;
+
 
 import users from "./routes/users.js";
 import profiles from "./routes/profiles.js";
 import comments from "./routes/comments.js";
 import categories from "./routes/categories.js";
 import blogposts from "./routes/blogposts.js";
-
 
 dotenv.config();
 
@@ -38,23 +36,6 @@ app.use(`/${BASE_URL}/profiles`, profiles);
 app.use(`/${BASE_URL}/comments`, comments);
 app.use(`/${BASE_URL}/categories`, categories);
 app.use(`/${BASE_URL}/blogposts`, blogposts);
-
-// const pool = new Pool({
-//   user: 'postgres',
-//   password: 'mypassword',
-//   host: '172.31.1.211',
-//   port: 5432,
-//   database: 'crystalblog',
-// });
-
-// pool.connect((err, client, done) => {
-//   if (err) {
-//     console.error('Error connecting to the database:', err);
-//   } else {
-//     console.log('Connected to the database');
-//     done();
-//   }
-// });
 
 //index route displaying all endpoints
 app.get("/", (req, res) => {
