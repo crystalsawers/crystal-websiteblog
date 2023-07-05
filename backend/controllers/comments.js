@@ -55,8 +55,16 @@ const getComments = async (req, res) => {
 
         const comments = await prisma.comment.findMany();
 
+        if (comments.length === 0) {
+            return res.status(200).json({ msg: "No comments found" });
+          }
+      
+
+        const hasNextPage = comments.length === Number(amount);
+
         return res.json({
             data: comments,
+            nextPage: hasNextPage ? Number(page) + 1 : null,
         });
     } catch (err) {
         return res.status(500).json({

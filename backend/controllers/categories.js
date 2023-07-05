@@ -49,7 +49,16 @@ const getCategories = async (req, res) => {
 
     const categories = await prisma.category.findMany(query);
 
-    return res.json({ data: categories });
+    if (categories.length === 0) {
+      return res.status(200).json({ msg: "No categories found" });
+    }
+
+    const hasNextPage = categories.length === Number(amount);
+
+    return res.json({
+      data: categories,
+      nextPage: hasNextPage ? Number(page) + 1 : null,
+    });
   } catch (err) {
     return res.status(500).json({ msg: err.message });
   }
