@@ -12,7 +12,7 @@ import {
 } from "../controllers/blogposts.js";
 
 
-router.route("/blogposts").get(getBlogPosts).post(upload.single("image"), createBlogPost);
-router.route("/blogposts/:id").get(getABlogPost).put(updateBlogPost).delete(deleteBlogPost);
+router.route("/").get(getBlogPosts).post(upload.single("image"), createBlogPost);
+router.route("/:id").get(getABlogPost).put(updateBlogPost).delete(deleteBlogPost);
 
 export default router;

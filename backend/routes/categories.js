@@ -11,7 +11,7 @@ import {
 } from "../controllers/categories.js";
 
 
-router.route("/categories").get(getCategories).post(createCategory);
-router.route("/categories/:id").get(getACategory).put(updateCategory).delete(deleteCategory);
+router.route("/").get(getCategories).post(createCategory);
+router.route("/:id").get(getACategory).put(updateCategory).delete(deleteCategory);
 
 export default router;

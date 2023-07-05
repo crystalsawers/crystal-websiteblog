@@ -4,8 +4,6 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
-
-
 import users from "./routes/users.js";
 import profiles from "./routes/profiles.js";
 import comments from "./routes/comments.js";
