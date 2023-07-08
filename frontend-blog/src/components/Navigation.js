@@ -40,7 +40,7 @@ const Navigation = () => {
               </DropdownMenu>
             </UncontrolledDropdown>
             <NavItem>
-              <NavLink href="/login">Login</NavLink>
+              <NavLink href="/login">Login/Register</NavLink>
             </NavItem>
           </Nav>
         </Collapse>
