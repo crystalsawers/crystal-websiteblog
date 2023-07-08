@@ -1,7 +1,8 @@
 import Joi from "joi";
-import fs from "fs";
-import mime from "mime-types";
+
 import { PrismaClient } from "@prisma/client";
+
+
 const prisma = new PrismaClient();
 
 const blogPostValidation = Joi.object({
@@ -100,6 +101,7 @@ const getABlogPost = async (req, res) => {
 
 const createBlogPost = async (req, res) => {
   try {
+    // Validate the request body using Joi
     const { error, value } = blogPostValidation.validate(req.body);
 
     if (error) {
@@ -111,36 +113,12 @@ const createBlogPost = async (req, res) => {
     const { id } = req.user;
     const { title, content, published, categories } = value;
 
-    let image = ""; // Declare the image variable with an empty string
-
-
-    if (req.body.image) {
-      // The image data is provided as Base64 string in the request body
-      const base64Data = req.body.image;
-      console.log('base64Data:', base64Data);
-      const base64Image = base64Data.split(";base64,").pop(); // Extract the image data without the metadata
-      const imageType = base64Data.split(";")[0].split("/")[1]; // Extract the image type (e.g., png, jpeg)
-      console.log('imageType:', imageType);
-
-      // Generate a unique file name
-      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-      const fileName = `image-${uniqueSuffix}.${imageType}`;
-
-      // Save the image file to a specified location
-      fs.writeFileSync(`uploads/${fileName}`, base64Image, { encoding: "base64" });
-
-      // Set the image variable with the file name
-      image = fileName;
-    }
-
-
     // Create the blog post and associate it with the provided category IDs
     await prisma.blogPost.create({
       data: {
         title,
         content,
         published,
-        image,
         user: { connect: { id } },
         categories: {
           connect: categories.map((categoryId) => ({ id: categoryId })),
@@ -148,9 +126,9 @@ const createBlogPost = async (req, res) => {
       },
     });
 
-    // Fetch the newly created blog post including the image field
+    // Fetch the newly created blog post
     const newBlogPost = await prisma.blogPost.findFirst({
-      where: { title, content, published, image },
+      where: { title, content, published },
       include: {
         user: true,
         categories: true,
@@ -170,38 +148,24 @@ const createBlogPost = async (req, res) => {
   }
 };
 
+
 const updateBlogPost = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
     const { title, content, published, categories } = req.body;
 
-    let blogPost = await prisma.blogPost.findUnique({
-      where: { id: Number(id) },
-    });
-
-    if (!blogPost) {
-      return res.status(404).json({ msg: `No blog post with the id: ${id} found` });
-    }
-
-    let image = blogPost.image; // Preserve the existing image value
-
-    if (req.file) {
-      // The image file was uploaded
-      image = req.file.path; // Use the file path on the local file system
-    }
-
-    blogPost = await prisma.blogPost.update({
+    // Update the blog post
+    const updatedBlogPost = await prisma.blogPost.update({
       where: { id: Number(id) },
       data: {
         title,
         content,
         published,
-        image,
         updatedAt: new Date(),
         user: { connect: { id: userId } },
         categories: {
-          set: categories, // Replace the existing categories with the new category IDs
+          set: categories,
         },
       },
       include: {
@@ -211,9 +175,10 @@ const updateBlogPost = async (req, res) => {
       },
     });
 
+    // Return the response
     return res.json({
       msg: `Blog post with the id: ${id} successfully updated`,
-      data: blogPost,
+      data: updatedBlogPost,
     });
   } catch (err) {
     return res.status(500).json({
