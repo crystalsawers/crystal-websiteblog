@@ -16,12 +16,18 @@ model User {
   username  String     @unique
   email     String     @unique
   password  String
-  role      String     @default("BASIC_USER")
+  role      Role       @default(BASIC_USER)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   profile   Profile?   @relation("UserProfile")
   posts     BlogPost[]
   comments  Comment[]
+  isAdmin   Boolean    @default(false)
+}
+
+enum Role {
+  ADMIN_USER
+  BASIC_USER
 }
 
 model BlogPost {
