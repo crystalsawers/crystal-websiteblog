@@ -21,6 +21,7 @@ const blogPostValidation = Joi.object({
   content: Joi.string().required(),
   published: Joi.boolean().default(false),
   image: Joi.string().optional(),
+  categories: Joi.array().items(Joi.number()).optional(),
 });
 
 const paginationDefault = {
@@ -119,27 +120,28 @@ const createBlogPost = async (req, res) => {
     }
 
     const { id } = req.user;
-    const { title, content, published } = value;
+    const { title, content, published, categories } = value;
 
-
+    
+    let image = ""; // Declare the image variable with an empty string
 
     // Process the uploaded image file
-    let image = "";
     if (req.file) {
       // The image file was uploaded
       image = req.file.path; // Use the file path on the local file system
     }
 
-    // Create the blog post
+    // Create the blog post and associate it with the provided category IDs
     const newBlogPost = await prisma.blogPost.create({
       data: {
         title,
         content,
         published,
-        image, // Store the path of the uploaded image
-        userId: id,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        image,
+        user: { connect: { id } },
+        categories: {
+          connect: categories.map(categoryId => ({ id: categoryId })),
+        },
       },
       include: {
         user: true,
@@ -161,13 +163,11 @@ const createBlogPost = async (req, res) => {
 };
 
 
-
 const updateBlogPost = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
-    const { title, content, published } = req.body;
-
+    const { title, content, published, categories } = req.body;
 
     let blogPost = await prisma.blogPost.findUnique({
       where: { id: Number(id) },
@@ -177,14 +177,25 @@ const updateBlogPost = async (req, res) => {
       return res.status(404).json({ msg: `No blog post with the id: ${id} found` });
     }
 
+    let image = blogPost.image; // Preserve the existing image value
+
+    if (req.file) {
+      // The image file was uploaded
+      image = req.file.path; // Use the file path on the local file system
+    }
+
     blogPost = await prisma.blogPost.update({
       where: { id: Number(id) },
       data: {
         title,
         content,
         published,
+        image,
         updatedAt: new Date(),
-        user: { connect: { id: userId }}
+        user: { connect: { id: userId } },
+        categories: {
+          set: categories, // Replace the existing categories with the new category IDs
+        },
       },
       include: {
         user: true,
@@ -203,6 +214,7 @@ const updateBlogPost = async (req, res) => {
     });
   }
 };
+
 
 const deleteBlogPost = async (req, res) => {
   try {

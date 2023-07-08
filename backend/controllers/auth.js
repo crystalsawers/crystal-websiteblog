@@ -88,6 +88,7 @@ const login = async (req, res) => {
         id: user.id,
         name: user.name,
         role: user.role,
+        isAdmin: user.role === 'ADMIN_USER',
       },
       JWT_SECRET,
       { expiresIn: JWT_LIFETIME }
