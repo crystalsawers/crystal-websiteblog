@@ -5,7 +5,6 @@ import "./Login.css";
 const Login = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [message, setMessage] = useState("");
@@ -19,7 +18,6 @@ const Login = () => {
         await axios.post("http://localhost:3001/api/v1/auth/register", {
           name,
           username,
-          email,
           password,
         });
         // Handle successful registration, e.g., display a success message to the user, redirect to login page, etc.
@@ -28,7 +26,7 @@ const Login = () => {
       } else {
         // Login API call
         await axios.post("http://localhost:3001/api/v1/auth/login", {
-          email,
+          identifier: username, // Use the username as the identifier
           password,
         });
         // Handle successful login, e.g., store the token in localStorage, redirect the user, etc.
@@ -43,7 +41,6 @@ const Login = () => {
     // Reset the form fields
     setName("");
     setUsername("");
-    setEmail("");
     setPassword("");
   };
 
@@ -81,16 +78,18 @@ const Login = () => {
             />
           </div>
         )}
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="form-control"
-          />
-        </div>
+        {!isRegistering && ( // Only show the username field in login, not in register
+          <div className="form-group">
+            <label htmlFor="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="form-control"
+            />
+          </div>
+        )}
         <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
