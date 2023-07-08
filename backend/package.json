@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon app.js",
-    "reset": "prisma migrate reset && prisma migrate dev",
+    "reset":"prisma migrate reset",
     "restart": " npm run reset && npm run start",
     "migration": "prisma migrate dev",
     "studio": "prisma studio"
