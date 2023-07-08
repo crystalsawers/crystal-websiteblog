@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon app.js",
-    "reset":"prisma migrate reset",
+    "reset": "prisma migrate reset",
     "restart": " npm run reset && npm run start",
     "migration": "prisma migrate dev",
     "studio": "prisma studio"
@@ -15,9 +15,11 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
+    "fs": "^0.0.1-security",
     "helmet": "^7.0.0",
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
+    "mime-types": "^2.1.35",
     "multer": "^1.4.5-lts.1",
     "node-cache": "^5.1.2",
     "nodemon": "^2.0.22",

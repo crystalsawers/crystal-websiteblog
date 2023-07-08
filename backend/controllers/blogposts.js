@@ -1,20 +1,8 @@
 import Joi from "joi";
-import multer from "multer";
+import fs from "fs";
+import mime from "mime-types";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-
-// Configure multer to store files locally
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Set the destination folder for storing uploaded files
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix);
-  },
-});
-
-const upload = multer({ storage });
 
 const blogPostValidation = Joi.object({
   title: Joi.string().required(),
@@ -49,6 +37,7 @@ const getBlogPosts = async (req, res) => {
         user: true,
         categories: true,
         comments: true,
+
       },
     };
 
@@ -122,17 +111,31 @@ const createBlogPost = async (req, res) => {
     const { id } = req.user;
     const { title, content, published, categories } = value;
 
-    
     let image = ""; // Declare the image variable with an empty string
 
-    // Process the uploaded image file
-    if (req.file) {
-      // The image file was uploaded
-      image = req.file.path; // Use the file path on the local file system
+
+    if (req.body.image) {
+      // The image data is provided as Base64 string in the request body
+      const base64Data = req.body.image;
+      console.log('base64Data:', base64Data);
+      const base64Image = base64Data.split(";base64,").pop(); // Extract the image data without the metadata
+      const imageType = base64Data.split(";")[0].split("/")[1]; // Extract the image type (e.g., png, jpeg)
+      console.log('imageType:', imageType);
+
+      // Generate a unique file name
+      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+      const fileName = `image-${uniqueSuffix}.${imageType}`;
+
+      // Save the image file to a specified location
+      fs.writeFileSync(`uploads/${fileName}`, base64Image, { encoding: "base64" });
+
+      // Set the image variable with the file name
+      image = fileName;
     }
 
+
     // Create the blog post and associate it with the provided category IDs
-    const newBlogPost = await prisma.blogPost.create({
+    await prisma.blogPost.create({
       data: {
         title,
         content,
@@ -140,9 +143,14 @@ const createBlogPost = async (req, res) => {
         image,
         user: { connect: { id } },
         categories: {
-          connect: categories.map(categoryId => ({ id: categoryId })),
+          connect: categories.map((categoryId) => ({ id: categoryId })),
         },
       },
+    });
+
+    // Fetch the newly created blog post including the image field
+    const newBlogPost = await prisma.blogPost.findFirst({
+      where: { title, content, published, image },
       include: {
         user: true,
         categories: true,
@@ -161,7 +169,6 @@ const createBlogPost = async (req, res) => {
     });
   }
 };
-
 
 const updateBlogPost = async (req, res) => {
   try {
@@ -249,5 +256,4 @@ export {
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,
-  upload
 };
