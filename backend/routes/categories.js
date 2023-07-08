@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authorise } from "../controllers/auth.js";
 
 const router = Router();
 
@@ -11,7 +12,6 @@ import {
     deleteCategory
 } from "../controllers/categories.js";
 
-import { authorise } from "../controllers/auth.js";
 
 const requireAdmin = authorise(true);
 

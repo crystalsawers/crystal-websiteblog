@@ -93,7 +93,6 @@ const createCategory = async (req, res) => {
       return res.status(400).json({ msg: error.details[0].message });
     }
 
-    const { id } = req.user;
     const { name, description } = value;
 
     const newCategory = await prisma.category.create({
@@ -116,18 +115,6 @@ const updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
     const { error, value } = categoryValidation.validate(req.body);
-
-    const user = await prisma.user.findUnique({ where: { id: Number(id) } });
-
-    /**
-     * If the authenticated user is not an admin, they can
-     * not create a new record
-     */
-    if (user.role !== "ADMIN_USER") {
-      return res.status(403).json({
-        msg: "Not authorized to access this route",
-      });
-    }
 
     if (error) {
       return res.status(400).json({ msg: error.details[0].message });
@@ -165,17 +152,6 @@ const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const user = await prisma.user.findUnique({ where: { id: Number(id) } });
-
-    /**
-     * If the authenticated user is not an admin, they can
-     * not create a new record
-     */
-    if (user.role !== "ADMIN_USER") {
-      return res.status(403).json({
-        msg: "Not authorized to access this route",
-      });
-    }
 
     let category = await prisma.category.findUnique({
       where: { id: Number(id) },

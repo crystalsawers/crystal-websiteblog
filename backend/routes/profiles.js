@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authRoute from '../middleware/authRoute.js';
+import { authorise } from "../controllers/auth.js";
 const router = Router();
 
 import {
@@ -10,7 +10,7 @@ import {
     deleteProfile
 } from "../controllers/profiles.js";
 
-router.route("/").get(getProfiles).post(authRoute, createProfile);
-router.route("/:id").get(getAProfile).put(authRoute, updateProfile).delete(authRoute, deleteProfile);
+router.route("/").get(getProfiles).post(authorise(), createProfile);
+router.route("/:id").get(getAProfile).put(authorise(), updateProfile).delete(authorise(), deleteProfile);
 
 export default router;
