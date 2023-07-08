@@ -55,6 +55,7 @@ const Navigation = () => {
         `http://localhost:3001/api/v1/blogposts?category=${categoryId}`
       );
       const blogPostsData = blogPostsResponse.data;
+      console.log(blogPostsData); 
 
       setSelectedCategory(categoryData);
       setRelatedBlogPosts(blogPostsData || []); // Set to empty array if blogPostsData is falsy
@@ -96,21 +97,25 @@ const Navigation = () => {
         <Route path="/login" element={<Login />} />
       </Routes>
       {selectedCategory && (
-        <div>
-          <h3>{selectedCategory.name}</h3>
-          <p>{selectedCategory.description}</p>
-          <h4>Blog Posts:</h4>
-          {Array.isArray(relatedBlogPosts) ? (
-            <ul>
-              {relatedBlogPosts.map((blogPost) => (
-                <li key={blogPost.id}>{blogPost.title}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>No blog posts in this category.</p>
-          )}
-        </div>
-      )}
+  <div>
+    <h3>{selectedCategory.name}</h3>
+    <p>{selectedCategory.description}</p>
+    <h4>Blog Posts:</h4>
+    {Array.isArray(relatedBlogPosts.data) ? (
+      <ul>
+        {relatedBlogPosts.data.map((blogPost) => (
+          <li key={blogPost.id}>
+            <h5>{blogPost.title}</h5>
+            <p>{blogPost.content}</p>
+            {/* <p>{blogPost.image}</p> */}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No blog posts in this category.</p>
+    )}
+  </div>
+)}
     </Router>
   );
 };
