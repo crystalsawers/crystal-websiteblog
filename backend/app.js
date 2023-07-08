@@ -3,6 +3,8 @@ import express, { urlencoded, json } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import compression from "compression";
+
 
 import users from "./routes/users.js";
 import auth from "./routes/auth.js";
@@ -30,6 +32,8 @@ app.use(json());
 app.use(limiter);
 app.use(cors());
 app.use(helmet());
+app.use(compression());
+
 
 app.use(`/${BASE_URL}/auth`, auth);
 app.use(`/${BASE_URL}/users`, users);
@@ -37,7 +41,6 @@ app.use(`/${BASE_URL}/profiles`, authRoute, profiles);
 app.use(`/${BASE_URL}/comments`, authRoute, comments);
 app.use(`/${BASE_URL}/categories`, categories);
 app.use(`/${BASE_URL}/blogposts`, blogposts);
-
 
 
 
