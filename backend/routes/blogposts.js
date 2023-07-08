@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { upload } from "../controllers/blogposts.js";
+import { authorise } from "../controllers/auth.js";
 const router = Router();
 
 
@@ -12,7 +13,9 @@ import {
 } from "../controllers/blogposts.js";
 
 
-router.route("/").get(getBlogPosts).post(upload.single("image"), createBlogPost);
-router.route("/:id").get(getABlogPost).put(updateBlogPost).delete(deleteBlogPost);
+const requireAdmin = authorise(true);
+
+router.route("/").get(getBlogPosts).post(requireAdmin, upload.single("image"), createBlogPost);
+router.route("/:id").get(getABlogPost).put(requireAdmin, updateBlogPost).delete(requireAdmin, deleteBlogPost);
 
 export default router;

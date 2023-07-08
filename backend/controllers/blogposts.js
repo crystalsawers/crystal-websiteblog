@@ -45,7 +45,7 @@ const getBlogPosts = async (req, res) => {
         [sortBy]: sortOrder,
       },
       include: {
-        author: true,
+        user: true,
         categories: true,
         comments: true,
       },
@@ -90,7 +90,7 @@ const getABlogPost = async (req, res) => {
     const blogPost = await prisma.blogPost.findUnique({
       where: { id: Number(id) },
       include: {
-        author: true,
+        user: true,
         categories: true,
         comments: true,
       },
@@ -136,10 +136,9 @@ const createBlogPost = async (req, res) => {
         imageUrl, // Store the path of the uploaded image
         createdAt: new Date(),
         updatedAt: new Date(),
-        authorId: req.user.id,
       },
       include: {
-        author: true,
+        user: true,
         categories: true,
         comments: true,
       },
@@ -181,7 +180,7 @@ const updateBlogPost = async (req, res) => {
         updatedAt: new Date(),
       },
       include: {
-        author: true,
+        user: true,
         categories: true,
         comments: true,
       },

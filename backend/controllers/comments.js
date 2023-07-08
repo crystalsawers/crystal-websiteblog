@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const commentValidation = Joi.object({
     content: Joi.string().required(),
-    authorId: Joi.number().required(),
+    userId: Joi.number().required(),
     postId: Joi.number().required(),
 });
 
@@ -33,19 +33,19 @@ const getComments = async (req, res) => {
                 [sortBy]: sortOrder,
             },
             include: {
-                author: true,
+                user: true,
                 post: true,
             },
         };
 
         // Filtering by field
-        if (req.query.content || req.query.authorId || req.query.postId) {
+        if (req.query.content || req.query.userId || req.query.postId) {
             query.where = {
                 content: {
                     contains: req.query.content || undefined,
                 },
-                authorId: {
-                    equals: Number(req.query.authorId) || undefined,
+                userId: {
+                    equals: Number(req.query.userId) || undefined,
                 },
                 postId: {
                     equals: Number(req.query.postId) || undefined,
@@ -57,8 +57,8 @@ const getComments = async (req, res) => {
 
         if (comments.length === 0) {
             return res.status(200).json({ msg: "No comments found" });
-          }
-      
+        }
+
 
         const hasNextPage = comments.length === Number(amount);
 
@@ -80,7 +80,7 @@ const getAComment = async (req, res) => {
         const comment = await prisma.comment.findUnique({
             where: { id: Number(id) },
             include: {
-                author: true,
+                user: true,
                 post: true,
             },
         });
@@ -110,18 +110,26 @@ const createComment = async (req, res) => {
             });
         }
 
-        const { content, authorId, postId } = value;
+
+        // Check if user is authenticated
+        if (!req.user) {
+            return res.status(401).json({
+                msg: 'User not authorized to create comment',
+            });
+        }
+
+        const { content, userId, postId } = value;
 
         const newComment = await prisma.comment.create({
             data: {
                 content,
                 createdAt: new Date(), // Set the createdAt timestamp
                 updatedAt: new Date(), // Set the updatedAt timestamp
-                author: { connect: { id: authorId } }, // Connect the comment to the author by ID
+                user: { connect: { id: userId } }, // Connect the comment to the author by ID
                 post: { connect: { id: postId } }, // Connect the comment to the post by ID
             },
             include: {
-                author: true,
+                user: true,
                 post: true,
             },
         });
@@ -142,6 +150,13 @@ const updateComment = async (req, res) => {
         const { id } = req.params;
         const { content } = req.body;
 
+        // Check if user is authenticated
+        if (!req.user) {
+            return res.status(401).json({
+                msg: 'User not authorized to update comment',
+            });
+        }
+
         let comment = await prisma.comment.findUnique({
             where: { id: Number(id) },
         });
@@ -157,7 +172,7 @@ const updateComment = async (req, res) => {
                 updatedAt: new Date(), // Update the updatedAt timestamp
             },
             include: {
-                author: true,
+                user: true,
                 post: true,
             },
         });
@@ -177,6 +192,13 @@ const updateComment = async (req, res) => {
 const deleteComment = async (req, res) => {
     try {
         const { id } = req.params;
+
+        // Check if user is authenticated
+        if (!req.user) {
+            return res.status(401).json({
+                msg: 'User not authorized to delete comment',
+            });
+        }
 
         let comment = await prisma.comment.findUnique({
             where: { id: Number(id) },

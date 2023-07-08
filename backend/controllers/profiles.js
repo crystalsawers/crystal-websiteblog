@@ -106,6 +106,12 @@ const createProfile = async (req, res) => {
             });
         }
 
+        // Check if user is authenticated
+        if (!req.user) {
+            return res.status(401).json({
+                msg: 'Unauthorized',
+            });
+        }
         const { bio, avatar, userId } = value;
 
         const newProfile = await prisma.profile.create({
@@ -131,6 +137,13 @@ const updateProfile = async (req, res) => {
     try {
         const { id } = req.params;
         const { bio, avatar, userId } = req.body;
+
+        // Check if user is authenticated
+        if (!req.user) {
+            return res.status(401).json({
+                msg: 'Unauthorized',
+            });
+        }
 
         let profile = await prisma.profile.findUnique({
             where: { id: Number(id) },
@@ -165,6 +178,13 @@ const updateProfile = async (req, res) => {
 const deleteProfile = async (req, res) => {
     try {
         const { id } = req.params;
+
+        // Check if user is authenticated
+        if (!req.user) {
+            return res.status(401).json({
+                msg: 'Unauthorized',
+            });
+        }
 
         let profile = await prisma.profile.findUnique({
             where: { id: Number(id) },
