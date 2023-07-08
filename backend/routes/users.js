@@ -4,12 +4,12 @@ const router = Router();
 import {
   getUsers,
   getOneUser,
-  createUser,
+  // createUser,
   updateUser,
   deleteUser,
 } from "../controllers/users.js";
 
-router.route("/").get(getUsers).post(createUser);
+router.route("/").get(getUsers);
 router.route("/:id").get(getOneUser).put(updateUser).delete(deleteUser);
 
 export default router;

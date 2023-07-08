@@ -105,39 +105,39 @@ const getOneUser = async (req, res) => {
   }
 };
 
-const createUser = async (req, res) => {
-  try {
-    const { error, value } = userValidation.validate(req.body);
+// const createUser = async (req, res) => {
+//   try {
+//     const { error, value } = userValidation.validate(req.body);
 
-    if (error) {
-      return res.status(400).json({
-        msg: error.details[0].message,
-      });
-    }
+//     if (error) {
+//       return res.status(400).json({
+//         msg: error.details[0].message,
+//       });
+//     }
 
-    const { name, username, email, password } = value;
+//     const { name, username, email, password } = value;
 
-    const newUser = await prisma.user.create({
-      data: {
-        name,
-        username,
-        email,
-        password,
-        createdAt: new Date(), // Set the createdAt timestamp
-        updatedAt: new Date(), // Set the updatedAt timestamp
-      },
-    });
+//     const newUser = await prisma.user.create({
+//       data: {
+//         name,
+//         username,
+//         email,
+//         password,
+//         createdAt: new Date(), // Set the createdAt timestamp
+//         updatedAt: new Date(), // Set the updatedAt timestamp
+//       },
+//     });
 
-    return res.status(201).json({
-      msg: "User successfully created",
-      data: newUser,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      msg: err.message,
-    });
-  }
-};
+//     return res.status(201).json({
+//       msg: "User successfully created",
+//       data: newUser,
+//     });
+//   } catch (err) {
+//     return res.status(500).json({
+//       msg: err.message,
+//     });
+//   }
+// };
 
 const updateUser = async (req, res) => {
   try {
@@ -204,7 +204,7 @@ const deleteUser = async (req, res) => {
 export {
   getUsers,
   getOneUser,
-  createUser,
+  // createUser,
   updateUser,
   deleteUser
 };

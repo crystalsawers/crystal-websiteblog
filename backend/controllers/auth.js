@@ -85,4 +85,52 @@ const login = async (req, res) => {
     }
 };
 
-export { register, login };
+// Logout 
+
+const logout = async (req, res) => {
+    try {
+        // Clear the user's token from the client-side cookie.
+        res.clearCookie("token");
+
+        return res.status(200).json({
+            msg: "User successfully logged out",
+        });
+    } catch (err) {
+        return res.status(500).json({
+            msg: err.message,
+        });
+    }
+};
+
+// this checks if a token is valid and current
+// if so, it stores the user details contained in the token in req
+// (to be passed along to the next function in the route)
+// if requireAdmin is true, then a user must have ADMIN_USER as their role
+// example: 
+// app.get('/admin-only', authorise(true), (req, res) => {
+//  //Code for handling the route
+// });
+// app.get('/any-user', authorise(), (req, res) => {
+//  //Code for handling the route
+// });
+// 
+const authorise = (requireAdmin = false) => {
+    return function (req, res, next) {
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1]
+        if (token == null) return res.sendStatus(401)
+
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+            if (err) return res.sendStatus(403)
+
+            if (requireAdmin && user.role !== 'ADMIN_USER') {
+                return res.status(401).send('This request requires admin status')
+            }
+
+            req.user = user
+            next()
+        })
+    }
+}
+
+export { register, login, logout, authorise };
