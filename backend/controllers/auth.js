@@ -14,7 +14,7 @@ const register = async (req, res) => {
         let user = await prisma.user.findUnique({ where: { email } });
 
         if (user) {
-            return res.status(200).json({ msg: "User already exists" });
+            return res.status(409).json({ msg: "User already exists" });
         }
 
         const salt = await bcryptjs.genSalt();
@@ -69,6 +69,7 @@ const login = async (req, res) => {
             {
                 id: user.id,
                 name: user.name,
+                role: user.role,
             },
             JWT_SECRET,
             { expiresIn: JWT_LIFETIME }

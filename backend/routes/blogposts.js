@@ -15,7 +15,7 @@ import {
 
 const requireAdmin = authorise(true);
 
-router.route("/").get(getBlogPosts).post(requireAdmin, upload.single("image"), createBlogPost);
-router.route("/:id").get(getABlogPost).put(requireAdmin, updateBlogPost).delete(requireAdmin, deleteBlogPost);
+router.route("/").get(getBlogPosts).post(requireAdmin,upload.single("image"), createBlogPost);
+router.route("/:id").get(getABlogPost).put(requireAdmin,updateBlogPost).delete(requireAdmin,deleteBlogPost);
 
 export default router;

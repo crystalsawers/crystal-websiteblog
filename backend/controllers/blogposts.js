@@ -118,13 +118,16 @@ const createBlogPost = async (req, res) => {
       });
     }
 
+    const { id } = req.user;
     const { title, content, published } = value;
 
+
+
     // Process the uploaded image file
-    let imageUrl = "";
+    let image = "";
     if (req.file) {
       // The image file was uploaded
-      imageUrl = req.file.path; // Use the file path on the local file system
+      image = req.file.path; // Use the file path on the local file system
     }
 
     // Create the blog post
@@ -133,7 +136,8 @@ const createBlogPost = async (req, res) => {
         title,
         content,
         published,
-        imageUrl, // Store the path of the uploaded image
+        image, // Store the path of the uploaded image
+        userId: id,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -161,7 +165,9 @@ const createBlogPost = async (req, res) => {
 const updateBlogPost = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.user.id;
     const { title, content, published } = req.body;
+
 
     let blogPost = await prisma.blogPost.findUnique({
       where: { id: Number(id) },
@@ -178,6 +184,7 @@ const updateBlogPost = async (req, res) => {
         content,
         published,
         updatedAt: new Date(),
+        user: { connect: { id: userId }}
       },
       include: {
         user: true,
