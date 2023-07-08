@@ -43,7 +43,7 @@ const getUsers = async (req, res) => {
     };
 
     // Filtering by field
-    if (req.query.name || req.query.username || req.query.email || req.query.password) {
+    if (req.query.name || req.query.username || req.query.email || req.query.password || req.query.role) {
       query.where = {
         name: {
           contains: req.query.name || undefined,
@@ -56,6 +56,9 @@ const getUsers = async (req, res) => {
         },
         password: {
           in: req.query.password || undefined,
+        },
+        role: {
+          in: req.query.role || undefined,
         },
       };
     }
@@ -105,44 +108,10 @@ const getOneUser = async (req, res) => {
   }
 };
 
-// const createUser = async (req, res) => {
-//   try {
-//     const { error, value } = userValidation.validate(req.body);
-
-//     if (error) {
-//       return res.status(400).json({
-//         msg: error.details[0].message,
-//       });
-//     }
-
-//     const { name, username, email, password } = value;
-
-//     const newUser = await prisma.user.create({
-//       data: {
-//         name,
-//         username,
-//         email,
-//         password,
-//         createdAt: new Date(), // Set the createdAt timestamp
-//         updatedAt: new Date(), // Set the updatedAt timestamp
-//       },
-//     });
-
-//     return res.status(201).json({
-//       msg: "User successfully created",
-//       data: newUser,
-//     });
-//   } catch (err) {
-//     return res.status(500).json({
-//       msg: err.message,
-//     });
-//   }
-// };
-
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, username, email, password } = req.body;
+    const { name, username, email, password, role } = req.body;
 
     let user = await prisma.user.findUnique({
       where: { id: Number(id) },
@@ -159,6 +128,7 @@ const updateUser = async (req, res) => {
         username,
         email,
         password,
+        role,
         updatedAt: new Date(), // Update the updatedAt timestamp
       },
     });
@@ -204,7 +174,6 @@ const deleteUser = async (req, res) => {
 export {
   getUsers,
   getOneUser,
-  // createUser,
   updateUser,
   deleteUser
 };

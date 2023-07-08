@@ -4,7 +4,6 @@ const router = Router();
 import {
   getUsers,
   getOneUser,
-  // createUser,
   updateUser,
   deleteUser,
 } from "../controllers/users.js";

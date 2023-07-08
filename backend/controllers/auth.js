@@ -9,7 +9,7 @@ const register = async (req, res) => {
         /**
          * Get the role from the Request's body property
          */
-        const { name, username, email, password } = req.body;
+        const { name, username, email, password, role } = req.body;
 
         let user = await prisma.user.findUnique({ where: { email } });
 
