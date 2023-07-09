@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-
 const AdminPage = () => {
-
-  const BASE_URL = "http://localhost:3001/api/v1";
+  const BASE_URL = 'http://localhost:3001/api/v1';
 
   // USE STATES
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [user, setUser] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [user, setUser] = useState('');
 
   const [updatedTitle, setUpdatedTitle] = useState(
     selectedBlogPost ? selectedBlogPost.title : ''
@@ -22,45 +20,46 @@ const AdminPage = () => {
   );
 
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [categoryName, setCategoryName] = useState('');
+  const [updatedCategoryName, setUpdatedCategoryName] = useState('');
+  const [categoryId, setCategoryId] = useState(null);
 
-  // BLOG POSTS 
+  // BLOG POSTS
   // Create a blog post
-const handleCreateBlogPost = async (e) => {
-  e.preventDefault();
+  const handleCreateBlogPost = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await axios.post(`${BASE_URL}/blogposts`, {
-      title: title,
-      content: content,
-      userId: user, // Assuming the user value represents the user ID
-      categoryIds: selectedCategories, // Pass the selected category IDs
-    });
+    try {
+      const response = await axios.post(`${BASE_URL}/blogposts`, {
+        title: title,
+        content: content,
+        userId: user,
+        categoryIds: selectedCategories,
+      });
 
-    console.log('Blog post created:', response.data);
+      console.log('Blog post created:', response.data);
 
-    // Optionally, update the list of blog posts or perform any other necessary actions
-    setTitle('');
-    setContent('');
-    setUser('');
-    setSelectedCategories([]); // Reset selected categories
-  } catch (error) {
-    console.error('Error creating blog post:', error);
-  }
-};
+      setTitle('');
+      setContent('');
+      setUser('');
+      setSelectedCategories([]);
+    } catch (error) {
+      console.error('Error creating blog post:', error);
+    }
+  };
 
   // Update a blog post
   const handleUpdateBlogPost = async (e) => {
     e.preventDefault();
-  
+
     try {
       await axios.put(`${BASE_URL}/blogposts/${selectedBlogPostId}`, {
         title: updatedTitle,
         content: updatedContent,
       });
-  
+
       console.log('Blog post updated');
-  
-      // Optionally, update the list of blog posts or perform any other necessary actions
+
       setUpdatedTitle('');
       setUpdatedContent('');
       setUpdatedUser('');
@@ -69,22 +68,19 @@ const handleCreateBlogPost = async (e) => {
       console.error('Error updating blog post:', error);
     }
   };
-  
 
   // Delete a blog post
   const handleDeleteBlogPost = async () => {
     try {
       await axios.delete(`${BASE_URL}/blogposts/${selectedBlogPostId}`);
-  
+
       console.log('Blog post deleted');
-  
-      // Optionally, update the list of blog posts or perform any other necessary actions
+
       setSelectedBlogPostId(null);
     } catch (error) {
       console.error('Error deleting blog post:', error);
     }
   };
-  
 
   // COMMENTS
   // Create a comment
@@ -97,8 +93,6 @@ const handleCreateBlogPost = async (e) => {
       });
 
       console.log('Comment created:', response.data);
-
-      // Optionally, update the list of comments or perform any other necessary actions
     } catch (error) {
       console.error('Error creating comment:', error);
     }
@@ -112,8 +106,6 @@ const handleCreateBlogPost = async (e) => {
       });
 
       console.log('Comment updated:', response.data);
-
-      // Optionally, update the list of comments or perform any other necessary actions
     } catch (error) {
       console.error('Error updating comment:', error);
     }
@@ -125,50 +117,74 @@ const handleCreateBlogPost = async (e) => {
       await axios.delete(`${BASE_URL}/comments/${commentId}`);
 
       console.log('Comment deleted');
-
-      // Optionally, update the list of comments or perform any other necessary actions
     } catch (error) {
       console.error('Error deleting comment:', error);
     }
   };
 
-
-// Example category selection UI
-const renderCategoryOptions = () => {
-  // Assuming you have a categories state variable containing the list of categories
-  return categories.map((category) => (
-    <label key={category.id}>
-      <input
-        type="checkbox"
-        value={category.id}
-        checked={selectedCategories.includes(category.id)}
-        onChange={handleCategoryChange}
-      />
-      {category.name}
-    </label>
-  ));
-};
-
-const handleCategoryChange = (e) => {
-  const categoryId = parseInt(e.target.value);
-  if (e.target.checked) {
-    setSelectedCategories([...selectedCategories, categoryId]);
-  } else {
-    setSelectedCategories(selectedCategories.filter((id) => id !== categoryId));
-  }
-};
-
   // CATEGORY
-  const handleCreateCategory = () => {
-    // Logic to create a category
+  const renderCategoryOptions = () => {
+    return categories.map((category) => (
+      <label key={category.id}>
+        <input
+          type="checkbox"
+          value={category.id}
+          checked={selectedCategories.includes(category.id)}
+          onChange={handleCategoryChange}
+        />
+        {category.name}
+      </label>
+    ));
   };
 
-  const handleUpdateCategory = () => {
-    // Logic to update a category
+  const handleCategoryChange = (e) => {
+    const categoryId = parseInt(e.target.value);
+    if (e.target.checked) {
+      setSelectedCategories([...selectedCategories, categoryId]);
+    } else {
+      setSelectedCategories(selectedCategories.filter((id) => id !== categoryId));
+    }
   };
 
-  const handleDeleteCategory = () => {
-    // Logic to delete a category
+  const handleCreateCategory = async (categoryName) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/categories`, {
+        name: categoryName,
+      });
+
+      console.log('Category created:', response.data);
+      setCategoryName('');
+    } catch (error) {
+      console.error('Error creating category:', error);
+    }
+  };
+
+  const handleSubmitCreateCategory = (e) => {
+    e.preventDefault();
+    handleCreateCategory(categoryName);
+  };
+
+  const handleUpdateCategory = async (categoryId, updatedName) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/categories/${categoryId}`, {
+        name: updatedName,
+      });
+
+      console.log('Category updated:', response.data);
+      setUpdatedCategoryName('');
+    } catch (error) {
+      console.error('Error updating category:', error);
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId) => {
+    try {
+      await axios.delete(`${BASE_URL}/categories/${categoryId}`);
+
+      console.log('Category deleted');
+    } catch (error) {
+      console.error('Error deleting category:', error);
+    }
   };
 
   return (
@@ -205,9 +221,23 @@ const handleCategoryChange = (e) => {
             onChange={(e) => setUser(e.target.value)}
           />
         </div>
+        <div>
+          <label htmlFor="category">Categories:</label>
+          <select
+            id="category"
+            multiple
+            value={selectedCategories}
+            onChange={(e) => setSelectedCategories(Array.from(e.target.selectedOptions, (option) => parseInt(option.value)))}
+          >
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <button type="submit">Create</button>
       </form>
-
 
       <h3>Update Blog Post</h3>
       <form onSubmit={handleUpdateBlogPost}>
@@ -237,25 +267,82 @@ const handleCategoryChange = (e) => {
             onChange={(e) => setUpdatedUser(e.target.value)}
           />
         </div>
+        <div>
+          <label htmlFor="updatedCategory">Categories:</label>
+          <select
+            id="updatedCategory"
+            multiple
+            value={updatedCategories}
+            onChange={(e) => setUpdatedCategories(Array.from(e.target.selectedOptions, (option) => parseInt(option.value)))}
+          >
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <button type="submit">Update</button>
       </form>
-
-
-
+      
       <button onClick={() => handleDeleteBlogPost(selectedBlogPostId)}>
         Delete Blog Post
       </button>
 
-
       <h3>Comments</h3>
       <button onClick={handleCreateComment}>Create Comment</button>
-      <button onClick={handleUpdateComment}>Update Comment</button>
-      <button onClick={handleDeleteComment}>Delete Comment</button>
+      <form onSubmit={handleUpdateComment}>
+        <div>
+          <label htmlFor="updatedCommentContent">Updated Content:</label>
+          <textarea
+            id="updatedCommentContent"
+            value={updatedCommentContent}
+            onChange={(e) => setUpdatedCommentContent(e.target.value)}
+          ></textarea>
+        </div>
+        <button type="submit">Update</button>
+      </form>
+      {comments.map((comment) => (
+        <div key={comment.id}>
+          <p>{comment.content}</p>
+          <button onClick={() => handleDeleteComment(comment.id)}>
+            Delete Comment
+          </button>
+        </div>
+      ))}
 
       <h3>Categories</h3>
       <button onClick={handleCreateCategory}>Create Category</button>
-      <button onClick={handleUpdateCategory}>Update Category</button>
-      <button onClick={handleDeleteCategory}>Delete Category</button>
+      <form onSubmit={handleSubmitCreateCategory}>
+        <div>
+          <label htmlFor="categoryName">Category Name:</label>
+          <input
+            type="text"
+            id="categoryName"
+            value={categoryName}
+            onChange={(e) => setCategoryName(e.target.value)}
+          />
+        </div>
+        <button type="submit">Create</button>
+      </form>
+
+      <button onClick={() => handleUpdateCategory(categoryId, updatedCategoryName)}>
+        Update Category
+      </button>
+      <div>
+        <label htmlFor="updatedCategoryName">Updated Category Name:</label>
+        <input
+          type="text"
+          id="updatedCategoryName"
+          value={updatedCategoryName}
+          onChange={(e) => setUpdatedCategoryName(e.target.value)}
+        />
+      </div>
+      <form onSubmit={(e) => { e.preventDefault(); handleUpdateCategory(categoryId, updatedCategoryName); }}>
+        <button type="submit">Update</button>
+      </form>
+
+      <button onClick={() => handleDeleteCategory(categoryId)}>Delete</button>
 
       <h3>Profiles</h3>
       {/* Display all profiles, but no editing or deleting functionality */}
@@ -264,9 +351,7 @@ const handleCategoryChange = (e) => {
       {/* Display all users in the database */}
     </div>
   );
+
 };
-
-
-
 
 export default AdminPage;
