@@ -3,7 +3,6 @@ import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
-
 import {
   Collapse,
   Navbar,
@@ -24,7 +23,6 @@ import slugify from "slugify";
 const generateSlug = (str) => {
   return slugify(str, { lower: true });
 };
-
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -110,17 +108,19 @@ const Navigation = () => {
                 <NavLink>Loading Categories...</NavLink>
               </NavItem>
             )}
-            <NavItem>
-              {isLoggedIn ? (
+            {isLoggedIn ? (
+              <NavItem>
                 <NavLink onClick={handleLogout} tag={Link} to="/login">
                   Logout
                 </NavLink>
-              ) : (
+              </NavItem>
+            ) : (
+              <NavItem>
                 <NavLink tag={Link} to="/login">
                   Login/Register
                 </NavLink>
-              )}
-            </NavItem>
+              </NavItem>
+            )}
           </Nav>
         </Collapse>
       </Navbar>
@@ -141,7 +141,6 @@ const Navigation = () => {
           />
         )}
       </Routes>
-
     </Router>
   );
 };
