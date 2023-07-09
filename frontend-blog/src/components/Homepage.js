@@ -3,9 +3,9 @@ import axios from "axios";
 
 const Homepage = () => {
   const [recentBlogPosts, setRecentBlogPosts] = useState([]);
-  const [comments, setComments] = useState([]);
+  const [users, setUsers] = useState([]);
 
-  // Fetch recent blog posts and comments
+  // Fetch recent blog posts and users
   useEffect(() => {
     const fetchRecentData = async () => {
       try {
@@ -16,12 +16,10 @@ const Homepage = () => {
         const blogPostsData = blogPostsResponse.data.data;
         setRecentBlogPosts(blogPostsData);
 
-        // Fetch comments related to the recent blog posts
-        const commentsResponse = await axios.get(
-          "http://localhost:3001/api/v1/comments?limit=5"
-        );
-        const commentsData = commentsResponse.data.data;
-        setComments(commentsData);
+        // Fetch users
+        const usersResponse = await axios.get("http://localhost:3001/api/v1/users");
+        const usersData = usersResponse.data.data;
+        setUsers(usersData);
       } catch (error) {
         console.error("Error fetching recent data:", error);
       }
@@ -42,9 +40,16 @@ const Homepage = () => {
               <h4>Comments:</h4>
               {blogPost.comments.length > 0 ? (
                 <ul>
-                  {blogPost.comments.map((comment) => (
-                    <li key={comment.id}>{comment.content}</li>
-                  ))}
+                  {blogPost.comments.map((comment) => {
+                    const user = users.find((user) => user.id === comment.userId);
+                    const username = user ? user.username : "Unknown User";
+
+                    return (
+                      <li key={comment.id}>
+                        {comment.content} User: {username}
+                      </li>
+                    );
+                  })}
                 </ul>
               ) : (
                 <p>No comments for this blog post.</p>
@@ -57,7 +62,6 @@ const Homepage = () => {
       )}
     </div>
   );
-  
 };
 
 export default Homepage;

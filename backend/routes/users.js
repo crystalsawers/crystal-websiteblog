@@ -11,7 +11,7 @@ import {
 
 const requireAdmin = authorise(true);
 
-router.route("/").get(requireAdmin, getUsers);
-router.route("/:id").get(authorise(),getOneUser).put(authorise(),updateUser).delete(authorise(),deleteUser);
+router.route("/").get(getUsers);
+router.route("/:id").get(getOneUser).put(authorise(),updateUser).delete(authorise(),deleteUser);
 
 export default router;
