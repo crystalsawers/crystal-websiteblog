@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Cookies from "js-cookie";
+
 
 import {
   Collapse,
@@ -77,6 +79,13 @@ const Navigation = () => {
     setSelectedCategory(category);
   };
 
+  const isLoggedIn = !!Cookies.get("token");
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    // Additional cleanup or redirection logic
+  };
+
   return (
     <Router>
       <Navbar style={navbar} expand="md" dark>
@@ -102,9 +111,15 @@ const Navigation = () => {
               </NavItem>
             )}
             <NavItem>
-              <NavLink tag={Link} to="/login">
-                Login/Register
-              </NavLink>
+              {isLoggedIn ? (
+                <NavLink onClick={handleLogout} tag={Link} to="/login">
+                  Logout
+                </NavLink>
+              ) : (
+                <NavLink tag={Link} to="/login">
+                  Login/Register
+                </NavLink>
+              )}
             </NavItem>
           </Nav>
         </Collapse>

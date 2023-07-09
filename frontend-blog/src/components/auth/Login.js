@@ -36,6 +36,7 @@ const Login = () => {
         });
         // Handle successful login
         Cookies.set("token", response.data.token, { expires: 1 });
+        console.log(response.data.msg);
         setMessage("Login successful");
         setIsSuccess(true);
       }
@@ -69,9 +70,6 @@ const Login = () => {
       {isLoggedIn() ? (
         <>
           <h2>Welcome, {username}!</h2>
-          <button onClick={handleLogout} className="logout-button">
-            Logout
-          </button>
           {/* Additional content for the logged-in user */}
         </>
       ) : (
