@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AdminPage = () => {
@@ -9,20 +9,78 @@ const AdminPage = () => {
   const [content, setContent] = useState('');
   const [user, setUser] = useState('');
 
-  const [updatedTitle, setUpdatedTitle] = useState(
-    selectedBlogPost ? selectedBlogPost.title : ''
-  );
-  const [updatedContent, setUpdatedContent] = useState(
-    selectedBlogPost ? selectedBlogPost.content : ''
-  );
-  const [updatedUser, setUpdatedUser] = useState(
-    selectedBlogPost ? selectedBlogPost.user : ''
-  );
+  const [updatedTitle, setUpdatedTitle] = useState('');
+  const [updatedContent, setUpdatedContent] = useState('');
+  const [updatedUser, setUpdatedUser] = useState('');
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [categoryName, setCategoryName] = useState('');
   const [updatedCategoryName, setUpdatedCategoryName] = useState('');
   const [categoryId, setCategoryId] = useState(null);
+
+  const [selectedBlogPostId, setSelectedBlogPostId] = useState(null);
+  const [selectedCommentId, setSelectedCommentId] = useState(null);
+  const [updatedCommentContent, setUpdatedCommentContent] = useState('');
+
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [profiles, setProfiles] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    // Fetch initial data
+    fetchBlogPosts();
+    fetchCategories();
+    fetchComments();
+    fetchProfiles();
+    fetchUsers();
+  }, []);
+
+  const fetchBlogPosts = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/blogposts`);
+      setBlogPosts(response.data);
+    } catch (error) {
+      console.error('Error fetching blog posts:', error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/categories`);
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/comments`);
+      setComments(response.data);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
+
+  const fetchProfiles = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/profiles`);
+      setProfiles(response.data);
+    } catch (error) {
+      console.error('Error fetching profiles:', error);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/users`);
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
 
   // BLOG POSTS
   // Create a blog post
@@ -43,6 +101,7 @@ const AdminPage = () => {
       setContent('');
       setUser('');
       setSelectedCategories([]);
+      fetchBlogPosts(); // Update blog posts after creation
     } catch (error) {
       console.error('Error creating blog post:', error);
     }
@@ -64,6 +123,7 @@ const AdminPage = () => {
       setUpdatedContent('');
       setUpdatedUser('');
       setSelectedBlogPostId(null);
+      fetchBlogPosts(); // Update blog posts after update
     } catch (error) {
       console.error('Error updating blog post:', error);
     }
@@ -77,6 +137,7 @@ const AdminPage = () => {
       console.log('Blog post deleted');
 
       setSelectedBlogPostId(null);
+      fetchBlogPosts(); // Update blog posts after deletion
     } catch (error) {
       console.error('Error deleting blog post:', error);
     }
@@ -84,28 +145,39 @@ const AdminPage = () => {
 
   // COMMENTS
   // Create a comment
-  const handleCreateComment = async (commentContent, userId, postId) => {
+  const handleCreateComment = async (e) => {
+    e.preventDefault();
+
     try {
       const response = await axios.post(`${BASE_URL}/comments`, {
-        content: commentContent,
-        userId: userId,
-        postId: postId,
+        content: updatedCommentContent,
+        userId: user, // Assuming the user value represents the user ID
+        postId: selectedBlogPostId, // Assuming selectedBlogPostId represents the selected blog post ID
       });
 
       console.log('Comment created:', response.data);
+
+      setUpdatedCommentContent('');
+      fetchComments(); // Update comments after creation
     } catch (error) {
       console.error('Error creating comment:', error);
     }
   };
 
   // Update a comment
-  const handleUpdateComment = async (commentId, updatedContent) => {
+  const handleUpdateComment = async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await axios.put(`${BASE_URL}/comments/${commentId}`, {
-        content: updatedContent,
+      await axios.put(`${BASE_URL}/comments/${selectedCommentId}`, {
+        content: updatedCommentContent,
       });
 
-      console.log('Comment updated:', response.data);
+      console.log('Comment updated');
+
+      setSelectedCommentId(null);
+      setUpdatedCommentContent('');
+      fetchComments(); // Update comments after update
     } catch (error) {
       console.error('Error updating comment:', error);
     }
@@ -117,6 +189,8 @@ const AdminPage = () => {
       await axios.delete(`${BASE_URL}/comments/${commentId}`);
 
       console.log('Comment deleted');
+
+      fetchComments(); // Update comments after deletion
     } catch (error) {
       console.error('Error deleting comment:', error);
     }
@@ -154,6 +228,7 @@ const AdminPage = () => {
 
       console.log('Category created:', response.data);
       setCategoryName('');
+      fetchCategories(); // Update categories after creation
     } catch (error) {
       console.error('Error creating category:', error);
     }
@@ -164,24 +239,26 @@ const AdminPage = () => {
     handleCreateCategory(categoryName);
   };
 
-  const handleUpdateCategory = async (categoryId, updatedName) => {
+  const handleUpdateCategory = async () => {
     try {
       const response = await axios.put(`${BASE_URL}/categories/${categoryId}`, {
-        name: updatedName,
+        name: updatedCategoryName,
       });
 
       console.log('Category updated:', response.data);
       setUpdatedCategoryName('');
+      fetchCategories(); // Update categories after update
     } catch (error) {
       console.error('Error updating category:', error);
     }
   };
 
-  const handleDeleteCategory = async (categoryId) => {
+  const handleDeleteCategory = async () => {
     try {
       await axios.delete(`${BASE_URL}/categories/${categoryId}`);
 
       console.log('Category deleted');
+      fetchCategories(); // Update categories after deletion
     } catch (error) {
       console.error('Error deleting category:', error);
     }
@@ -222,19 +299,8 @@ const AdminPage = () => {
           />
         </div>
         <div>
-          <label htmlFor="category">Categories:</label>
-          <select
-            id="category"
-            multiple
-            value={selectedCategories}
-            onChange={(e) => setSelectedCategories(Array.from(e.target.selectedOptions, (option) => parseInt(option.value)))}
-          >
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+          <label htmlFor="categories">Categories:</label>
+          {renderCategoryOptions()}
         </div>
         <button type="submit">Create</button>
       </form>
@@ -268,39 +334,25 @@ const AdminPage = () => {
           />
         </div>
         <div>
-          <label htmlFor="updatedCategory">Categories:</label>
-          <select
-            id="updatedCategory"
-            multiple
-            value={updatedCategories}
-            onChange={(e) => setUpdatedCategories(Array.from(e.target.selectedOptions, (option) => parseInt(option.value)))}
-          >
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+          <label htmlFor="updatedCategories">Categories:</label>
+          {renderCategoryOptions()}
         </div>
         <button type="submit">Update</button>
       </form>
-      
-      <button onClick={() => handleDeleteBlogPost(selectedBlogPostId)}>
-        Delete Blog Post
-      </button>
+
+      <button onClick={handleDeleteBlogPost}>Delete Blog Post</button>
 
       <h3>Comments</h3>
-      <button onClick={handleCreateComment}>Create Comment</button>
-      <form onSubmit={handleUpdateComment}>
+      <form onSubmit={handleCreateComment}>
         <div>
-          <label htmlFor="updatedCommentContent">Updated Content:</label>
+          <label htmlFor="updatedCommentContent">Content:</label>
           <textarea
             id="updatedCommentContent"
             value={updatedCommentContent}
             onChange={(e) => setUpdatedCommentContent(e.target.value)}
           ></textarea>
         </div>
-        <button type="submit">Update</button>
+        <button type="submit">Create Comment</button>
       </form>
       {comments.map((comment) => (
         <div key={comment.id}>
@@ -312,8 +364,8 @@ const AdminPage = () => {
       ))}
 
       <h3>Categories</h3>
-      <button onClick={handleCreateCategory}>Create Category</button>
-      <form onSubmit={handleSubmitCreateCategory}>
+      <button onClick={handleSubmitCreateCategory}>Create Category</button>
+      <form onSubmit={handleUpdateCategory}>
         <div>
           <label htmlFor="categoryName">Category Name:</label>
           <input
@@ -326,9 +378,6 @@ const AdminPage = () => {
         <button type="submit">Create</button>
       </form>
 
-      <button onClick={() => handleUpdateCategory(categoryId, updatedCategoryName)}>
-        Update Category
-      </button>
       <div>
         <label htmlFor="updatedCategoryName">Updated Category Name:</label>
         <input
@@ -338,20 +387,27 @@ const AdminPage = () => {
           onChange={(e) => setUpdatedCategoryName(e.target.value)}
         />
       </div>
-      <form onSubmit={(e) => { e.preventDefault(); handleUpdateCategory(categoryId, updatedCategoryName); }}>
-        <button type="submit">Update</button>
-      </form>
+      <button onClick={handleUpdateCategory}>Update Category</button>
 
-      <button onClick={() => handleDeleteCategory(categoryId)}>Delete</button>
+      <button onClick={handleDeleteCategory}>Delete Category</button>
 
       <h3>Profiles</h3>
-      {/* Display all profiles, but no editing or deleting functionality */}
+      {profiles.map((profile) => (
+        <div key={profile.id}>
+          <p>Name: {profile.name}</p>
+          <p>Email: {profile.email}</p>
+          {/* Display any other profile information */}
+        </div>
+      ))}
 
       <h3>Users</h3>
-      {/* Display all users in the database */}
+      {users.map((user) => (
+        <div key={user.id}>
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p></div>
+      ))}
     </div>
   );
-
 };
 
 export default AdminPage;
