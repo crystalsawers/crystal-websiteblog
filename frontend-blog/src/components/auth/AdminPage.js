@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+
 
 const AdminPage = () => {
 
@@ -9,13 +11,15 @@ const AdminPage = () => {
   const [content, setContent] = useState("");
   const [user, setUser] = useState("");
 
-  const [updatedTitle, setUpdatedTitle] = useState(selectedBlogPost.title);
-  const [updatedContent, setUpdatedContent] = useState(selectedBlogPost.content);
-  const [updatedUser, setUpdatedUser] = useState(selectedBlogPost.user);
-
-
-  const [selectedBlogPostId, setSelectedBlogPostId] = useState(null);
-
+  const [updatedTitle, setUpdatedTitle] = useState(
+    selectedBlogPost ? selectedBlogPost.title : ''
+  );
+  const [updatedContent, setUpdatedContent] = useState(
+    selectedBlogPost ? selectedBlogPost.content : ''
+  );
+  const [updatedUser, setUpdatedUser] = useState(
+    selectedBlogPost ? selectedBlogPost.user : ''
+  );
 
 
   // BLOG POSTS 
@@ -37,19 +41,20 @@ const AdminPage = () => {
       console.error("Error creating blog post:", error);
     }
   };
-
+  
+  const [selectedBlogPostId, setSelectedBlogPostId] = useState(null);
 
 
   const handleUpdateBlogPost = async (e) => {
     e.preventDefault();
-  
+
     try {
       if (selectedBlogPostId) {
         // Retrieve the selected blog post based on the selectedBlogPostId
         const selectedBlogPost = blogPosts.find(
           (blogPost) => blogPost.id === selectedBlogPostId
         );
-  
+
         if (selectedBlogPost) {
           const response = await axios.put(
             `${BASE_URL}/blogposts/${selectedBlogPost.id}`,
@@ -59,7 +64,7 @@ const AdminPage = () => {
               user: updatedUser,
             }
           );
-  
+
           console.log("Blog post updated:", response.data);
           setUpdatedTitle("");
           setUpdatedContent("");
@@ -78,39 +83,86 @@ const AdminPage = () => {
       // Handle error state or display an error message to the user
     }
   };
-  
 
 
-  const handleDeleteBlogPost = async (selectedBlogPostId) => {
+
+  const handleDeleteBlogPost = async () => {
     try {
-      // Perform the API call or database operation to delete the blog post
-      await axios.delete(`${BASE_URL}/blogposts/${selectedBlogPostId}`);
+      if (selectedBlogPostId) {
+        await deleteBlogPost(selectedBlogPostId);
+        console.log('Blog post deleted');
+      } else {
+        console.log('Please select a blog post to delete.');
+      }
+    } catch (error) {
+      console.error('Error deleting blog post:', error);
+    }
+  };
+
+  const deleteBlogPost = async (blogPostId) => {
+    await axios.delete(`${BASE_URL}/blogposts/${blogPostId}`);
+  };
+
+
+
+
+
+  // COMMENTS
+  const handleCreateComment = async (commentContent, blogPostId, userId) => {
+    try {
+      // Perform the API call or database operation to create the comment
+      const response = await axios.post(`${BASE_URL}/comments`, {
+        content: commentContent,
+        blogPostId: blogPostId,
+        userId: userId,
+      });
   
-      // Update the UI or perform any necessary actions after successful deletion
-      console.log("Blog post deleted");
+      // Handle the response and update the UI as needed
+      console.log('Comment created:', response.data);
   
-      // Optionally, update the list of blog posts or perform any other necessary actions
+      // Optionally, update the list of comments or perform any other necessary actions
     } catch (error) {
       // Handle error state or display an error message to the user
-      console.error("Error deleting blog post:", error);
+      console.error('Error creating comment:', error);
+    }
+  };
+  
+
+  const handleUpdateComment = async (commentId, updatedContent) => {
+    try {
+      // Perform the API call or database operation to update the comment
+      const response = await axios.put(`${BASE_URL}/comments/${commentId}`, {
+        content: updatedContent,
+      });
+  
+      // Handle the response and update the UI as needed
+      console.log('Comment updated:', response.data);
+  
+      // Optionally, update the list of comments or perform any other necessary actions
+    } catch (error) {
+      // Handle error state or display an error message to the user
+      console.error('Error updating comment:', error);
+    }
+  };
+  
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      // Perform the API call or database operation to delete the comment
+      await axios.delete(`${BASE_URL}/comments/${commentId}`);
+  
+      // Handle the response and update the UI as needed
+      console.log('Comment deleted');
+  
+      // Optionally, update the list of comments or perform any other necessary actions
+    } catch (error) {
+      // Handle error state or display an error message to the user
+      console.error('Error deleting comment:', error);
     }
   };
   
 
 
-
-  // COMMENTS
-  const handleCreateComment = () => {
-    // Logic to create a comment
-  };
-
-  const handleUpdateComment = () => {
-    // Logic to update a comment
-  };
-
-  const handleDeleteComment = () => {
-    // Logic to delete a comment
-  };
 
   // CATEGORY
   const handleCreateCategory = () => {
@@ -196,7 +248,10 @@ const AdminPage = () => {
 
 
 
-      <button onClick={handleDeleteBlogPost}>Delete Blog Post</button>
+      <button onClick={() => handleDeleteBlogPost(selectedBlogPostId)}>
+        Delete Blog Post
+      </button>
+
 
       <h3>Comments</h3>
       <button onClick={handleCreateComment}>Create Comment</button>
