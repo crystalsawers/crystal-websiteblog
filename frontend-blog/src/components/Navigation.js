@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
 import {
   Collapse,
   Navbar,
@@ -12,6 +13,37 @@ import {
 } from "reactstrap";
 import Login from "./Login";
 
+import slugify from "slugify";
+
+// Function to generate a slug based on a given string
+const generateSlug = (str) => {
+  return slugify(str, { lower: true });
+};
+
+
+// Define CategoryPage component
+const CategoryPage = ({ category, relatedBlogPosts }) => {
+  return (
+    <div>
+      <h3>{category.name}</h3>
+      <p>{category.description}</p>
+      <h4>Blog Posts:</h4>
+      {Array.isArray(relatedBlogPosts?.data) && relatedBlogPosts.data.length > 0 ? (
+        <ul>
+          {relatedBlogPosts.data.map((blogPost) => (
+            <li key={blogPost.id}>
+              <h5>{blogPost.title}</h5>
+              <p>{blogPost.content}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No blog posts in this category.</p>
+      )}
+    </div>
+  );
+};
+
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
@@ -22,15 +54,18 @@ const Navigation = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [relatedBlogPosts, setRelatedBlogPosts] = useState([]);
 
-  // Fetch categories data from API and populate the state
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get("http://localhost:3001/api/v1/categories");
         const responseData = response.data;
-
+    
         if (Array.isArray(responseData.data) && responseData.data.length > 0) {
-          setCategories(responseData.data);
+          const categoriesWithSlug = responseData.data.map((category) => ({
+            ...category,
+            slug: generateSlug(category.name), // Generate the slug based on category name
+          }));
+          setCategories(categoriesWithSlug);
         } else {
           console.error("Invalid categories data:", responseData);
         }
@@ -38,27 +73,25 @@ const Navigation = () => {
         console.error("Error fetching categories:", error.message);
       }
     };
+    
 
     fetchCategories();
   }, []);
 
   const handleCategoryClick = async (categoryId) => {
     try {
-      // Fetch category description
       const categoryResponse = await axios.get(
         `http://localhost:3001/api/v1/categories/${categoryId}`
       );
       const categoryData = categoryResponse.data;
 
-      // Fetch related blog posts
       const blogPostsResponse = await axios.get(
         `http://localhost:3001/api/v1/blogposts?category=${categoryId}`
       );
       const blogPostsData = blogPostsResponse.data;
-      console.log(blogPostsData); 
 
       setSelectedCategory(categoryData);
-      setRelatedBlogPosts(blogPostsData || []); // Set to empty array if blogPostsData is falsy
+      setRelatedBlogPosts(blogPostsData || []);
     } catch (error) {
       console.error("Error fetching category information:", error);
     }
@@ -75,7 +108,8 @@ const Navigation = () => {
               categories.map((category) => (
                 <NavItem key={category.id}>
                   <NavLink
-                    href="#"
+                    tag={Link}
+                    to={`/${category.slug}`}
                     onClick={() => handleCategoryClick(category.id)}
                   >
                     {category.name}
@@ -88,34 +122,42 @@ const Navigation = () => {
               </NavItem>
             )}
             <NavItem>
-              <NavLink href="/login">Login/Register</NavLink>
+              <NavLink tag={Link} to="/login">
+                Login/Register
+              </NavLink>
             </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
       <Routes>
         <Route path="/login" element={<Login />} />
+        {categories.map((category) => (
+          <Route
+            key={category.id}
+            path={`/${category.slug}`}
+            element={<CategoryPage category={category} relatedBlogPosts={relatedBlogPosts} />}
+          />
+        ))}
       </Routes>
       {selectedCategory && (
-  <div>
-    <h3>{selectedCategory.name}</h3>
-    <p>{selectedCategory.description}</p>
-    <h4>Blog Posts:</h4>
-    {Array.isArray(relatedBlogPosts.data) ? (
-      <ul>
-        {relatedBlogPosts.data.map((blogPost) => (
-          <li key={blogPost.id}>
-            <h5>{blogPost.title}</h5>
-            <p>{blogPost.content}</p>
-            {/* <p>{blogPost.image}</p> */}
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p>No blog posts in this category.</p>
-    )}
-  </div>
-)}
+        <div>
+          <h3>{selectedCategory.name}</h3>
+          <p>{selectedCategory.description}</p>
+          <h4>Blog Posts:</h4>
+          {Array.isArray(relatedBlogPosts?.data) && relatedBlogPosts.data.length > 0 ? (
+            <ul>
+              {relatedBlogPosts.data.map((blogPost) => (
+                <li key={blogPost.id}>
+                  <h5>{blogPost.title}</h5>
+                  <p>{blogPost.content}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No blog posts in this category.</p>
+          )}
+        </div>
+      )}
     </Router>
   );
 };
