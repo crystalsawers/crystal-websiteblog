@@ -37,8 +37,8 @@ app.use(compression());
 
 app.use(`/${BASE_URL}/auth`, auth);
 app.use(`/${BASE_URL}/users`, users);
-app.use(`/${BASE_URL}/profiles`, authRoute, profiles);
-app.use(`/${BASE_URL}/comments`, authRoute, comments);
+app.use(`/${BASE_URL}/profiles`, profiles);
+app.use(`/${BASE_URL}/comments`, comments);
 app.use(`/${BASE_URL}/categories`, categories);
 app.use(`/${BASE_URL}/blogposts`, blogposts);
 

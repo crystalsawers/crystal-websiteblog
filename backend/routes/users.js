@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authorise } from "../controllers/auth.js";
 const router = Router();
 
 import {
@@ -8,7 +9,9 @@ import {
   deleteUser,
 } from "../controllers/users.js";
 
-router.route("/").get(getUsers);
-router.route("/:id").get(getOneUser).put(updateUser).delete(deleteUser);
+const requireAdmin = authorise(true);
+
+router.route("/").get(requireAdmin, getUsers);
+router.route("/:id").get(authorise(),getOneUser).put(authorise(),updateUser).delete(authorise(),deleteUser);
 
 export default router;
