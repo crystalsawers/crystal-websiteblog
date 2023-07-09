@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./Login.css";
+import "../styling/Login.css";
 
 const Login = () => {
   const [name, setName] = useState("");
@@ -10,12 +10,14 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const BASE_URL = "http://localhost:3001/api/v1/auth"
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (isRegistering) {
         // Register API call
-        await axios.post("http://localhost:3001/api/v1/auth/register", {
+        await axios.post(`${BASE_URL}/register`, {
           name,
           username,
           password,
@@ -25,7 +27,7 @@ const Login = () => {
         setIsSuccess(true);
       } else {
         // Login API call
-        await axios.post("http://localhost:3001/api/v1/auth/login", {
+        await axios.post(`${BASE_URL}/login`, {
           identifier: username, // Use the username as the identifier
           password,
         });

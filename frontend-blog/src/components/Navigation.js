@@ -11,7 +11,8 @@ import {
   NavItem,
   NavLink,
 } from "reactstrap";
-import Login from "./Login";
+
+import Login from "./auth/Login";
 import Homepage from "./Homepage";
 import CategoryPage from "./CategoryPage";
 
