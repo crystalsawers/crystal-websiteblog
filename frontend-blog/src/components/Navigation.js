@@ -48,6 +48,7 @@ const CategoryPage = ({ category, blogPosts }) => {
   );
 };
 
+
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
@@ -142,10 +143,14 @@ const Navigation = () => {
             element={<CategoryPage category={category} blogPosts={blogPosts} />}
           />
         ))}
+        {selectedCategory && (
+          <Route
+            path={`/${selectedCategory?.slug}`}
+            element={<CategoryPage category={selectedCategory} blogPosts={blogPosts} />}
+          />
+        )}
       </Routes>
-      {selectedCategory && (
-        <CategoryPage category={selectedCategory} blogPosts={blogPosts} />
-      )}
+
     </Router>
   );
 };
