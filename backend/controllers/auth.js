@@ -66,46 +66,47 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  try {
-    const { username, password } = req.body;
+    try {
+        const { username, password } = req.body;
 
-    const user = await prisma.user.findUnique({ where: { username } });
+        const user = await prisma.user.findUnique({ where: { username } });
 
-    if (!user) {
-      return res.status(401).json({ msg: 'Invalid username or password' });
+        if (!user) {
+            return res.status(401).json({ msg: 'Invalid username or password' });
+        }
+
+        const isPasswordValid = await bcryptjs.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ msg: 'Invalid username or password' });
+        }
+
+        const { JWT_SECRET, JWT_LIFETIME } = process.env;
+
+        const token = jwt.sign(
+            {
+                id: user.id,
+                name: user.name,
+                role: user.role,
+                isAdmin: user.role === 'ADMIN_USER',
+            },
+            JWT_SECRET,
+            { expiresIn: JWT_LIFETIME }
+        );
+
+        return res.status(200).json({
+            msg: 'User successfully logged in',
+            token: token,
+            isAdmin: user.role === 'ADMIN_USER', // Include isAdmin property in the response
+        });
+    } catch (err) {
+        return res.status(500).json({
+            msg: err.message,
+        });
     }
-
-    const isPasswordValid = await bcryptjs.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ msg: 'Invalid username or password' });
-    }
-
-    const { JWT_SECRET, JWT_LIFETIME } = process.env;
-
-    const token = jwt.sign(
-      {
-        id: user.id,
-        name: user.name,
-        role: user.role,
-        isAdmin: user.role === 'ADMIN_USER',
-      },
-      JWT_SECRET,
-      { expiresIn: JWT_LIFETIME }
-    );
-
-    return res.status(200).json({
-      msg: 'User successfully logged in',
-      token: token,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      msg: err.message,
-    });
-  }
 };
 
-  
+
 
 // Logout 
 

@@ -13,6 +13,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get("token")); // Track login status
+  const [isAdmin, setIsAdmin] = useState(false); // Track admin status
 
   const BASE_URL = "http://localhost:3001/api/v1/auth";
 
@@ -38,11 +39,12 @@ const Login = () => {
         });
         // Handle successful login
         Cookies.set("token", response.data.token, { expires: 1 });
-        console.log(response.data.msg);
+        console.log("Response:", response.data);
         setMessage("Login successful");
         setIsSuccess(true);
         setIsLoggedIn(true); // Set the login status to true
-        window.location.reload();
+        setIsAdmin(response.data.isAdmin); // Set the admin status based on the response
+        // window.location.reload();
       }
     } catch (error) {
       // Handle login or registration error
@@ -63,8 +65,10 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {isLoggedIn ? (
-        <AdminPage /> // Render the AdminPage component if the user is logged in
+      {console.log("isLoggedIn:", isLoggedIn)}
+      {console.log("isAdmin:", isAdmin)}
+      {isLoggedIn && isAdmin ? (
+        <AdminPage /> // Render the AdminPage component if the user is logged in as an admin
       ) : (
         <>
           <h2>{isRegistering ? "Register" : "Login"}</h2>
