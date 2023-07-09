@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 
 import {
   Collapse,
@@ -20,25 +20,52 @@ const generateSlug = (str) => {
   return slugify(str, { lower: true });
 };
 
+const CategoryPage = ({ category }) => {
+  const location = useLocation();
+  const [relatedBlogPosts, setRelatedBlogPosts] = useState([]);
 
-// Define CategoryPage component
-const CategoryPage = ({ category, relatedBlogPosts }) => {
+  useEffect(() => {
+    // Fetch related blog posts based on the selected category
+    const fetchRelatedBlogPosts = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/api/v1/blogposts?category=${category.id}`
+        );
+        const responseData = response.data;
+
+        if (Array.isArray(responseData.data) && responseData.data.length > 0) {
+          setRelatedBlogPosts(responseData.data);
+        } else {
+          setRelatedBlogPosts([]);
+        }
+      } catch (error) {
+        console.error("Error fetching related blog posts:", error.message);
+      }
+    };
+
+    fetchRelatedBlogPosts();
+  }, [category]);
+
   return (
     <div>
       <h3>{category.name}</h3>
       <p>{category.description}</p>
-      <h4>Blog Posts:</h4>
-      {Array.isArray(relatedBlogPosts?.data) && relatedBlogPosts.data.length > 0 ? (
-        <ul>
-          {relatedBlogPosts.data.map((blogPost) => (
-            <li key={blogPost.id}>
-              <h5>{blogPost.title}</h5>
-              <p>{blogPost.content}</p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No blog posts in this category.</p>
+      {location.pathname === `/${category.slug}` && (
+        <>
+          <h4>Blog Posts:</h4>
+          {relatedBlogPosts.length > 0 ? (
+            <ul>
+              {relatedBlogPosts.map((blogPost) => (
+                <li key={blogPost.id}>
+                  <h5>{blogPost.title}</h5>
+                  <p>{blogPost.content}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No blog posts in this category.</p>
+          )}
+        </>
       )}
     </div>
   );
@@ -52,14 +79,13 @@ const Navigation = () => {
 
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [relatedBlogPosts, setRelatedBlogPosts] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get("http://localhost:3001/api/v1/categories");
         const responseData = response.data;
-    
+
         if (Array.isArray(responseData.data) && responseData.data.length > 0) {
           const categoriesWithSlug = responseData.data.map((category) => ({
             ...category,
@@ -73,7 +99,6 @@ const Navigation = () => {
         console.error("Error fetching categories:", error.message);
       }
     };
-    
 
     fetchCategories();
   }, []);
@@ -85,13 +110,7 @@ const Navigation = () => {
       );
       const categoryData = categoryResponse.data;
 
-      const blogPostsResponse = await axios.get(
-        `http://localhost:3001/api/v1/blogposts?category=${categoryId}`
-      );
-      const blogPostsData = blogPostsResponse.data;
-
       setSelectedCategory(categoryData);
-      setRelatedBlogPosts(blogPostsData || []);
     } catch (error) {
       console.error("Error fetching category information:", error);
     }
@@ -135,28 +154,12 @@ const Navigation = () => {
           <Route
             key={category.id}
             path={`/${category.slug}`}
-            element={<CategoryPage category={category} relatedBlogPosts={relatedBlogPosts} />}
+            element={<CategoryPage category={category} />}
           />
         ))}
       </Routes>
       {selectedCategory && (
-        <div>
-          <h3>{selectedCategory.name}</h3>
-          <p>{selectedCategory.description}</p>
-          <h4>Blog Posts:</h4>
-          {Array.isArray(relatedBlogPosts?.data) && relatedBlogPosts.data.length > 0 ? (
-            <ul>
-              {relatedBlogPosts.data.map((blogPost) => (
-                <li key={blogPost.id}>
-                  <h5>{blogPost.title}</h5>
-                  <p>{blogPost.content}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No blog posts in this category.</p>
-          )}
-        </div>
+        <CategoryPage category={selectedCategory} />
       )}
     </Router>
   );
