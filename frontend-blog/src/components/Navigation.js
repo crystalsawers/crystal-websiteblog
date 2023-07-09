@@ -12,6 +12,7 @@ import {
   NavLink,
 } from "reactstrap";
 import Login from "./Login";
+import Homepage from "./Homepage";
 
 import slugify from "slugify";
 
@@ -135,6 +136,7 @@ const Navigation = () => {
         </Collapse>
       </Navbar>
       <Routes>
+      <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
         {categories.map((category) => (
           <Route
