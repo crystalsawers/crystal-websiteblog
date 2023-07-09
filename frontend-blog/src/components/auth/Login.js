@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import AdminPage from "./AdminPage";
 import "../styling/Login.css";
 
 const Login = () => {
@@ -11,6 +12,7 @@ const Login = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get("token")); // Track login status
 
   const BASE_URL = "http://localhost:3001/api/v1/auth";
 
@@ -39,6 +41,7 @@ const Login = () => {
         console.log(response.data.msg);
         setMessage("Login successful");
         setIsSuccess(true);
+        setIsLoggedIn(true); // Set the login status to true
         window.location.reload();
       }
     } catch (error) {
@@ -58,18 +61,10 @@ const Login = () => {
     setMessage("");
   };
 
-
-  const isLoggedIn = () => {
-    return !!Cookies.get("token");
-  };
-
   return (
     <div className="login-container">
-      {isLoggedIn() ? (
-        <>
-          <h2>Welcome, {username}!</h2>
-          {/* Additional content for the logged-in user */}
-        </>
+      {isLoggedIn ? (
+        <AdminPage /> // Render the AdminPage component if the user is logged in
       ) : (
         <>
           <h2>{isRegistering ? "Register" : "Login"}</h2>
