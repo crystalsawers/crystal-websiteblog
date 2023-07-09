@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import jwtDecode from "jwt-decode";
+import jwtDecode from 'jwt-decode';
 
 import {
   Collapse,
@@ -46,7 +46,7 @@ const Navigation = () => {
   };
 
   const isLoggedIn = !!Cookies.get("token");
-
+  
   const user = getUserFromToken(); // Implement a function to get user details from the token
   const isAdmin = user && user.role === "ADMIN_USER";
 
@@ -99,7 +99,7 @@ const Navigation = () => {
 
   const handleLogout = () => {
     Cookies.remove("token");
-    window.location.reload();
+    window.location.reload(); // Refresh the page after logout
   };
 
   return (
@@ -166,7 +166,9 @@ const Navigation = () => {
             element={<CategoryPage category={selectedCategory} blogPosts={blogPosts} />}
           />
         )}
-        {isLoggedIn && isAdmin && <Route path="/admin" element={<AdminPage />} />}
+        {isLoggedIn && isAdmin && (
+          <Route path="/admin" element={<AdminPage />} />
+        )}
         <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
