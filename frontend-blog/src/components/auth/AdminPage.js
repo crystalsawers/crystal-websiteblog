@@ -267,9 +267,9 @@ const AdminPage = () => {
   return (
     <div>
       <h2>Admin Page</h2>
-
+  
       <h3>Blog Posts</h3>
-
+  
       <h3>Create Blog Post</h3>
       <form onSubmit={handleCreateBlogPost}>
         <div>
@@ -300,11 +300,15 @@ const AdminPage = () => {
         </div>
         <div>
           <label htmlFor="categories">Categories:</label>
-          {renderCategoryOptions()}
+          {Array.isArray(categories) && categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
         </div>
         <button type="submit">Create</button>
       </form>
-
+  
       <h3>Update Blog Post</h3>
       <form onSubmit={handleUpdateBlogPost}>
         <div>
@@ -334,14 +338,18 @@ const AdminPage = () => {
           />
         </div>
         <div>
-          <label htmlFor="updatedCategories">Categories:</label>
-          {renderCategoryOptions()}
+          <label htmlFor="categories">Categories:</label>
+          {Array.isArray(categories) && categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
         </div>
         <button type="submit">Update</button>
       </form>
-
+  
       <button onClick={handleDeleteBlogPost}>Delete Blog Post</button>
-
+  
       <h3>Comments</h3>
       <form onSubmit={handleCreateComment}>
         <div>
@@ -354,7 +362,7 @@ const AdminPage = () => {
         </div>
         <button type="submit">Create Comment</button>
       </form>
-      {comments.map((comment) => (
+      {Array.isArray(comments) && comments.map((comment) => (
         <div key={comment.id}>
           <p>{comment.content}</p>
           <button onClick={() => handleDeleteComment(comment.id)}>
@@ -362,7 +370,7 @@ const AdminPage = () => {
           </button>
         </div>
       ))}
-
+  
       <h3>Categories</h3>
       <button onClick={handleSubmitCreateCategory}>Create Category</button>
       <form onSubmit={handleUpdateCategory}>
@@ -377,7 +385,7 @@ const AdminPage = () => {
         </div>
         <button type="submit">Create</button>
       </form>
-
+  
       <div>
         <label htmlFor="updatedCategoryName">Updated Category Name:</label>
         <input
@@ -388,26 +396,29 @@ const AdminPage = () => {
         />
       </div>
       <button onClick={handleUpdateCategory}>Update Category</button>
-
+  
       <button onClick={handleDeleteCategory}>Delete Category</button>
-
+  
       <h3>Profiles</h3>
-      {profiles.map((profile) => (
+      {Array.isArray(profiles) && profiles.map((profile) => (
         <div key={profile.id}>
           <p>Name: {profile.name}</p>
           <p>Email: {profile.email}</p>
           {/* Display any other profile information */}
         </div>
       ))}
-
+  
       <h3>Users</h3>
-      {users.map((user) => (
+      {Array.isArray(users) && users.map((user) => (
         <div key={user.id}>
           <p>Name: {user.name}</p>
-          <p>Email: {user.email}</p></div>
+          <p>Email: {user.email}</p>
+        </div>
       ))}
     </div>
   );
+  
+
 };
 
 export default AdminPage;
