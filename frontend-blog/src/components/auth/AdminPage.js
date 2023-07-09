@@ -21,148 +21,142 @@ const AdminPage = () => {
     selectedBlogPost ? selectedBlogPost.user : ''
   );
 
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   // BLOG POSTS 
-  const handleCreateBlogPost = async (e) => {
+  // Create a blog post
+const handleCreateBlogPost = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await axios.post(`${BASE_URL}/blogposts`, {
+      title: title,
+      content: content,
+      userId: user, // Assuming the user value represents the user ID
+      categoryIds: selectedCategories, // Pass the selected category IDs
+    });
+
+    console.log('Blog post created:', response.data);
+
+    // Optionally, update the list of blog posts or perform any other necessary actions
+    setTitle('');
+    setContent('');
+    setUser('');
+    setSelectedCategories([]); // Reset selected categories
+  } catch (error) {
+    console.error('Error creating blog post:', error);
+  }
+};
+
+  // Update a blog post
+  const handleUpdateBlogPost = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await axios.post(`${BASE_URL}/blogposts`, {
-        title,
-        content,
-        user,
+      await axios.put(`${BASE_URL}/blogposts/${selectedBlogPostId}`, {
+        title: updatedTitle,
+        content: updatedContent,
       });
-
-      console.log("Blog post created:", response.data);
-      setTitle("");
-      setContent("");
-      setUser("");
+  
+      console.log('Blog post updated');
+  
+      // Optionally, update the list of blog posts or perform any other necessary actions
+      setUpdatedTitle('');
+      setUpdatedContent('');
+      setUpdatedUser('');
+      setSelectedBlogPostId(null);
     } catch (error) {
-      console.error("Error creating blog post:", error);
+      console.error('Error updating blog post:', error);
     }
   };
   
-  const [selectedBlogPostId, setSelectedBlogPostId] = useState(null);
 
-
-  const handleUpdateBlogPost = async (e) => {
-    e.preventDefault();
-
-    try {
-      if (selectedBlogPostId) {
-        // Retrieve the selected blog post based on the selectedBlogPostId
-        const selectedBlogPost = blogPosts.find(
-          (blogPost) => blogPost.id === selectedBlogPostId
-        );
-
-        if (selectedBlogPost) {
-          const response = await axios.put(
-            `${BASE_URL}/blogposts/${selectedBlogPost.id}`,
-            {
-              title: updatedTitle,
-              content: updatedContent,
-              user: updatedUser,
-            }
-          );
-
-          console.log("Blog post updated:", response.data);
-          setUpdatedTitle("");
-          setUpdatedContent("");
-          setUpdatedUser("");
-          setSelectedBlogPostId(null); // Reset the selected ID after updating
-        } else {
-          // Handle the case where the selected blog post is not found
-          console.log("Selected blog post not found.");
-        }
-      } else {
-        // Handle the case where no blog post is selected for update
-        console.log("Please select a blog post to update.");
-      }
-    } catch (error) {
-      console.error("Error updating blog post:", error);
-      // Handle error state or display an error message to the user
-    }
-  };
-
-
-
+  // Delete a blog post
   const handleDeleteBlogPost = async () => {
     try {
-      if (selectedBlogPostId) {
-        await deleteBlogPost(selectedBlogPostId);
-        console.log('Blog post deleted');
-      } else {
-        console.log('Please select a blog post to delete.');
-      }
+      await axios.delete(`${BASE_URL}/blogposts/${selectedBlogPostId}`);
+  
+      console.log('Blog post deleted');
+  
+      // Optionally, update the list of blog posts or perform any other necessary actions
+      setSelectedBlogPostId(null);
     } catch (error) {
       console.error('Error deleting blog post:', error);
     }
   };
-
-  const deleteBlogPost = async (blogPostId) => {
-    await axios.delete(`${BASE_URL}/blogposts/${blogPostId}`);
-  };
-
-
-
-
+  
 
   // COMMENTS
-  const handleCreateComment = async (commentContent, blogPostId, userId) => {
+  // Create a comment
+  const handleCreateComment = async (commentContent, userId, postId) => {
     try {
-      // Perform the API call or database operation to create the comment
       const response = await axios.post(`${BASE_URL}/comments`, {
         content: commentContent,
-        blogPostId: blogPostId,
         userId: userId,
+        postId: postId,
       });
-  
-      // Handle the response and update the UI as needed
+
       console.log('Comment created:', response.data);
-  
+
       // Optionally, update the list of comments or perform any other necessary actions
     } catch (error) {
-      // Handle error state or display an error message to the user
       console.error('Error creating comment:', error);
     }
   };
-  
 
+  // Update a comment
   const handleUpdateComment = async (commentId, updatedContent) => {
     try {
-      // Perform the API call or database operation to update the comment
       const response = await axios.put(`${BASE_URL}/comments/${commentId}`, {
         content: updatedContent,
       });
-  
-      // Handle the response and update the UI as needed
+
       console.log('Comment updated:', response.data);
-  
+
       // Optionally, update the list of comments or perform any other necessary actions
     } catch (error) {
-      // Handle error state or display an error message to the user
       console.error('Error updating comment:', error);
     }
   };
-  
 
+  // Delete a comment
   const handleDeleteComment = async (commentId) => {
     try {
-      // Perform the API call or database operation to delete the comment
       await axios.delete(`${BASE_URL}/comments/${commentId}`);
-  
-      // Handle the response and update the UI as needed
+
       console.log('Comment deleted');
-  
+
       // Optionally, update the list of comments or perform any other necessary actions
     } catch (error) {
-      // Handle error state or display an error message to the user
       console.error('Error deleting comment:', error);
     }
   };
-  
 
 
+// Example category selection UI
+const renderCategoryOptions = () => {
+  // Assuming you have a categories state variable containing the list of categories
+  return categories.map((category) => (
+    <label key={category.id}>
+      <input
+        type="checkbox"
+        value={category.id}
+        checked={selectedCategories.includes(category.id)}
+        onChange={handleCategoryChange}
+      />
+      {category.name}
+    </label>
+  ));
+};
+
+const handleCategoryChange = (e) => {
+  const categoryId = parseInt(e.target.value);
+  if (e.target.checked) {
+    setSelectedCategories([...selectedCategories, categoryId]);
+  } else {
+    setSelectedCategories(selectedCategories.filter((id) => id !== categoryId));
+  }
+};
 
   // CATEGORY
   const handleCreateCategory = () => {
