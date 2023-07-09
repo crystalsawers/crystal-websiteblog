@@ -40,13 +40,15 @@ const Homepage = () => {
               <h3>{blogPost.title}</h3>
               <p>{blogPost.content}</p>
               <h4>Comments:</h4>
-              <ul>
-                {comments && comments
-                  .filter((comment) => comment.blogPostId === blogPost.id)
-                  .map((comment) => (
-                    <li key={comment.id}>{comment.text}</li>
+              {blogPost.comments.length > 0 ? (
+                <ul>
+                  {blogPost.comments.map((comment) => (
+                    <li key={comment.id}>{comment.content}</li>
                   ))}
-              </ul>
+                </ul>
+              ) : (
+                <p>No comments for this blog post.</p>
+              )}
             </li>
           ))}
         </ul>
@@ -55,6 +57,7 @@ const Homepage = () => {
       )}
     </div>
   );
+  
 };
 
 export default Homepage;
