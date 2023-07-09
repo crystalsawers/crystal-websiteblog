@@ -13,40 +13,13 @@ import {
 } from "reactstrap";
 import Login from "./Login";
 import Homepage from "./Homepage";
+import CategoryPage from "./CategoryPage";
 
 import slugify from "slugify";
 
 // Function to generate a slug based on a given string
 const generateSlug = (str) => {
   return slugify(str, { lower: true });
-};
-
-const CategoryPage = ({ category, blogPosts }) => {
-  const filteredBlogPosts = blogPosts.filter((post) =>
-    post.categories.some((cat) => cat.id === category.id)
-  );
-
-  return (
-    <div>
-      <h3>{category.name}</h3>
-      <p>{category.description}</p>
-      {filteredBlogPosts.length > 0 ? (
-        <>
-          <h4>Blog Posts:</h4>
-          <ul>
-            {filteredBlogPosts.map((blogPost) => (
-              <li key={blogPost.id}>
-                <h5>{blogPost.title}</h5>
-                <p>{blogPost.content}</p>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : (
-        <p>No blog posts in this category.</p>
-      )}
-    </div>
-  );
 };
 
 
