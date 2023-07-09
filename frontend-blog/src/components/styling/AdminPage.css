@@ -1,43 +1,51 @@
 /* AdminPage.css */
 
-.admin-page {
+body.admin-page-body {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding: 20px;
+    height: 100vh;
+    background-color: #f9f9f9;
+    font-family: "Arial", sans-serif;
+  }
+  
+  .admin-page {
+    max-width: 600px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    text-align: center;
   }
   
   h2 {
     font-size: 28px;
     margin-bottom: 30px;
-    text-align: center;
+    color: #007bff;
   }
   
   h3 {
     font-size: 24px;
     margin-bottom: 20px;
-    text-align: center;
   }
   
   h4 {
     font-size: 20px;
     margin-bottom: 15px;
-    text-align: center;
   }
   
   p {
     margin-bottom: 15px;
-    text-align: center;
   }
   
   form {
     margin-bottom: 30px;
-    width: 100%;
-    max-width: 400px;
   }
   
   label {
     font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
   }
   
   input,
@@ -45,9 +53,10 @@
   select {
     width: 100%;
     padding: 12px;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
     border-radius: 6px;
     margin-bottom: 15px;
+    font-size: 16px;
   }
   
   button {
@@ -59,6 +68,7 @@
     cursor: pointer;
     margin-right: 10px;
     transition: background-color 0.3s ease;
+    font-size: 16px;
   }
   
   button:hover {
@@ -97,50 +107,40 @@
     margin: 15px;
   }
   
-  /* Fancy styles */
+  /* Login form specific styling */
   
-  .admin-page {
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+  .login-form-container {
+    max-width: 300px;
+    margin: 0 auto;
   }
   
-  h2,
-  h3,
-  h4 {
-    color: #007bff;
-    font-family: "Arial", sans-serif;
+  .login-form label {
+    display: block;
+    margin-bottom: 10px;
   }
   
-  .button {
+  .login-form input[type="text"],
+  .login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .login-form button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
     background-color: #007bff;
     color: #fff;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
-    font-family: "Arial", sans-serif;
     font-size: 16px;
-    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
   }
   
-  .button:hover {
+  .login-form button:hover {
     background-color: #0056b3;
-  }
-  
-  .table th,
-  .table td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #ccc;
-    font-family: "Arial", sans-serif;
-  }
-  
-  .container {
-    margin: 20px auto;
-    max-width: 800px;
   }
   

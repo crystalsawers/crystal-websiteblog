@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import "../styling/AdminPage.css";
+import "../styling/AdminPage.css";
 
 const AdminPage = () => {
   const BASE_URL = 'http://localhost:3001/api/v1';
