@@ -41,7 +41,7 @@ const AdminPage = () => {
     try {
       const response = await axios.get(`${BASE_URL}/blogposts`);
       console.log(response.data);
-      setBlogPosts(response.data);
+      setBlogPosts(response.data.data);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
     }
@@ -274,6 +274,7 @@ const AdminPage = () => {
       <h3>Blog Posts</h3>
 
       {/* Display blog posts if available */}
+
       {blogPosts.length > 0 ? (
         blogPosts.map((post) => (
           <div key={post.id}>
@@ -418,7 +419,7 @@ const AdminPage = () => {
 
       <h3>Profiles</h3>
       {/* Display profiles if available */}
-      {profiles.length > 0 ? (
+      {Array.isArray(profiles) && profiles.length > 0 ? (
         profiles.map((profile) => (
           <div key={profile.id}>
             <h4>{profile.name}</h4>
@@ -431,10 +432,11 @@ const AdminPage = () => {
       )}
 
 
+
       <h3>Users</h3>
       {/* Display users if available */}
-      {users.length > 0 ? (
-        users.map((user) => (
+      {Array.isArray(users.data) && users.data.length > 0 ? (
+        users.data.map((user) => (
           <div key={user.id}>
             <h4>{user.name}</h4>
             <p>Email: {user.email}</p>
@@ -444,6 +446,7 @@ const AdminPage = () => {
       ) : (
         <p>No users available.</p>
       )}
+
     </div>
 
 
