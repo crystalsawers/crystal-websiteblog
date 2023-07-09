@@ -136,7 +136,7 @@ const Navigation = () => {
         </Collapse>
       </Navbar>
       <Routes>
-      <Route path="/" element={<Homepage />} />
+        <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
         {categories.map((category) => (
           <Route
