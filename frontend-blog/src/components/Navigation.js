@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Cookies from "js-cookie";
+import jwt from "jsonwebtoken";
 
 import {
   Collapse,
@@ -16,6 +17,8 @@ import {
 import Login from "./auth/Login";
 import Homepage from "./Homepage";
 import CategoryPage from "./CategoryPage";
+import AdminPage from "./auth/AdminPage";
+
 
 import slugify from "slugify";
 
@@ -29,6 +32,27 @@ const Navigation = () => {
   const toggle = () => setIsOpen(!isOpen);
 
   const navbar = { backgroundColor: "#189BCC" };
+
+
+
+const getUserFromToken = () => {
+  const token = Cookies.get("token");
+  if (token) {
+    try {
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET); // Replace "your-jwt-secret" with your actual JWT secret
+      return decodedToken;
+    } catch (error) {
+      console.error("Error decoding token:", error.message);
+    }
+  }
+  return null;
+};
+
+  const isLoggedIn = !!Cookies.get("token");
+  
+  const user = getUserFromToken(); // Implement a function to get user details from the token
+  const isAdmin = user && user.role === "ADMIN_USER";
+
 
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -77,7 +101,7 @@ const Navigation = () => {
     setSelectedCategory(category);
   };
 
-  const isLoggedIn = !!Cookies.get("token");
+
 
   const handleLogout = () => {
     Cookies.remove("token");
@@ -126,7 +150,6 @@ const Navigation = () => {
       </Navbar>
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/login" element={<Login />} />
         {categories.map((category) => (
           <Route
             key={category.id}
@@ -140,7 +163,13 @@ const Navigation = () => {
             element={<CategoryPage category={selectedCategory} blogPosts={blogPosts} />}
           />
         )}
+        {isLoggedIn && isAdmin && (
+          <Route path="/admin" element={<AdminPage />} />
+        )}
+        <Route path="/login" element={<Login />} />
       </Routes>
+
+
     </Router>
   );
 };
