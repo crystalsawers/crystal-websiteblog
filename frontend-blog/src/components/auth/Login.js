@@ -39,6 +39,7 @@ const Login = () => {
         console.log(response.data.msg);
         setMessage("Login successful");
         setIsSuccess(true);
+        window.location.reload();
       }
     } catch (error) {
       // Handle login or registration error
@@ -57,17 +58,6 @@ const Login = () => {
     setMessage("");
   };
 
-  const handleLogout = async (e) => {
-    try {
-      const response = await axios.post(`${BASE_URL}/logout`);
-      console.log(response.data);
-      // delete the cookie here
-      Cookies.remove('token');
-      alert(response.data.msg);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const isLoggedIn = () => {
     return !!Cookies.get("token");

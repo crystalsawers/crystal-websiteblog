@@ -81,7 +81,7 @@ const Navigation = () => {
 
   const handleLogout = () => {
     Cookies.remove("token");
-    // Additional cleanup or redirection logic
+    window.location.reload();
   };
 
   return (
