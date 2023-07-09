@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import {
   Collapse,
@@ -20,52 +20,29 @@ const generateSlug = (str) => {
   return slugify(str, { lower: true });
 };
 
-const CategoryPage = ({ category }) => {
-  const location = useLocation();
-  const [relatedBlogPosts, setRelatedBlogPosts] = useState([]);
-
-  useEffect(() => {
-    // Fetch related blog posts based on the selected category
-    const fetchRelatedBlogPosts = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3001/api/v1/blogposts?category=${category.id}`
-        );
-        const responseData = response.data;
-
-        if (Array.isArray(responseData.data) && responseData.data.length > 0) {
-          setRelatedBlogPosts(responseData.data);
-        } else {
-          setRelatedBlogPosts([]);
-        }
-      } catch (error) {
-        console.error("Error fetching related blog posts:", error.message);
-      }
-    };
-
-    fetchRelatedBlogPosts();
-  }, [category]);
+const CategoryPage = ({ category, blogPosts }) => {
+  const filteredBlogPosts = blogPosts.filter((post) =>
+    post.categories.some((cat) => cat.id === category.id)
+  );
 
   return (
     <div>
       <h3>{category.name}</h3>
       <p>{category.description}</p>
-      {location.pathname === `/${category.slug}` && (
+      {filteredBlogPosts.length > 0 ? (
         <>
           <h4>Blog Posts:</h4>
-          {relatedBlogPosts.length > 0 ? (
-            <ul>
-              {relatedBlogPosts.map((blogPost) => (
-                <li key={blogPost.id}>
-                  <h5>{blogPost.title}</h5>
-                  <p>{blogPost.content}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No blog posts in this category.</p>
-          )}
+          <ul>
+            {filteredBlogPosts.map((blogPost) => (
+              <li key={blogPost.id}>
+                <h5>{blogPost.title}</h5>
+                <p>{blogPost.content}</p>
+              </li>
+            ))}
+          </ul>
         </>
+      ) : (
+        <p>No blog posts in this category.</p>
       )}
     </div>
   );
@@ -79,6 +56,7 @@ const Navigation = () => {
 
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [blogPosts, setBlogPosts] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -100,20 +78,27 @@ const Navigation = () => {
       }
     };
 
+    const fetchBlogPosts = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/api/v1/blogposts");
+        const responseData = response.data;
+
+        if (Array.isArray(responseData.data) && responseData.data.length > 0) {
+          setBlogPosts(responseData.data);
+        } else {
+          setBlogPosts([]);
+        }
+      } catch (error) {
+        console.error("Error fetching blog posts:", error.message);
+      }
+    };
+
     fetchCategories();
+    fetchBlogPosts();
   }, []);
 
-  const handleCategoryClick = async (categoryId) => {
-    try {
-      const categoryResponse = await axios.get(
-        `http://localhost:3001/api/v1/categories/${categoryId}`
-      );
-      const categoryData = categoryResponse.data;
-
-      setSelectedCategory(categoryData);
-    } catch (error) {
-      console.error("Error fetching category information:", error);
-    }
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
   };
 
   return (
@@ -129,7 +114,7 @@ const Navigation = () => {
                   <NavLink
                     tag={Link}
                     to={`/${category.slug}`}
-                    onClick={() => handleCategoryClick(category.id)}
+                    onClick={() => handleCategoryClick(category)}
                   >
                     {category.name}
                   </NavLink>
@@ -154,12 +139,12 @@ const Navigation = () => {
           <Route
             key={category.id}
             path={`/${category.slug}`}
-            element={<CategoryPage category={category} />}
+            element={<CategoryPage category={category} blogPosts={blogPosts} />}
           />
         ))}
       </Routes>
       {selectedCategory && (
-        <CategoryPage category={selectedCategory} />
+        <CategoryPage category={selectedCategory} blogPosts={blogPosts} />
       )}
     </Router>
   );
