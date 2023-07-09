@@ -40,6 +40,7 @@ const AdminPage = () => {
   const fetchBlogPosts = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/blogposts`);
+      console.log(response.data);
       setBlogPosts(response.data);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
@@ -67,6 +68,7 @@ const AdminPage = () => {
   const fetchProfiles = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/profiles`);
+      console.log(response.data);
       setProfiles(response.data);
     } catch (error) {
       console.error('Error fetching profiles:', error);
@@ -76,6 +78,7 @@ const AdminPage = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/users`);
+      console.log(response.data);
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -267,9 +270,23 @@ const AdminPage = () => {
   return (
     <div>
       <h2>Admin Page</h2>
-  
+
       <h3>Blog Posts</h3>
-  
+
+      {/* Display blog posts if available */}
+      {blogPosts.length > 0 ? (
+        blogPosts.map((post) => (
+          <div key={post.id}>
+            <h4>{post.title}</h4>
+            <p>{post.content}</p>
+            <p>User: {post.userId}</p>
+            {/* Display any other blog post information */}
+          </div>
+        ))
+      ) : (
+        <p>No blog posts available.</p>
+      )}
+
       <h3>Create Blog Post</h3>
       <form onSubmit={handleCreateBlogPost}>
         <div>
@@ -308,7 +325,7 @@ const AdminPage = () => {
         </div>
         <button type="submit">Create</button>
       </form>
-  
+
       <h3>Update Blog Post</h3>
       <form onSubmit={handleUpdateBlogPost}>
         <div>
@@ -347,9 +364,9 @@ const AdminPage = () => {
         </div>
         <button type="submit">Update</button>
       </form>
-  
+
       <button onClick={handleDeleteBlogPost}>Delete Blog Post</button>
-  
+
       <h3>Comments</h3>
       <form onSubmit={handleCreateComment}>
         <div>
@@ -370,7 +387,7 @@ const AdminPage = () => {
           </button>
         </div>
       ))}
-  
+
       <h3>Categories</h3>
       <button onClick={handleSubmitCreateCategory}>Create Category</button>
       <form onSubmit={handleUpdateCategory}>
@@ -385,7 +402,7 @@ const AdminPage = () => {
         </div>
         <button type="submit">Create</button>
       </form>
-  
+
       <div>
         <label htmlFor="updatedCategoryName">Updated Category Name:</label>
         <input
@@ -396,28 +413,42 @@ const AdminPage = () => {
         />
       </div>
       <button onClick={handleUpdateCategory}>Update Category</button>
-  
+
       <button onClick={handleDeleteCategory}>Delete Category</button>
-  
+
       <h3>Profiles</h3>
-      {Array.isArray(profiles) && profiles.map((profile) => (
-        <div key={profile.id}>
-          <p>Name: {profile.name}</p>
-          <p>Email: {profile.email}</p>
-          {/* Display any other profile information */}
-        </div>
-      ))}
-  
+      {/* Display profiles if available */}
+      {profiles.length > 0 ? (
+        profiles.map((profile) => (
+          <div key={profile.id}>
+            <h4>{profile.name}</h4>
+            <p>Email: {profile.email}</p>
+            {/* Display any other profile information */}
+          </div>
+        ))
+      ) : (
+        <p>No profiles available.</p>
+      )}
+
+
       <h3>Users</h3>
-      {Array.isArray(users) && users.map((user) => (
-        <div key={user.id}>
-          <p>Name: {user.name}</p>
-          <p>Email: {user.email}</p>
-        </div>
-      ))}
+      {/* Display users if available */}
+      {users.length > 0 ? (
+        users.map((user) => (
+          <div key={user.id}>
+            <h4>{user.name}</h4>
+            <p>Email: {user.email}</p>
+            {/* Display any other user information */}
+          </div>
+        ))
+      ) : (
+        <p>No users available.</p>
+      )}
     </div>
+
+
   );
-  
+
 
 };
 
