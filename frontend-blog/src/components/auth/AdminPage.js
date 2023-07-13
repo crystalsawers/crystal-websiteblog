@@ -79,8 +79,8 @@ const AdminPage = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/users`);
-      console.log(response.data);
-      setUsers(response.data);
+      console.log(response.data.data);
+      setUsers(response.data.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -284,20 +284,25 @@ const AdminPage = () => {
 
       <h3>Blog Posts</h3>
 
-      {/* Display blog posts if available */}
+{/* Display blog posts if available */}
+{blogPosts.length > 0 ? (
+  blogPosts.map((post) => {
+    // Find the user object based on the userId
+    const user = users.find((user) => user.id === post.userId);
 
-      {blogPosts.length > 0 ? (
-        blogPosts.map((post) => (
-          <div key={post.id}>
-            <h4>{post.title}</h4>
-            <p>{post.content}</p>
-            <p>User: {post.userId}</p>
-            {/* Display any other blog post information */}
-          </div>
-        ))
-      ) : (
-        <p>No blog posts available.</p>
-      )}
+    return (
+      <div key={post.id}>
+        <h4>{post.title}</h4>
+        <p>{post.content}</p>
+        <p>User: {user ? user.name : 'Unknown'}</p>
+        {/* Display any other blog post information */}
+      </div>
+    );
+  })
+) : (
+  <p>No blog posts available.</p>
+)}
+
 
       <h3>Create Blog Post</h3>
       <form onSubmit={handleCreateBlogPost}>
