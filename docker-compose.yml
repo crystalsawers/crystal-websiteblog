@@ -1,32 +1,18 @@
 version: '3'
 services:
-  db:
-    image: postgres
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
-    ports:
-      - 5432:5432
-
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - 3001:3001
-    depends_on:
-      - db
+      - '3001:3001'
     environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: myuser
-      DB_PASSWORD: mypassword
-      DB_NAME: mydatabase
-
+      - DATABASE_URL=postgresql://postgres:mypassword@crystal-db.c9smdoxozixu.ap-southeast-2.rds.amazonaws.com:5432/crystalblog
+      - JWT_SECRET=Pazzw0rd123
+      - JWT_LIFETIME=2hr
   frontend:
     build:
       context: ./frontend-blog
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - '3000:3000'
