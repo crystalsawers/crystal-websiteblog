@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../styling/AdminPage.css";
 
 const AdminPage = () => {
-  const BASE_URL = 'http://localhost:3001/api/v1';
+  const BASE_URL = "http://localhost:3001/api/v1";
 
   // USE STATES
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [user, setUser] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [user, setUser] = useState("");
 
-  const [updatedTitle, setUpdatedTitle] = useState('');
-  const [updatedContent, setUpdatedContent] = useState('');
-  const [updatedUser, setUpdatedUser] = useState('');
+  const [updatedTitle, setUpdatedTitle] = useState("");
+  const [updatedContent, setUpdatedContent] = useState("");
+  const [updatedUser, setUpdatedUser] = useState("");
 
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [categoryName, setCategoryName] = useState('');
-  const [updatedCategoryName, setUpdatedCategoryName] = useState('');
+  const [categoryName, setCategoryName] = useState("");
+  const [updatedCategoryName, setUpdatedCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState(null);
 
   const [selectedBlogPostId, setSelectedBlogPostId] = useState(null);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
-  const [updatedCommentContent, setUpdatedCommentContent] = useState('');
+  const [updatedCommentContent, setUpdatedCommentContent] = useState("");
 
   const [blogPosts, setBlogPosts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -44,7 +44,7 @@ const AdminPage = () => {
       console.log(response.data);
       setBlogPosts(response.data.data);
     } catch (error) {
-      console.error('Error fetching blog posts:', error);
+      console.error("Error fetching blog posts:", error);
     }
   };
 
@@ -53,7 +53,7 @@ const AdminPage = () => {
       const response = await axios.get(`${BASE_URL}/categories`);
       setCategories(response.data);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
 
@@ -62,7 +62,7 @@ const AdminPage = () => {
       const response = await axios.get(`${BASE_URL}/comments`);
       setComments(response.data);
     } catch (error) {
-      console.error('Error fetching comments:', error);
+      console.error("Error fetching comments:", error);
     }
   };
 
@@ -72,7 +72,7 @@ const AdminPage = () => {
       console.log(response.data);
       setProfiles(response.data);
     } catch (error) {
-      console.error('Error fetching profiles:', error);
+      console.error("Error fetching profiles:", error);
     }
   };
 
@@ -82,7 +82,7 @@ const AdminPage = () => {
       console.log(response.data);
       setUsers(response.data);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error("Error fetching users:", error);
     }
   };
 
@@ -95,19 +95,19 @@ const AdminPage = () => {
       const response = await axios.post(`${BASE_URL}/blogposts`, {
         title: title,
         content: content,
-        userId: user,
+        userId: user, // should be current user logged in
         categoryIds: selectedCategories,
       });
 
-      console.log('Blog post created:', response.data);
+      console.log("Blog post created:", response.data);
 
-      setTitle('');
-      setContent('');
-      setUser('');
+      setTitle("");
+      setContent("");
+      setUser("");
       setSelectedCategories([]);
       fetchBlogPosts(); // Update blog posts after creation
     } catch (error) {
-      console.error('Error creating blog post:', error);
+      console.error("Error creating blog post:", error);
     }
   };
 
@@ -121,15 +121,15 @@ const AdminPage = () => {
         content: updatedContent,
       });
 
-      console.log('Blog post updated');
+      console.log("Blog post updated");
 
-      setUpdatedTitle('');
-      setUpdatedContent('');
-      setUpdatedUser('');
+      setUpdatedTitle("");
+      setUpdatedContent("");
+      setUpdatedUser("");
       setSelectedBlogPostId(null);
       fetchBlogPosts(); // Update blog posts after update
     } catch (error) {
-      console.error('Error updating blog post:', error);
+      console.error("Error updating blog post:", error);
     }
   };
 
@@ -138,12 +138,12 @@ const AdminPage = () => {
     try {
       await axios.delete(`${BASE_URL}/blogposts/${selectedBlogPostId}`);
 
-      console.log('Blog post deleted');
+      console.log("Blog post deleted");
 
       setSelectedBlogPostId(null);
       fetchBlogPosts(); // Update blog posts after deletion
     } catch (error) {
-      console.error('Error deleting blog post:', error);
+      console.error("Error deleting blog post:", error);
     }
   };
 
@@ -159,12 +159,12 @@ const AdminPage = () => {
         postId: selectedBlogPostId, // Assuming selectedBlogPostId represents the selected blog post ID
       });
 
-      console.log('Comment created:', response.data);
+      console.log("Comment created:", response.data);
 
-      setUpdatedCommentContent('');
+      setUpdatedCommentContent("");
       fetchComments(); // Update comments after creation
     } catch (error) {
-      console.error('Error creating comment:', error);
+      console.error("Error creating comment:", error);
     }
   };
 
@@ -177,13 +177,13 @@ const AdminPage = () => {
         content: updatedCommentContent,
       });
 
-      console.log('Comment updated');
+      console.log("Comment updated");
 
       setSelectedCommentId(null);
-      setUpdatedCommentContent('');
+      setUpdatedCommentContent("");
       fetchComments(); // Update comments after update
     } catch (error) {
-      console.error('Error updating comment:', error);
+      console.error("Error updating comment:", error);
     }
   };
 
@@ -192,27 +192,35 @@ const AdminPage = () => {
     try {
       await axios.delete(`${BASE_URL}/comments/${commentId}`);
 
-      console.log('Comment deleted');
+      console.log("Comment deleted");
 
       fetchComments(); // Update comments after deletion
     } catch (error) {
-      console.error('Error deleting comment:', error);
+      console.error("Error deleting comment:", error);
     }
   };
 
   // CATEGORY
   const renderCategoryOptions = () => {
-    return categories.map((category) => (
-      <label key={category.id}>
-        <input
-          type="checkbox"
-          value={category.id}
-          checked={selectedCategories.includes(category.id)}
-          onChange={handleCategoryChange}
-        />
-        {category.name}
-      </label>
-    ));
+    return (
+      <div>
+      <label htmlFor="categories">Categories:</label>
+      {Array.isArray(categories) &&
+        categories.map((category) => (
+          <label key={category.id}>
+            <input
+              type="checkbox"
+              value={category.id}
+              checked={selectedCategories.includes(category.id)}
+              onChange={handleCategoryChange}
+            />
+            {category.name}
+          </label>
+        ))}
+    </div>
+
+    
+    );
   };
 
   const handleCategoryChange = (e) => {
@@ -220,7 +228,9 @@ const AdminPage = () => {
     if (e.target.checked) {
       setSelectedCategories([...selectedCategories, categoryId]);
     } else {
-      setSelectedCategories(selectedCategories.filter((id) => id !== categoryId));
+      setSelectedCategories(
+        selectedCategories.filter((id) => id !== categoryId)
+      );
     }
   };
 
@@ -230,11 +240,11 @@ const AdminPage = () => {
         name: categoryName,
       });
 
-      console.log('Category created:', response.data);
-      setCategoryName('');
+      console.log("Category created:", response.data);
+      setCategoryName("");
       fetchCategories(); // Update categories after creation
     } catch (error) {
-      console.error('Error creating category:', error);
+      console.error("Error creating category:", error);
     }
   };
 
@@ -249,11 +259,11 @@ const AdminPage = () => {
         name: updatedCategoryName,
       });
 
-      console.log('Category updated:', response.data);
-      setUpdatedCategoryName('');
+      console.log("Category updated:", response.data);
+      setUpdatedCategoryName("");
       fetchCategories(); // Update categories after update
     } catch (error) {
-      console.error('Error updating category:', error);
+      console.error("Error updating category:", error);
     }
   };
 
@@ -261,10 +271,10 @@ const AdminPage = () => {
     try {
       await axios.delete(`${BASE_URL}/categories/${categoryId}`);
 
-      console.log('Category deleted');
+      console.log("Category deleted");
       fetchCategories(); // Update categories after deletion
     } catch (error) {
-      console.error('Error deleting category:', error);
+      console.error("Error deleting category:", error);
     }
   };
 
@@ -317,14 +327,7 @@ const AdminPage = () => {
             onChange={(e) => setUser(e.target.value)}
           />
         </div>
-        <div>
-          <label htmlFor="categories">Categories:</label>
-          {Array.isArray(categories) && categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </div>
+        {renderCategoryOptions()}
         <button type="submit">Create</button>
       </form>
 
@@ -356,14 +359,7 @@ const AdminPage = () => {
             onChange={(e) => setUpdatedUser(e.target.value)}
           />
         </div>
-        <div>
-          <label htmlFor="categories">Categories:</label>
-          {Array.isArray(categories) && categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </div>
+        {renderCategoryOptions()}
         <button type="submit">Update</button>
       </form>
 
@@ -381,14 +377,15 @@ const AdminPage = () => {
         </div>
         <button type="submit">Create Comment</button>
       </form>
-      {Array.isArray(comments) && comments.map((comment) => (
-        <div key={comment.id}>
-          <p>{comment.content}</p>
-          <button onClick={() => handleDeleteComment(comment.id)}>
-            Delete Comment
-          </button>
-        </div>
-      ))}
+      {Array.isArray(comments) &&
+        comments.map((comment) => (
+          <div key={comment.id}>
+            <p>{comment.content}</p>
+            <button onClick={() => handleDeleteComment(comment.id)}>
+              Delete Comment
+            </button>
+          </div>
+        ))}
 
       <h3>Categories</h3>
       <button onClick={handleSubmitCreateCategory}>Create Category</button>
@@ -432,8 +429,6 @@ const AdminPage = () => {
         <p>No profiles available.</p>
       )}
 
-
-
       <h3>Users</h3>
       {/* Display users if available */}
       {Array.isArray(users.data) && users.data.length > 0 ? (
@@ -447,13 +442,8 @@ const AdminPage = () => {
       ) : (
         <p>No users available.</p>
       )}
-
     </div>
-
-
   );
-
-
 };
 
 export default AdminPage;
