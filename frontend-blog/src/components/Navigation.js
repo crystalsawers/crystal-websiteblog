@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 
 import {
   Collapse,
@@ -18,6 +18,7 @@ import Login from "./auth/Login";
 import Homepage from "./Homepage";
 import CategoryPage from "./CategoryPage";
 import AdminPage from "./auth/AdminPage";
+import UserProfile from "./UserProfile";
 
 import slugify from "slugify";
 
@@ -46,7 +47,7 @@ const Navigation = () => {
   };
 
   const isLoggedIn = !!Cookies.get("token");
-  
+
   const user = getUserFromToken(); // Implement a function to get user details from the token
   const isAdmin = user && user.role === "ADMIN_USER";
 
@@ -57,7 +58,9 @@ const Navigation = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/api/v1/categories");
+        const response = await axios.get(
+          "http://localhost:3001/api/v1/categories"
+        );
         const responseData = response.data;
 
         if (Array.isArray(responseData.data) && responseData.data.length > 0) {
@@ -76,7 +79,9 @@ const Navigation = () => {
 
     const fetchBlogPosts = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/api/v1/blogposts");
+        const response = await axios.get(
+          "http://localhost:3001/api/v1/blogposts"
+        );
         const responseData = response.data;
 
         if (Array.isArray(responseData.data) && responseData.data.length > 0) {
@@ -126,6 +131,13 @@ const Navigation = () => {
                 <NavLink>Loading Categories...</NavLink>
               </NavItem>
             )}
+            {isLoggedIn && (
+              <NavItem>
+                <NavLink tag={Link} to="/profile">
+                  Profile
+                </NavLink>
+              </NavItem>
+            )}
             {isLoggedIn ? (
               <>
                 {isAdmin && (
@@ -163,9 +175,14 @@ const Navigation = () => {
         {selectedCategory && (
           <Route
             path={`/${selectedCategory?.slug}`}
-            element={<CategoryPage category={selectedCategory} blogPosts={blogPosts} />}
+            element={
+              <CategoryPage category={selectedCategory} blogPosts={blogPosts} />
+            }
           />
         )}
+
+        {isLoggedIn && <Route path="/profile" element={<UserProfile />} />}
+
         {isLoggedIn && isAdmin && (
           <Route path="/admin" element={<AdminPage />} />
         )}
