@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "npm run start --prefix ./backend && cypress run"
+  },
+  "dependencies": {
+    "cypress": "^12.17.1",
+    "express": "^4.18.2"
+  }
+}
