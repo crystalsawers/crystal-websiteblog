@@ -30,7 +30,7 @@ const Homepage = () => {
 
   return (
     <div>
-      <h2>Recent Blog Posts:</h2>
+      <h2>Recent Blog Post:</h2>
       {recentBlogPosts.length > 0 ? (
         <ul>
           {recentBlogPosts.map((blogPost) => (
