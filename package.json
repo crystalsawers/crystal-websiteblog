@@ -1,7 +1,7 @@
 {
   "scripts": {
     "test": "cypress open",
-    "testrun": "npm run start --prefix ./backend && cypress run"
+    "testrun": "cypress run"
   },
   "dependencies": {
     "cypress": "^12.17.1",
