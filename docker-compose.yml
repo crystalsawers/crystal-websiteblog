@@ -1,22 +1,18 @@
-version: '3'
+version: "3"
 services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - '3001:3001'
+      - "3001:3001"
     environment:
       - DATABASE_URL=postgresql://postgres:mypassword@crystal-db.c9smdoxozixu.ap-southeast-2.rds.amazonaws.com:5432/crystalblog
       - JWT_SECRET=Pazzw0rd123
-      - JWT_LIFETIME=2hr
-    volumes:
-      - ./backend:/backend
+      - JWT_LIFETIME=1hr
   frontend:
     build:
       context: ./frontend-blog
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
-    volumes:
-      - ./frontend-blog:/frontend-blog
+      - "3000:3000"
