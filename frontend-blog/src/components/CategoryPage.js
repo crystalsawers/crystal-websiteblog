@@ -7,10 +7,14 @@ const CategoryPage = ({ category, blogPosts }) => {
 
   useEffect(() => {
     const fetchCommentsAndUsers = async () => {
+
+      // const BASE_URL = "http://localhost:3001/api/v1";
+      const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
+      
       try {
         const blogPostIds = blogPosts.map((post) => post.id);
         const commentsResponse = await axios.get(
-          `http://localhost:3001/api/v1/comments?postId=${blogPostIds.join(",")}`
+          `${BASE_URL}/comments?postId=${blogPostIds.join(",")}`
         );
         const commentsData = commentsResponse.data.data;
 
@@ -18,7 +22,7 @@ const CategoryPage = ({ category, blogPosts }) => {
           setComments(commentsData);
           const userIds = commentsData.map((comment) => comment.userId);
           const usersResponse = await axios.get(
-            `http://localhost:3001/api/v1/users?userId=${userIds.join(",")}`
+            `${BASE_URL}/users?userId=${userIds.join(",")}`
           );
           const usersData = usersResponse.data.data;
           if (Array.isArray(usersData) && usersData.length > 0) {
@@ -50,7 +54,9 @@ const CategoryPage = ({ category, blogPosts }) => {
           <h4>Blog Posts:</h4>
           <ul>
             {filteredBlogPosts.map((blogPost) => {
-              const blogPostComments = comments.filter((comment) => comment.postId === blogPost.id);
+              const blogPostComments = comments.filter(
+                (comment) => comment.postId === blogPost.id
+              );
               return (
                 <li key={blogPost.id}>
                   <h5>{blogPost.title}</h5>
@@ -59,7 +65,9 @@ const CategoryPage = ({ category, blogPosts }) => {
                   {blogPostComments.length > 0 ? (
                     <ul>
                       {blogPostComments.map((comment) => {
-                        const user = users.find((user) => user.id === comment.userId);
+                        const user = users.find(
+                          (user) => user.id === comment.userId
+                        );
                         const username = user ? user.username : "Unknown User";
                         return (
                           <li key={comment.id}>

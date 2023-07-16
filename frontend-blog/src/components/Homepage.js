@@ -8,16 +8,18 @@ const Homepage = () => {
   // Fetch recent blog posts and users
   useEffect(() => {
     const fetchRecentData = async () => {
+            // const BASE_URL = "http://localhost:3001/api/v1";
+            const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
       try {
         // Fetch recent blog posts
         const blogPostsResponse = await axios.get(
-          "http://localhost:3001/api/v1/blogposts?limit=5"
+          `${BASE_URL}/blogposts?limit=5`
         );
         const blogPostsData = blogPostsResponse.data.data;
         setRecentBlogPosts(blogPostsData);
 
         // Fetch users
-        const usersResponse = await axios.get("http://localhost:3001/api/v1/users");
+        const usersResponse = await axios.get(`${BASE_URL}/users`);
         const usersData = usersResponse.data.data;
         setUsers(usersData);
       } catch (error) {

@@ -3,7 +3,9 @@ import axios from "axios";
 import "../styling/AdminPage.css";
 
 const AdminPage = () => {
-  const BASE_URL = "http://localhost:3001/api/v1";
+  // const BASE_URL = "http://localhost:3001/api/v1";
+
+  const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
 
   // USE STATES
   const [title, setTitle] = useState("");
@@ -204,22 +206,20 @@ const AdminPage = () => {
   const renderCategoryOptions = () => {
     return (
       <div>
-      <label htmlFor="categories">Categories:</label>
-      {Array.isArray(categories) &&
-        categories.map((category) => (
-          <label key={category.id}>
-            <input
-              type="checkbox"
-              value={category.id}
-              checked={selectedCategories.includes(category.id)}
-              onChange={handleCategoryChange}
-            />
-            {category.name}
-          </label>
-        ))}
-    </div>
-
-    
+        <label htmlFor="categories">Categories:</label>
+        {Array.isArray(categories) &&
+          categories.map((category) => (
+            <label key={category.id}>
+              <input
+                type="checkbox"
+                value={category.id}
+                checked={selectedCategories.includes(category.id)}
+                onChange={handleCategoryChange}
+              />
+              {category.name}
+            </label>
+          ))}
+      </div>
     );
   };
 
@@ -284,25 +284,24 @@ const AdminPage = () => {
 
       <h3>Blog Posts</h3>
 
-{/* Display blog posts if available */}
-{blogPosts.length > 0 ? (
-  blogPosts.map((post) => {
-    // Find the user object based on the userId
-    const user = users.find((user) => user.id === post.userId);
+      {/* Display blog posts if available */}
+      {blogPosts.length > 0 ? (
+        blogPosts.map((post) => {
+          // Find the user object based on the userId
+          const user = users.find((user) => user.id === post.userId);
 
-    return (
-      <div key={post.id}>
-        <h4>{post.title}</h4>
-        <p>{post.content}</p>
-        <p>User: {user ? user.name : 'Unknown'}</p>
-        {/* Display any other blog post information */}
-      </div>
-    );
-  })
-) : (
-  <p>No blog posts available.</p>
-)}
-
+          return (
+            <div key={post.id}>
+              <h4>{post.title}</h4>
+              <p>{post.content}</p>
+              <p>User: {user ? user.name : "Unknown"}</p>
+              {/* Display any other blog post information */}
+            </div>
+          );
+        })
+      ) : (
+        <p>No blog posts available.</p>
+      )}
 
       <h3>Create Blog Post</h3>
       <form onSubmit={handleCreateBlogPost}>

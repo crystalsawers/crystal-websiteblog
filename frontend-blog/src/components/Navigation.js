@@ -57,10 +57,11 @@ const Navigation = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
+      // const BASE_URL = "http://localhost:3001/api/v1";
+      const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
+
       try {
-        const response = await axios.get(
-          "http://localhost:3001/api/v1/categories"
-        );
+        const response = await axios.get(`${BASE_URL}/categories`);
         const responseData = response.data;
 
         if (Array.isArray(responseData.data) && responseData.data.length > 0) {
@@ -78,10 +79,10 @@ const Navigation = () => {
     };
 
     const fetchBlogPosts = async () => {
+      // const BASE_URL = "http://localhost:3001/api/v1";
+      const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
       try {
-        const response = await axios.get(
-          "http://localhost:3001/api/v1/blogposts"
-        );
+        const response = await axios.get(`${BASE_URL}/blogposts`);
         const responseData = response.data;
 
         if (Array.isArray(responseData.data) && responseData.data.length > 0) {
