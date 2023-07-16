@@ -8,8 +8,8 @@ const Homepage = () => {
   // Fetch recent blog posts and users
   useEffect(() => {
     const fetchRecentData = async () => {
-            // const BASE_URL = "http://localhost:3001/api/v1";
-            const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
+            const BASE_URL = "http://localhost:3001/api/v1";
+            // const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
       try {
         // Fetch recent blog posts
         const blogPostsResponse = await axios.get(

@@ -57,8 +57,8 @@ const Navigation = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      // const BASE_URL = "http://localhost:3001/api/v1";
-      const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
+      const BASE_URL = "http://localhost:3001/api/v1";
+      // const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
 
       try {
         const response = await axios.get(`${BASE_URL}/categories`);

@@ -8,9 +8,9 @@ const CategoryPage = ({ category, blogPosts }) => {
   useEffect(() => {
     const fetchCommentsAndUsers = async () => {
 
-      // const BASE_URL = "http://localhost:3001/api/v1";
-      const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
-      
+      const BASE_URL = "http://localhost:3001/api/v1";
+      // const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
+
       try {
         const blogPostIds = blogPosts.map((post) => post.id);
         const commentsResponse = await axios.get(

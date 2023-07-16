@@ -4,8 +4,8 @@ import axios from "axios";
 
 const UserProfile = ({ isLoggedIn }) => {
 
-  const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
-  // const BASE_URL = "http://localhost:3001/api/v1";
+  // const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
+  const BASE_URL = "http://localhost:3001/api/v1";
 
   const handleCreateProfile = async () => {
     const bio = "Sample bio"; // Example: Retrieve the bio from user input or form field

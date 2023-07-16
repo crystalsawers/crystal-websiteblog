@@ -15,8 +15,8 @@ const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get("token")); // Track login status
   const [isAdmin, setIsAdmin] = useState(false); // Track admin status
 
-  // const BASE_URL = "http://localhost:3001/api/v1/auth";
-  const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1/auth";
+  const BASE_URL = "http://localhost:3001/api/v1/auth";
+  // const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1/auth";
 
 
   const handleSubmit = async (e) => {

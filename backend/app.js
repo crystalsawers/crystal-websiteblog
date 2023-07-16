@@ -5,6 +5,14 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import compression from "compression";
 
+import users from "./routes/users.js";
+import auth from "./routes/auth.js";
+import authRoute from "./middleware/authRoute.js";
+import profiles from "./routes/profiles.js";
+import comments from "./routes/comments.js";
+import categories from "./routes/categories.js";
+import blogposts from "./routes/blogposts.js";
+
 dotenv.config();
 
 const app = express();

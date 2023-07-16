@@ -3,9 +3,9 @@ import axios from "axios";
 import "../styling/AdminPage.css";
 
 const AdminPage = () => {
-  // const BASE_URL = "http://localhost:3001/api/v1";
+  const BASE_URL = "http://localhost:3001/api/v1";
 
-  const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
+  // const BASE_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1";
 
   // USE STATES
   const [title, setTitle] = useState("");
