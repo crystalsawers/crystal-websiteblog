@@ -19,11 +19,11 @@ const Navbar = () => {
         <Link href="/about" className="text-[var(--navbar-text)] hover:text-white">
           About
         </Link>
-        <Link href="/interests" className="text-[var(--navbar-text)] hover:text-white">
-          Interests
-        </Link>
         <Link href="/journey" className="text-[var(--navbar-text)] hover:text-white">
           Journey
+        </Link>
+        <Link href="/interests" className="text-[var(--navbar-text)] hover:text-white">
+          Interests
         </Link>
         <Link href="/reviews" className="text-[var(--navbar-text)] hover:text-white">
           Reviews
