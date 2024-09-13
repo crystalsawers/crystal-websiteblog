@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs, DocumentData, QuerySnapshot } from 'firebase/firestore';
 import { db } from '../../../lib/firebaseConfig';
 
-// Define the data type based on your API structure
 interface CricketDocument {
+  id: string; 
   type: string;
   title?: string;
   content: string;
@@ -13,33 +13,58 @@ interface CricketDocument {
 
 const Cricket = () => {
   const [data, setData] = useState<CricketDocument[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch documents from 'cricket' collection
         const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, 'cricket'));
-        const items: CricketDocument[] = querySnapshot.docs.map((doc) => doc.data() as CricketDocument);
+
+        // Map documents to CricketDocument type
+        const items: CricketDocument[] = querySnapshot.docs.map((doc) => {
+          // Extract document data and include id separately
+          const data = doc.data() as CricketDocument;
+          return {
+            id: doc.id, // Set ID separately
+            type: data.type,
+            title: data.title,
+            content: data.content,
+            date: data.date
+          };
+        });
+
+        // Set data to state
         setData(items);
       } catch (error) {
-        console.error('Error fetching Cricket data:', error);
+        // Set error message
+        setError('Error fetching Cricket data');
+      } finally {
+        // Set loading to false
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
+  if (loading) return <p>Loading Cricket data...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <main>
       <h1 className="page-title">Cricket</h1>
       {data.length === 0 ? (
-        <p>Loading Cricket data...</p>
+        <p>No Cricket data available</p>
       ) : (
-        data.map((item, index) => (
-          <div key={index} className="card">
+        data.map((item) => (
+          <div key={item.id} className="card">
             {item.title && <h2 className="card-title">{item.title}</h2>}
             <p className="card-text"><strong>Type:</strong> {item.type}</p>
             <p className="card-text">{item.content}</p>
             {item.date && <p className="card-text"><strong>Date:</strong> {item.date}</p>}
+            <a href={`/interests/cricket/${item.id}`} className="card-link">Read more</a>
           </div>
         ))
       )}
