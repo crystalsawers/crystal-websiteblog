@@ -1,8 +1,7 @@
 "use client";
-// Import necessary Firebase functions and types
 import { useEffect, useState } from 'react';
 import { collection, getDocs, DocumentData, QuerySnapshot } from 'firebase/firestore';
-import { db } from '../lib/firebaseConfig'; // Update this path to your Firebase config
+import { db } from '../lib/firebaseConfig';
 
 // Define the data type based on your Firestore structure
 interface AboutMeDocument {
