@@ -36,14 +36,17 @@ async function importData() {
       if (Array.isArray(docsArray)) {
         for (const item of docsArray) {
           try {
-            // Check if the required field exists
-            if (!item.title) {
-              console.warn(`Skipping item without title:`, item);
+            // Ensure required fields exist for unique identification
+            if (!item.introduction || !item.personal_story) {
+              console.warn(`Skipping item without required fields:`, item);
               continue;
             }
 
-            // Create a query to find documents with the same title
-            const existingDocQuery = db.collection(collection).where('title', '==', item.title);
+            // Create a query to find documents with the same combination of fields
+            const existingDocQuery = db.collection(collection)
+              .where('introduction', '==', item.introduction)
+              .where('personal_story', '==', item.personal_story);
+
             const snapshot = await existingDocQuery.get();
 
             if (snapshot.empty) {
@@ -52,10 +55,11 @@ async function importData() {
               console.log(`Added new document to ${collection}:`, item);
             } else {
               // If the document exists, update it
-              snapshot.forEach(async (doc) => {
+              const updatePromises = snapshot.docs.map(async (doc) => {
                 await db.collection(collection).doc(doc.id).set(item, { merge: true });
                 console.log(`Updated document in ${collection}:`, item);
               });
+              await Promise.all(updatePromises);
             }
           } catch (error) {
             console.error(`Error processing document for ${collection}:`, error);

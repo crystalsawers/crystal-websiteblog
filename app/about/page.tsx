@@ -11,7 +11,7 @@ interface AboutMeDocument {
   contact_info: {
     email: string;
     linkedin: string;
-    twitter: string;
+    github: string;
   };
 }
 
@@ -45,7 +45,7 @@ const About = () => {
           <h2 className="card-header">Contact Info</h2>
           <p className="card-text"><span className="font-semibold normal-text">Email:</span> {item.contact_info.email}</p>
           <p className="card-text"><span className="font-semibold normal-text">LinkedIn:</span> <a href={item.contact_info.linkedin} target="_blank" rel="noopener noreferrer" className="card-link">{item.contact_info.linkedin}</a></p>
-          <p className="card-text"><span className="font-semibold normal-text">Twitter:</span> <a href={item.contact_info.twitter} target="_blank" rel="noopener noreferrer" className="card-link">{item.contact_info.twitter}</a></p>
+          <p className="card-text"><span className="font-semibold normal-text">Github:</span> <a href={item.contact_info.github} target="_blank" rel="noopener noreferrer" className="card-link">{item.contact_info.github}</a></p>
         </div>
       ))}
     </main>
