@@ -2,26 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base theme variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a; 
+  --foreground: #ededed; 
+  --navbar-text: #99ffd3; 
 }
 
+/* Optional: detect user's color preference and adjust */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --navbar-text: #99ffd3; 
   }
 }
 
+/* Base styles */
 body {
-  color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--foreground);
+  @apply text-gray-200 m-8;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+h1, h2 {
+  @apply font-bold text-lg text-gray-100;
+}
+
+main {
+  @apply max-w-5xl my-12 mx-auto px-8;
+}
+
+main > h2 {
+  @apply mb-4 pb-2 text-base text-gray-200;
+}
+
+p > a {
+  @apply underline;
+}
+
+/* Navbar styles */
+nav {
+  @apply pb-4 border-b-2 border-gray-700 flex items-center gap-5 my-10 mx-auto max-w-5xl;
+}
+
+nav a, nav span {
+  color: var(--navbar-text); 
+}
+
+nav a:hover {
+  @apply text-white; 
+}
+
+main nav {
+  @apply border-0;
 }
