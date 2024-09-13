@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs, DocumentData, QuerySnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebaseConfig';
+import { formatDate } from '@/lib/utils/formatDate';
 
 // Define the data type based on your Firestore structure
 interface Milestone {
@@ -64,7 +65,7 @@ const Journey = () => {
           <ul className="card-text list-disc pl-5">
             {data.milestones.map((milestone, index) => (
               <li key={index} className="mb-2">
-                <p><strong>{milestone.date}</strong>: {milestone.description}</p>
+                <p><strong>{formatDate(new Date(milestone.date))}</strong>: {milestone.description}</p>
               </li>
             ))}
           </ul>

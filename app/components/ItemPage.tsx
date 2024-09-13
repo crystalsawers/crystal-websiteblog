@@ -3,6 +3,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore'; 
 import { db } from '../../lib/firebaseConfig'; 
+import { formatDate } from '@/lib/utils/formatDate';
 
 interface DocumentData {
   type: string;
@@ -55,7 +56,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
           {data.title && <h1 className="card-title">{data.title}</h1>}
           <p className="card-text"><strong>Type:</strong> {data.type}</p>
           <p className="card-text">{data.content}</p>
-          {data.date && <p className="card-text"><strong>Date:</strong> {data.date}</p>}
+          {data.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(data.date))}</p>}
         </div>
       ) : (
         <p>Item not found</p>

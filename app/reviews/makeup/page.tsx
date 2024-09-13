@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs, DocumentData, QuerySnapshot } from 'firebase/firestore';
 import { db } from '../../../lib/firebaseConfig';
+import { formatDate } from '@/lib/utils/formatDate';
 
 interface MakeupDocument {
   id: string; 
@@ -63,7 +64,7 @@ const Makeup = () => {
             {item.title && <h2 className="card-title">{item.title}</h2>}
             <p className="card-text"><strong>Type:</strong> {item.type}</p>
             <p className="card-text">{item.content}</p>
-            {item.date && <p className="card-text"><strong>Date:</strong> {item.date}</p>}
+            {item.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(item.date))}</p>}
             <a href={`/reviews/makeup/${item.id}`} className="card-link">Read more</a>
           </div>
         ))
