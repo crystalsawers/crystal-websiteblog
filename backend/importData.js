@@ -1,5 +1,3 @@
-// backend/importData.js
-
 import admin from 'firebase-admin';
 import path from 'path';
 import fs from 'fs';
@@ -38,10 +36,29 @@ async function importData() {
       if (Array.isArray(docsArray)) {
         for (const item of docsArray) {
           try {
-            // Add each document to Firestore with auto-generated ID
-            await db.collection(collection).add(item);
+            // Check if the required field exists
+            if (!item.title) {
+              console.warn(`Skipping item without title:`, item);
+              continue;
+            }
+
+            // Create a query to find documents with the same title
+            const existingDocQuery = db.collection(collection).where('title', '==', item.title);
+            const snapshot = await existingDocQuery.get();
+
+            if (snapshot.empty) {
+              // If no document exists, add it
+              await db.collection(collection).add(item);
+              console.log(`Added new document to ${collection}:`, item);
+            } else {
+              // If the document exists, update it
+              snapshot.forEach(async (doc) => {
+                await db.collection(collection).doc(doc.id).set(item, { merge: true });
+                console.log(`Updated document in ${collection}:`, item);
+              });
+            }
           } catch (error) {
-            console.error(`Error adding document to ${collection}:`, error);
+            console.error(`Error processing document for ${collection}:`, error);
           }
         }
       } else {
