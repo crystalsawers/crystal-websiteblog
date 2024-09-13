@@ -42,6 +42,10 @@ p > a {
 }
 
 /* Navbar styles */
+.navbar {
+  @apply pb-4 border-b-2 border-gray-700 flex items-center justify-between my-10 mx-auto max-w-5xl;
+}
+
 nav {
   @apply pb-4 border-b-2 border-gray-700 flex items-center gap-5 my-10 mx-auto max-w-5xl;
 }
@@ -56,6 +60,43 @@ nav a:hover {
 
 main nav {
   @apply border-0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .navbar {
+    @apply flex-col items-start;
+    @apply px-4;
+  }
+
+  .navbar-links {
+    @apply flex-col space-y-2 mt-4;
+  }
+
+  .navbar-logo {
+    @apply mb-4;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    @apply items-center;
+  }
+
+  .navbar-links {
+    @apply flex-col space-y-2 mt-4;
+    @apply w-full;
+  }
+
+  .navbar-links a {
+    @apply text-center;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-links {
+    @apply text-sm space-y-1;
+  }
 }
 
 /* Reusable classes */
@@ -81,4 +122,23 @@ main nav {
 
 .page-title {
   @apply text-2xl font-bold mb-6 text-gray-100;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .card-link {
+    @apply text-base; 
+  }
+}
+
+@media (max-width: 768px) {
+  .card-link {
+    @apply text-sm; 
+  }
+}
+
+@media (max-width: 480px) {
+  .card-link {
+    @apply text-xs;
+  }
 }
