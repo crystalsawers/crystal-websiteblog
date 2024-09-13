@@ -36,18 +36,23 @@ const LifestyleReviews = () => {
   }
 
   return (
-    <div>
-      <h1>Lifestyle Reviews</h1>
-      {reviews.map((review, index) => (
-        <div key={index}>
-          <h2>{review.title}</h2>
-          <p><strong>Type:</strong> {review.type}</p>
-          <p>{review.content}</p>
-          <p><strong>Date:</strong> {new Date(review.date).toLocaleDateString()}</p>
-        </div>
-      ))}
-    </div>
+    <main>
+      <h1 className="page-title">Lifestyle Reviews</h1>
+      {reviews.length === 0 ? (
+        <p>Loading Lifestyle reviews...</p>
+      ) : (
+        reviews.map((review, index) => (
+          <div key={index} className="card">
+            {review.title && <h2 className="card-title">{review.title}</h2>}
+            <p className="card-text"><strong>Type:</strong> {review.type}</p>
+            <p className="card-text">{review.content}</p>
+            {review.date && <p className="card-text"><strong>Date:</strong> {new Date(review.date).toLocaleDateString()}</p>}
+          </div>
+        ))
+      )}
+    </main>
   );
+  
 };
 
 export default LifestyleReviews;
