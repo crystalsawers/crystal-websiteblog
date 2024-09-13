@@ -17,9 +17,6 @@ const Navbar = () => {
         <Link href="/" className="text-[var(--navbar-text)] hover:text-white">
           Dashboard
         </Link>
-        <Link href="/tickets" className="text-[var(--navbar-text)] hover:text-white">
-          Tickets
-        </Link>
         <Link href="/about" className="text-[var(--navbar-text)] hover:text-white">
           About
         </Link>
