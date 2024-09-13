@@ -4,19 +4,21 @@ import Link from 'next/link';
 const Reviews = () => {
   return (
     <main>
-      <h1>Reviews</h1>
-      <ul>
-        <li>
-          <Link href="/reviews/makeup" className="text-blue-500 hover:underline">
-            Makeup
-          </Link>
-        </li>
-        <li>
-          <Link href="/reviews/lifestyle" className="text-blue-500 hover:underline">
-            Lifestyle
-          </Link>
-        </li>
-      </ul>
+      <div className="card">
+        <h1 className="card-title">Reviews</h1>
+        <ul className="list-disc pl-5">
+          <li className="mb-2">
+            <Link href="/reviews/makeup" className="card-link">
+              Makeup
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link href="/reviews/lifestyle" className="card-link">
+              Lifestyle
+            </Link>
+          </li>
+        </ul>
+      </div>
     </main>
   );
 };

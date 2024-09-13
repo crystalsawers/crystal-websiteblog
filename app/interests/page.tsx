@@ -4,24 +4,26 @@ import Link from 'next/link';
 const Interests = () => {
   return (
     <main>
-      <h1>Interests</h1>
-      <ul>
-        <li>
-          <Link href="/interests/formula1" className="text-blue-500 hover:underline">
-            Formula 1
-          </Link>
-        </li>
-        <li>
-          <Link href="/interests/cricket" className="text-blue-500 hover:underline">
-            Cricket
-          </Link>
-        </li>
-        <li>
-          <Link href="/interests/music" className="text-blue-500 hover:underline">
-            Music
-          </Link>
-        </li>
-      </ul>
+      <div className="card">
+        <h1 className="card-title">Interests</h1>
+        <ul className="list-disc pl-5">
+          <li className="mb-2">
+            <Link href="/interests/formula1" className="card-link">
+              Formula 1
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link href="/interests/cricket" className="card-link">
+              Cricket
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link href="/interests/music" className="card-link">
+              Music
+            </Link>
+          </li>
+        </ul>
+      </div>
     </main>
   );
 };

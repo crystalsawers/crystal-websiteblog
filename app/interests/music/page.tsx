@@ -30,21 +30,22 @@ const Music = () => {
 
   return (
     <main>
-      <h1>Music</h1>
+      <h1 className="page-title">Music</h1>
       {data.length === 0 ? (
         <p>Loading Music data...</p>
       ) : (
         data.map((item, index) => (
-          <div key={index}>
-            {item.title && <h2>{item.title}</h2>}
-            <p><strong>Type:</strong> {item.type}</p>
-            <p>{item.content}</p>
-            {item.date && <p><strong>Date:</strong> {item.date}</p>}
+          <div key={index} className="card">
+            {item.title && <h2 className="card-title">{item.title}</h2>}
+            <p className="card-text"><strong>Type:</strong> {item.type}</p>
+            <p className="card-text">{item.content}</p>
+            {item.date && <p className="card-text"><strong>Date:</strong> {item.date}</p>}
           </div>
         ))
       )}
     </main>
   );
+  
 };
 
 export default Music;

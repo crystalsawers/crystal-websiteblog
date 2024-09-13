@@ -51,52 +51,56 @@ const Journey = () => {
 
   return (
     <main>
-      <h1>My Journey</h1>
-      <section>
-        <h2>Start of My Journey</h2>
-        <p>{data.start_of_journey}</p>
-      </section>
-
-      <section>
-        <h2>Milestones</h2>
-        <ul>
-          {data.milestones.map((milestone, index) => (
-            <li key={index}>
-              <p><strong>{milestone.date}</strong>: {milestone.description}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section>
-        <h2>Challenges and Solutions</h2>
-        <ul>
-          {data.challenges.map((challenge, index) => (
-            <li key={index}>
-              <p><strong>Challenge:</strong> {challenge.description}</p>
-              <p><strong>Solution:</strong> {challenge.solution}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section>
-        <h2>Skills Developed</h2>
-        <ul>
-          {data.skills.map((skill, index) => (
-            <li key={index}>
-              <p><strong>{skill.name}:</strong> {skill.details}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section>
-        <h2>Future Aspirations</h2>
-        <p>{data.future_aspirations}</p>
-      </section>
+      <div className="card">
+        <h1 className="card-title">My Journey</h1>
+        
+        <section>
+          <h2 className="card-header">Start of My Journey</h2>
+          <p className="card-text">{data.start_of_journey}</p>
+        </section>
+  
+        <section>
+          <h2 className="card-header">Milestones</h2>
+          <ul className="card-text list-disc pl-5">
+            {data.milestones.map((milestone, index) => (
+              <li key={index} className="mb-2">
+                <p><strong>{milestone.date}</strong>: {milestone.description}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+  
+        <section>
+          <h2 className="card-header">Challenges and Solutions</h2>
+          <ul className="card-text list-disc pl-5">
+            {data.challenges.map((challenge, index) => (
+              <li key={index} className="mb-2">
+                <p><strong>Challenge:</strong> {challenge.description}</p>
+                <p><strong>Solution:</strong> {challenge.solution}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+  
+        <section>
+          <h2 className="card-header">Skills Developed</h2>
+          <ul className="card-text list-disc pl-5">
+            {data.skills.map((skill, index) => (
+              <li key={index} className="mb-2">
+                <p><strong>{skill.name}:</strong> {skill.details}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+  
+        <section>
+          <h2 className="card-header">Future Aspirations</h2>
+          <p className="card-text">{data.future_aspirations}</p>
+        </section>
+      </div>
     </main>
   );
+  
 };
 
 export default Journey;
