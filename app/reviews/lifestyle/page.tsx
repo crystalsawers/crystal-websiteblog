@@ -19,7 +19,7 @@ const LifestyleReviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, 'reviews/lifestyle'));
+        const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, 'lifestyle'));
         const reviewsData: LifestyleReview[] = querySnapshot.docs.map(doc => doc.data() as LifestyleReview);
         setReviews(reviewsData);
       } catch (error) {

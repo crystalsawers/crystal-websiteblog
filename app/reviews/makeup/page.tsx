@@ -19,7 +19,7 @@ const MakeupReviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, 'reviews/makeup'));
+        const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, 'makeup'));
         const reviewsData: MakeupReview[] = querySnapshot.docs.map(doc => doc.data() as MakeupReview);
         setReviews(reviewsData);
       } catch (error) {
