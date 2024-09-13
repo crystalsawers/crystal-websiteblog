@@ -1,0 +1,4 @@
+# Install Firebase CLI globally
+npm install -g firebase-admin 
+node backend/importData.js
+

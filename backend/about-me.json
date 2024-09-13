@@ -1,0 +1,13 @@
+{
+  "about-me": [
+    {
+      "introduction": "Hello! I'm Crystal, a passionate IT professional based in New Zealand.",
+      "personal_story": "I embarked on my IT journey when I first discovered my interest in technology during high school. My curiosity and enthusiasm led me to pursue a degree in IT, where I’ve had the opportunity to explore various facets of the industry.",
+      "contact_info": {
+        "email": "youremail@example.com",
+        "linkedin": "https://www.linkedin.com/in/yourprofile",
+        "twitter": "https://twitter.com/yourprofile"
+      }
+    }
+  ]
+}
