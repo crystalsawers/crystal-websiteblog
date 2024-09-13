@@ -3,57 +3,73 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs, DocumentData, QuerySnapshot } from 'firebase/firestore';
 import { db } from '../../../lib/firebaseConfig';
 
-// Define the data type based on your Firestore structure
-interface MakeupReview {
+interface MakeupDocument {
+  id: string; 
   type: string;
-  title: string;
+  title?: string;
   content: string;
-  date: string;
+  date?: string;
 }
 
-const MakeupReviews = () => {
-  const [reviews, setReviews] = useState<MakeupReview[]>([]);
+const Makeup = () => {
+  const [data, setData] = useState<MakeupDocument[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch data from Firestore
   useEffect(() => {
-    const fetchReviews = async () => {
+    const fetchData = async () => {
       try {
+        // Fetch documents from 'makeup' collection
         const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, 'makeup'));
-        const reviewsData: MakeupReview[] = querySnapshot.docs.map(doc => doc.data() as MakeupReview);
-        setReviews(reviewsData);
+
+        // Map documents to MakeupDocument type
+        const items: MakeupDocument[] = querySnapshot.docs.map((doc) => {
+          // Extract document data and include id separately
+          const data = doc.data() as MakeupDocument;
+          return {
+            id: doc.id, // Set ID separately
+            type: data.type,
+            title: data.title,
+            content: data.content,
+            date: data.date
+          };
+        });
+
+        // Set data to state
+        setData(items);
       } catch (error) {
-        console.error('Error fetching makeup reviews:', error);
-        setError('Failed to fetch reviews');
+        // Set error message
+        setError('Error fetching Makeup data');
+      } finally {
+        // Set loading to false
+        setLoading(false);
       }
     };
 
-    fetchReviews();
+    fetchData();
   }, []);
 
-  if (error) {
-    return <p>{error}</p>;
-  }
+  if (loading) return <p>Loading Makeup data...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <main>
-      <h1 className="page-title">Makeup Reviews</h1>
-      {reviews.length === 0 ? (
-        <p>Loading Makeup reviews...</p>
+      <h1 className="page-title">Makeup</h1>
+      {data.length === 0 ? (
+        <p>No Makeup data available</p>
       ) : (
-        reviews.map((review, index) => (
-          <div key={index} className="card">
-            {review.title && <h2 className="card-title">{review.title}</h2>}
-            <p className="card-text"><strong>Type:</strong> {review.type}</p>
-            <p className="card-text">{review.content}</p>
-            {review.date && <p className="card-text"><strong>Date:</strong> {new Date(review.date).toLocaleDateString()}</p>}
+        data.map((item) => (
+          <div key={item.id} className="card">
+            {item.title && <h2 className="card-title">{item.title}</h2>}
+            <p className="card-text"><strong>Type:</strong> {item.type}</p>
+            <p className="card-text">{item.content}</p>
+            {item.date && <p className="card-text"><strong>Date:</strong> {item.date}</p>}
+            <a href={`/reviews/makeup/${item.id}`} className="card-link">Read more</a>
           </div>
         ))
       )}
     </main>
   );
-  
-  
 };
 
-export default MakeupReviews;
+export default Makeup;
