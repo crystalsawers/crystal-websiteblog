@@ -87,6 +87,12 @@ const Music = () => {
   const handleDelete = async (id: string) => {
     if (!isAuthenticated) return;
 
+    const confirmDelete = window.confirm("Are you sure you want to delete this post?");
+    
+    if (!confirmDelete) {
+      return; 
+    }
+
     try {
       const docRef = doc(db, 'music', id);
       await deleteDoc(docRef);
