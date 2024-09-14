@@ -103,7 +103,7 @@ const Journey = () => {
         </section>
 
         {/* Show edit button only if authenticated */}
-        {isAuthenticated && <button className="bg-red-500 mt-4">Edit</button>}
+        {isAuthenticated && <button className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Edit</button>}
       </div>
     </main>
   );

@@ -50,7 +50,7 @@ const About = () => {
           <p className="card-text"><span className="font-semibold normal-text">LinkedIn:</span> <a href={item.contact_info.linkedin} target="_blank" rel="noopener noreferrer" className="card-link">{item.contact_info.linkedin}</a></p>
           <p className="card-text"><span className="font-semibold normal-text">Github:</span> <a href={item.contact_info.github} target="_blank" rel="noopener noreferrer" className="card-link">{item.contact_info.github}</a></p>
           {/* Show edit button only if authenticated */}
-          {isAuthenticated && <button className="bg-red-500 mt-4">Edit</button>}
+          {isAuthenticated && <button className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Edit</button>}
         </div>
       ))}
     </main>
