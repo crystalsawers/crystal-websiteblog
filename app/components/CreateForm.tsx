@@ -18,7 +18,6 @@ const CreateForm = ({ category }: CreateFormProps) => {
     e.preventDefault();
 
     try {
-      console.log('Submitting data to category:', category);
       await addDoc(collection(db, category), {
         title,
         content,
@@ -34,23 +33,49 @@ const CreateForm = ({ category }: CreateFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Create {category} Post</h1>
-      {error && <p className="error">{error}</p>}
-      <label>
-        Title:
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-      </label>
-      <label>
-        Content:
-        <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
-      </label>
-      <label>
-        Date:
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-      </label>
-      <button type="submit">Create Post</button>
-    </form>
+    <div className="create-form-container">
+      <form onSubmit={handleSubmit} className="create-form">
+        <h1 className="create-form-title">Create {category} Post</h1>
+        {error && <p className="create-form-error">{error}</p>}
+        <div className="mb-4">
+          <label htmlFor="title" className="create-form-label">Title:</label>
+          <input
+            id="title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            className="create-form-input"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="content" className="create-form-label">Content:</label>
+          <textarea
+            id="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+            className="create-form-textarea"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="date" className="create-form-label">Date:</label>
+          <input
+            id="date"
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="create-form-input"
+          />
+        </div>
+        <button
+          type="submit"
+          className="create-form-button"
+        >
+          Create Post
+        </button>
+      </form>
+    </div>
   );
 };
 

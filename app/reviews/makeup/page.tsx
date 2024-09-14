@@ -6,6 +6,7 @@ import { db } from '../../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
 import { useRouter } from 'next/navigation';
+import CreateForm from '../../components/CreateForm'; // Import the CreateForm component
 
 interface MakeupDocument {
   id: string; 
@@ -19,6 +20,7 @@ const Makeup = () => {
   const [data, setData] = useState<MakeupDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isCreating, setIsCreating] = useState(false); // State to toggle form visibility
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
@@ -56,13 +58,18 @@ const Makeup = () => {
   }, []);
 
   const handleCreate = () => {
-    // Redirect to create page or open modal for creating new entry
-    router.push('/reviews/makeup/create'); // Adjust the route as needed
+    // Toggle form visibility
+    setIsCreating(true);
   };
 
   const handleBack = () => {
     // Go back to the previous page
     router.back();
+  };
+
+  const handleCloseForm = () => {
+    // Hide form
+    setIsCreating(false);
   };
 
   if (loading) return <p>Loading Makeup data...</p>;
@@ -78,7 +85,7 @@ const Makeup = () => {
         >
           Back
         </button>
-        {isAuthenticated && (
+        {isAuthenticated && !isCreating && (
           <button 
             onClick={handleCreate}
             className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
@@ -87,6 +94,17 @@ const Makeup = () => {
           </button>
         )}
       </div>
+      {isCreating && (
+        <div>
+          <CreateForm category="makeup" />
+          <button 
+            onClick={handleCloseForm}
+            className="create-form-close-button"
+          >
+            Close Form
+          </button>
+        </div>
+      )}
       {data.length === 0 ? (
         <p>No Makeup data available</p>
       ) : (
