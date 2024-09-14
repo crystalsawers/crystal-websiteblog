@@ -1,15 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs, DocumentData, QuerySnapshot } from 'firebase/firestore';
+import { collection, getDocs, DocumentData, QuerySnapshot, doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
 import { useRouter } from 'next/navigation';
-import CreateForm from '../../components/CreateForm'; // Import the CreateForm component
+import CreateForm from '../../components/CreateForm';
+import EditForm from '../../components/EditForm';
 
 interface MakeupDocument {
-  id: string; 
+  id: string;
   type: string;
   title?: string;
   content: string;
@@ -20,36 +21,29 @@ const Makeup = () => {
   const [data, setData] = useState<MakeupDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isCreating, setIsCreating] = useState(false); // State to toggle form visibility
+  const [isCreating, setIsCreating] = useState(false);
+  const [editingPost, setEditingPost] = useState<MakeupDocument | null>(null);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch documents from 'makeup' collection
         const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, 'makeup'));
-
-        // Map documents to MakeupDocument type
         const items: MakeupDocument[] = querySnapshot.docs.map((doc) => {
-          // Extract document data and include id separately
           const data = doc.data() as MakeupDocument;
           return {
-            id: doc.id, // Set ID separately
+            id: doc.id,
             type: data.type,
             title: data.title,
             content: data.content,
             date: data.date
           };
         });
-
-        // Set data to state
         setData(items);
       } catch (error) {
-        // Set error message
         setError('Error fetching Makeup data');
       } finally {
-        // Set loading to false
         setLoading(false);
       }
     };
@@ -58,18 +52,47 @@ const Makeup = () => {
   }, []);
 
   const handleCreate = () => {
-    // Toggle form visibility
     setIsCreating(true);
   };
 
   const handleBack = () => {
-    // Go back to the previous page
     router.back();
   };
 
   const handleCloseForm = () => {
-    // Hide form
     setIsCreating(false);
+    setEditingPost(null);
+  };
+
+  const handleEdit = async (id: string) => {
+    if (!isAuthenticated) return;
+
+    try {
+      const docRef = doc(db, 'makeup', id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setEditingPost({
+          id: docSnap.id,
+          ...docSnap.data() as Omit<MakeupDocument, 'id'>
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching document for editing:', error);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!isAuthenticated) return;
+
+    try {
+      const docRef = doc(db, 'makeup', id);
+      await deleteDoc(docRef);
+      setData(data.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error('Error deleting document:', error);
+      setError('Failed to delete post.');
+    }
   };
 
   if (loading) return <p>Loading Makeup data...</p>;
@@ -105,6 +128,15 @@ const Makeup = () => {
           </button>
         </div>
       )}
+      {editingPost && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+          <EditForm 
+            postId={editingPost.id}
+            initialData={editingPost}
+            onClose={handleCloseForm}
+          />
+        </div>
+      )}
       {data.length === 0 ? (
         <p>No Makeup data available</p>
       ) : (
@@ -116,8 +148,18 @@ const Makeup = () => {
             <a href={`/reviews/makeup/${item.id}`} className="card-link">Read more</a>
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">
-                <button className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Edit</button>
-                <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600">Delete</button>
+                <button 
+                  onClick={() => handleEdit(item.id)} 
+                  className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+                >
+                  Edit
+                </button>
+                <button 
+                  onClick={() => handleDelete(item.id)} 
+                  className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
+                >
+                  Delete
+                </button>
               </div>
             )}
           </div>

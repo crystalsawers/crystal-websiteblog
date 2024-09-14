@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs, DocumentData, QuerySnapshot } from 'firebase/firestore';
+import { collection, getDocs, DocumentData, QuerySnapshot, doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
 import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
+import EditForm from '../../components/EditForm'; // Import EditForm component
 
 interface LifestyleDocument {
   id: string; 
@@ -20,36 +21,29 @@ const Lifestyle = () => {
   const [data, setData] = useState<LifestyleDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isCreating, setIsCreating] = useState(false); // State to toggle form visibility
+  const [isCreating, setIsCreating] = useState(false);
+  const [editingPost, setEditingPost] = useState<LifestyleDocument | null>(null); // State for editing post
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch documents from 'lifestyle' collection
         const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, 'lifestyle'));
-
-        // Map documents to LifestyleDocument type
         const items: LifestyleDocument[] = querySnapshot.docs.map((doc) => {
-          // Extract document data and include id separately
           const data = doc.data() as LifestyleDocument;
           return {
-            id: doc.id, // Set ID separately
+            id: doc.id,
             type: data.type,
             title: data.title,
             content: data.content,
             date: data.date
           };
         });
-
-        // Set data to state
         setData(items);
       } catch (error) {
-        // Set error message
         setError('Error fetching Lifestyle data');
       } finally {
-        // Set loading to false
         setLoading(false);
       }
     };
@@ -58,18 +52,49 @@ const Lifestyle = () => {
   }, []);
 
   const handleCreate = () => {
-    // Toggle form visibility
     setIsCreating(true);
   };
 
   const handleBack = () => {
-    // Go back to the previous page
     router.back();
   };
 
   const handleCloseForm = () => {
-    // Hide form
     setIsCreating(false);
+    setEditingPost(null); // Reset the editing state when the form is closed
+  };
+
+  // Handle editing functionality
+  const handleEdit = async (id: string) => {
+    if (!isAuthenticated) return;
+
+    try {
+      const docRef = doc(db, 'lifestyle', id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setEditingPost({
+          id: docSnap.id,
+          ...docSnap.data() as Omit<LifestyleDocument, 'id'>
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching document for editing:', error);
+    }
+  };
+
+  // Handle delete functionality
+  const handleDelete = async (id: string) => {
+    if (!isAuthenticated) return;
+
+    try {
+      const docRef = doc(db, 'lifestyle', id);
+      await deleteDoc(docRef);
+      setData(data.filter((item) => item.id !== id)); // Update data state after deletion
+    } catch (error) {
+      console.error('Error deleting document:', error);
+      setError('Failed to delete post.');
+    }
   };
 
   if (loading) return <p>Loading Lifestyle data...</p>;
@@ -105,6 +130,15 @@ const Lifestyle = () => {
           </button>
         </div>
       )}
+      {editingPost && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+          <EditForm 
+            postId={editingPost.id}
+            initialData={editingPost}
+            onClose={handleCloseForm}
+          />
+        </div>
+      )}
       {data.length === 0 ? (
         <p>No Lifestyle data available</p>
       ) : (
@@ -116,8 +150,18 @@ const Lifestyle = () => {
             <a href={`/reviews/lifestyle/${item.id}`} className="card-link">Read more</a>
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">
-                <button className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Edit</button>
-                <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600">Delete</button>
+                <button 
+                  onClick={() => handleEdit(item.id)} 
+                  className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+                >
+                  Edit
+                </button>
+                <button 
+                  onClick={() => handleDelete(item.id)} 
+                  className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
+                >
+                  Delete
+                </button>
               </div>
             )}
           </div>
