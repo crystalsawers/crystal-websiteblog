@@ -62,9 +62,9 @@ const Makeup = () => {
         data.map((item) => (
           <div key={item.id} className="card">
             {item.title && <h2 className="card-title">{item.title}</h2>}
-            <p className="card-text"><strong>Type:</strong> {item.type}</p>
-            <p className="card-text">{item.content}</p>
+            {/* <p className="card-text"><strong>Type:</strong> {item.type}</p> */}
             {item.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(item.date))}</p>}
+            <p className="card-text">{item.content}</p>
             <a href={`/reviews/makeup/${item.id}`} className="card-link">Read more</a>
           </div>
         ))
