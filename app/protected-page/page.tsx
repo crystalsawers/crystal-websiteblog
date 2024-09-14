@@ -3,7 +3,7 @@ const ProtectedPage = () => {
     return (
       <div>
         <h1>Protected Page</h1>
-        <p>Only accessible after logging in.</p>
+        <p>If you&#39;re seeing this you&#39;re logged in.</p>
       </div>
     );
   };
