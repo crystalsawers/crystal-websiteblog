@@ -142,3 +142,32 @@ main nav {
     @apply text-xs;
   }
 }
+
+/* Login Page Styles */
+.login-card {
+  @apply bg-emerald-500 shadow-md rounded-lg p-8 mb-6;
+}
+
+.login-card-title {
+  @apply text-3xl font-bold mb-4 text-gray-100;
+}
+
+.login-card-form {
+  @apply flex flex-col;
+}
+
+.login-card-label {
+  @apply mb-2 font-semibold text-gray-500;
+}
+
+.login-card-input {
+  @apply p-3 border border-gray-300 rounded-lg mb-4;
+}
+
+.login-card-button {
+  @apply bg-emerald-700 text-white py-2 rounded-lg hover:bg-blue-700;
+}
+
+.login-card-error {
+  @apply text-red-500 mt-2 text-center;
+}
