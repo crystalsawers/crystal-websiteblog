@@ -1,92 +1,15 @@
 ## Crystal's Blog
 
-### Back-end Development
+Revamp of abandoned 2023 project
 
-- [x] **Setup:**
-  - [x] Install Node.js and npm (Node Package Manager) on your development environment.
-  - [x] Create a new project directory for your backend code.
 
-- [x] **Project Structure:**
-  - [x] Design the folder structure for your backend codebase, including directories for routes, controllers, models, and utilities.
+### Backend and DB with Firebase
 
-  Project api context:
 
-  What ADMIN users can do:
-
-  - POST/UPDATE/DELETE a blog post and category
-  - post images in their blog post (i don't know how to do this with api)
-
-  What regular users can do:
-
-  - Create/update/delete/get comments
-  - Update/delete/create account and profile
-  - Users can only do the above when register and login
-  - Regular users can only view a blog post or category and not edit 
-
-- [x] **Dependencies and Packages:**
-  - [x] Initialize a package.json file using npm init to manage your project's dependencies.
-  - [x] Install Express and other necessary packages like body-parser for parsing requests, and any additional libraries for database integration.
-
-- [x] **Server Configuration:**
-  - [x] Create an Express server file (e.g., app.js) to configure and start your server.
-  - [x] Set up middleware functions such as body-parser, CORS, and static file serving if needed.
-
-- [x] **Routing:**
-  - [x] Define routes for different endpoints, such as /api/posts for blog posts and /api/comments for comments.
-  - [x] Map these routes to corresponding controller functions to handle requests and responses.
-
-- [x] **Controllers:**
-  - [x] Create controller functions to handle the business logic for different routes.
-  - [x] Implement functions for creating, reading, updating, and deleting blog posts and comments.
-  - [x] Integrate any necessary validation or data manipulation.
-
-- [x] **Database Integration:**
-  - [x] Select PostgreSQL as the database management system.
-  - [x] Install Prisma using npm by running the appropriate command.
-  - [x] Set up the Prisma Client to enable communication between your Node.js application and the PostgreSQL database.
-  - [x] Deploy the database using AWS and the env setup (other option was render)
-
-- [ ] **User Authentication and Authorization:**
-  - [ ] Implement user authentication functionality using libraries like Passport.js or JSON Web Tokens (JWT).
-  - [ ] Set up routes and controller functions for user registration, login, and handling authentication requests.
-  - [ ] Implement authorization logic to restrict access to certain routes or actions.
-
-- [ ] **Error Handling:**
-  - [x] Develop a centralized error handling mechanism to handle exceptions and errors.
-  - [ ] Implement custom error handling middleware to provide appropriate error responses.
      
 
-### Front-end Development
+### Frontend with Next.js
 
-- [x] **Set up React Project:**
-  - [x] Initialize a new React project using create-react-app or preferred setup tool.
-
-- [ ] **Component Structure:**
-  - [ ] Plan component structure for the blog, including header, footer, blog post listing, single blog post, and comment section.
-
-- [ ] **UI Design and Styling:**
-  - [ ] Create appealing UI designs with CSS frameworks or custom styles. Ensure responsiveness for different devices.
-
-- [ ] **State Management:**
-  - [ ] Choose a state management solution like Redux, MobX, or React Context API for efficient data flow.
-
-- [ ] **Fetching Data:**
-  - [ ] Use libraries like axios or fetch API to retrieve blog posts and relevant data from the back-end.
-
-- [ ] **Routing:**
-  - [ ] Implement React Router for handling navigation between different blog pages.
-
-- [ ] **Interactivity and User Experience:**
-  - [ ] Enhance user experience with interactive elements and smooth transitions.
-
-- [ ] **Accessibility:**
-  - [ ] Ensure your React components are accessible by following best practices.
-
-- [ ] **Testing:**
-  - [ ] Write unit tests using Jest and React Testing Library or Enzyme for component testing.
-
-- [ ] **Performance Optimization:**
-  - [ ] Optimize performance with lazy loading, code splitting, and memoization.
 
 
 ### Deployment
@@ -125,7 +48,7 @@
 - [ ] **Implement access controls and role-based permissions:**
   - [ ] Set up access controls and permissions to protect sensitive functionality based on user roles.
 
-### Testing
+### Testing ?
 
 - [ ] **Plan and execute unit tests:**
   - [ ] Write unit tests for individual components to ensure their functionality and behavior.
