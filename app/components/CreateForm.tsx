@@ -33,7 +33,7 @@ const CreateForm = ({ category }: CreateFormProps) => {
   };
 
   return (
-    <div className="create-form-container">
+    <div>
       <form onSubmit={handleSubmit} className="create-form">
         <h1 className="create-form-title">Create {category} Post</h1>
         {error && <p className="create-form-error">{error}</p>}

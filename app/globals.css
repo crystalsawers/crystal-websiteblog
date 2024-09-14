@@ -172,18 +172,14 @@ main nav {
   @apply text-red-500 mt-2 text-center;
 }
 
+
 /* CreateForm styles */
-
-.create-form-container {
-  @apply flex justify-center items-center p-6 rounded-lg shadow-md;
-}
-
 .create-form {
-  @apply w-full max-w-md bg-emerald-500 p-8 rounded-lg shadow-lg;
+  @apply w-full max-w-3xl bg-emerald-500 p-10 rounded-lg;
 }
 
 .create-form-title {
-  @apply text-2xl font-bold mb-4 text-center;
+  @apply text-2xl font-bold mb-4 text-center; 
 }
 
 .create-form-error {
@@ -191,16 +187,17 @@ main nav {
 }
 
 .create-form-label {
-  @apply block text-sm font-medium text-gray-200;
+  @apply block text-sm font-medium text-gray-200 mb-2; 
 }
 
 .create-form-input, .create-form-textarea {
-  @apply mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black;
+  @apply mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black; /* Increased padding for larger input boxes */
+}
+
+.create-form-textarea {
+  @apply h-32; /* Set a fixed height for textarea */
 }
 
 .create-form-button {
-  @apply w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
-}
-.create-form-close-button {
-  @apply mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600;
+  @apply w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
 }
