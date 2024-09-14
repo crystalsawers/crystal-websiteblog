@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Logo from './cs-high-resolution-logo-transparent.png'; // personal logo from logo.com
+import LogoutButton from './LogoutButton';
 
 const Navbar = () => {
   return (
@@ -28,6 +29,7 @@ const Navbar = () => {
         <Link href="/reviews" className="text-[var(--navbar-text)] hover:text-white">
           Reviews
         </Link>
+        <LogoutButton />
       </div>
     </nav>
   );

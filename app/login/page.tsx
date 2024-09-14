@@ -1,34 +1,26 @@
-// app/login/page.tsx
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../lib/firebaseConfig';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Fetch credentials from environment variables
-    const expectedUsername = process.env.NEXT_PUBLIC_LOGIN_USERNAME;
-    const expectedPassword = process.env.NEXT_PUBLIC_LOGIN_PASSWORD;
-
-    console.log(`Expected Username: ${expectedUsername}, Expected Password: ${expectedPassword}`);
-    
-    // Validate credentials
-    if (username === expectedUsername && password === expectedPassword) {
-      // Set cookie to indicate user is logged in
-      document.cookie = 'loggedIn=true; path=/';
-
-      // Redirect to protected page
+    try {
+      // Firebase login with email and password
+      await signInWithEmailAndPassword(auth, email, password);
+      // Redirect to protected page upon successful login
       router.push('/protected-page');
-    } else {
-      // Show error message
-      setError('Invalid username or password');
+    } catch (err) {
+      console.error(err);
+      setError('Invalid email or password');
     }
   };
 
@@ -38,11 +30,11 @@ const LoginPage = () => {
         <h1 className="login-card-title">Login</h1>
         <form onSubmit={handleSubmit} className="login-card-form">
           <label className="login-card-label">
-            Username:
+            Email:
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="login-card-input"
             />
           </label>
