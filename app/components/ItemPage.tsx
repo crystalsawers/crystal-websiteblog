@@ -54,9 +54,9 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
       {data ? (
         <div className="card">
           {data.title && <h1 className="card-title">{data.title}</h1>}
-          <p className="card-text"><strong>Type:</strong> {data.type}</p>
-          <p className="card-text">{data.content}</p>
+          {/* <p className="card-text"><strong>Type:</strong> {data.type}</p> */}
           {data.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(data.date))}</p>}
+          <p className="card-text">{data.content}</p>
         </div>
       ) : (
         <p>Item not found</p>

@@ -40,7 +40,7 @@ const Formula1 = () => {
         setData(items);
       } catch (error) {
         // Set error message
-        setError('Error fetching Formula1 data');
+        setError('Error fetching Formula 1 data');
       } finally {
         // Set loading to false
         setLoading(false);
@@ -50,21 +50,21 @@ const Formula1 = () => {
     fetchData();
   }, []);
 
-  if (loading) return <p>Loading Formula1 data...</p>;
+  if (loading) return <p>Loading Formula 1 data...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <main>
-      <h1 className="page-title">Formula1</h1>
+      <h1 className="page-title">Formula 1</h1>
       {data.length === 0 ? (
         <p>No Formula1 data available</p>
       ) : (
         data.map((item) => (
           <div key={item.id} className="card">
             {item.title && <h2 className="card-title">{item.title}</h2>}
-            <p className="card-text"><strong>Type:</strong> {item.type}</p>
-            <p className="card-text">{item.content}</p>
+            {/* <p className="card-text"><strong>Type:</strong> {item.type}</p> */}
             {item.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(item.date))}</p>}
+            <p className="card-text">{item.content}</p>
             <a href={`/interests/formula1/${item.id}`} className="card-link">Read more</a>
           </div>
         ))
