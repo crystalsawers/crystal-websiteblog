@@ -1,8 +1,10 @@
-"use client";
+'use client';
+
 import { useEffect, useState } from 'react';
 import { collection, getDocs, DocumentData, QuerySnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
+import { useAuth } from '../components/AuthContext'; 
 
 // Define the data type based on your Firestore structure
 interface Milestone {
@@ -30,6 +32,7 @@ interface JourneyDocument {
 
 const Journey = () => {
   const [data, setData] = useState<JourneyDocument | null>(null);
+  const { isAuthenticated } = useAuth(); // Use authentication context
 
   // Fetch data from Firestore
   useEffect(() => {
@@ -98,10 +101,12 @@ const Journey = () => {
           <h2 className="card-header">Future Aspirations</h2>
           <p className="card-text">{data.future_aspirations}</p>
         </section>
+
+        {/* Show edit button only if authenticated */}
+        {isAuthenticated && <button className="bg-red-500 mt-4">Edit</button>}
       </div>
     </main>
   );
-  
 };
 
 export default Journey;

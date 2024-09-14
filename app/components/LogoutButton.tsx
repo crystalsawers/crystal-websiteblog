@@ -1,11 +1,13 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { signOut } from 'firebase/auth'; // Import the signOut function from Firebase
-import { auth } from '../../lib/firebaseConfig'; // Import your Firebase auth instance
+import { signOut } from 'firebase/auth'; 
+import { auth } from '../../lib/firebaseConfig'; 
+import { useAuth } from './AuthContext'; 
 
 const LogoutButton = () => {
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -18,6 +20,11 @@ const LogoutButton = () => {
       console.error('Error signing out:', error);
     }
   };
+
+  // Render nothing if the user is not authenticated
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <button onClick={handleLogout} className="logout-button">

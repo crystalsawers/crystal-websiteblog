@@ -1,8 +1,10 @@
-"use client";
+// app/about/page.tsx
+'use client';
+
 import { useEffect, useState } from 'react';
 import { collection, getDocs, DocumentData, QuerySnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebaseConfig';
-
+import { useAuth } from '../components/AuthContext'; 
 
 // Define the data type based on your Firestore structure
 interface AboutMeDocument {
@@ -17,6 +19,7 @@ interface AboutMeDocument {
 
 const About = () => {
   const [data, setData] = useState<AboutMeDocument[]>([]);
+  const { isAuthenticated } = useAuth();
 
   // Fetch data from Firestore
   useEffect(() => {
@@ -46,6 +49,8 @@ const About = () => {
           <p className="card-text"><span className="font-semibold normal-text">Email:</span> {item.contact_info.email}</p>
           <p className="card-text"><span className="font-semibold normal-text">LinkedIn:</span> <a href={item.contact_info.linkedin} target="_blank" rel="noopener noreferrer" className="card-link">{item.contact_info.linkedin}</a></p>
           <p className="card-text"><span className="font-semibold normal-text">Github:</span> <a href={item.contact_info.github} target="_blank" rel="noopener noreferrer" className="card-link">{item.contact_info.github}</a></p>
+          {/* Show edit button only if authenticated */}
+          {isAuthenticated && <button className="bg-red-500 mt-4">Edit</button>}
         </div>
       ))}
     </main>

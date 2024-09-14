@@ -50,7 +50,7 @@ nav {
   @apply pb-4 border-b-2 border-gray-700 flex items-center gap-5 my-10 mx-auto max-w-5xl;
 }
 
-nav a, nav span {
+nav a, nav span, .logout-button {
   color: var(--navbar-text); 
 }
 
