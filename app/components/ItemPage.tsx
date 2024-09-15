@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from 'next/navigation'; 
+import { useParams, useRouter } from 'next/navigation'; 
 import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore'; 
 import { db } from '../../lib/firebaseConfig'; 
@@ -14,6 +14,7 @@ interface DocumentData {
 
 const ItemPage = ({ collectionName }: { collectionName: string }) => {
   const params = useParams();
+  const router = useRouter();
   const id = typeof params.id === 'string' ? params.id : '';
   const [data, setData] = useState<DocumentData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -46,15 +47,27 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
     fetchData();
   }, [id, collectionName]);
 
+  // Handle back button click
+  const handleBack = () => {
+    router.back();
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <main>
+      {/* Back button */}
+      <button
+        onClick={handleBack}
+        className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 mb-4"
+      >
+        Back
+      </button>
+
       {data ? (
         <div className="card">
           {data.title && <h1 className="card-title">{data.title}</h1>}
-          {/* <p className="card-text"><strong>Type:</strong> {data.type}</p> */}
           {data.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(data.date))}</p>}
           <p className="card-text">{data.content}</p>
         </div>
