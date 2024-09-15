@@ -26,6 +26,7 @@ const Cricket = () => {
   const [editingPost, setEditingPost] = useState<CricketDocument | null>(null);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const category = 'cricket';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,7 +133,7 @@ const Cricket = () => {
       </div>
       {isCreating && (
         <div className="create-form-overlay">
-          <CreateForm category="cricket" />
+          <CreateForm category={category} />
           <button 
             onClick={handleCloseForm}
             className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
@@ -144,6 +145,7 @@ const Cricket = () => {
       {editingPost && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
           <EditForm 
+            category={category}
             postId={editingPost.id}
             initialData={editingPost}
             onClose={handleCloseForm}

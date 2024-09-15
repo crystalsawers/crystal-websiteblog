@@ -26,6 +26,7 @@ const Lifestyle = () => {
   const [editingPost, setEditingPost] = useState<LifestyleDocument | null>(null);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const category = 'lifestyle';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -139,7 +140,7 @@ const Lifestyle = () => {
       )}
       {editingPost && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-          <EditForm postId={editingPost.id} initialData={editingPost} onClose={handleCloseForm} />
+          <EditForm category={category} postId={editingPost.id} initialData={editingPost} onClose={handleCloseForm} />
         </div>
       )}
       {data.length === 0 ? (

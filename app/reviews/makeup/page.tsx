@@ -26,6 +26,7 @@ const Makeup = () => {
   const [editingPost, setEditingPost] = useState<MakeupDocument | null>(null);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const category = 'makeup';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -140,6 +141,7 @@ const Makeup = () => {
       {editingPost && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
           <EditForm 
+            category={category}
             postId={editingPost.id}
             initialData={editingPost}
             onClose={handleCloseForm}

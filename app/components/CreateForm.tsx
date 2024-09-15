@@ -30,8 +30,21 @@ const CreateForm = ({ category }: CreateFormProps) => {
         date,
       });
 
-      // Redirect after successful creation
-      router.push(`/interests/${category}`);
+      // Define categories for reviews and interests
+      const reviewCategories = ['makeup', 'lifestyle'];
+      const interestCategories = ['formula1', 'cricket', 'music'];
+
+      // Determine the redirect path based on the category
+      let redirectPath = '';
+      if (reviewCategories.includes(category)) {
+        redirectPath = `/reviews/${category}`;
+      } else if (interestCategories.includes(category)) {
+        redirectPath = `/interests/${category}`;
+      } else {
+        redirectPath = '/'; // probably will end up being a custom 404 went wrong page
+      }
+      router.push(redirectPath);
+      window.location.reload();
     } catch (error) {
       console.error('Error creating document:', error);
       setError('Failed to create document. Please try again.');

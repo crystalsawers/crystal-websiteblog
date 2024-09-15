@@ -26,6 +26,7 @@ const Music = () => {
   const [editingPost, setEditingPost] = useState<MusicDocument | null>(null); 
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const category = 'music';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -144,6 +145,7 @@ const Music = () => {
       {editingPost && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
           <EditForm 
+            category={category} 
             postId={editingPost.id}
             initialData={editingPost}
             onClose={handleCloseForm}

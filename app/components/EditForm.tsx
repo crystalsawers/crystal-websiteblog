@@ -1,11 +1,11 @@
-'use client';
-
 import { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebaseConfig';
 import { useAuth } from '../components/AuthContext';
 
+
 interface EditFormProps {
+  category: string; 
   postId: string;
   initialData: {
     type: string;
@@ -16,19 +16,21 @@ interface EditFormProps {
   onClose: () => void;
 }
 
-const EditForm = ({ postId, initialData, onClose }: EditFormProps) => {
+const EditForm = ({ category, postId, initialData, onClose }: EditFormProps) => {
   const { isAuthenticated } = useAuth();
   const [title, setTitle] = useState(initialData.title || '');
   const [content, setContent] = useState(initialData.content);
   const [error, setError] = useState<string | null>(null);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAuthenticated) return;
 
     try {
-      const docRef = doc(db, 'formula1', postId);
+      const docRef = doc(db, category, postId);
       await updateDoc(docRef, { title, content });
+      window.location.reload();
       onClose();
     } catch (error) {
       console.error('Error updating document:', error);
@@ -71,10 +73,6 @@ const EditForm = ({ postId, initialData, onClose }: EditFormProps) => {
       </form>
     </div>
   );
-  
-  
-  
-  
 };
 
 export default EditForm;
