@@ -1,5 +1,9 @@
 # Crystal's blog, new version
 
+
+1st Deployment as of 15 September 2024: https://crystal-websiteblog.vercel.app/ 
+
+
 Project timeframe: 13 September 2024 - present
 
 This is a solo project I'm doing for my best interests, based on everything I've learnt while studying IT from 2021-2024.
