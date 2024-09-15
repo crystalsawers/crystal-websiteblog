@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { db } from '../lib/firebaseConfig'; 
@@ -61,7 +61,9 @@ const HomePage = () => {
             <div key={post.id} className="card mb-4">
               {post.title && <h2 className="card-title">{post.title}</h2>}
               {post.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(post.date))}</p>}
-              <p className="card-text">{post.content}</p>
+              <p className="card-text">
+                {post.content.length > 150 ? `${post.content.substring(0, 150)}...` : post.content}
+              </p>
               <a href={`/interests/${post.category}/${post.id}`} className="card-link">Read more</a>
             </div>
           ))}
@@ -69,7 +71,6 @@ const HomePage = () => {
       </div>
     </div>
   );
-  
 };
 
 export default HomePage;
