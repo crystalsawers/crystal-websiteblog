@@ -4,20 +4,23 @@
     "date": "2024-09-13",
     "type": "player_spotlights",
     "title": "Spotlight on Player X",
-    "content": "Player X delivered an outstanding performance in the last series, demonstrating remarkable skill and resilience."
+    "content": "Player X delivered an outstanding performance in the last series, demonstrating remarkable skill and resilience.",
+    "_updatedAt": "2024-09-15T03:47:52.453Z"
   },
   {
     "id": "O1r6ogAiwIjNqmdFZgQS",
     "date": "2024-08-20",
     "type": "personal_stories",
     "title": "Playing Cricket with Friends",
-    "content": "Playing casual cricket matches with friends has always been a cherished pastime, providing countless hours of fun and camaraderie."
+    "content": "Playing casual cricket matches with friends has always been a cherished pastime, providing countless hours of fun and camaraderie.",
+    "_updatedAt": "2024-09-15T03:47:52.453Z"
   },
   {
     "id": "WA3IeNJJgio17eg2UAMm",
     "date": "2024-09-12",
     "type": "match_reviews",
     "title": "Review of the Recent Test Match",
-    "content": "The recent Test match showcased exceptional performances from both teams, with a dramatic finish that kept fans on edge."
+    "content": "The recent Test match showcased exceptional performances from both teams, with a dramatic finish that kept fans on edge.",
+    "_updatedAt": "2024-09-15T03:47:52.453Z"
   }
 ]

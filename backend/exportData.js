@@ -31,7 +31,12 @@ async function exportData() {
     console.log(`Processing collection: ${collection.id}`);
     
     const snapshot = await collection.get();
-    const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const docs = snapshot.docs.map(doc => {
+      const data = doc.data();
+      // Add a timestamp to track when the data was last updated
+      data._updatedAt = data._updatedAt || new Date(); // Use the existing _updatedAt or set it to now
+      return { id: doc.id, ...data };
+    });
     
     if (docs.length > 0) {
       // Write collection data to a JSON file in 'recent_data'
