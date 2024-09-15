@@ -68,7 +68,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   
 
   return (
-    <main>
+    <div>
       {/* Back button */}
       <button
         onClick={handleBack}
@@ -88,7 +88,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
       ) : (
         <p>Item not found</p>
       )}
-    </main>
+    </div>
   );
 };
 

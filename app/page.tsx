@@ -53,7 +53,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="p-4">
+    <div>
       <div className="max-w-4xl mx-auto">
         <h2 className="page-title mb-6 text-center">Latest Posts</h2>
         <div>
