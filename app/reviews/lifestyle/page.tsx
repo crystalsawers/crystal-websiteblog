@@ -7,7 +7,8 @@ import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
 import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
-import EditForm from '../../components/EditForm'; // Import EditForm component
+import EditForm from '../../components/EditForm'; 
+import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 
 interface LifestyleDocument {
   id: string; 
@@ -22,7 +23,7 @@ const Lifestyle = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
-  const [editingPost, setEditingPost] = useState<LifestyleDocument | null>(null); // State for editing post
+  const [editingPost, setEditingPost] = useState<LifestyleDocument | null>(null); 
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
@@ -40,7 +41,9 @@ const Lifestyle = () => {
             date: data.date
           };
         });
-        setData(items);
+
+        const sortedItems = sortPostsByDate(items, 'date');
+        setData(sortedItems);
       } catch (error) {
         setError('Error fetching Lifestyle data');
       } finally {
@@ -64,7 +67,6 @@ const Lifestyle = () => {
     setEditingPost(null); // Reset the editing state when the form is closed
   };
 
-  // Handle editing functionality
   const handleEdit = async (id: string) => {
     if (!isAuthenticated) return;
 
@@ -83,7 +85,6 @@ const Lifestyle = () => {
     }
   };
 
-  // Handle delete functionality
   const handleDelete = async (id: string) => {
     if (!isAuthenticated) return;
 
@@ -93,11 +94,10 @@ const Lifestyle = () => {
       return; 
     }
 
-
     try {
       const docRef = doc(db, 'lifestyle', id);
       await deleteDoc(docRef);
-      setData(data.filter((item) => item.id !== id)); // Update data state after deletion
+      setData(data.filter((item) => item.id !== id)); 
     } catch (error) {
       console.error('Error deleting document:', error);
       setError('Failed to delete post.');

@@ -8,6 +8,7 @@ import { useAuth } from '../../components/AuthContext';
 import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
 import EditForm from '../../components/EditForm'; 
+import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 
 interface MusicDocument {
   id: string; 
@@ -40,7 +41,9 @@ const Music = () => {
             date: data.date
           };
         });
-        setData(items);
+
+        const sortedItems = sortPostsByDate(items, 'date');
+        setData(sortedItems);
       } catch (error) {
         setError('Error fetching Music data');
       } finally {
@@ -64,7 +67,6 @@ const Music = () => {
     setEditingPost(null); 
   };
 
-  // Handle editing functionality
   const handleEdit = async (id: string) => {
     if (!isAuthenticated) return;
 
@@ -83,7 +85,6 @@ const Music = () => {
     }
   };
 
-  // Handle delete functionality
   const handleDelete = async (id: string) => {
     if (!isAuthenticated) return;
 

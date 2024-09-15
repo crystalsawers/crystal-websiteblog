@@ -8,6 +8,7 @@ import { useAuth } from '../../components/AuthContext';
 import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
 import EditForm from '../../components/EditForm';
+import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 
 interface MakeupDocument {
   id: string;
@@ -40,7 +41,10 @@ const Makeup = () => {
             date: data.date
           };
         });
-        setData(items);
+
+        // Sort items by date
+        const sortedItems = sortPostsByDate(items, 'date');
+        setData(sortedItems);
       } catch (error) {
         setError('Error fetching Makeup data');
       } finally {
