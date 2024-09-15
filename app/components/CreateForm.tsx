@@ -15,10 +15,13 @@ const CreateForm = ({ category }: CreateFormProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    // Set today's date in YYYY-MM-DD format
-    const today = new Date().toISOString().split('T')[0];
-    setDate(today);
+    // Get today's date in NZ time (Pacific/Auckland) and format as YYYY-MM-DD
+    const today = new Date();
+    const nzDate = today.toLocaleDateString('en-GB', { timeZone: 'Pacific/Auckland' }).split('/').reverse().join('-');
+    setDate(nzDate);
   }, []);
+  
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
