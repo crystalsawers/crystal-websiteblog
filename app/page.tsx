@@ -60,7 +60,7 @@ const HomePage = () => {
           {posts.map((post) => (
             <div key={post.id} className="card mb-4">
               {post.title && <h2 className="card-title">{post.title}</h2>}
-              {post.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(post.date))}</p>}
+              {post.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(post.date))}</p>}
               <p className="card-text">
                 {post.content.length > 150 ? `${post.content.substring(0, 150)}...` : post.content}
               </p>

@@ -80,7 +80,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
       {data ? (
         <div className="card">
           {data.title && <h1 className="card-title">{data.title}</h1>}
-          {data.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(data.date))}</p>}
+          {data.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(data.date))}</p>}
           <div className="card-text">
             {renderContent(data.content)}
           </div>

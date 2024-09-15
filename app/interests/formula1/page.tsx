@@ -157,7 +157,7 @@ const Formula1 = () => {
         data.map((item) => (
           <div key={item.id} className="card">
             {item.title && <h2 className="card-title">{item.title}</h2>}
-            {item.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(item.date))}</p>}
+            {item.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(item.date))}</p>}
             
             {/* Show truncated content */}
             <p className="card-text">

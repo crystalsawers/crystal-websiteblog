@@ -150,7 +150,7 @@ const Lifestyle = () => {
             {item.title && <h2 className="card-title">{item.title}</h2>}
             {item.date && (
               <p className="card-text">
-                <strong>Date:</strong> {formatDate(new Date(item.date))}
+                <strong>Posted:</strong> {formatDate(new Date(item.date))}
               </p>
             )}
             <p className="card-text">
