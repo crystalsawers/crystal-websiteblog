@@ -8,6 +8,7 @@ import { useAuth } from '../../components/AuthContext';
 import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm'; 
 import EditForm from '../../components/EditForm';
+import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 
 interface Formula1Document {
   id: string; 
@@ -40,7 +41,9 @@ const Formula1 = () => {
             date: data.date
           };
         });
-        setData(items);
+
+        const sortedItems = sortPostsByDate(items, 'date');
+        setData(sortedItems);
       } catch (error) {
         setError('Error fetching Formula 1 data');
       } finally {
