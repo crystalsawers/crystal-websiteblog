@@ -1,11 +1,9 @@
-// app/about/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs, DocumentData, QuerySnapshot, doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, DocumentData, QuerySnapshot, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebaseConfig';
 import { useAuth } from '../components/AuthContext';
-import EditForm from '../components/EditForm';
 
 interface AboutMeDocument {
   id: string;
@@ -23,6 +21,7 @@ const About = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingDoc, setEditingDoc] = useState<AboutMeDocument | null>(null);
+  const [formData, setFormData] = useState<{ introduction: string; personal_story: string; contact_info: { email: string; linkedin: string; github: string } } | null>(null);
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
@@ -52,9 +51,12 @@ const About = () => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        setEditingDoc({
-          id: docSnap.id,
-          ...docSnap.data() as Omit<AboutMeDocument, 'id'>
+        const docData = docSnap.data() as Omit<AboutMeDocument, 'id'>;
+        setEditingDoc({ id: docSnap.id, ...docData });
+        setFormData({
+          introduction: docData.introduction,
+          personal_story: docData.personal_story,
+          contact_info: docData.contact_info,
         });
       }
     } catch (error) {
@@ -66,6 +68,34 @@ const About = () => {
     setEditingDoc(null);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData!,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingDoc || !formData) return;
+
+    try {
+      const docRef = doc(db, 'about-me', editingDoc.id);
+      await updateDoc(docRef, {
+        introduction: formData.introduction,
+        personal_story: formData.personal_story,
+        contact_info: formData.contact_info
+      });
+      setEditingDoc(null);
+      setData(prevData => prevData.map(doc =>
+        doc.id === editingDoc.id ? { ...doc, ...formData } : doc
+      ));
+    } catch (error) {
+      console.error('Error updating document:', error);
+    }
+  };
+
   if (loading) return <p>Loading About Me data...</p>;
   if (error) return <p>{error}</p>;
 
@@ -74,16 +104,63 @@ const About = () => {
       <h1 className="page-title">About Me</h1>
       {editingDoc && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-          <EditForm 
-            postId={editingDoc.id}
-            initialData={{
-              type: 'about-me', // Dummy value
-              title: '', // Dummy value
-              content: editingDoc.introduction, // Mapped to content
-              date: '' // Dummy value
-            }}
-            onClose={handleCloseEdit} // Pass only the onClose function
-          />
+          <form onSubmit={handleSubmit} className="create-form">
+            <h2 className="create-form-title">Edit About Me</h2>
+            <label className="create-form-label">
+              Introduction:
+              <textarea
+                name="introduction"
+                value={formData?.introduction || ''}
+                onChange={handleInputChange}
+                className="create-form-textarea"
+              />
+            </label>
+            <label className="create-form-label">
+              Personal Story:
+              <textarea
+                name="personal_story"
+                value={formData?.personal_story || ''}
+                onChange={handleInputChange}
+                className="create-form-textarea"
+              />
+            </label>
+            <label className="create-form-label">
+              Email:
+              <input
+                type="email"
+                name="contact_info.email"
+                value={formData?.contact_info.email || ''}
+                onChange={handleInputChange}
+                className="create-form-input"
+              />
+            </label>
+            <label className="create-form-label">
+              LinkedIn:
+              <input
+                type="text"
+                name="contact_info.linkedin"
+                value={formData?.contact_info.linkedin || ''}
+                onChange={handleInputChange}
+                className="create-form-input"
+              />
+            </label>
+            <label className="create-form-label">
+              GitHub:
+              <input
+                type="text"
+                name="contact_info.github"
+                value={formData?.contact_info.github || ''}
+                onChange={handleInputChange}
+                className="create-form-input"
+              />
+            </label>
+            <div className="mt-4 flex justify-end space-x-2">
+              <button type="submit" className="create-form-button">Save</button>
+              <button type="button" onClick={handleCloseEdit} className="bg-gray-500 text-white py-2 px-4 font-semibold rounded-md shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
       )}
       {data.length === 0 ? (
@@ -114,6 +191,7 @@ const About = () => {
       )}
     </main>
   );
+  
 };
 
 export default About;

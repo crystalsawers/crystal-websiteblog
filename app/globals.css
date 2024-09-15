@@ -192,7 +192,7 @@ main nav {
 }
 
 .create-form-input, .create-form-textarea {
-  @apply mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black; /* Increased padding for larger input boxes */
+  @apply mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black font-medium; 
 }
 
 .create-form-textarea {
