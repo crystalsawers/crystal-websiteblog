@@ -55,6 +55,18 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
+  // Split content into paragraphs based on newline characters
+  const renderContent = (content: string) => {
+    return content
+      .split('\n\n') // Splits based on double newline for paragraphs
+      .map((paragraph, index) => (
+        <p key={index} className="mb-4">
+          {paragraph}
+        </p>
+      ));
+  };
+  
+
   return (
     <main>
       {/* Back button */}
@@ -69,7 +81,9 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
         <div className="card">
           {data.title && <h1 className="card-title">{data.title}</h1>}
           {data.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(data.date))}</p>}
-          <p className="card-text">{data.content}</p>
+          <div className="card-text">
+            {renderContent(data.content)}
+          </div>
         </div>
       ) : (
         <p>Item not found</p>
