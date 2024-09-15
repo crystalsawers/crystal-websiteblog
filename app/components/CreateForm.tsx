@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '@/lib/firebaseConfig';
@@ -13,6 +13,12 @@ const CreateForm = ({ category }: CreateFormProps) => {
   const [date, setDate] = useState('');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    // Set today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
+    setDate(today);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,7 +70,7 @@ const CreateForm = ({ category }: CreateFormProps) => {
             id="date"
             type="date"
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            readOnly
             className="create-form-input"
           />
         </div>
