@@ -121,7 +121,7 @@ main nav {
 }
 
 .page-title {
-  @apply text-2xl font-bold mb-6 text-gray-100;
+  @apply text-2xl font-bold mb-6 text-custom-green;
 }
 
 /* Responsive adjustments */

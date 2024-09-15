@@ -143,7 +143,7 @@ const Lifestyle = () => {
         </div>
       )}
       {data.length === 0 ? (
-        <p>No Lifestyle data available</p>
+        <p>No Lifestyle posts yet</p>
       ) : (
         data.map((item) => (
           <div key={item.id} className="card">

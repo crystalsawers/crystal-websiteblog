@@ -151,7 +151,7 @@ const Music = () => {
         </div>
       )}
       {data.length === 0 ? (
-        <p>No Music data available</p>
+        <p>No Music posts yet</p>
       ) : (
         data.map((item) => (
           <div key={item.id} className="card">

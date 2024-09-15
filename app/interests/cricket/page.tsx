@@ -151,7 +151,7 @@ const Cricket = () => {
         </div>
       )}
       {data.length === 0 ? (
-        <p>No Cricket data available</p>
+        <p>No Cricket posts yet</p>
       ) : (
         data.map((item) => (
           <div key={item.id} className="card">

@@ -147,7 +147,7 @@ const Makeup = () => {
         </div>
       )}
       {data.length === 0 ? (
-        <p>No Makeup data available</p>
+        <p>No Makeup posts yet</p>
       ) : (
         data.map((item) => (
           <div key={item.id} className="card">

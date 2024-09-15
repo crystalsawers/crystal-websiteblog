@@ -152,7 +152,7 @@ const Formula1 = () => {
         </div>
       )}
       {data.length === 0 ? (
-        <p>No Formula 1 data available</p>
+        <p>No Formula 1 posts yet</p>
       ) : (
         data.map((item) => (
           <div key={item.id} className="card">
