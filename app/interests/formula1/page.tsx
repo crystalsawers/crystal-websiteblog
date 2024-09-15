@@ -1,5 +1,4 @@
-'use client';
-
+"use client"
 import { useEffect, useState } from 'react';
 import { collection, getDocs, DocumentData, QuerySnapshot, doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebaseConfig';
@@ -107,6 +106,10 @@ const Formula1 = () => {
   if (loading) return <p>Loading Formula 1 data...</p>;
   if (error) return <p>{error}</p>;
 
+  const truncateContent = (content: string, maxLength: number) => {
+    return content.length > maxLength ? content.slice(0, maxLength) + '...' : content;
+  };
+
   return (
     <main className="relative">
       <h1 className="page-title">Formula 1</h1>
@@ -155,8 +158,14 @@ const Formula1 = () => {
           <div key={item.id} className="card">
             {item.title && <h2 className="card-title">{item.title}</h2>}
             {item.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(item.date))}</p>}
-            <p className="card-text">{item.content}</p>
+            
+            {/* Show truncated content */}
+            <p className="card-text">
+              {truncateContent(item.content, 150)}
+            </p>
+
             <a href={`/interests/formula1/${item.id}`} className="card-link">Read more</a>
+
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">
                 <button 

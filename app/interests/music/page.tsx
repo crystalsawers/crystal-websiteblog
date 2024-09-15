@@ -54,6 +54,10 @@ const Music = () => {
     fetchData();
   }, []);
 
+  const truncateContent = (content: string, maxLength: number) => {
+    return content.length > maxLength ? content.slice(0, maxLength) + '...' : content;
+  };
+
   const handleCreate = () => {
     setIsCreating(true);
   };
@@ -153,7 +157,10 @@ const Music = () => {
           <div key={item.id} className="card">
             {item.title && <h2 className="card-title">{item.title}</h2>}
             {item.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(item.date))}</p>}
-            <p className="card-text">{item.content}</p>
+            
+            {/* Show truncated content */}
+            <p className="card-text">{truncateContent(item.content, 150)}</p>
+
             <a href={`/interests/music/${item.id}`} className="card-link">Read more</a>
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">

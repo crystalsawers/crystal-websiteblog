@@ -104,6 +104,10 @@ const Cricket = () => {
     }
   };
 
+  const truncateContent = (content: string, maxLength: number) => {
+    return content.length > maxLength ? content.slice(0, maxLength) + '...' : content;
+  };
+
   if (loading) return <p>Loading Cricket data...</p>;
   if (error) return <p>{error}</p>;
 
@@ -153,8 +157,14 @@ const Cricket = () => {
           <div key={item.id} className="card">
             {item.title && <h2 className="card-title">{item.title}</h2>}
             {item.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(item.date))}</p>}
-            <p className="card-text">{item.content}</p>
+            
+            {/* Show truncated content */}
+            <p className="card-text">
+              {truncateContent(item.content, 150)}
+            </p>
+
             <a href={`/interests/cricket/${item.id}`} className="card-link">Read more</a>
+
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">
                 <button 
@@ -164,7 +174,7 @@ const Cricket = () => {
                   Edit
                 </button>
                 <button 
-                  onClick={() => handleDelete(item.id)} 
+                  onClick={() => handleDelete(item.id)}
                   className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
                 >
                   Delete

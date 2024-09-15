@@ -42,7 +42,6 @@ const Makeup = () => {
           };
         });
 
-        // Sort items by date
         const sortedItems = sortPostsByDate(items, 'date');
         setData(sortedItems);
       } catch (error) {
@@ -154,7 +153,7 @@ const Makeup = () => {
           <div key={item.id} className="card">
             {item.title && <h2 className="card-title">{item.title}</h2>}
             {item.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(item.date))}</p>}
-            <p className="card-text">{item.content}</p>
+            <p className="card-text">{item.content.length > 150 ? `${item.content.substring(0, 150)}...` : item.content}</p>
             <a href={`/reviews/makeup/${item.id}`} className="card-link">Read more</a>
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">

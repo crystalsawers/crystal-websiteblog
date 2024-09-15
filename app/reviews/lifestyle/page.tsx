@@ -7,11 +7,11 @@ import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
 import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
-import EditForm from '../../components/EditForm'; 
+import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 
 interface LifestyleDocument {
-  id: string; 
+  id: string;
   type: string;
   title?: string;
   content: string;
@@ -23,7 +23,7 @@ const Lifestyle = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
-  const [editingPost, setEditingPost] = useState<LifestyleDocument | null>(null); 
+  const [editingPost, setEditingPost] = useState<LifestyleDocument | null>(null);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
@@ -38,7 +38,7 @@ const Lifestyle = () => {
             type: data.type,
             title: data.title,
             content: data.content,
-            date: data.date
+            date: data.date,
           };
         });
 
@@ -64,7 +64,7 @@ const Lifestyle = () => {
 
   const handleCloseForm = () => {
     setIsCreating(false);
-    setEditingPost(null); // Reset the editing state when the form is closed
+    setEditingPost(null);
   };
 
   const handleEdit = async (id: string) => {
@@ -77,7 +77,7 @@ const Lifestyle = () => {
       if (docSnap.exists()) {
         setEditingPost({
           id: docSnap.id,
-          ...docSnap.data() as Omit<LifestyleDocument, 'id'>
+          ...docSnap.data() as Omit<LifestyleDocument, 'id'>,
         });
       }
     } catch (error) {
@@ -88,16 +88,16 @@ const Lifestyle = () => {
   const handleDelete = async (id: string) => {
     if (!isAuthenticated) return;
 
-    const confirmDelete = window.confirm("Are you sure you want to delete this post?");
-    
+    const confirmDelete = window.confirm('Are you sure you want to delete this post?');
+
     if (!confirmDelete) {
-      return; 
+      return;
     }
 
     try {
       const docRef = doc(db, 'lifestyle', id);
       await deleteDoc(docRef);
-      setData(data.filter((item) => item.id !== id)); 
+      setData(data.filter((item) => item.id !== id));
     } catch (error) {
       console.error('Error deleting document:', error);
       setError('Failed to delete post.');
@@ -111,14 +111,14 @@ const Lifestyle = () => {
     <main>
       <h1 className="page-title">Lifestyle</h1>
       <div className="flex justify-between mb-4">
-        <button 
+        <button
           onClick={handleBack}
           className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
         >
           Back
         </button>
         {isAuthenticated && !isCreating && (
-          <button 
+          <button
             onClick={handleCreate}
             className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
           >
@@ -129,7 +129,7 @@ const Lifestyle = () => {
       {isCreating && (
         <div className="create-form-overlay">
           <CreateForm category="lifestyle" />
-          <button 
+          <button
             onClick={handleCloseForm}
             className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
           >
@@ -139,11 +139,7 @@ const Lifestyle = () => {
       )}
       {editingPost && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-          <EditForm 
-            postId={editingPost.id}
-            initialData={editingPost}
-            onClose={handleCloseForm}
-          />
+          <EditForm postId={editingPost.id} initialData={editingPost} onClose={handleCloseForm} />
         </div>
       )}
       {data.length === 0 ? (
@@ -152,19 +148,27 @@ const Lifestyle = () => {
         data.map((item) => (
           <div key={item.id} className="card">
             {item.title && <h2 className="card-title">{item.title}</h2>}
-            {item.date && <p className="card-text"><strong>Date:</strong> {formatDate(new Date(item.date))}</p>}
-            <p className="card-text">{item.content}</p>
-            <a href={`/reviews/lifestyle/${item.id}`} className="card-link">Read more</a>
+            {item.date && (
+              <p className="card-text">
+                <strong>Date:</strong> {formatDate(new Date(item.date))}
+              </p>
+            )}
+            <p className="card-text">
+              {item.content.length > 150 ? `${item.content.substring(0, 150)}...` : item.content}
+            </p>
+            <a href={`/reviews/lifestyle/${item.id}`} className="card-link">
+              Read more
+            </a>
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">
-                <button 
-                  onClick={() => handleEdit(item.id)} 
+                <button
+                  onClick={() => handleEdit(item.id)}
                   className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
                 >
                   Edit
                 </button>
-                <button 
-                  onClick={() => handleDelete(item.id)} 
+                <button
+                  onClick={() => handleDelete(item.id)}
                   className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
                 >
                   Delete
