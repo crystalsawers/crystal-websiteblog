@@ -111,56 +111,56 @@ const Journey = () => {
       <h1 className="page-title">My Journey</h1>
       {editingDoc && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-          <form onSubmit={handleSubmit} className="create-form">
-            <h2 className="create-form-title">Edit My Journey</h2>
-            <label className="create-form-label">
+          <form onSubmit={handleSubmit} className="create-form max-w-lg mx-auto p-4 bg-white rounded shadow-lg overflow-y-auto max-h-[80vh]">
+            <h2 className="create-form-title text-lg font-semibold mb-4">Edit My Journey</h2>
+            <label className="create-form-label block mb-4">
               Start of Journey:
               <textarea
                 name="start_of_journey"
                 value={formData?.start_of_journey || ''}
                 onChange={handleInputChange}
-                className="create-form-textarea"
+                className="create-form-textarea mt-1 block w-full"
               />
             </label>
-            <label className="create-form-label">
+            <label className="create-form-label block mb-4">
               Milestones:
               <textarea
                 name="milestones"
                 value={formData?.milestones?.map(milestone => milestone.description).join('\n') || ''}
                 onChange={handleInputChange}
-                className="create-form-textarea"
+                className="create-form-textarea mt-1 block w-full"
               />
             </label>
-            <label className="create-form-label">
+            <label className="create-form-label block mb-4">
               Challenges:
               <textarea
                 name="challenges"
                 value={formData?.challenges?.map(challenge => `${challenge.description}\n${challenge.solution}`).join('\n') || ''}
                 onChange={handleInputChange}
-                className="create-form-textarea"
+                className="create-form-textarea mt-1 block w-full"
               />
             </label>
-            <label className="create-form-label">
+            <label className="create-form-label block mb-4">
               Skills:
               <textarea
                 name="skills"
                 value={formData?.skills?.map(skill => `${skill.name}: ${skill.details}`).join('\n') || ''}
                 onChange={handleInputChange}
-                className="create-form-textarea"
+                className="create-form-textarea mt-1 block w-full"
               />
             </label>
-            <label className="create-form-label">
+            <label className="create-form-label block mb-4">
               Future Aspirations:
               <textarea
                 name="future_aspirations"
                 value={formData?.future_aspirations || ''}
                 onChange={handleInputChange}
-                className="create-form-textarea"
+                className="create-form-textarea mt-1 block w-full"
               />
             </label>
             <div className="mt-4 flex justify-end space-x-2">
-              <button type="submit" className="create-form-button">Save</button>
-              <button type="button" onClick={handleCloseEdit} className="bg-gray-500 text-white py-2 px-4 font-semibold rounded-md shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
+              <button type="submit" className="create-form-button py-2 px-4 rounded">Save</button>
+              <button type="button" onClick={handleCloseEdit} className="bg-gray-500 text-white py-2 px-4 font-semibold rounded-md shadow-sm hover:bg-gray-600">
                 Cancel
               </button>
             </div>
@@ -171,19 +171,19 @@ const Journey = () => {
         <p>No Journey data available</p>
       ) : (
         data.map((item) => (
-          <div key={item.id} className="card">
-            <h2 className="card-header">Start of My Journey</h2>
-            <p className="card-text">{item.start_of_journey}</p>
-            <h2 className="card-header">Milestones</h2>
-            <ul className="card-text list-disc pl-5">
+          <div key={item.id} className="card p-4 mb-4 bg-white rounded shadow-md">
+            <h2 className="card-header text-xl font-semibold">Start of My Journey</h2>
+            <p className="card-text mb-4">{item.start_of_journey}</p>
+            <h2 className="card-header text-xl font-semibold">Milestones</h2>
+            <ul className="card-text list-disc pl-5 mb-4">
               {item.milestones.map((milestone, index) => (
                 <li key={index} className="mb-2">
                   <p><strong>{formatDate(new Date(milestone.date))}</strong>: {milestone.description}</p>
                 </li>
               ))}
             </ul>
-            <h2 className="card-header">Challenges and Solutions</h2>
-            <ul className="card-text list-disc pl-5">
+            <h2 className="card-header text-xl font-semibold">Challenges and Solutions</h2>
+            <ul className="card-text list-disc pl-5 mb-4">
               {item.challenges.map((challenge, index) => (
                 <li key={index} className="mb-2">
                   <p><strong>Challenge:</strong> {challenge.description}</p>
@@ -191,16 +191,16 @@ const Journey = () => {
                 </li>
               ))}
             </ul>
-            <h2 className="card-header">Skills Developed</h2>
-            <ul className="card-text list-disc pl-5">
+            <h2 className="card-header text-xl font-semibold">Skills Developed</h2>
+            <ul className="card-text list-disc pl-5 mb-4">
               {item.skills.map((skill, index) => (
                 <li key={index} className="mb-2">
                   <p><strong>{skill.name}:</strong> {skill.details}</p>
                 </li>
               ))}
             </ul>
-            <h2 className="card-header">Future Aspirations</h2>
-            <p className="card-text">{item.future_aspirations}</p>
+            <h2 className="card-header text-xl font-semibold">Future Aspirations</h2>
+            <p className="card-text mb-4">{item.future_aspirations}</p>
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">
                 <button 
