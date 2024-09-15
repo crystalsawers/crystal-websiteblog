@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "import-data": "node backend/importData.js"
+    "import-data": "node backend/importData.js",
+    "export-data": "node backend/exportData.js"
   },
   "dependencies": {
     "firebase": "^10.13.1",
