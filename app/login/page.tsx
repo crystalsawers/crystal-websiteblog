@@ -47,12 +47,18 @@ const LoginPage = () => {
               className="login-card-input"
             />
           </label>
-          <button type="submit" className="login-card-button">Login</button>
+          <button
+            type="submit"
+            className="login-card-button"
+          >
+            Login
+          </button>
           {error && <p className="login-card-error">{error}</p>}
         </form>
       </div>
     </div>
   );
+
 };
 
 export default LoginPage;

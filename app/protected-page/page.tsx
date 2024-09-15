@@ -2,7 +2,7 @@
 const ProtectedPage = () => {
     return (
       <div>
-        <h1>Protected Page</h1>
+        <h1>Welcome back Crystal!</h1>
         <p>If you&#39;re seeing this you&#39;re logged in. You should see the logout button and option to edit posts</p>
       </div>
     );
