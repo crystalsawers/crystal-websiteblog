@@ -14,8 +14,8 @@ const LogoutButton = () => {
       // Sign out from Firebase Authentication
       await signOut(auth);
       
-      // Redirect to the login page or homepage after logout
-      router.push('/login');
+      // Redirect to the homepage after logout
+      router.push('/');
     } catch (error) {
       console.error('Error signing out:', error);
     }
