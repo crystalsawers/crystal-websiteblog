@@ -100,7 +100,7 @@ const About = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <main>
+    <div className="lg:max-w-screen-lg lg:mx-auto lg:p-8">
       <h1 className="page-title">About Me</h1>
       {editingDoc && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
@@ -174,8 +174,8 @@ const About = () => {
             <p className="card-text">{item.personal_story}</p>
             <h2 className="card-header">Contact Info</h2>
             <p className="card-text"><span className="font-semibold normal-text">Email:</span> {item.contact_info.email}</p>
-            <p className="card-text"><span className="font-semibold normal-text">LinkedIn:</span> <a href={item.contact_info.linkedin} target="_blank" rel="noopener noreferrer" className="card-link">{item.contact_info.linkedin}</a></p>
-            <p className="card-text"><span className="font-semibold normal-text">Github:</span> <a href={item.contact_info.github} target="_blank" rel="noopener noreferrer" className="card-link">{item.contact_info.github}</a></p>
+            <p className="card-text"><span className="font-semibold normal-text">LinkedIn:</span> <a href={item.contact_info.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline text-sm">{item.contact_info.linkedin}</a></p>
+            <p className="card-text"><span className="font-semibold normal-text">Github:</span> <a href={item.contact_info.github} target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline text-sm">{item.contact_info.github}</a></p>
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">
                 <button 
@@ -189,7 +189,7 @@ const About = () => {
           </div>
         ))
       )}
-    </main>
+    </div>
   );
   
 };

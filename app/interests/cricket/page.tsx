@@ -113,7 +113,7 @@ const Cricket = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <main>
+    <div className="lg:max-w-screen-lg lg:mx-auto lg:p-8">
       <h1 className="page-title">Cricket</h1>
       <div className="flex justify-between mb-4">
         <button 
@@ -186,7 +186,7 @@ const Cricket = () => {
           </div>
         ))
       )}
-    </main>
+    </div>
   );
 };
 

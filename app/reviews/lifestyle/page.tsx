@@ -109,7 +109,7 @@ const Lifestyle = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <main>
+    <div className="lg:max-w-screen-lg lg:mx-auto lg:p-8">
       <h1 className="page-title">Lifestyle</h1>
       <div className="flex justify-between mb-4">
         <button
@@ -179,7 +179,7 @@ const Lifestyle = () => {
           </div>
         ))
       )}
-    </main>
+    </div>
   );
 };
 

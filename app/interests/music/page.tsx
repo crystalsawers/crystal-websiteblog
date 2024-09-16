@@ -113,7 +113,7 @@ const Music = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <main>
+    <div className="lg:max-w-screen-lg lg:mx-auto lg:p-8">
       <h1 className="page-title">Music</h1>
       <div className="flex justify-between mb-4">
         <button 
@@ -162,7 +162,7 @@ const Music = () => {
             
             {/* Show truncated content */}
             <p className="card-text">{truncateContent(item.content, 150)}</p>
-
+  
             <a href={`/interests/music/${item.id}`} className="card-link">Read more</a>
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">
@@ -183,8 +183,9 @@ const Music = () => {
           </div>
         ))
       )}
-    </main>
+    </div>
   );
+  
 };
 
 export default Music;

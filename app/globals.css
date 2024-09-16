@@ -117,31 +117,13 @@ main nav {
 }
 
 .card-link {
-  @apply text-gray-800 hover:underline;
+  @apply text-gray-800 hover:underline text-lg !important;
 }
 
 .page-title {
   @apply text-2xl font-bold mb-6 text-custom-green;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .card-link {
-    @apply text-base; 
-  }
-}
-
-@media (max-width: 768px) {
-  .card-link {
-    @apply text-sm; 
-  }
-}
-
-@media (max-width: 480px) {
-  .card-link {
-    @apply text-xs;
-  }
-}
 
 /* Login Page Styles */
 .login-card {

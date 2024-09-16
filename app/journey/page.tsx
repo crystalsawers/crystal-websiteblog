@@ -107,7 +107,7 @@ const Journey = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <main>
+    <div className="lg:max-w-screen-lg lg:mx-auto lg:p-8">
       <h1 className="page-title">My Journey</h1>
       {editingDoc && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
@@ -214,7 +214,7 @@ const Journey = () => {
           </div>
         ))
       )}
-    </main>
+    </div>
   );
 };
 

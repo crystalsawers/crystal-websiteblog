@@ -113,7 +113,7 @@ const Formula1 = () => {
   };
 
   return (
-    <main className="relative">
+    <div className="lg:max-w-screen-lg lg:mx-auto lg:p-8">
       <h1 className="page-title">Formula 1</h1>
       <div className="flex justify-between mb-4">
         <button 
@@ -188,7 +188,7 @@ const Formula1 = () => {
           </div>
         ))
       )}
-    </main>
+    </div>
   );  
 };
 
