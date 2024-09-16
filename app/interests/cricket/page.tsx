@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm'; 
 import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
+import renderContent from '@/app/components/renderContent';
 
 interface CricketDocument {
   id: string; 
@@ -162,7 +163,7 @@ const Cricket = () => {
             
             {/* Show truncated content */}
             <p className="card-text">
-              {truncateContent(item.content, 150)}
+              {renderContent(truncateContent(item.content, 150))}
             </p>
 
             <a href={`/interests/cricket/${item.id}`} className="card-link">Read more</a>

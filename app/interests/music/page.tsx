@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
 import EditForm from '../../components/EditForm'; 
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
+import renderContent from '@/app/components/renderContent';
+
 
 interface MusicDocument {
   id: string; 
@@ -161,7 +163,7 @@ const Music = () => {
             {item.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(item.date))}</p>}
             
             {/* Show truncated content */}
-            <p className="card-text">{truncateContent(item.content, 150)}</p>
+            <p className="card-text">{renderContent(truncateContent(item.content, 150))}</p>
   
             <a href={`/interests/music/${item.id}`} className="card-link">Read more</a>
             {isAuthenticated && (

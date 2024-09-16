@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
 import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
+import renderContent from '@/app/components/renderContent';
 
 interface LifestyleDocument {
   id: string;
@@ -105,6 +106,10 @@ const Lifestyle = () => {
     }
   };
 
+  const truncateContent = (content: string, maxLength: number) => {
+    return content.length > maxLength ? content.slice(0, maxLength) + '...' : content;
+  };
+  
   if (loading) return <p>Loading Lifestyle data...</p>;
   if (error) return <p>{error}</p>;
 
@@ -155,7 +160,7 @@ const Lifestyle = () => {
               </p>
             )}
             <p className="card-text">
-              {item.content.length > 150 ? `${item.content.substring(0, 150)}...` : item.content}
+                {renderContent(truncateContent(item.content, 150))}
             </p>
             <a href={`/reviews/lifestyle/${item.id}`} className="card-link">
               Read more

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore'; 
 import { db } from '../../lib/firebaseConfig'; 
 import { formatDate } from '@/lib/utils/formatDate';
+import renderContent from './renderContent';
 
 interface DocumentData {
   type: string;
@@ -55,17 +56,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
-  // Split content into paragraphs based on newline characters
-  const renderContent = (content: string) => {
-    return content
-      .split('\n\n') // Splits based on double newline for paragraphs
-      .map((paragraph, index) => (
-        <p key={index} className="mb-4">
-          {paragraph}
-        </p>
-      ));
-  };
-  
+
 
   return (
     <div>
