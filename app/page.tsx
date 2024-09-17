@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useEffect, useState } from 'react';
 import { db } from '../lib/firebaseConfig'; 
@@ -43,18 +43,27 @@ const fetchPosts = async (): Promise<Post[]> => {
 
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getPosts() {
-      const fetchedPosts = await fetchPosts();
-      const sortedPosts = sortPostsByDate(fetchedPosts, 'date');
-      setPosts(sortedPosts);
+      try {
+        setLoading(true); 
+        const fetchedPosts = await fetchPosts();
+        const sortedPosts = sortPostsByDate(fetchedPosts, 'date');
+        setPosts(sortedPosts);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      } finally {
+        setLoading(false);
+      }
     }
 
     getPosts();
   }, []);
 
-
+  if (loading) return <p>Loading...</p>;
+  
   return (
     <div>
       <div className="max-w-4xl mx-auto">
