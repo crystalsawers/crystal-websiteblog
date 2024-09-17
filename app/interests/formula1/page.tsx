@@ -9,7 +9,8 @@ import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm'; 
 import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
-import renderContent from '@/app/components/renderContent';
+import renderContent from '@/lib/utils/renderContent';
+import { truncateContent } from '@/lib/utils/truncateContent';
 
 interface Formula1Document {
   id: string; 
@@ -109,9 +110,7 @@ const Formula1 = () => {
   if (loading) return <p>Loading Formula 1 data...</p>;
   if (error) return <p>{error}</p>;
 
-  const truncateContent = (content: string, maxLength: number) => {
-    return content.length > maxLength ? content.slice(0, maxLength) + '...' : content;
-  };
+
 
   return (
     <div className="lg:max-w-screen-lg lg:mx-auto lg:p-8">
@@ -165,7 +164,7 @@ const Formula1 = () => {
             
             {/* Show truncated content */}
             <p className="card-text">
-              {renderContent(truncateContent(item.content, 150))}
+              {renderContent(truncateContent(item.content, 110))}
             </p>
   
             <a href={`/interests/formula1/${item.id}`} className="card-link">Read more</a>

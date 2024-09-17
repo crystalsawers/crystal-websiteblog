@@ -9,7 +9,8 @@ import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
 import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
-import renderContent from '@/app/components/renderContent';
+import renderContent from '@/lib/utils/renderContent';
+import { truncateContent } from '@/lib/utils/truncateContent';
 
 interface MakeupDocument {
   id: string;
@@ -106,9 +107,6 @@ const Makeup = () => {
     }
   };
 
-  const truncateContent = (content: string, maxLength: number) => {
-    return content.length > maxLength ? content.slice(0, maxLength) + '...' : content;
-  };
 
   if (loading) return <p>Loading Makeup data...</p>;
   if (error) return <p>{error}</p>;
@@ -160,7 +158,7 @@ const Makeup = () => {
           <div key={item.id} className="card">
             {item.title && <h2 className="card-title">{item.title}</h2>}
             {item.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(item.date))}</p>}
-            <p className="card-text">{renderContent(truncateContent(item.content, 150))}</p>
+            <p className="card-text">{renderContent(truncateContent(item.content, 110))}</p>
             <a href={`/reviews/makeup/${item.id}`} className="card-link">Read more</a>
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore'; 
 import { db } from '../../lib/firebaseConfig'; 
 import { formatDate } from '@/lib/utils/formatDate';
-import renderContent from './renderContent';
+import renderContent from '../../lib/utils/renderContent';
 
 interface DocumentData {
   type: string;

@@ -9,7 +9,8 @@ import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm'; 
 import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
-import renderContent from '@/app/components/renderContent';
+import renderContent from '@/lib/utils/renderContent';
+import { truncateContent } from '@/lib/utils/truncateContent';
 
 interface CricketDocument {
   id: string; 
@@ -106,9 +107,7 @@ const Cricket = () => {
     }
   };
 
-  const truncateContent = (content: string, maxLength: number) => {
-    return content.length > maxLength ? content.slice(0, maxLength) + '...' : content;
-  };
+
 
   if (loading) return <p>Loading Cricket data...</p>;
   if (error) return <p>{error}</p>;
@@ -163,7 +162,7 @@ const Cricket = () => {
             
             {/* Show truncated content */}
             <p className="card-text">
-              {renderContent(truncateContent(item.content, 150))}
+              {renderContent(truncateContent(item.content, 110))}
             </p>
 
             <a href={`/interests/cricket/${item.id}`} className="card-link">Read more</a>

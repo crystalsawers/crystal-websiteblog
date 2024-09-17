@@ -9,7 +9,8 @@ import { useRouter } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
 import EditForm from '../../components/EditForm'; 
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
-import renderContent from '@/app/components/renderContent';
+import renderContent from '@/lib/utils/renderContent';
+import { truncateContent } from '@/lib/utils/truncateContent';
 
 
 interface MusicDocument {
@@ -57,9 +58,6 @@ const Music = () => {
     fetchData();
   }, []);
 
-  const truncateContent = (content: string, maxLength: number) => {
-    return content.length > maxLength ? content.slice(0, maxLength) + '...' : content;
-  };
 
   const handleCreate = () => {
     setIsCreating(true);
@@ -163,7 +161,7 @@ const Music = () => {
             {item.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(item.date))}</p>}
             
             {/* Show truncated content */}
-            <p className="card-text">{renderContent(truncateContent(item.content, 150))}</p>
+            <p className="card-text">{renderContent(truncateContent(item.content, 110))}</p>
   
             <a href={`/interests/music/${item.id}`} className="card-link">Read more</a>
             {isAuthenticated && (
