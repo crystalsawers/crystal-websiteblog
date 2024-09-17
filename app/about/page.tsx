@@ -96,7 +96,7 @@ const About = () => {
     }
   };
 
-  if (loading) return <p>Loading About Me data...</p>;
+  if (loading) return <p className="text-center text-custom-green">Loading About Me page...</p>;
   if (error) return <p>{error}</p>;
 
   return (

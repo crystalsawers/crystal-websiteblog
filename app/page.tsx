@@ -7,6 +7,7 @@ import { sortPostsByDate } from '../lib/utils/sortPostsByDate';
 import { formatDate } from '../lib/utils/formatDate'; 
 import renderContent from '@/lib/utils/renderContent';
 import { truncateContent } from '@/lib/utils/truncateContent';
+import Loading from './loading'; 
 
 const categories = [
   'cricket',
@@ -55,14 +56,14 @@ const HomePage = () => {
       } catch (error) {
         console.error('Error fetching posts:', error);
       } finally {
-        setLoading(false);
+        setLoading(false); 
       }
     }
 
     getPosts();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />; 
   
   return (
     <div>

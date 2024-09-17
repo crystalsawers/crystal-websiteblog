@@ -109,7 +109,7 @@ const Cricket = () => {
 
 
 
-  if (loading) return <p>Loading Cricket data...</p>;
+  if (loading) return <p className="text-center text-custom-green">Loading Cricket posts...</p>;
   if (error) return <p>{error}</p>;
 
   return (

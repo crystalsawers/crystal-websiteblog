@@ -108,7 +108,7 @@ const Makeup = () => {
   };
 
 
-  if (loading) return <p>Loading Makeup data...</p>;
+  if (loading) return <p className="text-center text-custom-green">Loading Makeup posts...</p>;
   if (error) return <p>{error}</p>;
 
   return (

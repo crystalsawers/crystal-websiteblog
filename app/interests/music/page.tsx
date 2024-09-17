@@ -109,7 +109,7 @@ const Music = () => {
     }
   };
 
-  if (loading) return <p>Loading Music data...</p>;
+  if (loading) return <p className="text-center text-custom-green">Loading Music posts...</p>;
   if (error) return <p>{error}</p>;
 
   return (

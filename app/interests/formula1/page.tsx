@@ -107,7 +107,7 @@ const Formula1 = () => {
     }
   };
 
-  if (loading) return <p>Loading Formula 1 data...</p>;
+  if (loading) return <p className="text-center text-custom-green">Loading Formula 1 posts...</p>;
   if (error) return <p>{error}</p>;
 
 
