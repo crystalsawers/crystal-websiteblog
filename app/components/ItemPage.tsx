@@ -63,7 +63,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
     router.back();
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p className="text-center text-custom-green">Loading...</p>;
 
   if (fetchError) return <p>{fetchError}</p>;
 

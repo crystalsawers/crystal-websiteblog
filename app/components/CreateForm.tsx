@@ -5,7 +5,6 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Import f
 import { db, storage } from '@/lib/firebaseConfig'; // Import storage
 import Image from 'next/image';
 
-
 interface CreateFormProps {
   category: string;
 }
@@ -31,6 +30,11 @@ const CreateForm = ({ category }: CreateFormProps) => {
       setFile(e.target.files[0]);
       setImageUrl(URL.createObjectURL(e.target.files[0])); // Preview the image
     }
+  };
+
+  const handleRemoveImage = () => {
+    setFile(null); // Clear the selected file
+    setImageUrl(null); // Clear the preview
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -120,14 +124,21 @@ const CreateForm = ({ category }: CreateFormProps) => {
             className="create-form-input"
           />
           {imageUrl && (
-            <div className="relative w-full h-48">
+            <div className="relative w-full h-48 mt-4">
               <Image
                 src={imageUrl}
                 alt="Preview"
                 layout="fill"
                 objectFit="cover"
-                className="card-img"
+                className="absolute inset-0 w-full h-full"
               />
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded hover:bg-red-600"
+              >
+                Remove
+              </button>
             </div>
           )}
         </div>
@@ -140,7 +151,6 @@ const CreateForm = ({ category }: CreateFormProps) => {
       </form>
     </div>
   );
-  
 };
 
 export default CreateForm;
