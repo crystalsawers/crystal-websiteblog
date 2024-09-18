@@ -11,6 +11,7 @@ import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 import renderContent from '@/lib/utils/renderContent';
 import { truncateContent } from '@/lib/utils/truncateContent';
+import Image from 'next/image';
 
 interface LifestyleDocument {
   id: string;
@@ -18,6 +19,8 @@ interface LifestyleDocument {
   title?: string;
   content: string;
   date?: string;
+  imageUrl?: string;
+
 }
 
 const Lifestyle = () => {
@@ -42,6 +45,7 @@ const Lifestyle = () => {
             title: data.title,
             content: data.content,
             date: data.date,
+            imageUrl: data.imageUrl
           };
         });
 
@@ -152,6 +156,17 @@ const Lifestyle = () => {
       ) : (
         data.map((item) => (
           <div key={item.id} className="card">
+            {item.imageUrl && (
+              <div className="relative w-full h-48">
+              <Image
+                src={item.imageUrl}
+                alt={item.title || 'Lifestyle post image'}
+                layout="fill"
+                objectFit="cover"
+                className="card-img"
+              />
+              </div>
+            )}
             {item.title && <h2 className="card-title">{item.title}</h2>}
             {item.date && (
               <p className="card-text">
