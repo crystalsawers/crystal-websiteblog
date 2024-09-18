@@ -14,8 +14,8 @@ const categories = [
   'cricket',
   'formula1',
   'music',
-  'lifestyle',
-  'makeup',
+  'lifestyle', // reviews category
+  'makeup',  // reviews category
 ];
 
 // Define the Post type here
@@ -27,6 +27,12 @@ interface Post {
   category: string;
   imageUrl?: string;
 }
+
+// Function to determine if a category is part of reviews
+const isReviewCategory = (category: string): boolean => {
+  const reviewCategories = ['lifestyle', 'makeup']; // Define your review categories here
+  return reviewCategories.includes(category);
+};
 
 const fetchPosts = async (): Promise<Post[]> => {
   const allPosts: Post[] = [];
@@ -72,27 +78,31 @@ const HomePage = () => {
       <div className="max-w-4xl mx-auto">
         <h2 className="page-title mb-6 text-center">Latest Posts</h2>
         <div>
-          {posts.map((post) => (
-            <div key={post.id} className="card mb-4">
-              {post.imageUrl && (
-                <div className="relative w-full h-48">
-                <Image
-                  src={post.imageUrl}
-                  alt={post.title || 'Posted image'}
-                  layout="fill"
-                  objectFit="cover"
-                  className="card-img"
-                />
-                </div>
-              )}
-              {post.title && <h2 className="card-title">{post.title}</h2>}
-              {post.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(post.date))}</p>}
-              <p className="card-text">
-              {renderContent(truncateContent(post.content, 110))}
-              </p>
-              <a href={`/interests/${post.category}/${post.id}`} className="card-link">Read more</a>
-            </div>
-          ))}
+          {posts.map((post) => {
+            // Determine the correct section based on the category
+            const section = isReviewCategory(post.category) ? 'reviews' : 'interests';
+            return (
+              <div key={post.id} className="card mb-4">
+                {post.imageUrl && (
+                  <div className="relative w-full h-48">
+                    <Image
+                      src={post.imageUrl}
+                      alt={post.title || 'Posted image'}
+                      layout="fill"
+                      objectFit="cover"
+                      className="card-img"
+                    />
+                  </div>
+                )}
+                {post.title && <h2 className="card-title">{post.title}</h2>}
+                {post.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(post.date))}</p>}
+                <p className="card-text">
+                  {renderContent(truncateContent(post.content, 110))}
+                </p>
+                <a href={`/${section}/${post.category}/${post.id}`} className="card-link">Read more</a>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
