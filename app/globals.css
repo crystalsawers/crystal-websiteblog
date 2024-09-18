@@ -4,9 +4,9 @@
 
 /* Base theme variables */
 :root {
-  --background: #0a0a0a; 
-  --foreground: #ededed; 
-  --navbar-text: #99ffd3; 
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --navbar-text: #99ffd3;
 }
 
 /* Optional: detect user's color preference and adjust */
@@ -14,7 +14,7 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    --navbar-text: #99ffd3; 
+    --navbar-text: #99ffd3;
   }
 }
 
@@ -22,15 +22,16 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  @apply text-gray-200 m-8;
+  @apply m-8 text-gray-200;
 }
 
-h1, h2 {
-  @apply font-bold text-lg text-gray-100;
+h1,
+h2 {
+  @apply text-lg font-bold text-gray-100;
 }
 
 main {
-  @apply max-w-5xl my-12 mx-auto px-8;
+  @apply mx-auto my-12 max-w-5xl px-8;
 }
 
 main > h2 {
@@ -43,19 +44,21 @@ p > a {
 
 /* Navbar styles */
 .navbar {
-  @apply pb-4 border-b-2 border-gray-700 flex items-center justify-between my-10 mx-auto max-w-5xl;
+  @apply mx-auto my-10 flex max-w-5xl items-center justify-between border-b-2 border-gray-700 pb-4;
 }
 
 nav {
-  @apply pb-4 border-b-2 border-gray-700 flex items-center gap-5 my-10 mx-auto max-w-5xl;
+  @apply mx-auto my-10 flex max-w-5xl items-center gap-5 border-b-2 border-gray-700 pb-4;
 }
 
-nav a, nav span, .logout-button {
-  color: var(--navbar-text); 
+nav a,
+nav span,
+.logout-button {
+  color: var(--navbar-text);
 }
 
 nav a:hover {
-  @apply text-white; 
+  @apply text-white;
 }
 
 main nav {
@@ -70,7 +73,7 @@ main nav {
   }
 
   .navbar-links {
-    @apply flex-col space-y-2 mt-4;
+    @apply mt-4 flex-col space-y-2;
   }
 
   .navbar-logo {
@@ -84,7 +87,7 @@ main nav {
   }
 
   .navbar-links {
-    @apply flex-col space-y-2 mt-4;
+    @apply mt-4 flex-col space-y-2;
     @apply w-full;
   }
 
@@ -95,94 +98,92 @@ main nav {
 
 @media (max-width: 480px) {
   .navbar-links {
-    @apply text-sm space-y-1;
+    @apply space-y-1 text-sm;
   }
 }
 
 /* Reusable classes */
 .card {
-  @apply bg-emerald-500 shadow-md rounded-lg p-6 mb-6;
+  @apply mb-6 rounded-lg bg-emerald-500 p-6 shadow-md;
 }
 
 .card-header {
-  @apply text-lg font-semibold mb-2 text-gray-100;
+  @apply mb-2 text-lg font-semibold text-gray-100;
 }
 
 .card-title {
-  @apply text-2xl font-bold mb-4 text-gray-100;
+  @apply mb-4 text-2xl font-bold text-gray-100;
 }
 
 .card-text {
-  @apply text-gray-100 mb-4 text-sm; 
+  @apply mb-4 text-sm text-gray-100;
 }
 
 .card-link {
-  @apply text-gray-800 hover:underline text-lg !important;
+  @apply text-lg text-gray-800 hover:underline !important;
 }
 
 .page-title {
-  @apply text-2xl font-bold mb-6 text-custom-green;
+  @apply mb-6 text-2xl font-bold text-custom-green;
 }
 
 .card-img {
   display: block;
-  max-width: 100%; 
-  height: auto; 
-  border-radius: 0.5rem; 
-  margin: 0 auto 1rem auto; 
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 0 auto 1rem auto;
 }
-
 
 /* Login Page Styles */
 .login-card {
-  @apply bg-emerald-500 shadow-md rounded-lg p-6 mb-6; 
+  @apply mb-6 rounded-lg bg-emerald-500 p-6 shadow-md;
 }
 
 .login-card-title {
-  @apply text-3xl font-bold mb-6 text-gray-100; 
+  @apply mb-6 text-3xl font-bold text-gray-100;
 }
 
 .login-card-form {
-  @apply flex flex-col space-y-4; 
+  @apply flex flex-col space-y-4;
 }
 
 .login-card-label {
-  @apply block mb-2 text-sm font-medium text-gray-700; 
+  @apply mb-2 block text-sm font-medium text-gray-700;
 }
 
 .login-card-input {
-  @apply w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500; 
+  @apply w-full rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
 
 .login-card-button {
-  @apply w-full bg-emerald-700 text-white py-2 rounded-lg hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500; 
+  @apply w-full rounded-lg bg-emerald-700 py-2 text-white hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500;
 }
 
 .login-card-error {
-  @apply text-red-500 mt-2 text-center; 
+  @apply mt-2 text-center text-red-500;
 }
-
-
 
 /* CreateForm styles */
 .create-form {
-  @apply w-full max-w-3xl bg-emerald-500 p-10 rounded-lg;
+  @apply w-full max-w-3xl rounded-lg bg-emerald-500 p-10;
 }
 
 .create-form-title {
-  @apply text-2xl font-bold mb-4 text-center; 
+  @apply mb-4 text-center text-2xl font-bold;
 }
 
 .create-form-error {
-  @apply text-red-500 mb-4 text-center;
+  @apply mb-4 text-center text-red-500;
 }
 
 .create-form-label {
-  @apply block text-sm font-medium text-gray-200 mb-2; 
+  @apply mb-2 block text-sm font-medium text-gray-200;
 }
 
-.create-form-input, .create-form-textarea {
-  @apply mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black font-medium; 
+.create-form-input,
+.create-form-textarea {
+  @apply mt-1 block w-full rounded-md border border-gray-300 px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm;
 }
 
 .create-form-textarea {
@@ -190,9 +191,8 @@ main nav {
 }
 
 .create-form-button {
-  @apply w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+  @apply w-full rounded-md bg-indigo-600 px-4 py-3 font-semibold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
 }
-
 
 .markdown-content {
   line-height: 1.6;

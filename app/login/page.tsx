@@ -25,7 +25,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
+    <div className="mx-auto mt-10 max-w-md">
       <div className="login-card">
         <h1 className="login-card-title">Login</h1>
         <form onSubmit={handleSubmit} className="login-card-form">
@@ -47,10 +47,7 @@ const LoginPage = () => {
               className="login-card-input"
             />
           </label>
-          <button
-            type="submit"
-            className="login-card-button"
-          >
+          <button type="submit" className="login-card-button">
             Login
           </button>
           {error && <p className="login-card-error">{error}</p>}
@@ -58,7 +55,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-
 };
 
 export default LoginPage;

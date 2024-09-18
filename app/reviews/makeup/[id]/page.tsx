@@ -1,5 +1,5 @@
-"use client";
-import ItemPage from '../../../components/ItemPage'; 
+'use client';
+import ItemPage from '../../../components/ItemPage';
 
 const MakeupItem = () => {
   return <ItemPage collectionName="makeup" />;

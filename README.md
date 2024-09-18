@@ -1,8 +1,6 @@
 # Crystal's blog, new version
 
-
-1st Deployment as of 15 September 2024: https://crystal-websiteblog.vercel.app/ 
-
+1st Deployment as of 15 September 2024: https://crystal-websiteblog.vercel.app/
 
 Project timeframe: 13 September 2024 - present
 
@@ -14,6 +12,5 @@ Blog features
 
 - About Me
 - Journey in my IT degree
-- Opinions on my main interests, Formula 1, Cricket, my background in Music 
+- Opinions on my main interests, Formula 1, Cricket, my background in Music
 - Reviews on makeup and lifestyle stuff
-

@@ -1,29 +1,34 @@
 import { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db, storage } from '../../lib/firebaseConfig';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useAuth } from '../components/AuthContext';
-import Image from 'next/image'; 
+import Image from 'next/image';
 
 interface EditFormProps {
-  category: string; 
+  category: string;
   postId: string;
   initialData: {
     type: string;
     title?: string;
     content: string;
     date?: string;
-    imageUrl?: string; 
+    imageUrl?: string;
   };
   onClose: () => void;
 }
 
-const EditForm = ({ category, postId, initialData, onClose }: EditFormProps) => {
+const EditForm = ({
+  category,
+  postId,
+  initialData,
+  onClose,
+}: EditFormProps) => {
   const { isAuthenticated } = useAuth();
   const [title, setTitle] = useState(initialData.title || '');
   const [content, setContent] = useState(initialData.content);
-  const [imageUrl, setImageUrl] = useState(initialData.imageUrl || ''); 
-  const [file, setFile] = useState<File | null>(null); 
+  const [imageUrl, setImageUrl] = useState(initialData.imageUrl || '');
+  const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,11 +69,13 @@ const EditForm = ({ category, postId, initialData, onClose }: EditFormProps) => 
   };
 
   return (
-    <div className="w-full w-full max-w-7xl p-16 flex items-center justify-center">
+    <div className="flex w-full max-w-7xl items-center justify-center p-16">
       <form onSubmit={handleSubmit} className="create-form">
         <h2 className="create-form-title">Edit Post</h2>
         {error && <p className="create-form-error">{error}</p>}
-        <label className="create-form-label" htmlFor="title">Title:</label>
+        <label className="create-form-label" htmlFor="title">
+          Title:
+        </label>
         <input
           id="title"
           type="text"
@@ -76,14 +83,18 @@ const EditForm = ({ category, postId, initialData, onClose }: EditFormProps) => 
           onChange={(e) => setTitle(e.target.value)}
           className="create-form-input"
         />
-        <label className="create-form-label" htmlFor="content">Content:</label>
+        <label className="create-form-label" htmlFor="content">
+          Content:
+        </label>
         <textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="create-form-textarea"
         />
-        <label className="create-form-label" htmlFor="file">Image:</label>
+        <label className="create-form-label" htmlFor="file">
+          Image:
+        </label>
         <input
           id="file"
           type="file"
@@ -92,31 +103,33 @@ const EditForm = ({ category, postId, initialData, onClose }: EditFormProps) => 
           className="create-form-input"
         />
         {imageUrl && (
-          <div className="relative w-full h-48 mt-4">
+          <div className="relative mt-4 h-48 w-full">
             <Image
               src={imageUrl}
               alt="Preview"
               layout="fill"
               objectFit="cover"
-              className="absolute inset-0 w-full h-full"
+              className="absolute inset-0 h-full w-full"
             />
             <button
               type="button"
               onClick={handleRemoveImage}
-              className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded hover:bg-red-600"
+              className="absolute right-2 top-2 rounded bg-red-500 p-2 text-white hover:bg-red-600"
             >
               Remove
             </button>
           </div>
         )}
         <div className="mt-6">
-          <button type="submit" className="create-form-button">Update Post</button>
+          <button type="submit" className="create-form-button">
+            Update Post
+          </button>
         </div>
-        <div className="flex justify-center mt-4">
-          <button 
-            type="button" 
+        <div className="mt-4 flex justify-center">
+          <button
+            type="button"
             onClick={onClose}
-            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+            className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
           >
             Close Form
           </button>

@@ -21,7 +21,11 @@ const CreateForm = ({ category }: CreateFormProps) => {
   useEffect(() => {
     // Get today's date in NZ time (Pacific/Auckland) and format as YYYY-MM-DD
     const today = new Date();
-    const nzDate = today.toLocaleDateString('en-GB', { timeZone: 'Pacific/Auckland' }).split('/').reverse().join('-');
+    const nzDate = today
+      .toLocaleDateString('en-GB', { timeZone: 'Pacific/Auckland' })
+      .split('/')
+      .reverse()
+      .join('-');
     setDate(nzDate);
   }, []);
 
@@ -84,7 +88,9 @@ const CreateForm = ({ category }: CreateFormProps) => {
         <h1 className="create-form-title">Create {category} Post</h1>
         {error && <p className="create-form-error">{error}</p>}
         <div className="mb-4">
-          <label htmlFor="title" className="create-form-label">Title:</label>
+          <label htmlFor="title" className="create-form-label">
+            Title:
+          </label>
           <input
             id="title"
             type="text"
@@ -95,7 +101,9 @@ const CreateForm = ({ category }: CreateFormProps) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="content" className="create-form-label">Content:</label>
+          <label htmlFor="content" className="create-form-label">
+            Content:
+          </label>
           <textarea
             id="content"
             value={content}
@@ -105,7 +113,9 @@ const CreateForm = ({ category }: CreateFormProps) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="date" className="create-form-label">Date:</label>
+          <label htmlFor="date" className="create-form-label">
+            Date:
+          </label>
           <input
             id="date"
             type="date"
@@ -115,7 +125,9 @@ const CreateForm = ({ category }: CreateFormProps) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="file" className="create-form-label">Image:</label>
+          <label htmlFor="file" className="create-form-label">
+            Image:
+          </label>
           <input
             id="file"
             type="file"
@@ -124,28 +136,25 @@ const CreateForm = ({ category }: CreateFormProps) => {
             className="create-form-input"
           />
           {imageUrl && (
-            <div className="relative w-full h-48 mt-4">
+            <div className="relative mt-4 h-48 w-full">
               <Image
                 src={imageUrl}
                 alt="Preview"
                 layout="fill"
                 objectFit="cover"
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 h-full w-full"
               />
               <button
                 type="button"
                 onClick={handleRemoveImage}
-                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded hover:bg-red-600"
+                className="absolute right-2 top-2 rounded bg-red-500 p-2 text-white hover:bg-red-600"
               >
                 Remove
               </button>
             </div>
           )}
         </div>
-        <button
-          type="submit"
-          className="create-form-button"
-        >
+        <button type="submit" className="create-form-button">
           Create Post
         </button>
       </form>

@@ -1,7 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs, DocumentData, QuerySnapshot, doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  DocumentData,
+  QuerySnapshot,
+  doc,
+  getDoc,
+  updateDoc,
+} from 'firebase/firestore';
 import { db } from '../../lib/firebaseConfig';
 import { useAuth } from '../components/AuthContext';
 
@@ -21,16 +29,22 @@ const About = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingDoc, setEditingDoc] = useState<AboutMeDocument | null>(null);
-  const [formData, setFormData] = useState<{ introduction: string; personal_story: string; contact_info: { email: string; linkedin: string; github: string } } | null>(null);
+  const [formData, setFormData] = useState<{
+    introduction: string;
+    personal_story: string;
+    contact_info: { email: string; linkedin: string; github: string };
+  } | null>(null);
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, 'about-me'));
-        const items: AboutMeDocument[] = querySnapshot.docs.map(doc => ({
+        const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+          collection(db, 'about-me'),
+        );
+        const items: AboutMeDocument[] = querySnapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data() as Omit<AboutMeDocument, 'id'>
+          ...(doc.data() as Omit<AboutMeDocument, 'id'>),
         }));
         setData(items);
       } catch (error) {
@@ -68,11 +82,13 @@ const About = () => {
     setEditingDoc(null);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData!,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -85,25 +101,30 @@ const About = () => {
       await updateDoc(docRef, {
         introduction: formData.introduction,
         personal_story: formData.personal_story,
-        contact_info: formData.contact_info
+        contact_info: formData.contact_info,
       });
       setEditingDoc(null);
-      setData(prevData => prevData.map(doc =>
-        doc.id === editingDoc.id ? { ...doc, ...formData } : doc
-      ));
+      setData((prevData) =>
+        prevData.map((doc) =>
+          doc.id === editingDoc.id ? { ...doc, ...formData } : doc,
+        ),
+      );
     } catch (error) {
       console.error('Error updating document:', error);
     }
   };
 
-  if (loading) return <p className="text-center text-custom-green">Loading About Me page...</p>;
+  if (loading)
+    return (
+      <p className="text-center text-custom-green">Loading About Me page...</p>
+    );
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="lg:max-w-screen-lg lg:mx-auto lg:p-8">
+    <div className="lg:mx-auto lg:max-w-screen-lg lg:p-8">
       <h1 className="page-title">About Me</h1>
       {editingDoc && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
           <form onSubmit={handleSubmit} className="create-form">
             <h2 className="create-form-title">Edit About Me</h2>
             <label className="create-form-label">
@@ -155,8 +176,14 @@ const About = () => {
               />
             </label>
             <div className="mt-4 flex justify-end space-x-2">
-              <button type="submit" className="create-form-button">Save</button>
-              <button type="button" onClick={handleCloseEdit} className="bg-gray-500 text-white py-2 px-4 font-semibold rounded-md shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
+              <button type="submit" className="create-form-button">
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={handleCloseEdit}
+                className="rounded-md bg-gray-500 px-4 py-2 font-semibold text-white shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              >
                 Cancel
               </button>
             </div>
@@ -173,14 +200,37 @@ const About = () => {
             <h2 className="card-header">Personal Story</h2>
             <p className="card-text">{item.personal_story}</p>
             <h2 className="card-header">Contact Info</h2>
-            <p className="card-text"><span className="font-semibold normal-text">Email:</span> {item.contact_info.email}</p>
-            <p className="card-text"><span className="font-semibold normal-text">LinkedIn:</span> <a href={item.contact_info.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline text-sm">{item.contact_info.linkedin}</a></p>
-            <p className="card-text"><span className="font-semibold normal-text">Github:</span> <a href={item.contact_info.github} target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline text-sm">{item.contact_info.github}</a></p>
+            <p className="card-text">
+              <span className="normal-text font-semibold">Email:</span>{' '}
+              {item.contact_info.email}
+            </p>
+            <p className="card-text">
+              <span className="normal-text font-semibold">LinkedIn:</span>{' '}
+              <a
+                href={item.contact_info.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-gray-800 hover:underline"
+              >
+                {item.contact_info.linkedin}
+              </a>
+            </p>
+            <p className="card-text">
+              <span className="normal-text font-semibold">Github:</span>{' '}
+              <a
+                href={item.contact_info.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-gray-800 hover:underline"
+              >
+                {item.contact_info.github}
+              </a>
+            </p>
             {isAuthenticated && (
               <div className="mt-2 flex space-x-2">
-                <button 
-                  onClick={() => handleEditClick(item.id)} 
-                  className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+                <button
+                  onClick={() => handleEditClick(item.id)}
+                  className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
                 >
                   Edit
                 </button>
@@ -191,7 +241,6 @@ const About = () => {
       )}
     </div>
   );
-  
 };
 
 export default About;

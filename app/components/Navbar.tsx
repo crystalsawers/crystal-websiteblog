@@ -17,16 +17,28 @@ const Navbar = () => {
         <h1 className="text-[var(--navbar-text)]">Crystal&#39;s Blog</h1>
       </Link>
       <div className="flex space-x-4">
-        <Link href="/about" className="text-[var(--navbar-text)] hover:text-white">
+        <Link
+          href="/about"
+          className="text-[var(--navbar-text)] hover:text-white"
+        >
           About
         </Link>
-        <Link href="/journey" className="text-[var(--navbar-text)] hover:text-white">
+        <Link
+          href="/journey"
+          className="text-[var(--navbar-text)] hover:text-white"
+        >
           Journey
         </Link>
-        <Link href="/interests" className="text-[var(--navbar-text)] hover:text-white">
+        <Link
+          href="/interests"
+          className="text-[var(--navbar-text)] hover:text-white"
+        >
           Interests
         </Link>
-        <Link href="/reviews" className="text-[var(--navbar-text)] hover:text-white">
+        <Link
+          href="/reviews"
+          className="text-[var(--navbar-text)] hover:text-white"
+        >
           Reviews
         </Link>
         <LogoutButton />

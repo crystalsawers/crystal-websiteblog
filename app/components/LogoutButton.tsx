@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { signOut } from 'firebase/auth'; 
-import { auth } from '../../lib/firebaseConfig'; 
-import { useAuth } from './AuthContext'; 
+import { signOut } from 'firebase/auth';
+import { auth } from '../../lib/firebaseConfig';
+import { useAuth } from './AuthContext';
 
 const LogoutButton = () => {
   const router = useRouter();
@@ -13,7 +13,7 @@ const LogoutButton = () => {
     try {
       // Sign out from Firebase Authentication
       await signOut(auth);
-      
+
       // Redirect to the homepage after logout
       router.push('/');
     } catch (error) {
