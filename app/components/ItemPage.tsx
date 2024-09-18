@@ -9,6 +9,7 @@ import renderContent from '../../lib/utils/renderContent';
 import NotFound from '../../app/not-found';
 import Image from 'next/image';
 import EditForm from '../components/EditForm';
+import { useAuth } from '../components/AuthContext';
 
 interface DocumentData {
   type: string;
@@ -26,6 +27,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (!id) return;
@@ -66,10 +68,19 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   };
 
   const handleEdit = () => {
+    if (!isAuthenticated) {
+      alert('You must be logged in to edit this post.');
+      return;
+    }
     setEditMode(true);
   };
 
   const handleDelete = async () => {
+    if (!isAuthenticated) {
+      alert('You must be logged in to delete this post.');
+      return;
+    }
+
     if (confirm('Are you sure you want to delete this item?')) {
       try {
         const docRef = doc(db, collectionName, id);
@@ -87,8 +98,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
     }
   };
 
-  if (loading)
-    return <p className="text-center text-custom-green">Loading...</p>;
+  if (loading) return <p className="text-center text-custom-green">Loading...</p>;
 
   if (fetchError) return <p>{fetchError}</p>;
 
@@ -105,18 +115,22 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
         </button>
         {!editMode && (
           <div>
-            <button
-              onClick={handleEdit}
-              className="mr-2 rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
-            >
-              Edit
-            </button>
-            <button
-              onClick={handleDelete}
-              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-            >
-              Delete
-            </button>
+            {isAuthenticated && (
+              <>
+                <button
+                  onClick={handleEdit}
+                  className="mr-2 rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                >
+                  Delete
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
