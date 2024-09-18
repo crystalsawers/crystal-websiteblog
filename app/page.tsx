@@ -2,19 +2,25 @@
 
 import React, { useEffect, useState } from 'react';
 import { db } from '../lib/firebaseConfig';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  doc,
+  deleteDoc,
+} from 'firebase/firestore';
 import { sortPostsByDate } from '../lib/utils/sortPostsByDate';
 import { formatDate } from '../lib/utils/formatDate';
 import renderContent from '@/lib/utils/renderContent';
 import { truncateContent } from '@/lib/utils/truncateContent';
 import Loading from './loading';
 import Image from 'next/image';
-import { useAuth } from './components/AuthContext'; 
+import { useAuth } from './components/AuthContext';
 import EditForm from './components/EditForm';
 
 const categories = ['cricket', 'formula1', 'music', 'lifestyle', 'makeup'];
 
-// Define the Post type here
 interface Post {
   id: string;
   title: string;
@@ -39,7 +45,15 @@ const fetchPosts = async (): Promise<Post[]> => {
 
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      allPosts.push({ ...data, id: doc.id, category } as Post);
+      allPosts.push({
+        id: doc.id,
+        title: data.title || '',
+        content: data.content || '',
+        date: data.date || '',
+        category,
+        imageUrl: data.imageUrl || '',
+        type: data.type || 'default',
+      } as Post);
     });
   }
 
@@ -49,8 +63,8 @@ const fetchPosts = async (): Promise<Post[]> => {
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingPost, setEditingPost] = useState<Post | null>(null); 
-  const { isAuthenticated } = useAuth(); 
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     async function getPosts() {
@@ -75,6 +89,22 @@ const HomePage = () => {
 
   const handleCloseEditForm = () => {
     setEditingPost(null);
+  };
+
+  const handleDelete = async (post: Post) => {
+    if (!isAuthenticated) return;
+
+    const confirmDelete = window.confirm('Are you sure you want to delete this post?');
+
+    if (!confirmDelete) return;
+
+    try {
+      const postRef = doc(db, post.category, post.id);
+      await deleteDoc(postRef);
+      setPosts(posts.filter((p) => p.id !== post.id));
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
   };
 
   if (loading) return <Loading />;
@@ -117,12 +147,18 @@ const HomePage = () => {
                   Read more
                 </a>
                 {isAuthenticated && (
-                  <div className="mt-2 flex justify-end space-x-2">
+                  <div className="mt-2 flex space-x-2">
                     <button
                       onClick={() => handleEdit(post)}
-                      className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+                      className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
                     >
                       Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(post)}
+                      className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                    >
+                      Delete
                     </button>
                   </div>
                 )}

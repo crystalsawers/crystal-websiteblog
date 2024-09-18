@@ -8,7 +8,7 @@ import { formatDate } from '@/lib/utils/formatDate';
 import renderContent from '../../lib/utils/renderContent';
 import NotFound from '../../app/not-found';
 import Image from 'next/image';
-import EditForm from '../components/EditForm'; 
+import EditForm from '../components/EditForm';
 
 interface DocumentData {
   type: string;
@@ -74,7 +74,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
       try {
         const docRef = doc(db, collectionName, id);
         await deleteDoc(docRef);
-        router.push('/'); 
+        router.push('/');
       } catch (error) {
         if (error instanceof Error) {
           console.error('Error deleting document:', error.message);
@@ -87,7 +87,8 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
     }
   };
 
-  if (loading) return <p className="text-center text-custom-green">Loading...</p>;
+  if (loading)
+    return <p className="text-center text-custom-green">Loading...</p>;
 
   if (fetchError) return <p>{fetchError}</p>;
 
@@ -95,7 +96,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
 
   return (
     <div className="lg:mx-auto lg:max-w-screen-lg lg:p-8">
-      <div className="flex justify-between mb-4">
+      <div className="mb-4 flex justify-between">
         <button
           onClick={handleBack}
           className="rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
@@ -106,7 +107,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
           <div>
             <button
               onClick={handleEdit}
-              className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600 mr-2"
+              className="mr-2 rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
             >
               Edit
             </button>
@@ -119,7 +120,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
           </div>
         )}
       </div>
-  
+
       {!editMode ? (
         <div className="card flex flex-col">
           {data.date && (
@@ -127,7 +128,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
               <strong>Posted:</strong> {formatDate(new Date(data.date))}
             </p>
           )}
-  
+
           {data.imageUrl && (
             <div
               className="relative mb-4 w-full"
@@ -148,7 +149,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
               />
             </div>
           )}
-  
+
           <div>
             {data.title && <h1 className="card-title">{data.title}</h1>}
             <div className="card-text">{renderContent(data.content)}</div>
@@ -156,17 +157,16 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
         </div>
       ) : (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <EditForm
-              category={collectionName} 
-              postId={id} 
-              initialData={data} 
-              onClose={() => setEditMode(false)}
-            />
+          <EditForm
+            category={collectionName}
+            postId={id}
+            initialData={data}
+            onClose={() => setEditMode(false)}
+          />
         </div>
       )}
     </div>
   );
-  
 };
 
 export default ItemPage;
