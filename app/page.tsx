@@ -8,6 +8,7 @@ import { formatDate } from '../lib/utils/formatDate';
 import renderContent from '@/lib/utils/renderContent';
 import { truncateContent } from '@/lib/utils/truncateContent';
 import Loading from './loading'; 
+import Image from 'next/image';
 
 const categories = [
   'cricket',
@@ -24,6 +25,7 @@ interface Post {
   content: string;
   date: string; 
   category: string;
+  imageUrl?: string;
 }
 
 const fetchPosts = async (): Promise<Post[]> => {
@@ -72,6 +74,17 @@ const HomePage = () => {
         <div>
           {posts.map((post) => (
             <div key={post.id} className="card mb-4">
+              {post.imageUrl && (
+                <div className="relative w-full h-48">
+                <Image
+                  src={post.imageUrl}
+                  alt={post.title || 'Posted image'}
+                  layout="fill"
+                  objectFit="cover"
+                  className="card-img"
+                />
+                </div>
+              )}
               {post.title && <h2 className="card-title">{post.title}</h2>}
               {post.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(post.date))}</p>}
               <p className="card-text">
