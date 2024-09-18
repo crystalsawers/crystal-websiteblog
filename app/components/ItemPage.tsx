@@ -2,12 +2,13 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import renderContent from '../../lib/utils/renderContent';
 import NotFound from '../../app/not-found';
 import Image from 'next/image';
+import EditForm from '../components/EditForm'; 
 
 interface DocumentData {
   type: string;
@@ -24,6 +25,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   const [data, setData] = useState<DocumentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -43,7 +45,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
         } else {
           setData(null);
         }
-      } catch (error: unknown) {
+      } catch (error) {
         if (error instanceof Error) {
           console.error('Error fetching document:', error.message);
           setFetchError('Error fetching data: ' + error.message);
@@ -63,57 +65,108 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
     router.back();
   };
 
-  if (loading)
-    return <p className="text-center text-custom-green">Loading...</p>;
+  const handleEdit = () => {
+    setEditMode(true);
+  };
+
+  const handleDelete = async () => {
+    if (confirm('Are you sure you want to delete this item?')) {
+      try {
+        const docRef = doc(db, collectionName, id);
+        await deleteDoc(docRef);
+        router.push('/'); 
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error('Error deleting document:', error.message);
+          setFetchError('Error deleting data: ' + error.message);
+        } else {
+          console.error('An unknown error occurred', error);
+          setFetchError('An unknown error occurred.');
+        }
+      }
+    }
+  };
+
+  if (loading) return <p className="text-center text-custom-green">Loading...</p>;
 
   if (fetchError) return <p>{fetchError}</p>;
 
   if (!data) return <NotFound />;
 
   return (
-    <div className="mx-auto max-w-screen-lg px-4">
-      <button
-        onClick={handleBack}
-        className="mb-4 rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
-      >
-        Back
-      </button>
-
-      <div className="card flex flex-col">
-        {data.date && (
-          <p className="card-text mb-4">
-            <strong>Posted:</strong> {formatDate(new Date(data.date))}
-          </p>
-        )}
-
-        {data.imageUrl && (
-          <div
-            className="relative mb-4 w-full"
-            style={{
-              maxWidth: '800px',
-              margin: '0 auto',
-              maxHeight: '400px',
-              overflow: 'hidden',
-            }}
-          >
-            <Image
-              src={data.imageUrl}
-              alt={data.title || 'Image'}
-              layout="responsive"
-              width={800}
-              height={400}
-              style={{ maxHeight: '600px', objectFit: 'cover' }}
-            />
+    <div className="lg:mx-auto lg:max-w-screen-lg lg:p-8">
+      <div className="flex justify-between mb-4">
+        <button
+          onClick={handleBack}
+          className="rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+        >
+          Back
+        </button>
+        {!editMode && (
+          <div>
+            <button
+              onClick={handleEdit}
+              className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600 mr-2"
+            >
+              Edit
+            </button>
+            <button
+              onClick={handleDelete}
+              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            >
+              Delete
+            </button>
           </div>
         )}
-
-        <div>
-          {data.title && <h1 className="card-title">{data.title}</h1>}
-          <div className="card-text">{renderContent(data.content)}</div>
-        </div>
       </div>
+  
+      {!editMode ? (
+        <div className="card flex flex-col">
+          {data.date && (
+            <p className="card-text mb-4">
+              <strong>Posted:</strong> {formatDate(new Date(data.date))}
+            </p>
+          )}
+  
+          {data.imageUrl && (
+            <div
+              className="relative mb-4 w-full"
+              style={{
+                maxWidth: '800px',
+                margin: '0 auto',
+                maxHeight: '400px',
+                overflow: 'hidden',
+              }}
+            >
+              <Image
+                src={data.imageUrl}
+                alt={data.title || 'Image'}
+                layout="responsive"
+                width={800}
+                height={400}
+                style={{ maxHeight: '600px', objectFit: 'cover' }}
+              />
+            </div>
+          )}
+  
+          <div>
+            {data.title && <h1 className="card-title">{data.title}</h1>}
+            <div className="card-text">{renderContent(data.content)}</div>
+          </div>
+        </div>
+      ) : (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <EditForm
+              category={collectionName} 
+              postId={id} 
+              initialData={data} 
+              onClose={() => setEditMode(false)}
+            />
+        </div>
+      )}
     </div>
   );
+  
 };
 
 export default ItemPage;
