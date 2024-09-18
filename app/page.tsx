@@ -9,6 +9,8 @@ import renderContent from '@/lib/utils/renderContent';
 import { truncateContent } from '@/lib/utils/truncateContent';
 import Loading from './loading';
 import Image from 'next/image';
+import { useAuth } from './components/AuthContext'; 
+import EditForm from './components/EditForm';
 
 const categories = ['cricket', 'formula1', 'music', 'lifestyle', 'makeup'];
 
@@ -20,6 +22,7 @@ interface Post {
   date: string;
   category: string;
   imageUrl?: string;
+  type: string;
 }
 
 const isReviewCategory = (category: string): boolean => {
@@ -46,6 +49,8 @@ const fetchPosts = async (): Promise<Post[]> => {
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingPost, setEditingPost] = useState<Post | null>(null); 
+  const { isAuthenticated } = useAuth(); 
 
   useEffect(() => {
     async function getPosts() {
@@ -63,6 +68,14 @@ const HomePage = () => {
 
     getPosts();
   }, []);
+
+  const handleEdit = (post: Post) => {
+    setEditingPost(post);
+  };
+
+  const handleCloseEditForm = () => {
+    setEditingPost(null);
+  };
 
   if (loading) return <Loading />;
 
@@ -103,10 +116,30 @@ const HomePage = () => {
                 >
                   Read more
                 </a>
+                {isAuthenticated && (
+                  <div className="mt-2 flex justify-end space-x-2">
+                    <button
+                      onClick={() => handleEdit(post)}
+                      className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+                    >
+                      Edit
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
+        {editingPost && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <EditForm
+              category={editingPost.category}
+              postId={editingPost.id}
+              initialData={editingPost}
+              onClose={handleCloseEditForm}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
