@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { addDoc, collection } from 'firebase/firestore';
-import { db } from '@/lib/firebaseConfig';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Import functions for file upload
+import { db, storage } from '@/lib/firebaseConfig'; // Import storage
+import Image from 'next/image';
+
 
 interface CreateFormProps {
   category: string;
@@ -11,6 +14,8 @@ const CreateForm = ({ category }: CreateFormProps) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
+  const [file, setFile] = useState<File | null>(null); // State for file
+  const [imageUrl, setImageUrl] = useState<string | null>(null); // State for image URL
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -20,17 +25,32 @@ const CreateForm = ({ category }: CreateFormProps) => {
     const nzDate = today.toLocaleDateString('en-GB', { timeZone: 'Pacific/Auckland' }).split('/').reverse().join('-');
     setDate(nzDate);
   }, []);
-  
-  
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+      setImageUrl(URL.createObjectURL(e.target.files[0])); // Preview the image
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
+      let imageUrl = '';
+
+      // Upload image if file is selected
+      if (file) {
+        const imageRef = ref(storage, `images/${file.name}`);
+        await uploadBytes(imageRef, file);
+        imageUrl = await getDownloadURL(imageRef);
+      }
+
       await addDoc(collection(db, category), {
         title,
         content,
         date,
+        imageUrl, // Save the image URL in Firestore
       });
 
       // Define categories for reviews and interests
@@ -90,6 +110,27 @@ const CreateForm = ({ category }: CreateFormProps) => {
             className="create-form-input"
           />
         </div>
+        <div className="mb-4">
+          <label htmlFor="file" className="create-form-label">Image:</label>
+          <input
+            id="file"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="create-form-input"
+          />
+          {imageUrl && (
+            <div className="relative w-full h-48">
+              <Image
+                src={imageUrl}
+                alt="Preview"
+                layout="fill"
+                objectFit="cover"
+                className="card-img"
+              />
+            </div>
+          )}
+        </div>
         <button
           type="submit"
           className="create-form-button"
@@ -99,6 +140,7 @@ const CreateForm = ({ category }: CreateFormProps) => {
       </form>
     </div>
   );
+  
 };
 
 export default CreateForm;

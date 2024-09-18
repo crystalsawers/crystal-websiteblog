@@ -124,6 +124,14 @@ main nav {
   @apply text-2xl font-bold mb-6 text-custom-green;
 }
 
+.card-img {
+  display: block;
+  max-width: 100%; 
+  height: auto; 
+  border-radius: 0.5rem; 
+  margin: 0 auto 1rem auto; 
+}
+
 
 /* Login Page Styles */
 .login-card {

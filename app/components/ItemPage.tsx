@@ -1,17 +1,20 @@
-"use client";
-import { useParams, useRouter } from 'next/navigation'; 
+'use client';
+
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore'; 
-import { db } from '../../lib/firebaseConfig'; 
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import renderContent from '../../lib/utils/renderContent';
 import NotFound from '../../app/not-found';
+import Image from 'next/image';
 
 interface DocumentData {
   type: string;
   title?: string;
   content: string;
   date?: string;
+  imageUrl?: string; 
 }
 
 const ItemPage = ({ collectionName }: { collectionName: string }) => {
@@ -42,10 +45,10 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
         }
       } catch (error: unknown) {
         if (error instanceof Error) {
-          console.error("Error fetching document:", error.message); 
+          console.error("Error fetching document:", error.message);
           setFetchError('Error fetching data: ' + error.message);
         } else {
-          console.error("An unknown error occurred", error); 
+          console.error("An unknown error occurred", error);
           setFetchError('An unknown error occurred.');
         }
       } finally {
@@ -64,10 +67,10 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
 
   if (fetchError) return <p>{fetchError}</p>;
 
-  if (!data) return <NotFound />; 
+  if (!data) return <NotFound />;
 
   return (
-    <div>
+    <div className="max-w-screen-lg mx-auto px-4">
       <button
         onClick={handleBack}
         className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 mb-4"
@@ -75,11 +78,31 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
         Back
       </button>
 
-      <div className="card">
-        {data.title && <h1 className="card-title">{data.title}</h1>}
-        {data.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(data.date))}</p>}
-        <div className="card-text">
-          {renderContent(data.content)}
+      <div className="card flex flex-col">
+        {data.date && (
+          <p className="card-text mb-4"><strong>Posted:</strong> {formatDate(new Date(data.date))}</p>
+        )}
+
+        {data.imageUrl && (
+          <div className="relative w-full mb-4" style={{ maxWidth: '800px', margin: '0 auto', maxHeight: '400px', overflow: 'hidden' }}>
+            <Image
+              src={data.imageUrl}
+              alt={data.title || 'Image'}
+              layout="responsive"
+              width={800} 
+              height={400} 
+              style={{ maxHeight: '600px', objectFit: 'cover' }} 
+            />
+          </div>
+        )}
+
+
+
+        <div>
+          {data.title && <h1 className="card-title">{data.title}</h1>}
+          <div className="card-text">
+            {renderContent(data.content)}
+          </div>
         </div>
       </div>
     </div>

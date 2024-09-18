@@ -11,6 +11,7 @@ import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 import renderContent from '@/lib/utils/renderContent';
 import { truncateContent } from '@/lib/utils/truncateContent';
+import Image from 'next/image';
 
 
 interface MusicDocument {
@@ -19,6 +20,7 @@ interface MusicDocument {
   title?: string;
   content: string;
   date?: string;
+  imageUrl?: string; // Add the imageUrl field
 }
 
 const Music = () => {
@@ -42,7 +44,8 @@ const Music = () => {
             type: data.type,
             title: data.title,
             content: data.content,
-            date: data.date
+            date: data.date,
+            imageUrl: data.imageUrl // Fetch imageUrl from Firestore
           };
         });
 
@@ -57,7 +60,6 @@ const Music = () => {
 
     fetchData();
   }, []);
-
 
   const handleCreate = () => {
     setIsCreating(true);
@@ -157,10 +159,20 @@ const Music = () => {
       ) : (
         data.map((item) => (
           <div key={item.id} className="card">
+            {item.imageUrl && (
+              <div className="relative w-full h-48">
+                <Image
+                  src={item.imageUrl}
+                  alt={item.title || 'Music post image'}
+                  layout="fill"
+                  objectFit="cover"
+                  className="card-img"
+                />
+              </div>
+            )}
             {item.title && <h2 className="card-title">{item.title}</h2>}
             {item.date && <p className="card-text"><strong>Posted:</strong> {formatDate(new Date(item.date))}</p>}
             
-            {/* Show truncated content */}
             <p className="card-text">{renderContent(truncateContent(item.content, 110))}</p>
   
             <a href={`/interests/music/${item.id}`} className="card-link">Read more</a>
