@@ -9,7 +9,8 @@ function git_commit_push() {
     git push                        
 }
 
-npm run format
+# Specific to this project - format code before pusing to repo
+npm run format 
 # Call the function
 git_commit_push
 

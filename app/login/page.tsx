@@ -16,8 +16,8 @@ const LoginPage = () => {
     try {
       // Firebase login with email and password
       await signInWithEmailAndPassword(auth, email, password);
-      // Redirect to protected page upon successful login
-      router.push('/protected-page');
+      // Redirect to main page
+      router.push('/');
     } catch (err) {
       console.error(err);
       setError('Invalid email or password');
