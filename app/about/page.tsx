@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import {
   collection,
   getDocs,
-  DocumentData,
   QuerySnapshot,
   doc,
   getDoc,
@@ -34,13 +33,22 @@ const About = () => {
     personal_story: string;
     contact_info: { email: string; linkedin: string; github: string };
   } | null>(null);
+
+  const [formErrors, setFormErrors] = useState({
+    introduction: '',
+    personal_story: '',
+    email: '',
+    linkedin: '',
+    github: '',
+  });
+
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
-          collection(db, 'about-me'),
+        const querySnapshot: QuerySnapshot = await getDocs(
+          collection(db, 'about-me')
         );
         const items: AboutMeDocument[] = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -80,10 +88,17 @@ const About = () => {
 
   const handleCloseEdit = () => {
     setEditingDoc(null);
+    setFormErrors({
+      introduction: '',
+      personal_story: '',
+      email: '',
+      linkedin: '',
+      github: '',
+    });
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -92,9 +107,48 @@ const About = () => {
     }));
   };
 
+  const validateForm = () => {
+    const errors = {
+      introduction: '',
+      personal_story: '',
+      email: '',
+      linkedin: '',
+      github: '',
+    };
+    let isValid = true;
+
+    if (!formData?.introduction.trim()) {
+      errors.introduction = 'Introduction is required';
+      isValid = false;
+    }
+    if (!formData?.personal_story.trim()) {
+      errors.personal_story = 'Personal story is required';
+      isValid = false;
+    }
+    if (!formData?.contact_info.email.trim()) {
+      errors.email = 'Email is required';
+      isValid = false;
+    }
+    if (!formData?.contact_info.linkedin.trim()) {
+      errors.linkedin = 'LinkedIn is required';
+      isValid = false;
+    }
+    if (!formData?.contact_info.github.trim()) {
+      errors.github = 'GitHub is required';
+      isValid = false;
+    }
+
+    setFormErrors(errors);
+    return isValid;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingDoc || !formData) return;
+
+    // Validate the form
+    const isFormValid = validateForm();
+    if (!isFormValid) return;
 
     try {
       const docRef = doc(db, 'about-me', editingDoc.id);
@@ -106,8 +160,8 @@ const About = () => {
       setEditingDoc(null);
       setData((prevData) =>
         prevData.map((doc) =>
-          doc.id === editingDoc.id ? { ...doc, ...formData } : doc,
-        ),
+          doc.id === editingDoc.id ? { ...doc, ...formData } : doc
+        )
       );
     } catch (error) {
       console.error('Error updating document:', error);
@@ -115,9 +169,7 @@ const About = () => {
   };
 
   if (loading)
-    return (
-      <p className="text-center text-custom-green">Loading About Me page...</p>
-    );
+    return <p className="text-center text-custom-green">Loading About Me page...</p>;
   if (error) return <p>{error}</p>;
 
   return (
@@ -135,6 +187,7 @@ const About = () => {
                 onChange={handleInputChange}
                 className="create-form-textarea"
               />
+              {formErrors.introduction && <p className="text-red-700">{formErrors.introduction}</p>}
             </label>
             <label className="create-form-label">
               Personal Story:
@@ -144,6 +197,7 @@ const About = () => {
                 onChange={handleInputChange}
                 className="create-form-textarea"
               />
+              {formErrors.personal_story && <p className="text-red-700">{formErrors.personal_story}</p>}
             </label>
             <label className="create-form-label">
               Email:
@@ -154,6 +208,7 @@ const About = () => {
                 onChange={handleInputChange}
                 className="create-form-input"
               />
+              {formErrors.email && <p className="text-red-700">{formErrors.email}</p>}
             </label>
             <label className="create-form-label">
               LinkedIn:
@@ -164,6 +219,7 @@ const About = () => {
                 onChange={handleInputChange}
                 className="create-form-input"
               />
+              {formErrors.linkedin && <p className="text-red-700">{formErrors.linkedin}</p>}
             </label>
             <label className="create-form-label">
               GitHub:
@@ -174,6 +230,7 @@ const About = () => {
                 onChange={handleInputChange}
                 className="create-form-input"
               />
+              {formErrors.github && <p className="text-red-700">{formErrors.github}</p>}
             </label>
             <div className="mt-4 flex justify-end space-x-2">
               <button type="submit" className="create-form-button">
@@ -201,8 +258,7 @@ const About = () => {
             <p className="card-text">{item.personal_story}</p>
             <h2 className="card-header">Contact Info</h2>
             <p className="card-text">
-              <span className="normal-text font-semibold">Email:</span>{' '}
-              {item.contact_info.email}
+              <span className="normal-text font-semibold">Email:</span> {item.contact_info.email}
             </p>
             <p className="card-text">
               <span className="normal-text font-semibold">LinkedIn:</span>{' '}
