@@ -46,6 +46,13 @@ const Journey = () => {
   const [formData, setFormData] = useState<Omit<JourneyDocument, 'id'> | null>(
     null,
   );
+  const [formErrors, setFormErrors] = useState({
+    start_of_journey: '',
+    milestones: '',
+    challenges: '',
+    skills: '',
+    future_aspirations: '',
+  });
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
@@ -79,7 +86,13 @@ const Journey = () => {
       if (docSnap.exists()) {
         const docData = docSnap.data() as Omit<JourneyDocument, 'id'>;
         setEditingDoc({ id: docSnap.id, ...docData });
-        setFormData(docData);
+        setFormData({
+          start_of_journey: docData.start_of_journey || '',
+          milestones: docData.milestones || [],
+          challenges: docData.challenges || [],
+          skills: docData.skills || [],
+          future_aspirations: docData.future_aspirations || '',
+        });
       }
     } catch (error) {
       console.error('Error fetching document for editing:', error);
@@ -89,21 +102,78 @@ const Journey = () => {
   const handleCloseEdit = () => {
     setEditingDoc(null);
     setFormData(null);
+    setFormErrors({
+      start_of_journey: '',
+      milestones: '',
+      challenges: '',
+      skills: '',
+      future_aspirations: '',
+    });
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData!,
-      [name]: value,
-    }));
+
+    // Handle array fields
+    if (name === 'milestones' || name === 'challenges' || name === 'skills') {
+      const arrayValues = value
+        .split('\n')
+        .map((item) => item.trim())
+        .filter((item) => item);
+      setFormData((prevData) => ({
+        ...prevData!,
+        [name]: arrayValues,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData!,
+        [name]: value,
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {
+      start_of_journey: '',
+      milestones: '',
+      challenges: '',
+      skills: '',
+      future_aspirations: '',
+    };
+    let isValid = true;
+
+    if (!formData?.start_of_journey.trim()) {
+      errors.start_of_journey = 'Start of journey is required';
+      isValid = false;
+    }
+    if (!formData?.milestones.length) {
+      errors.milestones = 'At least one milestone is required';
+      isValid = false;
+    }
+    if (!formData?.challenges.length) {
+      errors.challenges = 'At least one challenge is required';
+      isValid = false;
+    }
+    if (!formData?.skills.length) {
+      errors.skills = 'At least one skill is required';
+      isValid = false;
+    }
+    if (!formData?.future_aspirations.trim()) {
+      errors.future_aspirations = 'Future aspirations are required';
+      isValid = false;
+    }
+
+    setFormErrors(errors);
+    return isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingDoc || !formData) return;
+
+    // Validate the form
+    const isFormValid = validateForm();
+    if (!isFormValid) return;
 
     try {
       const docRef = doc(db, 'journey', editingDoc.id);
@@ -145,6 +215,9 @@ const Journey = () => {
                 onChange={handleInputChange}
                 className="create-form-textarea mt-1 block w-full"
               />
+              {formErrors.start_of_journey && (
+                <p className="text-red-700">{formErrors.start_of_journey}</p>
+              )}
             </label>
             <label className="create-form-label mb-4 block">
               Milestones:
@@ -158,6 +231,9 @@ const Journey = () => {
                 onChange={handleInputChange}
                 className="create-form-textarea mt-1 block w-full"
               />
+              {formErrors.milestones && (
+                <p className="text-red-700">{formErrors.milestones}</p>
+              )}
             </label>
             <label className="create-form-label mb-4 block">
               Challenges:
@@ -174,6 +250,9 @@ const Journey = () => {
                 onChange={handleInputChange}
                 className="create-form-textarea mt-1 block w-full"
               />
+              {formErrors.challenges && (
+                <p className="text-red-700">{formErrors.challenges}</p>
+              )}
             </label>
             <label className="create-form-label mb-4 block">
               Skills:
@@ -187,6 +266,9 @@ const Journey = () => {
                 onChange={handleInputChange}
                 className="create-form-textarea mt-1 block w-full"
               />
+              {formErrors.skills && (
+                <p className="text-red-700">{formErrors.skills}</p>
+              )}
             </label>
             <label className="create-form-label mb-4 block">
               Future Aspirations:
@@ -196,6 +278,9 @@ const Journey = () => {
                 onChange={handleInputChange}
                 className="create-form-textarea mt-1 block w-full"
               />
+              {formErrors.future_aspirations && (
+                <p className="text-red-700">{formErrors.future_aspirations}</p>
+              )}
             </label>
             <div className="mt-4 flex justify-end space-x-2">
               <button

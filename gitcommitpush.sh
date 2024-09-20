@@ -9,6 +9,7 @@ function git_commit_push() {
     git push                        
 }
 
+npm run format
 # Call the function
 git_commit_push
 

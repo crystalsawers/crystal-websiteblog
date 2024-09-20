@@ -48,7 +48,7 @@ const About = () => {
     const fetchData = async () => {
       try {
         const querySnapshot: QuerySnapshot = await getDocs(
-          collection(db, 'about-me')
+          collection(db, 'about-me'),
         );
         const items: AboutMeDocument[] = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -98,7 +98,7 @@ const About = () => {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -160,8 +160,8 @@ const About = () => {
       setEditingDoc(null);
       setData((prevData) =>
         prevData.map((doc) =>
-          doc.id === editingDoc.id ? { ...doc, ...formData } : doc
-        )
+          doc.id === editingDoc.id ? { ...doc, ...formData } : doc,
+        ),
       );
     } catch (error) {
       console.error('Error updating document:', error);
@@ -169,7 +169,9 @@ const About = () => {
   };
 
   if (loading)
-    return <p className="text-center text-custom-green">Loading About Me page...</p>;
+    return (
+      <p className="text-center text-custom-green">Loading About Me page...</p>
+    );
   if (error) return <p>{error}</p>;
 
   return (
@@ -187,7 +189,9 @@ const About = () => {
                 onChange={handleInputChange}
                 className="create-form-textarea"
               />
-              {formErrors.introduction && <p className="text-red-700">{formErrors.introduction}</p>}
+              {formErrors.introduction && (
+                <p className="text-red-700">{formErrors.introduction}</p>
+              )}
             </label>
             <label className="create-form-label">
               Personal Story:
@@ -197,7 +201,9 @@ const About = () => {
                 onChange={handleInputChange}
                 className="create-form-textarea"
               />
-              {formErrors.personal_story && <p className="text-red-700">{formErrors.personal_story}</p>}
+              {formErrors.personal_story && (
+                <p className="text-red-700">{formErrors.personal_story}</p>
+              )}
             </label>
             <label className="create-form-label">
               Email:
@@ -208,7 +214,9 @@ const About = () => {
                 onChange={handleInputChange}
                 className="create-form-input"
               />
-              {formErrors.email && <p className="text-red-700">{formErrors.email}</p>}
+              {formErrors.email && (
+                <p className="text-red-700">{formErrors.email}</p>
+              )}
             </label>
             <label className="create-form-label">
               LinkedIn:
@@ -219,7 +227,9 @@ const About = () => {
                 onChange={handleInputChange}
                 className="create-form-input"
               />
-              {formErrors.linkedin && <p className="text-red-700">{formErrors.linkedin}</p>}
+              {formErrors.linkedin && (
+                <p className="text-red-700">{formErrors.linkedin}</p>
+              )}
             </label>
             <label className="create-form-label">
               GitHub:
@@ -230,7 +240,9 @@ const About = () => {
                 onChange={handleInputChange}
                 className="create-form-input"
               />
-              {formErrors.github && <p className="text-red-700">{formErrors.github}</p>}
+              {formErrors.github && (
+                <p className="text-red-700">{formErrors.github}</p>
+              )}
             </label>
             <div className="mt-4 flex justify-end space-x-2">
               <button type="submit" className="create-form-button">
@@ -258,7 +270,8 @@ const About = () => {
             <p className="card-text">{item.personal_story}</p>
             <h2 className="card-header">Contact Info</h2>
             <p className="card-text">
-              <span className="normal-text font-semibold">Email:</span> {item.contact_info.email}
+              <span className="normal-text font-semibold">Email:</span>{' '}
+              {item.contact_info.email}
             </p>
             <p className="card-text">
               <span className="normal-text font-semibold">LinkedIn:</span>{' '}
