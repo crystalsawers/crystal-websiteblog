@@ -148,16 +148,9 @@ const Music = () => {
         )}
       </div>
       {isCreating && (
-        <div className="create-form-overlay">
-          <CreateForm category="music" />
-          <button
-            onClick={handleCloseForm}
-            className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
-          >
-            Close Form
-          </button>
-        </div>
+        <CreateForm category={category} onClose={handleCloseForm} />
       )}
+
       {editingPost && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
           <EditForm

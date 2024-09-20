@@ -7,9 +7,10 @@ import Image from 'next/image';
 
 interface CreateFormProps {
   category: string;
+  onClose: () => void;
 }
 
-const CreateForm = ({ category }: CreateFormProps) => {
+const CreateForm = ({ category, onClose }: CreateFormProps) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
@@ -102,86 +103,82 @@ const CreateForm = ({ category }: CreateFormProps) => {
   };
 
   return (
-    <div>
+    <div className="flex w-full max-w-7xl items-center justify-center p-16">
       <form onSubmit={handleSubmit} className="create-form">
-        <h1 className="create-form-title">Create {category} Post</h1>
-
-        <div className="mb-4">
-          <label htmlFor="title" className="create-form-label">
-            Title:
-          </label>
-          <input
-            id="title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="create-form-input"
-          />
-          {titleError && <p className="text-red-700">{titleError}</p>}{' '}
-          {/* Display title error */}
+        <h2 className="create-form-title">Create {category} Post</h2>
+        <label htmlFor="title" className="create-form-label">
+          Title:
+        </label>
+        <input
+          id="title"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="create-form-input"
+        />
+        {titleError && <p className="text-red-700">{titleError}</p>}{' '}
+        <label htmlFor="content" className="create-form-label">
+          Content:
+        </label>
+        <textarea
+          id="content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className="create-form-textarea"
+        />
+        {contentError && <p className="text-red-700">{contentError}</p>}{' '}
+        <label htmlFor="date" className="create-form-label">
+          Date:
+        </label>
+        <input
+          id="date"
+          type="date"
+          value={date}
+          readOnly
+          className="create-form-input"
+        />
+        <label htmlFor="file" className="create-form-label">
+          Image:
+        </label>
+        <input
+          id="file"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="create-form-input"
+        />
+        {imageUrl && (
+          <div className="relative mt-4 h-48 w-full">
+            <Image
+              src={imageUrl}
+              alt="Preview"
+              layout="fill"
+              objectFit="cover"
+              className="absolute inset-0 h-full w-full"
+            />
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="absolute right-2 top-2 rounded bg-red-500 p-2 text-white hover:bg-red-600"
+            >
+              Remove
+            </button>
+          </div>
+        )}
+        <div className="mt-6">
+          <button type="submit" className="create-form-button">
+            Create Post
+          </button>
         </div>
-
-        <div className="mb-4">
-          <label htmlFor="content" className="create-form-label">
-            Content:
-          </label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="create-form-textarea"
-          />
-          {contentError && <p className="text-red-700">{contentError}</p>}{' '}
-          {/* Display content error */}
+        <div className="mt-4 flex justify-center">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+          >
+            Close Form
+          </button>
         </div>
-
-        <div className="mb-4">
-          <label htmlFor="date" className="create-form-label">
-            Date:
-          </label>
-          <input
-            id="date"
-            type="date"
-            value={date}
-            readOnly
-            className="create-form-input"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="file" className="create-form-label">
-            Image:
-          </label>
-          <input
-            id="file"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="create-form-input"
-          />
-          {imageUrl && (
-            <div className="relative mt-4 h-48 w-full">
-              <Image
-                src={imageUrl}
-                alt="Preview"
-                layout="fill"
-                objectFit="cover"
-                className="absolute inset-0 h-full w-full"
-              />
-              <button
-                type="button"
-                onClick={handleRemoveImage}
-                className="absolute right-2 top-2 rounded bg-red-500 p-2 text-white hover:bg-red-600"
-              >
-                Remove
-              </button>
-            </div>
-          )}
-        </div>
-
-        <button type="submit" className="create-form-button">
-          Create Post
-        </button>
       </form>
     </div>
   );

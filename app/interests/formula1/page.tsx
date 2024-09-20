@@ -150,18 +150,9 @@ const Formula1 = () => {
         )}
       </div>
       {isCreating && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="relative w-full max-w-md rounded-lg bg-emerald-500 p-8 shadow-lg">
-            <CreateForm category={category} />
-            <button
-              onClick={handleCloseForm}
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 transform rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
-            >
-              Close Form
-            </button>
-          </div>
-        </div>
+        <CreateForm category={category} onClose={handleCloseForm} />
       )}
+
       {editingPost && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
           <EditForm

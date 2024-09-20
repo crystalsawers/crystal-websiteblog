@@ -148,16 +148,9 @@ const Makeup = () => {
         )}
       </div>
       {isCreating && (
-        <div>
-          <CreateForm category="makeup" />
-          <button
-            onClick={handleCloseForm}
-            className="create-form-close-button"
-          >
-            Close Form
-          </button>
-        </div>
+        <CreateForm category={category} onClose={handleCloseForm} />
       )}
+
       {editingPost && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
           <EditForm
