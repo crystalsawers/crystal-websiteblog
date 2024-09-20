@@ -29,6 +29,9 @@ const EditForm = ({
   const [content, setContent] = useState(initialData.content);
   const [imageUrl, setImageUrl] = useState(initialData.imageUrl || '');
   const [file, setFile] = useState<File | null>(null);
+
+  const [titleError, setTitleError] = useState<string | null>(null);
+  const [contentError, setContentError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +49,23 @@ const EditForm = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAuthenticated) return;
+
+    // Clear previous errors
+    setTitleError(null);
+    setContentError(null);
+
+    // Validation: Check if title and content are filled
+    if (!title.trim()) {
+      setTitleError('Title is required.');
+    }
+    if (!content.trim()) {
+      setContentError('Content is required.');
+    }
+
+    // Stop form submission if there are validation errors
+    if (!title.trim() || !content.trim()) {
+      return;
+    }
 
     try {
       const docRef = doc(db, category, postId);
@@ -73,6 +93,7 @@ const EditForm = ({
       <form onSubmit={handleSubmit} className="create-form">
         <h2 className="create-form-title">Edit Post</h2>
         {error && <p className="create-form-error">{error}</p>}
+
         <label className="create-form-label" htmlFor="title">
           Title:
         </label>
@@ -83,6 +104,8 @@ const EditForm = ({
           onChange={(e) => setTitle(e.target.value)}
           className="create-form-input"
         />
+        {titleError && <p className="text-red-700">{titleError}</p>}
+
         <label className="create-form-label" htmlFor="content">
           Content:
         </label>
@@ -92,6 +115,8 @@ const EditForm = ({
           onChange={(e) => setContent(e.target.value)}
           className="create-form-textarea"
         />
+        {contentError && <p className="text-red-700">{contentError}</p>}
+
         <label className="create-form-label" htmlFor="file">
           Image:
         </label>

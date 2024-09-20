@@ -98,7 +98,8 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
     }
   };
 
-  if (loading) return <p className="text-center text-custom-green">Loading...</p>;
+  if (loading)
+    return <p className="text-center text-custom-green">Loading...</p>;
 
   if (fetchError) return <p>{fetchError}</p>;
 

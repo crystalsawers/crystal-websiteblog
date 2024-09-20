@@ -94,7 +94,9 @@ const HomePage = () => {
   const handleDelete = async (post: Post) => {
     if (!isAuthenticated) return;
 
-    const confirmDelete = window.confirm('Are you sure you want to delete this post?');
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this post?',
+    );
 
     if (!confirmDelete) return;
 
