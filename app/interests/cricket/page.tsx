@@ -27,6 +27,7 @@ interface CricketDocument {
   title?: string;
   content: string;
   date?: string;
+  editedDate?: string;
   imageUrl?: string;
 }
 
@@ -54,6 +55,7 @@ const Cricket = () => {
             title: data.title,
             content: data.content,
             date: data.date,
+            editedDate: data.editedDate,
             imageUrl: data.imageUrl,
           };
         });
@@ -185,7 +187,11 @@ const Cricket = () => {
                 <strong>Posted:</strong> {formatDate(new Date(item.date))}
               </p>
             )}
-
+            {item.editedDate && (
+              <p className="card-text">
+                <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
+              </p>
+            )}
             {/* Show truncated content */}
             <p className="card-text">
               {renderContent(truncateContent(item.content, 110))}

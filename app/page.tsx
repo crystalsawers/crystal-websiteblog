@@ -26,6 +26,7 @@ interface Post {
   title: string;
   content: string;
   date: string;
+  editedDate?: string;
   category: string;
   imageUrl?: string;
   type: string;
@@ -50,6 +51,7 @@ const fetchPosts = async (): Promise<Post[]> => {
         title: data.title || '',
         content: data.content || '',
         date: data.date || '',
+        editedDate: data.editedDate || '',
         category,
         imageUrl: data.imageUrl || '',
         type: data.type || 'default',
@@ -137,6 +139,12 @@ const HomePage = () => {
                 {post.date && (
                   <p className="card-text">
                     <strong>Posted:</strong> {formatDate(new Date(post.date))}
+                  </p>
+                )}
+                {post.editedDate && (
+                  <p className="card-text">
+                    <strong>Edited:</strong>{' '}
+                    {formatDate(new Date(post.editedDate))}
                   </p>
                 )}
                 <p className="card-text">

@@ -27,6 +27,7 @@ interface Formula1Document {
   title?: string;
   content: string;
   date?: string;
+  editedDate?: string;
   imageUrl?: string;
 }
 
@@ -38,7 +39,7 @@ const Formula1 = () => {
   const [editingPost, setEditingPost] = useState<Formula1Document | null>(null);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
-  const category = 'formula1'; // Static category for Formula 1 page
+  const category = 'formula1';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +55,7 @@ const Formula1 = () => {
             title: data.title,
             content: data.content,
             date: data.date,
+            editedDate: data.editedDate,
             imageUrl: data.imageUrl,
           };
         });
@@ -187,7 +189,11 @@ const Formula1 = () => {
                 <strong>Posted:</strong> {formatDate(new Date(item.date))}
               </p>
             )}
-
+            {item.editedDate && (
+              <p className="card-text">
+                <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
+              </p>
+            )}
             {/* Show truncated content */}
             <p className="card-text">
               {renderContent(truncateContent(item.content, 110))}

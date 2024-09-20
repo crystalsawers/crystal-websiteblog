@@ -42,8 +42,8 @@ const EditForm = ({
   };
 
   const handleRemoveImage = () => {
-    setFile(null); // Clear the selected file
-    setImageUrl(''); // Clear the preview
+    setFile(null);
+    setImageUrl('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,7 +69,6 @@ const EditForm = ({
 
     try {
       const docRef = doc(db, category, postId);
-
       let newImageUrl = imageUrl;
 
       // Upload new image if file is selected
@@ -79,7 +78,13 @@ const EditForm = ({
         newImageUrl = await getDownloadURL(imageRef);
       }
 
-      await updateDoc(docRef, { title, content, imageUrl: newImageUrl });
+      await updateDoc(docRef, {
+        title,
+        content,
+        imageUrl: newImageUrl,
+        editedDate: new Date().toISOString(), // Update edited date here
+      });
+
       window.location.reload();
       onClose();
     } catch (error) {

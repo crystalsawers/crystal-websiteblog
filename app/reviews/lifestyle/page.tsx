@@ -27,6 +27,7 @@ interface LifestyleDocument {
   title?: string;
   content: string;
   date?: string;
+  editedDate?: string;
   imageUrl?: string;
 }
 
@@ -56,6 +57,7 @@ const Lifestyle = () => {
             title: data.title,
             content: data.content,
             date: data.date,
+            editedDate: data.editedDate,
             imageUrl: data.imageUrl,
           };
         });
@@ -187,6 +189,11 @@ const Lifestyle = () => {
             {item.date && (
               <p className="card-text">
                 <strong>Posted:</strong> {formatDate(new Date(item.date))}
+              </p>
+            )}
+            {item.editedDate && (
+              <p className="card-text">
+                <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
               </p>
             )}
             <p className="card-text">

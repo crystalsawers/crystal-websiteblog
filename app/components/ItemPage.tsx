@@ -16,6 +16,7 @@ interface DocumentData {
   title?: string;
   content: string;
   date?: string;
+  editedDate?: string;
   imageUrl?: string;
 }
 
@@ -135,12 +136,18 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
           </div>
         )}
       </div>
-
+      {/* Edit Form */}
       {!editMode ? (
         <div className="card flex flex-col">
           {data.date && (
             <p className="card-text mb-4">
               <strong>Posted:</strong> {formatDate(new Date(data.date))}
+            </p>
+          )}
+
+          {data.editedDate && (
+            <p className="card-text mb-4">
+              <strong>Edited:</strong> {formatDate(new Date(data.editedDate))}
             </p>
           )}
 

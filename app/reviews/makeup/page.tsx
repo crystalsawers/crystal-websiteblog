@@ -27,6 +27,7 @@ interface MakeupDocument {
   title?: string;
   content: string;
   date?: string;
+  editedDate?: string;
   imageUrl?: string;
 }
 
@@ -54,6 +55,7 @@ const Makeup = () => {
             title: data.title,
             content: data.content,
             date: data.date,
+            editedDate: data.editedDate,
             imageUrl: data.imageUrl,
           };
         });
@@ -183,6 +185,11 @@ const Makeup = () => {
             {item.date && (
               <p className="card-text">
                 <strong>Posted:</strong> {formatDate(new Date(item.date))}
+              </p>
+            )}
+            {item.editedDate && (
+              <p className="card-text">
+                <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
               </p>
             )}
             <p className="card-text">

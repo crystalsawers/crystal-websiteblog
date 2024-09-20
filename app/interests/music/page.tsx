@@ -27,7 +27,8 @@ interface MusicDocument {
   title?: string;
   content: string;
   date?: string;
-  imageUrl?: string; // Add the imageUrl field
+  editedDate?: string;
+  imageUrl?: string;
 }
 
 const Music = () => {
@@ -54,7 +55,8 @@ const Music = () => {
             title: data.title,
             content: data.content,
             date: data.date,
-            imageUrl: data.imageUrl, // Fetch imageUrl from Firestore
+            editedDate: data.editedDate,
+            imageUrl: data.imageUrl,
           };
         });
 
@@ -185,7 +187,11 @@ const Music = () => {
                 <strong>Posted:</strong> {formatDate(new Date(item.date))}
               </p>
             )}
-
+            {item.editedDate && (
+              <p className="card-text">
+                <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
+              </p>
+            )}
             <p className="card-text">
               {renderContent(truncateContent(item.content, 110))}
             </p>
