@@ -152,7 +152,9 @@ const Lifestyle = () => {
         )}
       </div>
       {isCreating && (
-        <CreateForm category={category} onClose={handleCloseForm} />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+          <CreateForm category={category} onClose={handleCloseForm} />
+        </div>
       )}
 
       {editingPost && (
