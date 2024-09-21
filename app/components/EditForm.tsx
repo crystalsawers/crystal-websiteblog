@@ -58,12 +58,12 @@ const EditForm = ({
     const container = target.parentNode as HTMLElement;
     const containerWidth = container.offsetWidth;
     const containerHeight = container.offsetHeight;
-    const initialObjectPositionX = target.style.left; // get the initial left position of the image
-    const initialObjectPositionY = target.style.top; // get the initial top position of the image
-    let isDragging = false; // add a flag to indicate whether the image is being dragged
+    const initialObjectPositionX = target.style.left;
+    const initialObjectPositionY = target.style.top;
+    let isDragging = false;
 
     const handleMouseMove = (event: MouseEvent) => {
-      if (!isDragging) return; // only trigger the function if the image is being dragged
+      if (!isDragging) return;
       const offsetX = event.clientX - startX;
       const offsetY = event.clientY - startY;
       const objectPositionX = `${parseFloat(initialObjectPositionX) + (offsetX / containerWidth) * 100}%`;
@@ -121,7 +121,7 @@ const EditForm = ({
         title,
         content,
         imageUrl: newImageUrl,
-        editedDate: new Date().toISOString(), // Update edited date here
+        editedDate: new Date().toISOString(),
       });
 
       window.location.reload();
