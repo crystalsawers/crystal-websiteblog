@@ -18,6 +18,7 @@ import Loading from './loading';
 import Image from 'next/image';
 import { useAuth } from './components/AuthContext';
 import EditForm from './components/EditForm';
+import CreateForm from './components/CreateForm'; // Import CreateForm
 
 const categories = ['cricket', 'formula1', 'music', 'lifestyle', 'makeup'];
 
@@ -67,6 +68,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { isAuthenticated } = useAuth();
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false); // State to toggle CreateForm
 
   useEffect(() => {
     async function getPosts() {
@@ -111,12 +113,31 @@ const HomePage = () => {
     }
   };
 
+  const handleCreatePost = () => {
+    setIsCreateFormOpen(true); // Open the CreateForm
+  };
+
+  const handleCloseCreateForm = () => {
+    setIsCreateFormOpen(false); // Close the CreateForm
+  };
+
   if (loading) return <Loading />;
 
   return (
     <div>
       <div className="mx-auto max-w-4xl">
         <h2 className="page-title mb-6 text-center">Latest Posts</h2>
+        {isAuthenticated && (
+          <div className="mb-6 flex justify-end">
+            <button
+              onClick={handleCreatePost}
+              className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+            >
+              Create Post
+            </button>
+          </div>
+        )}
+
         <div>
           {posts.map((post) => {
             const section = isReviewCategory(post.category)
@@ -176,6 +197,16 @@ const HomePage = () => {
             );
           })}
         </div>
+        {isCreateFormOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <CreateForm
+              category=""
+              onClose={handleCloseCreateForm}
+              isMainPage
+            />
+          </div>
+        )}
+
         {editingPost && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <EditForm

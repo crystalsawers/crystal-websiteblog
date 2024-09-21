@@ -8,9 +8,14 @@ import Image from 'next/image';
 interface CreateFormProps {
   category: string;
   onClose: () => void;
+  isMainPage?: boolean;
 }
 
-const CreateForm = ({ category, onClose }: CreateFormProps) => {
+const CreateForm = ({
+  category,
+  onClose,
+  isMainPage = false,
+}: CreateFormProps) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
@@ -18,6 +23,7 @@ const CreateForm = ({ category, onClose }: CreateFormProps) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -74,8 +80,11 @@ const CreateForm = ({ category, onClose }: CreateFormProps) => {
         imageUrl = await getDownloadURL(imageRef);
       }
 
+      // Determine the category to use (main page or passed category prop)
+      const finalCategory = isMainPage ? selectedCategory : category;
+
       // Add document to Firestore
-      await addDoc(collection(db, category), {
+      await addDoc(collection(db, finalCategory || ''), {
         title,
         content,
         date,
@@ -87,10 +96,10 @@ const CreateForm = ({ category, onClose }: CreateFormProps) => {
       const interestCategories = ['formula1', 'cricket', 'music'];
       let redirectPath = '';
 
-      if (reviewCategories.includes(category)) {
-        redirectPath = `/reviews/${category}`;
-      } else if (interestCategories.includes(category)) {
-        redirectPath = `/interests/${category}`;
+      if (reviewCategories.includes(finalCategory || '')) {
+        redirectPath = `/reviews/${finalCategory}`;
+      } else if (interestCategories.includes(finalCategory || '')) {
+        redirectPath = `/interests/${finalCategory}`;
       } else {
         redirectPath = '/';
       }
@@ -137,6 +146,27 @@ const CreateForm = ({ category, onClose }: CreateFormProps) => {
           readOnly
           className="create-form-input"
         />
+        {/* Conditionally render category selection for main page */}
+        {isMainPage && (
+          <div>
+            <label htmlFor="category" className="create-form-label">
+              Category:
+            </label>
+            <select
+              id="category"
+              value={selectedCategory || ''}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="create-form-input"
+            >
+              <option value="">Select Category</option>
+              <option value="formula1">Formula 1</option>
+              <option value="cricket">Cricket</option>
+              <option value="music">Music</option>
+              <option value="lifestyle">Lifestyle</option>
+              <option value="makeup">Makeup</option>
+            </select>
+          </div>
+        )}
         <label htmlFor="file" className="create-form-label">
           Image:
         </label>
