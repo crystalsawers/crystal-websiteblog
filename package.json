@@ -10,6 +10,7 @@
     "lint": "next lint",
     "import-data": "node backend/importData.js",
     "export-data": "node backend/exportData.js",
+    "export-data:manual": "node backend/exportData.js manual",
     "format": "prettier --write ."
   },
   "dependencies": {
