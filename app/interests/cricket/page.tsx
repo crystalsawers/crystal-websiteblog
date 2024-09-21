@@ -181,7 +181,7 @@ const Cricket = () => {
                 />
               </div>
             )}
-            {item.title && <h2 className="card-title">{item.title}</h2>}
+            {item.title && <h2 className="card-title pt-4">{item.title}</h2>}
             {item.date && (
               <p className="card-text">
                 <strong>Posted:</strong> {formatDate(new Date(item.date))}
@@ -192,7 +192,6 @@ const Cricket = () => {
                 <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
               </p>
             )}
-            {/* Show truncated content */}
             <p className="card-text">
               {renderContent(truncateContent(item.content, 110))}
             </p>

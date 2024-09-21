@@ -173,7 +173,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
           )}
 
           <div>
-            {data.title && <h1 className="card-title">{data.title}</h1>}
+            {data.title && <h1 className="card-title pt-6">{data.title}</h1>}
             <div className="card-text">{renderContent(data.content)}</div>
           </div>
         </div>
