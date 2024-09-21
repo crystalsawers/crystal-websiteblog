@@ -112,7 +112,7 @@ const CreateForm = ({
   };
 
   return (
-    <div className="flex w-full max-w-7xl items-center justify-center p-16">
+    <div className="flex w-full max-w-7xl items-center justify-center p-4">
       <form onSubmit={handleSubmit} className="create-form">
         <h2 className="create-form-title">Create {category} Post</h2>
         <label htmlFor="title" className="create-form-label">

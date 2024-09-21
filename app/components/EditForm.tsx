@@ -94,7 +94,7 @@ const EditForm = ({
   };
 
   return (
-    <div className="flex w-full max-w-7xl items-center justify-center p-16">
+    <div className="flex w-full max-w-7xl items-center justify-center p-4">
       <form onSubmit={handleSubmit} className="create-form">
         <h2 className="create-form-title">Edit Post</h2>
         {error && <p className="create-form-error">{error}</p>}
