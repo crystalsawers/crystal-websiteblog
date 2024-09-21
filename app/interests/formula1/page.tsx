@@ -183,7 +183,11 @@ const Formula1 = () => {
                 />
               </div>
             )}
-            {item.title && <h2 className="card-title pt-4">{item.title}</h2>}
+            {item.title && (
+              <div className={item.imageUrl ? 'pt-4' : ''}>
+                <h2 className="card-title">{item.title}</h2>
+              </div>
+            )}
             {item.date && (
               <p className="card-text">
                 <strong>Posted:</strong> {formatDate(new Date(item.date))}
@@ -194,7 +198,6 @@ const Formula1 = () => {
                 <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
               </p>
             )}
-            {/* Show truncated content */}
             <p className="card-text">
               {renderContent(truncateContent(item.content, 110))}
             </p>

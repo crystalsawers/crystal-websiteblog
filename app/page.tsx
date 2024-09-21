@@ -157,7 +157,9 @@ const HomePage = () => {
                   </div>
                 )}
                 {post.title && (
-                  <h2 className="card-title pt-4">{post.title}</h2>
+                  <div className={post.imageUrl ? 'pt-4' : ''}>
+                    <h2 className="card-title">{post.title}</h2>
+                  </div>
                 )}
                 {post.date && (
                   <p className="card-text">
