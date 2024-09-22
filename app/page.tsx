@@ -69,7 +69,7 @@ const HomePage = () => {
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { isAuthenticated } = useAuth();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false); // State to toggle CreateForm
-  const specificPostId = 'kYnS1YWTL2phgbC0fQnr'; // just the one f1 post that wont cooperate
+  const specificPostIds = ['kYnS1YWTL2phgbC0fQnr', 'NDhZKCvMgcjOrwIgCJxE']; // just the f1 posts that wont cooperate
 
   useEffect(() => {
     async function getPosts() {
@@ -154,7 +154,9 @@ const HomePage = () => {
                       layout="fill"
                       objectFit="cover"
                       objectPosition={
-                        post.id === specificPostId ? 'top center' : 'center'
+                        specificPostIds.includes(post.id)
+                          ? 'top center'
+                          : 'center'
                       }
                       className="card-img"
                     />
