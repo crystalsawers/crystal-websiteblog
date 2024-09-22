@@ -69,6 +69,7 @@ const HomePage = () => {
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { isAuthenticated } = useAuth();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false); // State to toggle CreateForm
+  const specificPostId = 'kYnS1YWTL2phgbC0fQnr'; // just the one f1 post that wont cooperate
 
   useEffect(() => {
     async function getPosts() {
@@ -146,12 +147,15 @@ const HomePage = () => {
             return (
               <div key={post.id} className="card mb-4">
                 {post.imageUrl && (
-                  <div className="relative h-48 w-full">
+                  <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
                     <Image
                       src={post.imageUrl}
                       alt={post.title || 'Posted image'}
                       layout="fill"
                       objectFit="cover"
+                      objectPosition={
+                        post.id === specificPostId ? 'top center' : 'center'
+                      }
                       className="card-img"
                     />
                   </div>
