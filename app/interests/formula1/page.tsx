@@ -40,6 +40,7 @@ const Formula1 = () => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const category = 'formula1';
+  const specificPostId = 'kYnS1YWTL2phgbC0fQnr'; // just the one f1 post that wont cooperate
 
   useEffect(() => {
     const fetchData = async () => {
@@ -173,12 +174,14 @@ const Formula1 = () => {
         data.map((item) => (
           <div key={item.id} className="card">
             {item.imageUrl && (
-              <div className="relative h-48 w-full">
+              <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
                 <Image
                   src={item.imageUrl}
                   alt={item.title || 'Formula 1 post image'}
                   layout="fill"
-                  objectFit="cover"
+                  objectPosition={
+                    item.id === specificPostId ? 'top center' : 'center'
+                  }
                   className="card-img"
                 />
               </div>
