@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from './AuthContext'; 
+import { useAuth } from './AuthContext';
 
 const SubscribeButton = () => {
   const router = useRouter();
-  const { isAuthenticated } = useAuth(); 
+  const { isAuthenticated } = useAuth();
 
   // Render the Subscribe link if the user is NOT authenticated
   const handleSubscribe = () => {

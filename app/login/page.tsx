@@ -20,7 +20,7 @@ const LoginPage = () => {
       setError('You are not allowed to log in.');
       return;
     }
-    
+
     try {
       // Firebase login with email and password
       await signInWithEmailAndPassword(auth, email, password);

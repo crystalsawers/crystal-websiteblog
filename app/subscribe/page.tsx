@@ -3,7 +3,11 @@
 
 import { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { addSubscriber, checkSubscriberExists, removeSubscriber } from '../../lib/firebaseUtils';
+import {
+  addSubscriber,
+  checkSubscriberExists,
+  removeSubscriber,
+} from '../../lib/firebaseUtils';
 
 const SubscribePage = () => {
   const [email, setEmail] = useState('');
@@ -26,14 +30,18 @@ const SubscribePage = () => {
     if (isSubscribing) {
       const exists = await checkSubscriberExists(email);
       if (exists) {
-        setMessage("You're already signed up. Please contact us if there are any issues.");
+        setMessage(
+          "You're already signed up. Please contact us if there are any issues.",
+        );
         return;
       }
       const success = await addSubscriber(email);
       if (success) {
-        setMessage('Thank you for subscribing! A confirmation email has been sent.');
-        
-        // Trigger notification to new subscribers 
+        setMessage(
+          'Thank you for subscribing! A confirmation email has been sent.',
+        );
+
+        // Trigger notification to new subscribers
         await fetch('/api/sendNotification', {
           method: 'POST',
           headers: {
@@ -65,9 +73,11 @@ const SubscribePage = () => {
 
   return (
     <main className="mx-auto my-12 max-w-5xl px-8">
-      <div className="subscribe-card bg-emerald-500 rounded-lg p-6 shadow-md">
-        <h1 className="page-title text-gray-100 mb-4">
-          {isSubscribing ? 'Subscribe to Our Latest Posts' : 'Unsubscribe from Our Posts'}
+      <div className="subscribe-card rounded-lg bg-emerald-500 p-6 shadow-md">
+        <h1 className="page-title mb-4 text-gray-100">
+          {isSubscribing
+            ? 'Subscribe to Our Latest Posts'
+            : 'Unsubscribe from Our Posts'}
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <input
@@ -82,11 +92,11 @@ const SubscribePage = () => {
             {isSubscribing ? 'Subscribe' : 'Unsubscribe'}
           </button>
         </form>
-        {message && <p className="text-gray-200 mt-4">{message}</p>}
+        {message && <p className="mt-4 text-gray-200">{message}</p>}
 
         <button
           onClick={() => setIsSubscribing(!isSubscribing)}
-          className="text-gray-200 mt-4 underline"
+          className="mt-4 text-gray-200 underline"
         >
           {isSubscribing ? 'Want to unsubscribe?' : 'Want to subscribe?'}
         </button>
