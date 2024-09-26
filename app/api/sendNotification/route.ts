@@ -14,15 +14,7 @@ export async function POST(request: Request) {
   const emails = await getSubscriberEmails(); // Fetch all subscriber emails
   console.log('Fetched subscriber emails:', emails);
 
-  // Check if there are any subscribers
-  if (emails.length === 0) {
-    console.warn('No subscribers found. No emails will be sent.');
-    return NextResponse.json({
-      success: true,
-      message: 'No subscribers found.',
-    });
-  }
-
+  // Create the transporter for sending emails
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -31,59 +23,84 @@ export async function POST(request: Request) {
     },
   });
 
-  // Send notification email to subscribers about the new post
-  const emailPromises = emails.map((email) => {
-    const mailOptions = {
-      from: process.env.NEXT_PUBLIC_EMAIL_USER,
-      to: email,
-      subject: `${postTitle}`, // Use the new post title
-      text: `Here is the link to the post: ${postUrl}`,
-    };
-
-    console.log('Sending email to:', email, 'with options:', mailOptions);
-
-    return transporter
-      .sendMail(mailOptions)
-      .then(() => {
-        console.log(`Email sent successfully to: ${email}`);
-      })
-      .catch((error) => {
-        console.error(`Error sending email to ${email}:`, error);
-      });
-  });
-
-  // If the notificationEmail is provided, send a notification to the admin about a new subscriber
-  if (notificationEmail) {
-    const notificationMailOptions = {
-      from: process.env.NEXT_PUBLIC_EMAIL_USER,
-      to: process.env.NEXT_PUBLIC_EMAIL_USER, // Admin email to receive notifications
-      subject: `New Subscriber: ${notificationEmail}`,
-      text: `A new subscriber has joined with the email: ${notificationEmail}`,
-    };
-
-    await transporter
-      .sendMail(notificationMailOptions)
-      .then(() => {
-        console.log(
-          `Notification email sent for new subscriber: ${notificationEmail}`,
-        );
-      })
-      .catch((error) => {
-        console.error(
-          `Error sending notification email for ${notificationEmail}:`,
-          error,
-        );
-      });
-  }
-
-  try {
-    await Promise.all(emailPromises);
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Error sending notification emails:', error);
+  // Check if we have subscribers
+  if (emails.length === 0) {
+    console.warn('No subscribers found. No emails will be sent.');
     return NextResponse.json({
-      success: false,
-      error: 'Error sending notification emails',
+      success: true,
+      message: 'No subscribers found.',
     });
   }
+
+  // Only one email sending logic for new subscriptions
+  if (postTitle.startsWith("New Subscriber:")) {
+    const newSubscriberEmail = postTitle.split(': ')[1];
+
+    // Send email to the new subscriber
+    const subscriberMailOptions = {
+      from: process.env.NEXT_PUBLIC_EMAIL_USER,
+      to: newSubscriberEmail, // Send to the new subscriber's email
+      subject: `Welcome to our newsletter!`,
+      text: `Thank you for subscribing! Here is the link to our latest post: ${postUrl}`,
+    };
+
+    console.log('Sending email to new subscriber:', newSubscriberEmail);
+    
+    // Notify admin about the new subscriber
+    const adminMailOptions = {
+      from: process.env.NEXT_PUBLIC_EMAIL_USER,
+      to: process.env.NEXT_PUBLIC_EMAIL_USER, // Admin email
+      subject: `New Subscriber: ${newSubscriberEmail}`,
+      text: `A new subscriber has joined: ${newSubscriberEmail}.`,
+    };
+
+    console.log('Sending notification email to admin about new subscriber:', newSubscriberEmail);
+
+    // Send both emails
+    try {
+      await Promise.all([
+        transporter.sendMail(subscriberMailOptions),
+        transporter.sendMail(adminMailOptions),
+      ]);
+
+      console.log(`Emails sent successfully: ${newSubscriberEmail} and admin notification.`);
+      return NextResponse.json({ success: true });
+    } catch (error) {
+      console.error('Error sending notification emails:', error);
+      return NextResponse.json({
+        success: false,
+        error: 'Error sending notification emails',
+      });
+    }
+  }
+
+  // If it's a generic subscription request
+  if (postTitle === "New Subscription") {
+    const subscriptionMailOptions = {
+      from: process.env.NEXT_PUBLIC_EMAIL_USER,
+      to: notificationEmail, // This should be the email of the person subscribing
+      subject: `Thank you for subscribing!`,
+      text: `Here is the link to our latest post: ${postUrl}`,
+    };
+
+    console.log('Sending email to subscriber:', notificationEmail);
+
+    try {
+      await transporter.sendMail(subscriptionMailOptions);
+      console.log(`Subscription email sent to: ${notificationEmail}`);
+      return NextResponse.json({ success: true });
+    } catch (error) {
+      console.error('Error sending subscription email:', error);
+      return NextResponse.json({
+        success: false,
+        error: 'Error sending subscription email',
+      });
+    }
+  }
+
+  // If the postTitle does not match any expected values
+  return NextResponse.json({
+    success: false,
+    error: 'Invalid post title',
+  });
 }
