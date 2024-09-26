@@ -32,20 +32,10 @@ export async function POST(request: Request) {
     });
   }
 
-  // Only one email sending logic for new subscriptions
+  // Check for new subscriber logic
   if (postTitle.startsWith("New Subscriber:")) {
-    const newSubscriberEmail = postTitle.split(': ')[1];
+    const newSubscriberEmail = postTitle.split(': ')[1].trim();
 
-    // Send email to the new subscriber
-    const subscriberMailOptions = {
-      from: process.env.NEXT_PUBLIC_EMAIL_USER,
-      to: newSubscriberEmail, // Send to the new subscriber's email
-      subject: `Welcome to our newsletter!`,
-      text: `Thank you for subscribing! Here is the link to our latest post: ${postUrl}`,
-    };
-
-    console.log('Sending email to new subscriber:', newSubscriberEmail);
-    
     // Notify admin about the new subscriber
     const adminMailOptions = {
       from: process.env.NEXT_PUBLIC_EMAIL_USER,
@@ -56,11 +46,19 @@ export async function POST(request: Request) {
 
     console.log('Sending notification email to admin about new subscriber:', newSubscriberEmail);
 
-    // Send both emails
+    // Send email to the new subscriber
+    const subscriberMailOptions = {
+      from: process.env.NEXT_PUBLIC_EMAIL_USER,
+      to: newSubscriberEmail, // Send to the new subscriber's email
+      subject: `Thank you for subscribing to my blog!`,
+      text: `Thank you for subscribing! Here is the link to our latest post: ${postUrl}`,
+    };
+
     try {
+      // Send both emails
       await Promise.all([
-        transporter.sendMail(subscriberMailOptions),
-        transporter.sendMail(adminMailOptions),
+        transporter.sendMail(adminMailOptions), // Send notification to admin
+        transporter.sendMail(subscriberMailOptions), // Send welcome email to subscriber
       ]);
 
       console.log(`Emails sent successfully: ${newSubscriberEmail} and admin notification.`);
@@ -74,28 +72,14 @@ export async function POST(request: Request) {
     }
   }
 
-  // If it's a generic subscription request
+  // Handle generic subscription request
   if (postTitle === "New Subscription") {
-    const subscriptionMailOptions = {
-      from: process.env.NEXT_PUBLIC_EMAIL_USER,
-      to: notificationEmail, // This should be the email of the person subscribing
-      subject: `Thank you for subscribing!`,
-      text: `Here is the link to our latest post: ${postUrl}`,
-    };
-
-    console.log('Sending email to subscriber:', notificationEmail);
-
-    try {
-      await transporter.sendMail(subscriptionMailOptions);
-      console.log(`Subscription email sent to: ${notificationEmail}`);
-      return NextResponse.json({ success: true });
-    } catch (error) {
-      console.error('Error sending subscription email:', error);
-      return NextResponse.json({
-        success: false,
-        error: 'Error sending subscription email',
-      });
-    }
+    // Prevent sending a welcome email here if a new subscriber was just added
+    console.log(`Ignoring request for new subscription since it's already handled as a new subscriber: ${notificationEmail}`);
+    return NextResponse.json({
+      success: false,
+      error: 'This subscription has already been processed as a new subscriber.',
+    });
   }
 
   // If the postTitle does not match any expected values
