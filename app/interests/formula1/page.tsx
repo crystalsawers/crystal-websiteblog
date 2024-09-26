@@ -40,11 +40,7 @@ const Formula1 = () => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const category = 'formula1';
-  const specificPostIds = [
-    'kYnS1YWTL2phgbC0fQnr',
-    'NDhZKCvMgcjOrwIgCJxE',
-    'aq4oBXAcTg0Cd6WllsSV',
-  ]; // just the f1 posts that wont cooperate
+  const specificPostIds = ['02V6uLUBhnKstE8ofH6H']; // make this one centered
 
   useEffect(() => {
     const fetchData = async () => {
@@ -185,7 +181,7 @@ const Formula1 = () => {
                   layout="fill"
                   objectFit="cover"
                   objectPosition={
-                    specificPostIds.includes(item.id) ? 'top center' : 'center'
+                    specificPostIds.includes(item.id) ? 'center' : 'top center'
                   }
                   className="card-img"
                 />

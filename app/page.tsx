@@ -70,10 +70,10 @@ const HomePage = () => {
   const { isAuthenticated } = useAuth();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false); // State to toggle CreateForm
   const specificPostIds = [
-    'kYnS1YWTL2phgbC0fQnr',
-    'NDhZKCvMgcjOrwIgCJxE',
-    'aq4oBXAcTg0Cd6WllsSV',
-  ]; // just the f1 posts that wont cooperate
+    'Y4f0mW8ZiX35uLxGyg1S',
+    '02V6uLUBhnKstE8ofH6H',
+    'vcVid0cpfoGh4KdozgcS',
+  ]; // make the ones I want centered
 
   useEffect(() => {
     async function getPosts() {
@@ -159,8 +159,8 @@ const HomePage = () => {
                       objectFit="cover"
                       objectPosition={
                         specificPostIds.includes(post.id)
-                          ? 'top center'
-                          : 'center'
+                          ? 'center'
+                          : 'top center'
                       }
                       className="card-img"
                     />
