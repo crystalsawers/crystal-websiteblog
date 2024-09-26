@@ -42,17 +42,28 @@ const SubscribePage = () => {
         );
 
         // Trigger notification to new subscribers
-        await fetch('/api/sendNotification', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            postTitle: 'New Subscription',
-            postUrl: 'https://crystal-websiteblog.vercel.app/', // main page contains latest posts anyway but i want this triggered after each thing I post
-            notificationEmail: process.env.NEXT_PUBLIC_EMAIL_USER,
-          }),
-        });
+        try {
+          const response = await fetch('/api/sendNotification', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              postTitle: 'New Subscription',
+              postUrl: 'https://crystal-websiteblog.vercel.app/',
+              notificationEmail: process.env.NEXT_PUBLIC_EMAIL_USER,
+            }),
+          });
+        
+          if (!response.ok) {
+            const errorResponse = await response.json();
+            console.error('Error sending notification:', errorResponse);
+          } else {
+            console.log('Notification sent successfully!');
+          }
+        } catch (error) {
+          console.error('Network error while sending notification:', error);
+        }
       } else {
         setMessage('There was an error. Please try again.');
       }
