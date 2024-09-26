@@ -130,6 +130,22 @@ const CreateForm = ({
         imageUrl,
       });
 
+    // // Notify subscribers about the new post
+    // const postUrl = window.location.href; // URL for the new post
+    // console.log('Current post URL:', postUrl);
+    // await fetch('/api/sendNotification', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     postTitle: `New Post: ${title}`,  // Customize the title here
+    //     postUrl: postUrl,  // The URL of the new post
+    //     type: 'existing',  // Indicate this is a post notification
+    //   }),
+    // });
+
+
       // Redirect logic
       const reviewCategories = ['makeup', 'lifestyle'];
       const interestCategories = ['formula1', 'cricket', 'music'];
