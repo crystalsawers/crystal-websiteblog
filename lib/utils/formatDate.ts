@@ -5,8 +5,8 @@
  * @param date - The date to format.
  * @param timeZone - The timezone to format the date in (defaults to
  *   'Pacific/Auckland' for NZ time).
- * @returns The formatted date string, or 'Invalid Date' if the input is
- *   invalid.
+ * @returns The formatted date string with time, or 'Invalid Date' if the input
+ *   is invalid.
  */
 export const formatDate = (
   date: Date | string,
@@ -16,10 +16,18 @@ export const formatDate = (
 
   if (!dateObj || isNaN(dateObj.getTime())) return 'Invalid Date';
 
-  return dateObj.toLocaleDateString('en-GB', {
+  const formattedDate = dateObj.toLocaleDateString('en-GB', {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
     timeZone,
   });
+
+  const formattedTime = dateObj.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone,
+  });
+
+  return `${formattedDate} at ${formattedTime}`;
 };
