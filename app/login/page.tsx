@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../lib/firebaseConfig';
 
+const allowedUsers = ['crystalsawers39@gmail.com'];
+
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,12 +15,18 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Check if the email is in the allowed users list
+    if (!allowedUsers.includes(email)) {
+      setError('You are not allowed to log in.');
+      return;
+    }
+    
     try {
       // Firebase login with email and password
       await signInWithEmailAndPassword(auth, email, password);
       // Redirect to main page
       router.push('/');
-    } catch (err) {
+    } catch (err: unknown) {
       console.error(err);
       setError('Invalid email or password');
     }
