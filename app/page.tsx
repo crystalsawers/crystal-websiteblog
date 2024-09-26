@@ -18,7 +18,7 @@ import Loading from './loading';
 import Image from 'next/image';
 import { useAuth } from './components/AuthContext';
 import EditForm from './components/EditForm';
-import CreateForm from './components/CreateForm'; // Import CreateForm
+import CreateForm from './components/CreateForm';
 
 const categories = ['cricket', 'formula1', 'music', 'lifestyle', 'makeup'];
 
@@ -69,7 +69,11 @@ const HomePage = () => {
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { isAuthenticated } = useAuth();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false); // State to toggle CreateForm
-  const specificPostIds = ['kYnS1YWTL2phgbC0fQnr', 'NDhZKCvMgcjOrwIgCJxE']; // just the f1 posts that wont cooperate
+  const specificPostIds = [
+    'kYnS1YWTL2phgbC0fQnr',
+    'NDhZKCvMgcjOrwIgCJxE',
+    'aq4oBXAcTg0Cd6WllsSV',
+  ]; // just the f1 posts that wont cooperate
 
   useEffect(() => {
     async function getPosts() {

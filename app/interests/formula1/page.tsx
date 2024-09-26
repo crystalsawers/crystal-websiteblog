@@ -40,7 +40,11 @@ const Formula1 = () => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const category = 'formula1';
-  const specificPostId = 'kYnS1YWTL2phgbC0fQnr'; // just the one f1 post that wont cooperate
+  const specificPostIds = [
+    'kYnS1YWTL2phgbC0fQnr',
+    'NDhZKCvMgcjOrwIgCJxE',
+    'aq4oBXAcTg0Cd6WllsSV',
+  ]; // just the f1 posts that wont cooperate
 
   useEffect(() => {
     const fetchData = async () => {
@@ -172,15 +176,16 @@ const Formula1 = () => {
         <p>No Formula 1 posts yet</p>
       ) : (
         data.map((item) => (
-          <div key={item.id} className="card">
+          <div key={item.id} className="card mb-4">
             {item.imageUrl && (
               <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
                 <Image
                   src={item.imageUrl}
                   alt={item.title || 'Formula 1 post image'}
                   layout="fill"
+                  objectFit="cover"
                   objectPosition={
-                    item.id === specificPostId ? 'top center' : 'center'
+                    specificPostIds.includes(item.id) ? 'top center' : 'center'
                   }
                   className="card-img"
                 />
