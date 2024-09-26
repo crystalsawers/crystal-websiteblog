@@ -47,6 +47,21 @@ export const removeSubscriber = async (email: string): Promise<boolean> => {
 
 // Function to fetch subscriber emails (to be used in API route)
 export const getSubscriberEmails = async () => {
-    const subscribersSnap = await getDocs(collection(db, 'subscribers'));
-    return subscribersSnap.docs.map(doc => doc.data().email);
+  try {
+      const subscribersSnap = await getDocs(collection(db, 'subscribers'));
+      
+      // Log the number of subscribers fetched
+      console.log('Number of subscribers fetched:', subscribersSnap.docs.length);
+
+      // Map through the documents to get email addresses
+      const emails = subscribersSnap.docs.map(doc => {
+          console.log(`Fetched email: ${doc.data().email}`); // Log each email
+          return doc.data().email;
+      });
+
+      return emails;
+  } catch (error) {
+      console.error('Error fetching subscriber emails:', error);
+      throw error; // Propagate the error for handling in the caller function
+  }
 };

@@ -1,4 +1,6 @@
-'use client'
+// /app/subscribe/page.tsx
+'use client';
+
 import { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { addSubscriber, checkSubscriberExists, removeSubscriber } from '../../lib/firebaseUtils';
@@ -30,6 +32,18 @@ const SubscribePage = () => {
       const success = await addSubscriber(email);
       if (success) {
         setMessage('Thank you for subscribing! A confirmation email has been sent.');
+        
+        // Trigger notification to subscribers (modify as needed)
+        await fetch('/api/sendNotification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            postTitle: 'New Subscription',
+            postUrl: 'https://crystal-websiteblog.vercel.app/', 
+          }),
+        });
       } else {
         setMessage('There was an error. Please try again.');
       }

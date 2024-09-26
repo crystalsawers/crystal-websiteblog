@@ -2,10 +2,13 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer'; 
 import { getSubscriberEmails } from '../../../lib/firebaseUtils';
+import dotenv from 'dotenv';
+
+dotenv.config(); // Load environment variables
 
 export async function POST(request: Request) {
     const { postTitle, postUrl } = await request.json();
-
+    
     // Log the incoming data for debugging
     console.log('Incoming request:', { postTitle, postUrl });
 
