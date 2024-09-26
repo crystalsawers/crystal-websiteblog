@@ -17,6 +17,9 @@ const CreateForm = ({
   onClose,
   isMainPage = false,
 }: CreateFormProps) => {
+  const reviewCategories = ['makeup', 'lifestyle'];
+  const interestCategories = ['formula1', 'cricket', 'music'];
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
@@ -135,7 +138,16 @@ const CreateForm = ({
 
       // Notify subscribers about the new post
       const postId = docRef.id; // Get the ID of the newly created post
-      const postUrl = `https://crystal-websiteblog.vercel.app/${finalCategory || ''}/${postId}`;
+
+      // Determine category prefix based on the category
+      const categoryPrefix = reviewCategories.includes(finalCategory || '')
+        ? 'reviews'
+        : interestCategories.includes(finalCategory || '')
+          ? 'interests'
+          : '';
+
+      // Construct the post URL with category prefix
+      const postUrl = `https://crystal-websiteblog.vercel.app/${categoryPrefix}/${finalCategory || ''}/${postId}`;
 
       for (const email of subscriberEmails) {
         await fetch('/api/sendNotification', {
@@ -145,21 +157,16 @@ const CreateForm = ({
           },
           body: JSON.stringify({
             postTitle: `New Post: ${title}`,
-            postUrl: postUrl,
+            postUrl: postUrl, // Correctly formatted post URL
             notificationEmail: email, // Send notification to each subscriber's email
           }),
         });
       }
 
       // Redirect logic
-      const reviewCategories = ['makeup', 'lifestyle'];
-      const interestCategories = ['formula1', 'cricket', 'music'];
       let redirectPath = '';
-
-      if (reviewCategories.includes(finalCategory || '')) {
-        redirectPath = `/reviews/${finalCategory}`;
-      } else if (interestCategories.includes(finalCategory || '')) {
-        redirectPath = `/interests/${finalCategory}`;
+      if (categoryPrefix) {
+        redirectPath = `/${categoryPrefix}/${finalCategory}`;
       } else {
         redirectPath = '/';
       }
