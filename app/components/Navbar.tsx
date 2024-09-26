@@ -2,8 +2,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Logo from './cs-high-resolution-logo-transparent.png'; // personal logo from logo.com
 import LogoutButton from './LogoutButton';
-
+import SubscribeButton from './SubscribeButton'
 const Navbar = () => {
+
+  
   return (
     <nav className="navbar">
       <Link href="/" className="flex items-center space-x-2">
@@ -41,6 +43,7 @@ const Navbar = () => {
         >
           Reviews
         </Link>
+        <SubscribeButton />
         <LogoutButton />
       </div>
     </nav>

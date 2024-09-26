@@ -53,7 +53,8 @@ nav {
 
 nav a,
 nav span,
-.logout-button {
+.logout-button,
+.subscribe-button {
   color: var(--navbar-text);
 }
 
