@@ -11,9 +11,6 @@ export async function POST(request: Request) {
   // Log the incoming data for debugging
   console.log('Incoming request:', { postTitle, postUrl, notificationEmail });
 
-  const emails = await getSubscriberEmails(); // Fetch all subscriber emails
-  console.log('Fetched subscriber emails:', emails);
-
   // Create the transporter for sending emails
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -22,6 +19,10 @@ export async function POST(request: Request) {
       pass: process.env.NEXT_PUBLIC_EMAIL_PASS,
     },
   });
+
+  // Fetch all subscriber emails
+  const emails = await getSubscriberEmails();
+  console.log('Fetched subscriber emails:', emails);
 
   // Check if we have subscribers
   if (emails.length === 0) {
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
   }
 
   // Check for new subscriber logic
-  if (postTitle.startsWith("New Subscriber:")) {
+  if (postTitle.startsWith('New Subscriber:')) {
     const newSubscriberEmail = postTitle.split(': ')[1].trim();
 
     // Notify admin about the new subscriber
@@ -44,7 +45,10 @@ export async function POST(request: Request) {
       text: `A new subscriber has joined: ${newSubscriberEmail}.`,
     };
 
-    console.log('Sending notification email to admin about new subscriber:', newSubscriberEmail);
+    console.log(
+      'Sending notification email to admin about new subscriber:',
+      newSubscriberEmail,
+    );
 
     // Send email to the new subscriber
     const subscriberMailOptions = {
@@ -61,24 +65,90 @@ export async function POST(request: Request) {
         transporter.sendMail(subscriberMailOptions), // Send welcome email to subscriber
       ]);
 
-      console.log(`Emails sent successfully: ${newSubscriberEmail} and admin notification.`);
+      console.log(
+        `Emails sent successfully: ${newSubscriberEmail} and admin notification.`,
+      );
       return NextResponse.json({ success: true });
-    } catch (error) {
-      console.error('Error sending notification emails:', error);
-      return NextResponse.json({
-        success: false,
-        error: 'Error sending notification emails',
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error sending notification emails:', error.message);
+        return NextResponse.json({
+          success: false,
+          error: 'Error sending notification emails: ' + error.message,
+        });
+      } else {
+        console.error('An unknown error occurred:', error);
+        return NextResponse.json({
+          success: false,
+          error: 'An unknown error occurred.',
+        });
+      }
+    }
+  }
+
+  // Handle new post notifications
+  if (postTitle.startsWith('New Post:')) {
+    // Notify all subscribers about the new post
+    const promises = emails.map((email) => {
+      const mailOptions = {
+        from: process.env.NEXT_PUBLIC_EMAIL_USER,
+        to: email,
+        subject: `New Post: ${postTitle}`,
+        text: `Check out our new post here: ${postUrl}`,
+      };
+
+      console.log(`Sending email to: ${email}`); // Log sending
+      return transporter
+        .sendMail(mailOptions)
+        .then(() => console.log(`Email sent to: ${email}`))
+        .catch((err: unknown) => {
+          if (err instanceof Error) {
+            console.error(`Failed to send email to ${email}:`, err.message);
+          } else {
+            console.error(
+              `Failed to send email to ${email}: An unknown error occurred.`,
+            );
+          }
+        });
+    });
+
+    try {
+      await Promise.all(promises);
+      console.log(
+        'All notification emails sent successfully for the new post.',
+      );
+      return NextResponse.json({ success: true });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          'Error sending notification emails for new post:',
+          error.message,
+        );
+        return NextResponse.json({
+          success: false,
+          error:
+            'Error sending notification emails for new post: ' + error.message,
+        });
+      } else {
+        console.error('An unknown error occurred:', error);
+        return NextResponse.json({
+          success: false,
+          error: 'An unknown error occurred.',
+        });
+      }
     }
   }
 
   // Handle generic subscription request
-  if (postTitle === "New Subscription") {
+  if (postTitle === 'New Subscription') {
     // Prevent sending a welcome email here if a new subscriber was just added
-    console.log(`Ignoring request for new subscription since it's already handled as a new subscriber: ${notificationEmail}`);
+    console.log(
+      `Ignoring request for new subscription since it's already handled as a new subscriber: ${notificationEmail}`,
+    );
     return NextResponse.json({
       success: false,
-      error: 'This subscription has already been processed as a new subscriber.',
+      error:
+        'This subscription has already been processed as a new subscriber.',
     });
   }
 

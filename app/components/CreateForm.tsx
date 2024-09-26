@@ -4,6 +4,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
+import { getSubscriberEmails } from '../../lib/firebaseUtils';
 
 interface CreateFormProps {
   category: string;
@@ -130,21 +131,25 @@ const CreateForm = ({
         imageUrl,
       });
 
+      const subscriberEmails = await getSubscriberEmails();
+
       // Notify subscribers about the new post
       const postId = docRef.id; // Get the ID of the newly created post
       const postUrl = `https://crystal-websiteblog.vercel.app/${finalCategory || ''}/${postId}`;
 
-      await fetch('/api/sendNotification', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          postTitle: `New Post: ${title}`,
-          postUrl: postUrl,
-          notificationEmail: null,
-        }),
-      });
+      for (const email of subscriberEmails) {
+        await fetch('/api/sendNotification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            postTitle: `New Post: ${title}`,
+            postUrl: postUrl,
+            notificationEmail: email, // Send notification to each subscriber's email
+          }),
+        });
+      }
 
       // Redirect logic
       const reviewCategories = ['makeup', 'lifestyle'];
