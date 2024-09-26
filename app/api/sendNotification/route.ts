@@ -7,10 +7,10 @@ import dotenv from 'dotenv';
 dotenv.config(); // Load environment variables
 
 export async function POST(request: Request) {
-    const { postTitle, postUrl } = await request.json();
-    
+    const { postTitle, postUrl, notificationEmail } = await request.json();
+
     // Log the incoming data for debugging
-    console.log('Incoming request:', { postTitle, postUrl });
+    console.log('Incoming request:', { postTitle, postUrl, notificationEmail });
 
     const emails = await getSubscriberEmails(); // Fetch all subscriber emails
     console.log('Fetched subscriber emails:', emails); // Log the fetched emails
@@ -24,21 +24,20 @@ export async function POST(request: Request) {
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
+            user: process.env.NEXT_PUBLIC_EMAIL_USER,
+            pass: process.env.NEXT_PUBLIC_EMAIL_PASS,
         },
     });
 
-    // Create an array of email promises
+    // Create an array of email promises for notifying subscribers
     const emailPromises = emails.map(email => {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.NEXT_PUBLIC_EMAIL_USER,
             to: email,
             subject: `Check out my latest post: ${postTitle}`,
             text: `Here is the link to the post: ${postUrl}`,
         };
 
-        // Log the mail options for debugging
         console.log('Sending email to:', email, 'with options:', mailOptions);
 
         return transporter.sendMail(mailOptions)
@@ -50,6 +49,24 @@ export async function POST(request: Request) {
             });
     });
 
+    // Send notification email to admin about the new subscriber
+    if (notificationEmail) {
+        const notificationMailOptions = {
+            from: process.env.NEXT_PUBLIC_EMAIL_USER,
+            to: process.env.NEXT_PUBLIC_EMAIL_USER, // Admin email to receive notifications
+            subject: `New Subscriber: ${notificationEmail}`, // Subject can include subscriber's email
+            text: `A new subscriber has joined with the email: ${notificationEmail}`, // Notify about subscriber's email
+        };
+
+        await transporter.sendMail(notificationMailOptions)
+            .then(() => {
+                console.log(`Notification email sent for new subscriber: ${notificationEmail}`);
+            })
+            .catch(error => {
+                console.error(`Error sending notification email for ${notificationEmail}:`, error);
+            });
+    }
+
     try {
         await Promise.all(emailPromises); // Send all emails concurrently
         return NextResponse.json({ success: true });
@@ -58,3 +75,4 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: false, error: 'Error sending notification emails' });
     }
 }
+

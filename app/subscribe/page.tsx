@@ -33,7 +33,7 @@ const SubscribePage = () => {
       if (success) {
         setMessage('Thank you for subscribing! A confirmation email has been sent.');
         
-        // Trigger notification to subscribers (modify as needed)
+        // Trigger notification to new subscribers 
         await fetch('/api/sendNotification', {
           method: 'POST',
           headers: {
@@ -41,7 +41,8 @@ const SubscribePage = () => {
           },
           body: JSON.stringify({
             postTitle: 'New Subscription',
-            postUrl: 'https://crystal-websiteblog.vercel.app/', 
+            postUrl: 'https://crystal-websiteblog.vercel.app/', // main page contains latest posts anyway but i want this triggered after each thing I post
+            notificationEmail: process.env.NEXT_PUBLIC_EMAIL_USER,
           }),
         });
       } else {
