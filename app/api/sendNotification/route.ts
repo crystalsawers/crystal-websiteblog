@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     const mailOptions = {
       from: process.env.NEXT_PUBLIC_EMAIL_USER,
       to: email,
-      subject: `Check out my latest post: ${postTitle}`, // Use the new post title
+      subject: `${postTitle}`, // Use the new post title
       text: `Here is the link to the post: ${postUrl}`,
     };
 

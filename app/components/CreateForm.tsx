@@ -123,7 +123,7 @@ const CreateForm = ({
       const finalCategory = isMainPage ? selectedCategory : category;
 
       // Add document to Firestore
-      await addDoc(collection(db, finalCategory || ''), {
+      const docRef = await addDoc(collection(db, finalCategory || ''), {
         title,
         content,
         date,
@@ -131,20 +131,21 @@ const CreateForm = ({
       });
 
     // // Notify subscribers about the new post
-    const postUrl = window.location.href; // URL for the new post
+    const postId = docRef.id; // Get the ID of the newly created post
+    const postUrl = `https://crystal-websiteblog.vercel.app/${finalCategory || ''}/${postId}`;
     console.log('Current post URL:', postUrl);
+
     await fetch('/api/sendNotification', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        postTitle: `New Post: ${title}`,  // Customize the title here
-        postUrl: postUrl,  // The URL of the new post
+        postTitle: `New Post: ${title}`,  
+        postUrl: postUrl,  
         notificationEmail: null,
       }),
     });
-
 
       // Redirect logic
       const reviewCategories = ['makeup', 'lifestyle'];
