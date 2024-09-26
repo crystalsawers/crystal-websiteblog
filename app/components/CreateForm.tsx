@@ -130,22 +130,21 @@ const CreateForm = ({
         imageUrl,
       });
 
-    // // Notify subscribers about the new post
-    const postId = docRef.id; // Get the ID of the newly created post
-    const postUrl = `https://crystal-websiteblog.vercel.app/${finalCategory || ''}/${postId}`;
-    console.log('Current post URL:', postUrl);
+      // Notify subscribers about the new post
+      const postId = docRef.id; // Get the ID of the newly created post
+      const postUrl = `https://crystal-websiteblog.vercel.app/${finalCategory || ''}/${postId}`;
 
-    await fetch('/api/sendNotification', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        postTitle: `New Post: ${title}`,  
-        postUrl: postUrl,  
-        notificationEmail: null,
-      }),
-    });
+      await fetch('/api/sendNotification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          postTitle: `New Post: ${title}`,
+          postUrl: postUrl,
+          notificationEmail: null,
+        }),
+      });
 
       // Redirect logic
       const reviewCategories = ['makeup', 'lifestyle'];

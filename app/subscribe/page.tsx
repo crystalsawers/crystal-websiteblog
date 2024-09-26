@@ -54,7 +54,7 @@ const SubscribePage = () => {
               notificationEmail: process.env.NEXT_PUBLIC_EMAIL_USER,
             }),
           });
-        
+
           if (!response.ok) {
             const errorResponse = await response.json();
             console.error('Error sending notification:', errorResponse);

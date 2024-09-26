@@ -18,10 +18,9 @@ export const checkSubscriberExists = async (
 };
 
 // Function to send email notification to the admin to say that someone has subscribed
-// Function to send email notification to the admin about new subscriptions
 const sendEmailNotification = async (subscriberEmail: string) => {
   try {
-    const EMAIL_USER = process.env.NEXT_PUBLIC_EMAIL_USER; // Access the email user
+    // const EMAIL_USER = process.env.NEXT_PUBLIC_EMAIL_USER; // Access the email user
 
     await fetch('/api/sendNotification', {
       method: 'POST',
@@ -35,7 +34,7 @@ const sendEmailNotification = async (subscriberEmail: string) => {
       }),
     });
 
-    console.log('Notification sent to:', EMAIL_USER);
+    // console.log('Notification sent to:', EMAIL_USER);
   } catch (error) {
     console.error('Error sending notification:', error);
   }
@@ -50,10 +49,10 @@ export const addSubscriber = async (email: string): Promise<boolean> => {
       return false;
     }
     await addDoc(collection(db, 'subscribers'), { email });
-    console.log('Successfully subscribed:', email);
+    // console.log('Successfully subscribed:', email);
 
     // Send notification to the designated email
-    console.log('Preparing to send notification to:', email);
+    // console.log('Preparing to send notification to:', email);
     await sendEmailNotification(email);
 
     return true;
@@ -75,7 +74,7 @@ export const removeSubscriber = async (email: string): Promise<boolean> => {
 
   try {
     await batch.commit();
-    console.log('Unsubscribed:', email);
+    // console.log('Unsubscribed:', email);
     return true;
   } catch (error) {
     console.error('Error unsubscribing:', error);

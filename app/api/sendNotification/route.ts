@@ -64,10 +64,15 @@ export async function POST(request: Request) {
     await transporter
       .sendMail(notificationMailOptions)
       .then(() => {
-        console.log(`Notification email sent for new subscriber: ${notificationEmail}`);
+        console.log(
+          `Notification email sent for new subscriber: ${notificationEmail}`,
+        );
       })
       .catch((error) => {
-        console.error(`Error sending notification email for ${notificationEmail}:`, error);
+        console.error(
+          `Error sending notification email for ${notificationEmail}:`,
+          error,
+        );
       });
   }
 
