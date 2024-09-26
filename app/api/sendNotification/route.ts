@@ -49,8 +49,8 @@ export async function POST(request: Request) {
             });
     });
 
-    // Send notification email to admin about the new subscriber
-    if (notificationEmail) {
+    // Send notification email to admin only if notificationEmail is not empty and is not the same as the subscriber email
+    if (notificationEmail && notificationEmail !== process.env.NEXT_PUBLIC_EMAIL_USER) {
         const notificationMailOptions = {
             from: process.env.NEXT_PUBLIC_EMAIL_USER,
             to: process.env.NEXT_PUBLIC_EMAIL_USER, // Admin email to receive notifications
@@ -75,4 +75,3 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: false, error: 'Error sending notification emails' });
     }
 }
-
