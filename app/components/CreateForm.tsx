@@ -32,14 +32,29 @@ const CreateForm = ({
   const [imageObjectPosition, setImageObjectPosition] = useState('0% 0%');
 
   useEffect(() => {
-    // Get today's date in NZ time (Pacific/Auckland) and format as YYYY-MM-DD
+    // Get the current date and time in NZ time (Pacific/Auckland)
     const today = new Date();
-    const nzDate = today
-      .toLocaleDateString('en-GB', { timeZone: 'Pacific/Auckland' })
-      .split('/')
-      .reverse()
-      .join('-');
-    setDate(nzDate);
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'Pacific/Auckland',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    };
+
+    const nzDateTime = today.toLocaleString('en-GB', options);
+    const [datePart, timePart] = nzDateTime.split(', '); // Split date and time
+
+    // Format date to YYYY-MM-DD
+    const formattedDate = datePart.split('/').reverse().join('-');
+
+    // Combine date and time to ISO format (e.g., "2024-09-16T14:30:00")
+    const formattedDateTime = `${formattedDate}T${timePart}:00`; // Assuming seconds are 00
+
+    // Set the date in your state to include both date and time
+    setDate(formattedDateTime);
   }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,7 +223,7 @@ const CreateForm = ({
         </label>
         <input
           id="date"
-          type="date"
+          type="datetime-local"
           value={date}
           readOnly
           className="create-form-input"

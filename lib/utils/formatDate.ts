@@ -16,18 +16,15 @@ export const formatDate = (
 
   if (!dateObj || isNaN(dateObj.getTime())) return 'Invalid Date';
 
-  const formattedDate = dateObj.toLocaleDateString('en-GB', {
+  const options: Intl.DateTimeFormatOptions = {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
-    timeZone,
-  });
-
-  const formattedTime = dateObj.toLocaleTimeString('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false, // Use 24-hour format
     timeZone,
-  });
+  };
 
-  return `${formattedDate} at ${formattedTime}`;
+  return dateObj.toLocaleString('en-GB', options);
 };
