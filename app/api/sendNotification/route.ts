@@ -1,4 +1,3 @@
-// /app/api/sendNotification/route.ts
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { getSubscriberEmails } from '../../../lib/firebaseUtils';
@@ -32,58 +31,43 @@ export async function POST(request: Request) {
     },
   });
 
-  // Create an array of email promises for notifying subscribers
-  const emailPromises = emails
-    .map((email) => {
-      // Only send the subscription email to the subscriber
-      if (notificationEmail === email) {
-        const mailOptions = {
-          from: process.env.NEXT_PUBLIC_EMAIL_USER,
-          to: email,
-          subject: `Check out my latest post: New Subscription`, // Customize the subject
-          text: `Here is the link to the post: ${postUrl}`,
-        };
+  // Send notification email to subscribers about the new post
+  const emailPromises = emails.map((email) => {
+    const mailOptions = {
+      from: process.env.NEXT_PUBLIC_EMAIL_USER,
+      to: email,
+      subject: `Check out my latest post: ${postTitle}`, // Use the new post title
+      text: `Here is the link to the post: ${postUrl}`,
+    };
 
-        console.log('Sending email to:', email, 'with options:', mailOptions);
+    console.log('Sending email to:', email, 'with options:', mailOptions);
 
-        return transporter
-          .sendMail(mailOptions)
-          .then(() => {
-            console.log(`Email sent successfully to: ${email}`);
-          })
-          .catch((error) => {
-            console.error(`Error sending email to ${email}:`, error);
-          });
-      }
-    })
-    .filter(Boolean); // Filter out undefined values
+    return transporter
+      .sendMail(mailOptions)
+      .then(() => {
+        console.log(`Email sent successfully to: ${email}`);
+      })
+      .catch((error) => {
+        console.error(`Error sending email to ${email}:`, error);
+      });
+  });
 
-  // Send notification email to admin only if notificationEmail is not empty and is not the same as the subscriber email
-  if (
-    notificationEmail &&
-    notificationEmail !== process.env.NEXT_PUBLIC_EMAIL_USER
-  ) {
+  // If the notificationEmail is provided, send a notification to the admin about a new subscriber
+  if (notificationEmail) {
     const notificationMailOptions = {
       from: process.env.NEXT_PUBLIC_EMAIL_USER,
       to: process.env.NEXT_PUBLIC_EMAIL_USER, // Admin email to receive notifications
       subject: `New Subscriber: ${notificationEmail}`,
-      text: `A new subscriber has joined with the email: ${notificationEmail}`, // Notify about subscriber's email
+      text: `A new subscriber has joined with the email: ${notificationEmail}`,
     };
-
-    // console.log(`Sending notification email to admin about new subscriber: ${notificationEmail}`);
 
     await transporter
       .sendMail(notificationMailOptions)
       .then(() => {
-        console.log(
-          `Notification email sent for new subscriber: ${notificationEmail}`,
-        );
+        console.log(`Notification email sent for new subscriber: ${notificationEmail}`);
       })
       .catch((error) => {
-        console.error(
-          `Error sending notification email for ${notificationEmail}:`,
-          error,
-        );
+        console.error(`Error sending notification email for ${notificationEmail}:`, error);
       });
   }
 
