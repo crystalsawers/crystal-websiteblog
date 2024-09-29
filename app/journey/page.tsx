@@ -317,8 +317,10 @@ const Journey = () => {
               {item.milestones.map((milestone, index) => (
                 <li key={index} className="mb-2">
                   <p>
-                    <strong>{formatDate(new Date(milestone.date))}</strong>:{' '}
-                    {milestone.description}
+                    <strong>
+                      {formatDate(new Date(milestone.date)).split(' at ')[0]}
+                    </strong>
+                    : {milestone.description}
                   </p>
                 </li>
               ))}
