@@ -87,8 +87,8 @@ const SubscribePage = () => {
       <div className="subscribe-card rounded-lg bg-emerald-500 p-6 shadow-md">
         <h1 className="page-title mb-4 text-gray-100">
           {isSubscribing
-            ? 'Subscribe to Our Latest Posts'
-            : 'Unsubscribe from Our Posts'}
+            ? 'Subscribe to My Latest Posts'
+            : 'Unsubscribe from My Posts'}
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <input
