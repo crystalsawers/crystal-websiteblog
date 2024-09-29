@@ -101,10 +101,22 @@ const About = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData!,
-      [name]: value,
-    }));
+
+    // Check if the name is for a contact info field
+    if (['email', 'linkedin', 'github'].includes(name)) {
+      setFormData((prevData) => ({
+        ...prevData!,
+        contact_info: {
+          ...prevData!.contact_info,
+          [name]: value,
+        },
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData!,
+        [name]: value,
+      }));
+    }
   };
 
   const validateForm = () => {
@@ -209,7 +221,7 @@ const About = () => {
               Email:
               <input
                 type="email"
-                name="contact_info.email"
+                name="email"
                 value={formData?.contact_info.email || ''}
                 onChange={handleInputChange}
                 className="create-form-input"
@@ -218,11 +230,12 @@ const About = () => {
                 <p className="text-red-700">{formErrors.email}</p>
               )}
             </label>
+
             <label className="create-form-label">
               LinkedIn:
               <input
                 type="text"
-                name="contact_info.linkedin"
+                name="linkedin"
                 value={formData?.contact_info.linkedin || ''}
                 onChange={handleInputChange}
                 className="create-form-input"
@@ -231,11 +244,12 @@ const About = () => {
                 <p className="text-red-700">{formErrors.linkedin}</p>
               )}
             </label>
+
             <label className="create-form-label">
               GitHub:
               <input
                 type="text"
-                name="contact_info.github"
+                name="github"
                 value={formData?.contact_info.github || ''}
                 onChange={handleInputChange}
                 className="create-form-input"
@@ -244,6 +258,7 @@ const About = () => {
                 <p className="text-red-700">{formErrors.github}</p>
               )}
             </label>
+
             <div className="mt-4 flex justify-end space-x-2">
               <button type="submit" className="create-form-button">
                 Save
