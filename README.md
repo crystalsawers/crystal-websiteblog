@@ -4,7 +4,7 @@
 
 ## Live Demo
 
-1st Deployment as of 15 September 2024: [Visit the Blog](https://crystal-websiteblog.vercel.app/)
+_1st Deployment as of 15 September 2024:_ [Visit the Blog](https://crystal-websiteblog.vercel.app/)
 
 ## Table of Contents
 
@@ -44,6 +44,7 @@ This is a solo project that I'm developing based on everything I've learned whil
 ## Future Plans
 
 - Conduct a **security audit** on the site to identify and resolve any vulnerabilities, ensuring a safe browsing experience for users.
+- A full **backup** and **restore** system for all my blog data
 
 ## Contact
 
