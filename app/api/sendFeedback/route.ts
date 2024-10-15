@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       await sendEmail({
         to: 'crystal.websiteblog@gmail.com',
-        subject: postId ? `Feedback for Post ID: ${postId}` : 'General Feedback',
+        subject: postId ? `Feedback for Post: ${postId}` : 'General Feedback',
         text: `From: ${email}\n\nMessage: ${message}`,
       });
       res.status(200).json({ message: 'Feedback sent' });

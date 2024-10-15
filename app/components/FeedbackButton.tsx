@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-const FeedbackButton = ({ postId }: { postId: string }) => {
+const FeedbackButton = () => {
   return (
-    <Link href={`/feedback/${postId}`}>
+    <Link href="/feedback">
       <button>Give Feedback</button>
     </Link>
   );

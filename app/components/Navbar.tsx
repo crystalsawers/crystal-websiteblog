@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Logo from './cs-high-resolution-logo-transparent.png'; // personal logo from logo.com
 import LogoutButton from './LogoutButton';
 import SubscribeButton from './SubscribeButton';
+import FeedbackButton from './FeedbackButton';
 const Navbar = () => {
   return (
     <nav className="navbar">
@@ -42,6 +43,7 @@ const Navbar = () => {
           Reviews
         </Link>
         <SubscribeButton />
+        <FeedbackButton />
         <LogoutButton />
       </div>
     </nav>
