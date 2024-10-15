@@ -4,9 +4,6 @@ import { sendEmail } from '../../../lib/utils/sendEmail';
 export async function POST(request: Request) {
   const { email, message, postId } = await request.json();
 
-// Log environment variables
-console.log('Recipient Email:', process.env.NEXT_PUBLIC_BLOG_EMAIL_USER);
-console.log('Email Password:', process.env.BLOG_EMAIL_PASS); // For debugging, remember to remove this later
 
   try {
     await sendEmail({
