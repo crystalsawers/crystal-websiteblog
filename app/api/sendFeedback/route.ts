@@ -1,21 +1,24 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { sendEmail } from '../../../lib/utils/sendEmail';
+import { NextResponse } from 'next/server';
+import { sendEmail } from '../../../lib/utils/sendEmail'; 
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const { email, message, postId } = req.body;
+export async function POST(request: Request) {
+  const { email, message, postId } = await request.json();
 
-    try {
-      await sendEmail({
-        to: 'crystal.websiteblog@gmail.com',
-        subject: postId ? `Feedback for Post: ${postId}` : 'General Feedback',
-        text: `From: ${email}\n\nMessage: ${message}`,
-      });
-      res.status(200).json({ message: 'Feedback sent' });
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to send feedback' });
-    }
-  } else {
-    res.status(405).end(); // Method Not Allowed
+// Log environment variables
+console.log('Recipient Email:', process.env.NEXT_PUBLIC_BLOG_EMAIL_USER);
+console.log('Email Password:', process.env.BLOG_EMAIL_PASS); // For debugging, remember to remove this later
+
+  try {
+    await sendEmail({
+      to: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER!, // Recipient's email
+      subject: postId ? `Feedback for Post: ${postId}` : 'General Feedback',
+      text: `From: ${email}\n\nMessage: ${message}`,
+      replyTo: email, // User's email for reply
+    });
+
+    return NextResponse.json({ message: 'Feedback sent successfully!' }, { status: 200 });
+  } catch (error) {
+    console.error('Error sending feedback:', error);
+    return NextResponse.json({ error: 'Failed to send feedback.' }, { status: 500 });
   }
 }
