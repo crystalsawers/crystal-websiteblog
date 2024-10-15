@@ -18,6 +18,7 @@ interface AboutMeDocument {
   personal_story: string;
   contact_info: {
     email: string;
+    blog_email: string;
     linkedin: string;
     github: string;
   };
@@ -31,13 +32,19 @@ const About = () => {
   const [formData, setFormData] = useState<{
     introduction: string;
     personal_story: string;
-    contact_info: { email: string; linkedin: string; github: string };
+    contact_info: {
+      email: string;
+      blog_email: string;
+      linkedin: string;
+      github: string;
+    };
   } | null>(null);
 
   const [formErrors, setFormErrors] = useState({
     introduction: '',
     personal_story: '',
     email: '',
+    blog_email: '',
     linkedin: '',
     github: '',
   });
@@ -92,6 +99,7 @@ const About = () => {
       introduction: '',
       personal_story: '',
       email: '',
+      blog_email: '',
       linkedin: '',
       github: '',
     });
@@ -103,7 +111,7 @@ const About = () => {
     const { name, value } = e.target;
 
     // Check if the name is for a contact info field
-    if (['email', 'linkedin', 'github'].includes(name)) {
+    if (['email', 'blog_email', 'linkedin', 'github'].includes(name)) {
       setFormData((prevData) => ({
         ...prevData!,
         contact_info: {
@@ -124,6 +132,7 @@ const About = () => {
       introduction: '',
       personal_story: '',
       email: '',
+      blog_email: '',
       linkedin: '',
       github: '',
     };
@@ -139,6 +148,10 @@ const About = () => {
     }
     if (!formData?.contact_info.email.trim()) {
       errors.email = 'Email is required';
+      isValid = false;
+    }
+    if (!formData?.contact_info.blog_email.trim()) {
+      errors.email = 'Blog Email is required';
       isValid = false;
     }
     if (!formData?.contact_info.linkedin.trim()) {
@@ -218,7 +231,7 @@ const About = () => {
               )}
             </label>
             <label className="create-form-label">
-              Email:
+              Personal Email:
               <input
                 type="email"
                 name="email"
@@ -230,7 +243,19 @@ const About = () => {
                 <p className="text-red-700">{formErrors.email}</p>
               )}
             </label>
-
+            <label className="create-form-label">
+              Blog Email:
+              <input
+                type="email"
+                name="email"
+                value={formData?.contact_info.blog_email || ''}
+                onChange={handleInputChange}
+                className="create-form-input"
+              />
+              {formErrors.blog_email && (
+                <p className="text-red-700">{formErrors.blog_email}</p>
+              )}
+            </label>
             <label className="create-form-label">
               LinkedIn:
               <input
@@ -285,8 +310,12 @@ const About = () => {
             <p className="card-text">{item.personal_story}</p>
             <h2 className="card-header">Contact Info</h2>
             <p className="card-text">
-              <span className="normal-text font-semibold">Email:</span>{' '}
+              <span className="normal-text font-semibold">Personal Email:</span>{' '}
               {item.contact_info.email}
+            </p>
+            <p className="card-text">
+              <span className="normal-text font-semibold">Blog Email:</span>{' '}
+              {item.contact_info.blog_email}
             </p>
             <p className="card-text">
               <span className="normal-text font-semibold">LinkedIn:</span>{' '}
