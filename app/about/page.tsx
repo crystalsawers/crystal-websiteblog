@@ -311,12 +311,23 @@ const About = () => {
             <h2 className="card-header">Contact Info</h2>
             <p className="card-text">
               <span className="normal-text font-semibold">Personal Email:</span>{' '}
-              {item.contact_info.email}
+              <a
+                href={`mailto:${item.contact_info.email}`}
+                className="text-sm text-gray-800 hover:underline"
+              >
+                {item.contact_info.email}
+              </a>
             </p>
             <p className="card-text">
               <span className="normal-text font-semibold">Blog Email:</span>{' '}
-              {item.contact_info.blog_email}
+              <a
+                href={`mailto:${item.contact_info.blog_email}`}
+                className="text-sm text-gray-800 hover:underline"
+              >
+                {item.contact_info.blog_email}
+              </a>
             </p>
+
             <p className="card-text">
               <span className="normal-text font-semibold">LinkedIn:</span>{' '}
               <a
