@@ -63,14 +63,19 @@ const FeedbackForm = () => {
           className="create-form-textarea h-32 w-full rounded-lg border border-gray-300 px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
         />
 
-        <button
-          type="submit"
-          className="login-card-button"
-        >
+        <button type="submit" className="login-card-button">
           Send Feedback
         </button>
       </form>
-      {status && <p className="mt-4 text-center text-red-500">{status}</p>}
+      {status && (
+        <p
+          className={`text-bold mt-4 text-center ${
+            status === 'Error sending feedback.' ? 'text-red-500' : 'text-white'
+          }`}
+        >
+          {status}
+        </p>
+      )}
     </div>
   );
 };

@@ -2,8 +2,8 @@ import * as nodemailer from 'nodemailer';
 
 interface EmailOptions {
   to: string; // Recipient's email
-  subject: string; 
-  text: string; 
+  subject: string;
+  text: string;
   replyTo?: string; // Optional: User's email for reply
 }
 
@@ -16,7 +16,12 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async ({ to, subject, text, replyTo }: EmailOptions) => {
+export const sendEmail = async ({
+  to,
+  subject,
+  text,
+  replyTo,
+}: EmailOptions) => {
   await transporter.sendMail({
     from: replyTo || process.env.NEXT_PUBLIC_BLOG_EMAIL_USER!, // Use user's email or fallback to recipient's email
     to,

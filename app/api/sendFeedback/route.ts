@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { sendEmail } from '../../../lib/utils/sendEmail'; 
+import { sendEmail } from '../../../lib/utils/sendEmail';
 
 export async function POST(request: Request) {
   const { email, message, postId } = await request.json();
@@ -12,9 +12,15 @@ export async function POST(request: Request) {
       replyTo: email, // User's email for reply
     });
 
-    return NextResponse.json({ message: 'Feedback sent successfully!' }, { status: 200 });
+    return NextResponse.json(
+      { message: 'Feedback sent successfully!' },
+      { status: 200 },
+    );
   } catch (error) {
     console.error('Error sending feedback:', error);
-    return NextResponse.json({ error: 'Failed to send feedback.' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to send feedback.' },
+      { status: 500 },
+    );
   }
 }
