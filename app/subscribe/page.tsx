@@ -104,6 +104,13 @@ const SubscribePage = () => {
           </button>
         </form>
         {message && <p className="mt-4 text-gray-200">{message}</p>}
+        <p className="mt-4 text-gray-200">
+          The subscription is completely free! There is no money involved here.
+          When you subscribe you only stay updated with my latest posts, unless
+          you unsubscribe of course.
+        </p>
+
+        {message && <p className="mt-4 text-gray-200">{message}</p>}
 
         <button
           onClick={() => setIsSubscribing(!isSubscribing)}
