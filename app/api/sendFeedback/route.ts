@@ -4,7 +4,6 @@ import { sendEmail } from '../../../lib/utils/sendEmail';
 export async function POST(request: Request) {
   const { email, message, postId } = await request.json();
 
-
   try {
     await sendEmail({
       to: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER!, // Recipient's email
