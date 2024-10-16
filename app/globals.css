@@ -278,5 +278,5 @@ main nav {
 }
 
 .markdown-content th {
-  background-color: #f4f4f4;
+  @apply bg-emerald-500;
 }
