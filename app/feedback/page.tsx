@@ -8,6 +8,7 @@ import { db } from '../../lib/firebaseConfig';
 const FeedbackForm = () => {
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [status, setStatus] = useState('');
   const [postTitle, setPostTitle] = useState('');
   const searchParams = useSearchParams();
@@ -23,7 +24,6 @@ const FeedbackForm = () => {
           const postSnap = await getDoc(postRef);
           if (postSnap.exists()) {
             const postData = postSnap.data();
-            console.log('Fetched post data:', postData); // Log the fetched data
             setPostTitle(postData.title || 'Unknown Post Title');
           } else {
             console.warn('No such document!', postRef);
@@ -49,13 +49,14 @@ const FeedbackForm = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, message, postTitle }),
+      body: JSON.stringify({ email, message, name, postTitle }),
     });
 
     if (res.ok) {
       setStatus('Feedback sent!');
       setMessage('');
       setEmail('');
+      setName(''); // Reset the name field
     } else {
       setStatus('Error sending feedback.');
     }
@@ -74,6 +75,22 @@ const FeedbackForm = () => {
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+        <label
+          className="create-form-label mb-1 text-sm font-medium text-gray-200"
+          htmlFor="name"
+        >
+          Name
+        </label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Your name"
+          required
+          className="create-form-input w-full rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+
         <label
           className="create-form-label mb-1 text-sm font-medium text-gray-200"
           htmlFor="email"
