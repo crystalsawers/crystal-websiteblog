@@ -133,6 +133,14 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
                 </button>
               </>
             )}
+            {!isAuthenticated && (
+            <button
+              onClick={() => router.push(`/feedback?postId=${id}&category=${collectionName}`)} // Directs to the feedback form with the post ID and cetegory
+              className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+            >
+              Comment
+            </button>
+          )}
           </div>
         )}
       </div>
