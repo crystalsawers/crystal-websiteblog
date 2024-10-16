@@ -67,7 +67,11 @@ const FeedbackForm = () => {
         Feedback Form
       </h2>
 
-      {postId && postTitle && <p className="text-gray-200">For: {postTitle}</p>}
+      {postId && postTitle && (
+        <p className="mb-5 text-center font-bold text-gray-200">
+          For Post: {postTitle}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <label
