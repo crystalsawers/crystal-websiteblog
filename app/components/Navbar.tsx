@@ -17,34 +17,41 @@ const Navbar = () => {
         />
         <h1 className="text-[var(--navbar-text)]">Crystal&#39;s Blog</h1>
       </Link>
-      <div className="flex space-x-4">
+      <div className="flex flex-wrap space-x-2 sm:space-x-4">
         <Link
           href="/about"
-          className="text-[var(--navbar-text)] hover:text-white"
+          className="text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
         >
           About
         </Link>
         <Link
           href="/journey"
-          className="text-[var(--navbar-text)] hover:text-white"
+          className="text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
         >
           Journey
         </Link>
         <Link
           href="/interests"
-          className="text-[var(--navbar-text)] hover:text-white"
+          className="text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
         >
           Interests
         </Link>
         <Link
           href="/reviews"
-          className="text-[var(--navbar-text)] hover:text-white"
+          className="text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
         >
           Reviews
         </Link>
-        <SubscribeButton />
-        <FeedbackButton />
-        <LogoutButton />
+
+        <span className="text-xs sm:text-sm md:text-base">
+          <SubscribeButton />
+        </span>
+        <span className="text-xs sm:text-sm md:text-base">
+          <FeedbackButton />
+        </span>
+        <span className="text-xs sm:text-sm md:text-base">
+          <LogoutButton />
+        </span>
       </div>
     </nav>
   );
