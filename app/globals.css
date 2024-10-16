@@ -69,7 +69,7 @@ main nav {
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .navbar {
-    @apply flex-col items-start;
+    @apply flex-col items-center;
     @apply px-4;
   }
 
