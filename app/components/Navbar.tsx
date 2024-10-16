@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -17,7 +17,7 @@ const Navbar = () => {
   return (
     <nav className="relative flex flex-col items-center p-4">
       {/* Logo and Title with Navbar Links on Same Line */}
-      <div className="flex items-center justify-between w-full">
+      <div className="flex w-full items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Image
             src={Logo}
@@ -70,56 +70,61 @@ const Navbar = () => {
         {/* Hamburger Icon for small screens */}
         <button
           onClick={toggleMenu}
-          className="sm:hidden flex items-center text-white focus:outline-none"
+          className="flex items-center text-[var(--navbar-text)] focus:outline-none sm:hidden"
           aria-label="Toggle Menu"
         >
           <svg
-            className="w-6 h-6"
+            className="h-6 w-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
           </svg>
         </button>
       </div>
 
       {/* Menu Links for Small Screens (below title when opened) */}
       {isOpen && (
-        <div className="flex flex-col items-center space-y-2 mt-2 sm:hidden">
+        <div className="mt-2 flex flex-col items-center space-y-2 sm:hidden">
           <Link
             href="/about"
-            className="block text-md text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+            className="text-md block text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
           >
             About
           </Link>
           <Link
             href="/journey"
-            className="block text-md text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+            className="text-md block text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
           >
             Journey
           </Link>
           <Link
             href="/interests"
-            className="block text-md text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+            className="text-md block text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
           >
             Interests
           </Link>
           <Link
             href="/reviews"
-            className="block text-md text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+            className="text-md block text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
           >
             Reviews
           </Link>
 
-          <span className="block text-md sm:text-sm md:text-base">
+          <span className="text-md block sm:text-sm md:text-base">
             <SubscribeButton />
           </span>
-          <span className="block text-md sm:text-sm md:text-base">
+          <span className="text-md block sm:text-sm md:text-base">
             <FeedbackButton />
           </span>
-          <span className="block text-md sm:text-sm md:text-base">
+          <span className="text-md block sm:text-sm md:text-base">
             <LogoutButton />
           </span>
         </div>
