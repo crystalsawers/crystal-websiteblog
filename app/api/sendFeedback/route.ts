@@ -2,15 +2,18 @@ import { NextResponse } from 'next/server';
 import { sendEmail } from '../../../lib/utils/sendEmail';
 
 export async function POST(request: Request) {
-  const { email, message, postId } = await request.json();
-
+  const { email, message, postTitle } = await request.json();
 
   try {
-    // Modify the email subject and body to include postId
+    // Set the subject based on the presence of postTitle
+    const subject = postTitle
+      ? `Feedback for Post: ${postTitle}`
+      : 'General Feedback';
+
     await sendEmail({
       to: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER!, // Recipient's email
-      subject: postId ? `Feedback for Post: ${postId}` : 'General Feedback',
-      text: `From: ${email}\n\nMessage: ${message}\n\nPost ID: ${postId || 'Not provided'}`,
+      subject: subject,
+      text: `From: ${email}\n\nMessage: ${message}`,
       replyTo: email, // User's email for reply
     });
 

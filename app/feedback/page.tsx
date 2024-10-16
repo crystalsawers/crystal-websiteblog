@@ -37,10 +37,9 @@ const FeedbackForm = () => {
         console.warn('No category or postId provided.');
       }
     };
-  
+
     fetchPostTitle();
   }, [category, postId]);
-  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,9 +67,7 @@ const FeedbackForm = () => {
         Feedback Form
       </h2>
 
-      {postId && postTitle && (
-        <p className="text-gray-200">For: {postTitle}</p>
-      )}
+      {postId && postTitle && <p className="text-gray-200">For: {postTitle}</p>}
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <label
