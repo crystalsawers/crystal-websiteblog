@@ -17,7 +17,7 @@ const Navbar = () => {
         />
         <h1 className="text-[var(--navbar-text)]">Crystal&#39;s Blog</h1>
       </Link>
-      <div className="flex flex-wrap space-x-2 sm:space-x-4">
+      <div className="flex space-x-2 sm:space-x-4">
         <Link
           href="/about"
           className="text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
