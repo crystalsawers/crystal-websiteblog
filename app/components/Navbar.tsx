@@ -16,7 +16,6 @@ const Navbar = () => {
 
   return (
     <nav className="relative flex flex-col items-center p-4">
-      {/* Logo and Title with Navbar Links on Same Line */}
       <div className="flex w-full items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Image
@@ -29,7 +28,6 @@ const Navbar = () => {
           <h1 className="text-[var(--navbar-text)]">Crystal&#39;s Blog</h1>
         </Link>
 
-        {/* Navbar Items for Large Screens */}
         <div className="hidden sm:flex sm:flex-row sm:items-center sm:space-x-4">
           <Link
             href="/about"
@@ -69,24 +67,40 @@ const Navbar = () => {
           className="flex items-center text-[var(--navbar-text)] focus:outline-none sm:hidden"
           aria-label="Toggle Menu"
         >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            ></path>
-          </svg>
+          {isOpen ? (
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          ) : (
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          )}
         </button>
       </div>
 
-      {/* Menu Links for Small Screens (below title when opened) */}
       {isOpen && (
         <div className="mt-2 flex flex-col items-center space-y-2 sm:hidden">
           <Link
