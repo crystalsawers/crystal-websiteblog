@@ -43,8 +43,7 @@ This is a solo project that I'm developing based on everything I've learned whil
 
 ## Future Plans
 
-- Conduct a **security audit** on the site to identify and resolve any vulnerabilities, ensuring a safe browsing experience for users.
-- A full **backup** and **restore** system for all my blog data
+- A full automated **backup** and **restore** system for all my blog data, currently I am just manually backing my data up. Main barrier is that I have to use Google Cloud as Firebase is linked with Google Cloud, and that I may have to pay to do it
 
 ## Contact
 
