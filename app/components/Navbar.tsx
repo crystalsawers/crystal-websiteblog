@@ -30,7 +30,7 @@ const Navbar = () => {
         </Link>
 
         {/* Navbar Items for Large Screens */}
-        <div className="hidden sm:flex sm:flex-row sm:space-x-4">
+        <div className="hidden sm:flex sm:flex-row sm:items-center sm:space-x-4">
           <Link
             href="/about"
             className="block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
@@ -56,15 +56,11 @@ const Navbar = () => {
             Reviews
           </Link>
 
-          <span className="block text-xs sm:text-sm md:text-base">
+          <div className="flex items-center space-x-4">
             <SubscribeButton />
-          </span>
-          <span className="block text-xs sm:text-sm md:text-base">
             <FeedbackButton />
-          </span>
-          <span className="block text-xs sm:text-sm md:text-base">
             <LogoutButton />
-          </span>
+          </div>
         </div>
 
         {/* Hamburger Icon for small screens */}
@@ -118,15 +114,11 @@ const Navbar = () => {
             Reviews
           </Link>
 
-          <span className="text-md block sm:text-sm md:text-base">
+          <div className="flex flex-col items-center space-y-2">
             <SubscribeButton />
-          </span>
-          <span className="text-md block sm:text-sm md:text-base">
             <FeedbackButton />
-          </span>
-          <span className="text-md block sm:text-sm md:text-base">
             <LogoutButton />
-          </span>
+          </div>
         </div>
       )}
     </nav>

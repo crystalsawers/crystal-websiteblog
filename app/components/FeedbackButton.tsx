@@ -1,10 +1,25 @@
-import Link from 'next/link';
+'use client';
+
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from './AuthContext';
 
 const FeedbackButton = () => {
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return null;
+  }
+
+  const handleFeedback = () => {
+    router.push('/feedback');
+  };
+
   return (
-    <Link href="/feedback">
-      <button>Feedback</button>
-    </Link>
+    <button onClick={handleFeedback} className="feedback-button">
+      Feedback
+    </button>
   );
 };
 
