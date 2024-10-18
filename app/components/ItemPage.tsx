@@ -18,6 +18,7 @@ interface DocumentData {
   date?: string;
   editedDate?: string;
   imageUrl?: string;
+  isDraft?: boolean;
 }
 
 const ItemPage = ({ collectionName }: { collectionName: string }) => {
@@ -135,11 +136,12 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
             )}
             {!isAuthenticated && (
               <button
-                onClick={() =>
-                  router.push(
-                    `/feedback?postId=${id}&category=${collectionName}`,
-                  )
-                } // Directs to the feedback form with the post ID and cetegory
+                onClick={
+                  () =>
+                    router.push(
+                      `/feedback?postId=${id}&category=${collectionName}`,
+                    ) // Directs to the feedback form with the post ID and category
+                }
                 className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
               >
                 Comment
@@ -148,48 +150,62 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
           </div>
         )}
       </div>
-      {/* Edit Form */}
-      {!editMode ? (
+
+      {!editMode && (
         <div className="card flex flex-col">
-          {data.date && (
-            <p className="card-text mb-4">
-              <strong>Posted:</strong> {formatDate(new Date(data.date))}
-            </p>
-          )}
+          {(data.isDraft && isAuthenticated) || !data.isDraft ? (
+            <>
+              {data.date && (
+                <p className="card-text mb-4">
+                  <strong>Posted:</strong> {formatDate(new Date(data.date))}
+                </p>
+              )}
 
-          {data.editedDate && (
-            <p className="card-text mb-4">
-              <strong>Edited:</strong> {formatDate(new Date(data.editedDate))}
-            </p>
-          )}
+              {data.editedDate && (
+                <p className="card-text mb-4">
+                  <strong>Edited:</strong>{' '}
+                  {formatDate(new Date(data.editedDate))}
+                </p>
+              )}
 
-          {data.imageUrl && (
-            <div
-              className="relative mb-4 w-full"
-              style={{
-                maxWidth: '800px',
-                margin: '0 auto',
-                maxHeight: '400px',
-                overflow: 'hidden',
-              }}
-            >
-              <Image
-                src={data.imageUrl}
-                alt={data.title || 'Image'}
-                layout="responsive"
-                width={800}
-                height={400}
-                style={{ maxHeight: '600px', objectFit: 'cover' }}
-              />
-            </div>
-          )}
+              {data.imageUrl && (
+                <div
+                  className="relative mb-4 w-full"
+                  style={{
+                    maxWidth: '800px',
+                    margin: '0 auto',
+                    maxHeight: '400px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Image
+                    src={data.imageUrl}
+                    alt={data.title || 'Image'}
+                    layout="responsive"
+                    width={800}
+                    height={400}
+                    style={{ maxHeight: '600px', objectFit: 'cover' }}
+                  />
+                </div>
+              )}
 
-          <div>
-            {data.title && <h1 className="card-title pt-6">{data.title}</h1>}
-            <div className="card-text">{renderContent(data.content)}</div>
-          </div>
+              <div>
+                {data.title && (
+                  <h1 className="card-title pt-6">{data.title}</h1>
+                )}
+                {/* Show 'Draft' label if applicable */}
+                {data.isDraft && (
+                  <span className="text-bold text-red-500">Draft</span>
+                )}
+                <div className="card-text">{renderContent(data.content)}</div>
+              </div>
+            </>
+          ) : // If the post is a draft and the user isn't authenticated, show nothing
+          null}
         </div>
-      ) : (
+      )}
+
+      {editMode && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
           <EditForm
             category={collectionName}
