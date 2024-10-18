@@ -83,6 +83,11 @@ const HomePage = () => {
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { isAuthenticated } = useAuth();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false); // State to toggle CreateForm
+  const specificPostIds = [
+    'Y4f0mW8ZiX35uLxGyg1S',
+    '02V6uLUBhnKstE8ofH6H',
+    'vcVid0cpfoGh4KdozgcS',
+  ]; // make the ones I want centered
 
   useEffect(() => {
     async function getPosts() {
@@ -166,6 +171,11 @@ const HomePage = () => {
                       alt={post.title || 'Posted image'}
                       layout="fill"
                       objectFit="cover"
+                      objectPosition={
+                        specificPostIds.includes(post.id)
+                          ? 'center'
+                          : 'top center'
+                      }
                       className="card-img"
                     />
                   </div>
