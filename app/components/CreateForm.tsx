@@ -254,13 +254,13 @@ const CreateForm = ({
           <button
             type="button"
             onClick={(e) => handleSubmit(e, true)} // For saving draft
-            className="mr-2 bg-pink-600 text-white rounded p-2"
+            className="draft-form-button"
           >
             Save as Draft
           </button>
           <button
             type="submit"
-            className="mr-2 bg-blue-600 text-white rounded p-2 hover:bg-blue-700"
+            className="create-form-button"
           >
             Create Post
           </button>

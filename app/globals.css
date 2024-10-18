@@ -193,8 +193,13 @@ main nav {
 }
 
 .create-form-button {
-  @apply w-full rounded-md bg-indigo-600 px-4 py-3 font-semibold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+  @apply mr-2 bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700;
 }
+
+.draft-form-button {
+  @apply mr-2 bg-pink-600 text-white rounded px-4 py-2 hover:bg-pink-700;
+}
+
 
 .markdown-content {
   line-height: 1.6;

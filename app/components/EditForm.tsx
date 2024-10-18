@@ -29,7 +29,6 @@ const EditForm = ({
   const [content, setContent] = useState(initialData.content);
   const [imageUrl, setImageUrl] = useState(initialData.imageUrl || '');
   const [file, setFile] = useState<File | null>(null);
-
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -132,6 +131,53 @@ const EditForm = ({
     }
   };
 
+  const handleSaveDraft = async () => {
+    if (!isAuthenticated) return;
+
+    // Clear previous errors
+    setTitleError(null);
+    setContentError(null);
+
+    // Validation: Check if title and content are filled
+    if (!title.trim()) {
+      setTitleError('Title is required.');
+    }
+    if (!content.trim()) {
+      setContentError('Content is required.');
+    }
+
+    // Stop if there are validation errors
+    if (!title.trim() || !content.trim()) {
+      return;
+    }
+
+    try {
+      const docRef = doc(db, category, postId);
+      let newImageUrl = imageUrl;
+
+      // Upload new image if file is selected
+      if (file) {
+        const imageRef = ref(storage, `images/${file.name}`);
+        await uploadBytes(imageRef, file);
+        newImageUrl = await getDownloadURL(imageRef);
+      }
+
+      await updateDoc(docRef, {
+        title,
+        content,
+        imageUrl: newImageUrl,
+        draft: true, // Mark as draft
+        editedDate: new Date().toISOString(),
+      });
+
+      window.location.reload();
+      onClose();
+    } catch (error) {
+      console.error('Error saving draft:', error);
+      setError('Failed to save draft.');
+    }
+  };
+
   return (
     <div className="flex w-full max-w-7xl items-center justify-center p-4">
       <form onSubmit={handleSubmit} className="create-form">
@@ -192,7 +238,14 @@ const EditForm = ({
           </div>
         )}
 
-        <div className="mt-6">
+        <div className="flex mt-4 justify-center">
+          <button
+            type="button"
+            onClick={handleSaveDraft}
+            className="draft-form-button"
+          >
+            Save as Draft
+          </button>
           <button type="submit" className="create-form-button">
             Update Post
           </button>
