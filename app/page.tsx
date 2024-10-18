@@ -31,6 +31,7 @@ interface Post {
   category: string;
   imageUrl?: string;
   type: string;
+  isDraft: boolean;
 }
 
 const isReviewCategory = (category: string): boolean => {
@@ -67,6 +68,7 @@ const fetchPosts = async (isAuthenticated: boolean): Promise<Post[]> => {
           category,
           imageUrl: data.imageUrl || '',
           type: data.type || 'default',
+          isDraft: data.isDraft || false,
         } as Post);
       }
     });
@@ -171,6 +173,10 @@ const HomePage = () => {
                 {post.title && (
                   <div className={post.imageUrl ? 'pt-4' : ''}>
                     <h2 className="card-title">{post.title}</h2>
+                    {/* Add a draft indicator */}
+                    {post.isDraft && (
+                      <span className="font-semibold text-red-500">Draft</span>
+                    )}
                   </div>
                 )}
                 {post.date && (
