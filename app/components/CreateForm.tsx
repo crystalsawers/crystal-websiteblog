@@ -179,7 +179,9 @@ const CreateForm = ({
     <div className="flex w-full max-w-7xl items-center justify-center p-4">
       <form onSubmit={(e) => handleSubmit(e, false)} className="create-form">
         <h2 className="create-form-title">Create {category} Post</h2>
-        <label htmlFor="title" className="create-form-label">Title:</label>
+        <label htmlFor="title" className="create-form-label">
+          Title:
+        </label>
         <input
           id="title"
           type="text"
@@ -188,7 +190,9 @@ const CreateForm = ({
           className="create-form-input"
         />
         {titleError && <p className="text-red-700">{titleError}</p>}
-        <label htmlFor="content" className="create-form-label">Content:</label>
+        <label htmlFor="content" className="create-form-label">
+          Content:
+        </label>
         <textarea
           id="content"
           value={content}
@@ -196,7 +200,9 @@ const CreateForm = ({
           className="create-form-textarea"
         />
         {contentError && <p className="text-red-700">{contentError}</p>}
-        <label htmlFor="date" className="create-form-label">Date:</label>
+        <label htmlFor="date" className="create-form-label">
+          Date:
+        </label>
         <input
           id="date"
           type="datetime-local"
@@ -206,7 +212,9 @@ const CreateForm = ({
         />
         {isMainPage && (
           <div>
-            <label htmlFor="category" className="create-form-label">Category:</label>
+            <label htmlFor="category" className="create-form-label">
+              Category:
+            </label>
             <select
               id="category"
               value={selectedCategory || ''}
@@ -222,7 +230,9 @@ const CreateForm = ({
             </select>
           </div>
         )}
-        <label htmlFor="file" className="create-form-label">Image:</label>
+        <label htmlFor="file" className="create-form-label">
+          Image:
+        </label>
         <input
           id="file"
           type="file"
@@ -244,13 +254,13 @@ const CreateForm = ({
             <button
               type="button"
               onClick={handleRemoveImage}
-              className="absolute top-2 right-2 bg-red-500 text-white rounded p-2"
+              className="absolute right-2 top-2 rounded bg-red-500 p-2 text-white"
             >
               Remove
             </button>
           </div>
         )}
-        <div className="flex mt-4 justify-center">
+        <div className="mt-4 flex justify-center">
           <button
             type="button"
             onClick={(e) => handleSubmit(e, true)} // For saving draft
@@ -258,10 +268,7 @@ const CreateForm = ({
           >
             Save as Draft
           </button>
-          <button
-            type="submit"
-            className="create-form-button"
-          >
+          <button type="submit" className="create-form-button">
             Create Post
           </button>
         </div>

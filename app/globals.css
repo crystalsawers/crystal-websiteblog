@@ -193,13 +193,12 @@ main nav {
 }
 
 .create-form-button {
-  @apply mr-2 bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700;
+  @apply mr-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700;
 }
 
 .draft-form-button {
-  @apply mr-2 bg-pink-600 text-white rounded px-4 py-2 hover:bg-pink-700;
+  @apply mr-2 rounded bg-pink-600 px-4 py-2 text-white hover:bg-pink-700;
 }
-
 
 .markdown-content {
   line-height: 1.6;

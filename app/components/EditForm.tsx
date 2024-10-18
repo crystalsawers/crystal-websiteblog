@@ -238,7 +238,7 @@ const EditForm = ({
           </div>
         )}
 
-        <div className="flex mt-4 justify-center">
+        <div className="mt-4 flex justify-center">
           <button
             type="button"
             onClick={handleSaveDraft}

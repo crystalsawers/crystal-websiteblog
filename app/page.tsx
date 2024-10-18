@@ -9,7 +9,7 @@ import {
   orderBy,
   doc,
   deleteDoc,
-} from 'firebase/firestore'; 
+} from 'firebase/firestore';
 import { sortPostsByDate } from '../lib/utils/sortPostsByDate';
 import { formatDate } from '../lib/utils/formatDate';
 import renderContent from '@/lib/utils/renderContent';
@@ -40,7 +40,7 @@ const isReviewCategory = (category: string): boolean => {
 
 const fetchPosts = async (isAuthenticated: boolean): Promise<Post[]> => {
   const allPosts: Post[] = [];
-  
+
   for (const category of categories) {
     const q = query(collection(db, category), orderBy('date', 'desc'));
     const querySnapshot = await getDocs(q);
@@ -48,28 +48,32 @@ const fetchPosts = async (isAuthenticated: boolean): Promise<Post[]> => {
     querySnapshot.forEach((documentSnapshot) => {
       const data = documentSnapshot.data();
 
-      // Check if post is a draft
-      if (data.isDraft && !isAuthenticated) {
-        return; // Skip draft posts if user is not authenticated
+      // Check if isDraft is defined
+      if (data.isDraft === undefined) {
+        console.error(
+          `Post ${documentSnapshot.id} is missing the isDraft field.`,
+        );
+        return; // Skip posts missing the isDraft field
       }
 
-      // Push the post to allPosts
-      allPosts.push({
-        id: documentSnapshot.id,
-        title: data.title || '',
-        content: data.content || '',
-        date: data.date || '',
-        editedDate: data.editedDate || '',
-        category,
-        imageUrl: data.imageUrl || '',
-        type: data.type || 'default',
-      } as Post);
+      // Check if post should be added to allPosts
+      if (isAuthenticated || data.isDraft === false) {
+        allPosts.push({
+          id: documentSnapshot.id,
+          title: data.title || '',
+          content: data.content || '',
+          date: data.date || '',
+          editedDate: data.editedDate || '',
+          category,
+          imageUrl: data.imageUrl || '',
+          type: data.type || 'default',
+        } as Post);
+      }
     });
   }
 
   return allPosts;
 };
-
 
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -107,7 +111,7 @@ const HomePage = () => {
     if (!isAuthenticated) return;
 
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this post?'
+      'Are you sure you want to delete this post?',
     );
 
     if (!confirmDelete) return;

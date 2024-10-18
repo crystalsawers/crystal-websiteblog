@@ -47,8 +47,9 @@ This is a solo project that I'm developing based on everything I've learned whil
 
 ## Contact
 
-**Crystal Sawers**  
+**Crystal Sawers**
+
 - Email: [crystalsawers39@gmail.com](mailto:crystalsawers39@gmail.com)
-- Email for ONLY regarding this blog: [crystal.websiteblog@gmail.com](mailto:crystal.websiteblog@gmail.com)  
-- GitHub: [crystalsawers](https://github.com/crystalsawers)  
+- Email for ONLY regarding this blog: [crystal.websiteblog@gmail.com](mailto:crystal.websiteblog@gmail.com)
+- GitHub: [crystalsawers](https://github.com/crystalsawers)
 - LinkedIn: [Crystal Sawers](https://www.linkedin.com/in/crystal-sawers-33b643259/)
