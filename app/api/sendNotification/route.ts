@@ -93,8 +93,8 @@ export async function POST(request: Request) {
       const mailOptions = {
         from: process.env.NEXT_PUBLIC_EMAIL_USER,
         to: email,
-        subject: `New Post: ${postTitle}`,
-        text: `Check out our new post here: ${postUrl}`,
+        subject: `${postTitle}`,
+        text: `Check out my new post here: ${postUrl}`,
       };
 
       console.log(`Sending email to: ${email}`); // Log sending
