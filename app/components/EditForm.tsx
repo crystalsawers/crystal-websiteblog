@@ -138,7 +138,8 @@ const EditForm = ({
         const subscriberEmails = await getSubscriberEmails();
         const postId = postSnapshot.id;
 
-        const postUrl = `https://crystal-websiteblog.vercel.app/posts/${postId}`;
+        const BASE_URL = 'https://crystal-websiteblog.vercel.app/';
+        const postUrl = `${BASE_URL}posts/${postId}`;
 
         // Send notifications to all subscriber emails
         for (const email of subscriberEmails) {

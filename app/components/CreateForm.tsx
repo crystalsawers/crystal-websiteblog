@@ -150,7 +150,9 @@ const CreateForm = ({
             ? 'interests'
             : '';
 
-        const postUrl = `https://crystal-websiteblog.vercel.app/${categoryPrefix}/${finalCategory || ''}/${postId}`;
+        const BASE_URL = 'https://crystal-websiteblog.vercel.app/';
+
+        const postUrl = `${BASE_URL}${categoryPrefix}/${finalCategory || ''}/${postId}`;
 
         for (const email of subscriberEmails) {
           await fetch('/api/sendNotification', {
