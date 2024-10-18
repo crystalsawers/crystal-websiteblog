@@ -9,7 +9,8 @@ import {
   orderBy,
   doc,
   deleteDoc,
-} from 'firebase/firestore';
+  updateDoc,
+} from 'firebase/firestore'; 
 import { sortPostsByDate } from '../lib/utils/sortPostsByDate';
 import { formatDate } from '../lib/utils/formatDate';
 import renderContent from '@/lib/utils/renderContent';
@@ -38,26 +39,43 @@ const isReviewCategory = (category: string): boolean => {
   return reviewCategories.includes(category);
 };
 
-const fetchPosts = async (): Promise<Post[]> => {
+const fetchPosts = async (isAuthenticated: boolean): Promise<Post[]> => {
   const allPosts: Post[] = [];
+  const batchUpdates: Promise<void>[] = [];
 
   for (const category of categories) {
     const q = query(collection(db, category), orderBy('date', 'desc'));
     const querySnapshot = await getDocs(q);
 
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      allPosts.push({
-        id: doc.id,
-        title: data.title || '',
-        content: data.content || '',
-        date: data.date || '',
-        editedDate: data.editedDate || '',
-        category,
-        imageUrl: data.imageUrl || '',
-        type: data.type || 'default',
-      } as Post);
+    querySnapshot.forEach((documentSnapshot) => {
+      const data = documentSnapshot.data();
+
+      // If the post doesn't have a status, mark it for updating
+      if (!data.status) {
+        const postRef = doc(db, category, documentSnapshot.id); // Reference the document correctly
+        batchUpdates.push(updateDoc(postRef, { status: 'published' })); // Update status to "published"
+      }
+
+      // Check if post should be added to allPosts
+      if (isAuthenticated || (data.status && data.status === 'published')) {
+        allPosts.push({
+          id: documentSnapshot.id,
+          title: data.title || '',
+          content: data.content || '',
+          date: data.date || '',
+          editedDate: data.editedDate || '',
+          category,
+          imageUrl: data.imageUrl || '',
+          type: data.type || 'default',
+        } as Post);
+      }
     });
+
+    // Execute batch updates if there are any
+    if (batchUpdates.length) {
+      await Promise.all(batchUpdates);
+      console.log(`Updated ${batchUpdates.length} posts in category ${category} to published.`);
+    }
   }
 
   return allPosts;
@@ -73,13 +91,13 @@ const HomePage = () => {
     'Y4f0mW8ZiX35uLxGyg1S',
     '02V6uLUBhnKstE8ofH6H',
     'vcVid0cpfoGh4KdozgcS',
-  ]; // make the ones I want centered
+  ]; // Make the ones I want centered
 
   useEffect(() => {
     async function getPosts() {
       try {
         setLoading(true);
-        const fetchedPosts = await fetchPosts();
+        const fetchedPosts = await fetchPosts(isAuthenticated); // Pass authentication status to fetchPosts
         const sortedPosts = sortPostsByDate(fetchedPosts, 'date');
         setPosts(sortedPosts);
       } catch (error) {
@@ -90,7 +108,7 @@ const HomePage = () => {
     }
 
     getPosts();
-  }, []);
+  }, [isAuthenticated]); // Re-fetch posts when authentication status changes
 
   const handleEdit = (post: Post) => {
     setEditingPost(post);
@@ -104,7 +122,7 @@ const HomePage = () => {
     if (!isAuthenticated) return;
 
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this post?',
+      'Are you sure you want to delete this post?'
     );
 
     if (!confirmDelete) return;

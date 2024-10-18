@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     "backend/**/*.ts",
     "backend/importData.js"
-  ],
+, "backend/updateStatus.js"  ],
   "exclude": ["node_modules"]
 }
