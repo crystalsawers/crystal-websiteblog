@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db, storage } from '../../lib/firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useAuth } from '../components/AuthContext';
 import Image from 'next/image';
+import { getSubscriberEmails } from '../../lib/firebaseUtils';
 
 interface EditFormProps {
   category: string;
@@ -107,6 +108,11 @@ const EditForm = ({
 
     try {
       const docRef = doc(db, category, postId);
+
+      // Fetch current post data to check draft status
+      const postSnapshot = await getDoc(docRef);
+      const currentPostData = postSnapshot.data();
+
       let newImageUrl = imageUrl;
 
       // Upload new image if file is selected
@@ -116,12 +122,39 @@ const EditForm = ({
         newImageUrl = await getDownloadURL(imageRef);
       }
 
+      // Check if post was initially a draft
+      const wasDraft = currentPostData?.isDraft;
+
       await updateDoc(docRef, {
         title,
         content,
         imageUrl: newImageUrl,
+        isDraft: false,
         editedDate: new Date().toISOString(),
       });
+
+      // If the post was a draft and is now being published, notify subscribers
+      if (wasDraft) {
+        const subscriberEmails = await getSubscriberEmails();
+        const postId = postSnapshot.id;
+
+        const postUrl = `https://crystal-websiteblog.vercel.app/posts/${postId}`;
+
+        // Send notifications to all subscriber emails
+        for (const email of subscriberEmails) {
+          await fetch('/api/sendNotification', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              postTitle: `New Post: ${title}`,
+              postUrl: postUrl,
+              notificationEmail: email,
+            }),
+          });
+        }
+      }
 
       window.location.reload();
       onClose();
