@@ -189,7 +189,9 @@ const Formula1 = () => {
                     layout="fill"
                     objectFit="cover"
                     objectPosition={
-                      specificPostIds.includes(item.id) ? 'center' : 'top center'
+                      specificPostIds.includes(item.id)
+                        ? 'center'
+                        : 'top center'
                     }
                     className="card-img"
                   />
@@ -211,7 +213,8 @@ const Formula1 = () => {
               )}
               {item.editedDate && (
                 <p className="card-text">
-                  <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
+                  <strong>Edited:</strong>{' '}
+                  {formatDate(new Date(item.editedDate))}
                 </p>
               )}
               <p className="card-text">
