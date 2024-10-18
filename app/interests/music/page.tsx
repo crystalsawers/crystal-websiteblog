@@ -29,6 +29,7 @@ interface MusicDocument {
   date?: string;
   editedDate?: string;
   imageUrl?: string;
+  isDraft?: boolean;
 }
 
 const Music = () => {
@@ -57,6 +58,7 @@ const Music = () => {
             date: data.date,
             editedDate: data.editedDate,
             imageUrl: data.imageUrl,
+            isDraft: data.isDraft || false,
           };
         });
 
@@ -165,62 +167,71 @@ const Music = () => {
           />
         </div>
       )}
+
       {data.length === 0 ? (
         <p>No Music posts yet</p>
       ) : (
-        data.map((item) => (
-          <div key={item.id} className="card">
-            {item.imageUrl && (
-              <div className="relative h-48 w-full">
-                <Image
-                  src={item.imageUrl}
-                  alt={item.title || 'Music post image'}
-                  layout="fill"
-                  objectFit="cover"
-                  className="card-img"
-                />
-              </div>
-            )}
-            {item.title && (
-              <div className={item.imageUrl ? 'pt-4' : ''}>
-                <h2 className="card-title">{item.title}</h2>
-              </div>
-            )}
-            {item.date && (
-              <p className="card-text">
-                <strong>Posted:</strong> {formatDate(new Date(item.date))}
-              </p>
-            )}
-            {item.editedDate && (
-              <p className="card-text">
-                <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
-              </p>
-            )}
-            <p className="card-text">
-              {renderContent(truncateContent(item.content, 110))}
-            </p>
+        data.map((item) => {
+          if (item.isDraft && !isAuthenticated) return null;
 
-            <a href={`/interests/music/${item.id}`} className="card-link">
-              Read more
-            </a>
-            {isAuthenticated && (
-              <div className="mt-2 flex space-x-2">
-                <button
-                  onClick={() => handleEdit(item.id)}
-                  className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-        ))
+          return (
+            <div key={item.id} className="card">
+              {item.imageUrl && (
+                <div className="relative h-48 w-full">
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.title || 'Music post image'}
+                    layout="fill"
+                    objectFit="cover"
+                    className="card-img"
+                  />
+                </div>
+              )}
+              {item.title && (
+                <div className={item.imageUrl ? 'pt-4' : ''}>
+                  <h2 className="card-title">{item.title}</h2>
+                  {/* Indicate if the post is a draft */}
+                  {item.isDraft && (
+                    <span className="text-bold text-red-500">Draft</span>
+                  )}
+                </div>
+              )}
+              {item.date && (
+                <p className="card-text">
+                  <strong>Posted:</strong> {formatDate(new Date(item.date))}
+                </p>
+              )}
+              {item.editedDate && (
+                <p className="card-text">
+                  <strong>Edited:</strong>{' '}
+                  {formatDate(new Date(item.editedDate))}
+                </p>
+              )}
+              <p className="card-text">
+                {renderContent(truncateContent(item.content, 110))}
+              </p>
+              <a href={`/interests/music/${item.id}`} className="card-link">
+                Read more
+              </a>
+              {isAuthenticated && (
+                <div className="mt-2 flex space-x-2">
+                  <button
+                    onClick={() => handleEdit(item.id)}
+                    className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
+          );
+        })
       )}
     </div>
   );
