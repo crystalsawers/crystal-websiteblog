@@ -29,6 +29,7 @@ interface Formula1Document {
   date?: string;
   editedDate?: string;
   imageUrl?: string;
+  isDraft?: boolean; // Added isDraft property
 }
 
 const Formula1 = () => {
@@ -40,7 +41,7 @@ const Formula1 = () => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const category = 'formula1';
-  const specificPostIds = ['02V6uLUBhnKstE8ofH6H']; // make this one centered
+  const specificPostIds = ['02V6uLUBhnKstE8ofH6H']; // Center this specific post
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +59,7 @@ const Formula1 = () => {
             date: data.date,
             editedDate: data.editedDate,
             imageUrl: data.imageUrl,
+            isDraft: data.isDraft || false, // Default to false if not present
           };
         });
 
@@ -152,6 +154,7 @@ const Formula1 = () => {
           </button>
         )}
       </div>
+
       {isCreating && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
           <CreateForm category={category} onClose={handleCloseForm} />
@@ -168,66 +171,76 @@ const Formula1 = () => {
           />
         </div>
       )}
+
       {data.length === 0 ? (
         <p>No Formula 1 posts yet</p>
       ) : (
-        data.map((item) => (
-          <div key={item.id} className="card mb-4">
-            {item.imageUrl && (
-              <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
-                <Image
-                  src={item.imageUrl}
-                  alt={item.title || 'Formula 1 post image'}
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition={
-                    specificPostIds.includes(item.id) ? 'center' : 'top center'
-                  }
-                  className="card-img"
-                />
-              </div>
-            )}
-            {item.title && (
-              <div className={item.imageUrl ? 'pt-4' : ''}>
-                <h2 className="card-title">{item.title}</h2>
-              </div>
-            )}
-            {item.date && (
-              <p className="card-text">
-                <strong>Posted:</strong> {formatDate(new Date(item.date))}
-              </p>
-            )}
-            {item.editedDate && (
-              <p className="card-text">
-                <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
-              </p>
-            )}
-            <p className="card-text">
-              {renderContent(truncateContent(item.content, 110))}
-            </p>
+        data.map((item) => {
+          // Only show draft posts if the user is authenticated
+          if (item.isDraft && !isAuthenticated) return null;
 
-            <a href={`/interests/formula1/${item.id}`} className="card-link">
-              Read more
-            </a>
+          return (
+            <div key={item.id} className="card mb-4">
+              {item.imageUrl && (
+                <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.title || 'Formula 1 post image'}
+                    layout="fill"
+                    objectFit="cover"
+                    objectPosition={
+                      specificPostIds.includes(item.id) ? 'center' : 'top center'
+                    }
+                    className="card-img"
+                  />
+                </div>
+              )}
+              {item.title && (
+                <div className={item.imageUrl ? 'pt-4' : ''}>
+                  <h2 className="card-title">{item.title}</h2>
+                  {/* Indicate if the post is a draft */}
+                  {item.isDraft && (
+                    <span className="text-bold text-red-500">Draft</span>
+                  )}
+                </div>
+              )}
+              {item.date && (
+                <p className="card-text">
+                  <strong>Posted:</strong> {formatDate(new Date(item.date))}
+                </p>
+              )}
+              {item.editedDate && (
+                <p className="card-text">
+                  <strong>Edited:</strong> {formatDate(new Date(item.editedDate))}
+                </p>
+              )}
+              <p className="card-text">
+                {renderContent(truncateContent(item.content, 110))}
+              </p>
 
-            {isAuthenticated && (
-              <div className="mt-2 flex space-x-2">
-                <button
-                  onClick={() => handleEdit(item.id)}
-                  className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-        ))
+              <a href={`/interests/formula1/${item.id}`} className="card-link">
+                Read more
+              </a>
+
+              {isAuthenticated && (
+                <div className="mt-2 flex space-x-2">
+                  <button
+                    onClick={() => handleEdit(item.id)}
+                    className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
+          );
+        })
       )}
     </div>
   );
