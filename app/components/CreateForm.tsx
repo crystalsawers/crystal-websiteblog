@@ -45,22 +45,18 @@ const CreateForm = ({
     };
 
     const nzDateTime = today.toLocaleString('en-GB', options);
-    const [datePart, timePart] = nzDateTime.split(', '); // Split date and time
+    const [datePart, timePart] = nzDateTime.split(', ');
 
-    // Format date to YYYY-MM-DD
     const formattedDate = datePart.split('/').reverse().join('-');
+    const formattedDateTime = `${formattedDate}T${timePart}:00`;
 
-    // Combine date and time to ISO format (e.g., "2024-09-16T14:30:00")
-    const formattedDateTime = `${formattedDate}T${timePart}:00`; // Assuming seconds are 00
-
-    // Set the date in your state to include both date and time
     setDate(formattedDateTime);
   }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
-      setImageUrl(URL.createObjectURL(e.target.files[0])); // Preview the image
+      setImageUrl(URL.createObjectURL(e.target.files[0]));
     }
   };
 
@@ -73,7 +69,7 @@ const CreateForm = ({
     event,
   ) => {
     const target = event.target as HTMLElement;
-    if (!target || !target.parentNode) return; // add a null check
+    if (!target || !target.parentNode) return;
 
     const startX = event.clientX;
     const startY = event.clientY;
@@ -94,12 +90,12 @@ const CreateForm = ({
     };
 
     const handleMouseUp = () => {
-      isDragging = false; // set the flag to false when the user releases the mouse button
+      isDragging = false;
       document.removeEventListener('mousemove', handleMouseMove, false);
     };
 
     const handleMouseDown = () => {
-      isDragging = true; // set the flag to true when the user presses the mouse button
+      isDragging = true;
     };
 
     document.addEventListener('mousemove', handleMouseMove, false);
@@ -107,14 +103,12 @@ const CreateForm = ({
     target.addEventListener('mousedown', handleMouseDown, false);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, isDraft: boolean) => {
     e.preventDefault();
 
-    // Clear any previous errors
     setTitleError(null);
     setContentError(null);
 
-    // Validation: Check if title and content are filled
     if (!title.trim()) {
       setTitleError('Title is required.');
     }
@@ -123,7 +117,6 @@ const CreateForm = ({
       setContentError('Content is required.');
     }
 
-    // If there are errors, stop form submission
     if (!title.trim() || !content.trim()) {
       return;
     }
@@ -131,61 +124,50 @@ const CreateForm = ({
     try {
       let imageUrl = '';
 
-      // Upload image if file is selected
       if (file) {
         const imageRef = ref(storage, `images/${file.name}`);
         await uploadBytes(imageRef, file);
         imageUrl = await getDownloadURL(imageRef);
       }
 
-      // Determine the category to use (main page or passed category prop)
       const finalCategory = isMainPage ? selectedCategory : category;
 
-      // Add document to Firestore
       const docRef = await addDoc(collection(db, finalCategory || ''), {
         title,
         content,
         date,
         imageUrl,
+        isDraft, // Save whether it's a draft
       });
 
-      const subscriberEmails = await getSubscriberEmails();
+      if (!isDraft) {
+        const subscriberEmails = await getSubscriberEmails();
+        const postId = docRef.id;
 
-      // Notify subscribers about the new post
-      const postId = docRef.id; // Get the ID of the newly created post
+        const categoryPrefix = reviewCategories.includes(finalCategory || '')
+          ? 'reviews'
+          : interestCategories.includes(finalCategory || '')
+            ? 'interests'
+            : '';
 
-      // Determine category prefix based on the category
-      const categoryPrefix = reviewCategories.includes(finalCategory || '')
-        ? 'reviews'
-        : interestCategories.includes(finalCategory || '')
-          ? 'interests'
-          : '';
+        const postUrl = `https://crystal-websiteblog.vercel.app/${categoryPrefix}/${finalCategory || ''}/${postId}`;
 
-      // Construct the post URL with category prefix
-      const postUrl = `https://crystal-websiteblog.vercel.app/${categoryPrefix}/${finalCategory || ''}/${postId}`;
-
-      for (const email of subscriberEmails) {
-        await fetch('/api/sendNotification', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            postTitle: `New Post: ${title}`,
-            postUrl: postUrl, // Correctly formatted post URL
-            notificationEmail: email, // Send notification to each subscriber's email
-          }),
-        });
+        for (const email of subscriberEmails) {
+          await fetch('/api/sendNotification', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              postTitle: `New Post: ${title}`,
+              postUrl: postUrl,
+              notificationEmail: email,
+            }),
+          });
+        }
       }
 
-      // Redirect logic
-      let redirectPath = '';
-      if (categoryPrefix) {
-        redirectPath = `/${categoryPrefix}/${finalCategory}`;
-      } else {
-        redirectPath = '/';
-      }
-
+      const redirectPath = finalCategory ? `/${finalCategory}` : '/';
       router.push(redirectPath);
       window.location.reload();
     } catch (error) {
@@ -195,11 +177,9 @@ const CreateForm = ({
 
   return (
     <div className="flex w-full max-w-7xl items-center justify-center p-4">
-      <form onSubmit={handleSubmit} className="create-form">
+      <form onSubmit={(e) => handleSubmit(e, false)} className="create-form">
         <h2 className="create-form-title">Create {category} Post</h2>
-        <label htmlFor="title" className="create-form-label">
-          Title:
-        </label>
+        <label htmlFor="title" className="create-form-label">Title:</label>
         <input
           id="title"
           type="text"
@@ -207,20 +187,16 @@ const CreateForm = ({
           onChange={(e) => setTitle(e.target.value)}
           className="create-form-input"
         />
-        {titleError && <p className="text-red-700">{titleError}</p>}{' '}
-        <label htmlFor="content" className="create-form-label">
-          Content:
-        </label>
+        {titleError && <p className="text-red-700">{titleError}</p>}
+        <label htmlFor="content" className="create-form-label">Content:</label>
         <textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="create-form-textarea"
         />
-        {contentError && <p className="text-red-700">{contentError}</p>}{' '}
-        <label htmlFor="date" className="create-form-label">
-          Date:
-        </label>
+        {contentError && <p className="text-red-700">{contentError}</p>}
+        <label htmlFor="date" className="create-form-label">Date:</label>
         <input
           id="date"
           type="datetime-local"
@@ -228,12 +204,9 @@ const CreateForm = ({
           readOnly
           className="create-form-input"
         />
-        {/* Conditionally render category selection for main page */}
         {isMainPage && (
           <div>
-            <label htmlFor="category" className="create-form-label">
-              Category:
-            </label>
+            <label htmlFor="category" className="create-form-label">Category:</label>
             <select
               id="category"
               value={selectedCategory || ''}
@@ -249,9 +222,7 @@ const CreateForm = ({
             </select>
           </div>
         )}
-        <label htmlFor="file" className="create-form-label">
-          Image:
-        </label>
+        <label htmlFor="file" className="create-form-label">Image:</label>
         <input
           id="file"
           type="file"
@@ -273,14 +244,24 @@ const CreateForm = ({
             <button
               type="button"
               onClick={handleRemoveImage}
-              className="absolute right-2 top-2 rounded bg-red-500 p-2 text-white hover:bg-red-600"
+              className="absolute top-2 right-2 bg-red-500 text-white rounded p-2"
             >
               Remove
             </button>
           </div>
         )}
-        <div className="mt-6">
-          <button type="submit" className="create-form-button">
+        <div className="flex mt-4 justify-center">
+          <button
+            type="button"
+            onClick={(e) => handleSubmit(e, true)} // For saving draft
+            className="mr-2 bg-pink-600 text-white rounded p-2"
+          >
+            Save as Draft
+          </button>
+          <button
+            type="submit"
+            className="mr-2 bg-blue-600 text-white rounded p-2 hover:bg-blue-700"
+          >
             Create Post
           </button>
         </div>
