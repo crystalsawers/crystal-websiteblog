@@ -9,7 +9,6 @@ import {
   orderBy,
   doc,
   deleteDoc,
-  updateDoc,
 } from 'firebase/firestore'; 
 import { sortPostsByDate } from '../lib/utils/sortPostsByDate';
 import { formatDate } from '../lib/utils/formatDate';
@@ -41,8 +40,7 @@ const isReviewCategory = (category: string): boolean => {
 
 const fetchPosts = async (isAuthenticated: boolean): Promise<Post[]> => {
   const allPosts: Post[] = [];
-  const batchUpdates: Promise<void>[] = [];
-
+  
   for (const category of categories) {
     const q = query(collection(db, category), orderBy('date', 'desc'));
     const querySnapshot = await getDocs(q);
@@ -50,36 +48,28 @@ const fetchPosts = async (isAuthenticated: boolean): Promise<Post[]> => {
     querySnapshot.forEach((documentSnapshot) => {
       const data = documentSnapshot.data();
 
-      // If the post doesn't have a status, mark it for updating
-      if (!data.status) {
-        const postRef = doc(db, category, documentSnapshot.id); // Reference the document correctly
-        batchUpdates.push(updateDoc(postRef, { status: 'published' })); // Update status to "published"
+      // Check if post is a draft
+      if (data.isDraft && !isAuthenticated) {
+        return; // Skip draft posts if user is not authenticated
       }
 
-      // Check if post should be added to allPosts
-      if (isAuthenticated || (data.status && data.status === 'published')) {
-        allPosts.push({
-          id: documentSnapshot.id,
-          title: data.title || '',
-          content: data.content || '',
-          date: data.date || '',
-          editedDate: data.editedDate || '',
-          category,
-          imageUrl: data.imageUrl || '',
-          type: data.type || 'default',
-        } as Post);
-      }
+      // Push the post to allPosts
+      allPosts.push({
+        id: documentSnapshot.id,
+        title: data.title || '',
+        content: data.content || '',
+        date: data.date || '',
+        editedDate: data.editedDate || '',
+        category,
+        imageUrl: data.imageUrl || '',
+        type: data.type || 'default',
+      } as Post);
     });
-
-    // Execute batch updates if there are any
-    if (batchUpdates.length) {
-      await Promise.all(batchUpdates);
-      console.log(`Updated ${batchUpdates.length} posts in category ${category} to published.`);
-    }
   }
 
   return allPosts;
 };
+
 
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -87,11 +77,6 @@ const HomePage = () => {
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { isAuthenticated } = useAuth();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false); // State to toggle CreateForm
-  const specificPostIds = [
-    'Y4f0mW8ZiX35uLxGyg1S',
-    '02V6uLUBhnKstE8ofH6H',
-    'vcVid0cpfoGh4KdozgcS',
-  ]; // Make the ones I want centered
 
   useEffect(() => {
     async function getPosts() {
@@ -175,11 +160,6 @@ const HomePage = () => {
                       alt={post.title || 'Posted image'}
                       layout="fill"
                       objectFit="cover"
-                      objectPosition={
-                        specificPostIds.includes(post.id)
-                          ? 'center'
-                          : 'top center'
-                      }
                       className="card-img"
                     />
                   </div>
