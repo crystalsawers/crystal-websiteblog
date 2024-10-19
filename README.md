@@ -25,7 +25,7 @@ This is a free-lance solo project that I'm developing based on everything I've l
 If you are seeing my site thinking that it would be straight forward to be able to make your own blog website, this is not the case. While there are many platforms and tools like Wordpress, Wix.com, etc. that you can make your own blog to post your life on, when making it from scratch as a relatively knowledgable IT person, you have to consider MANY things:
 
 - _**How big is your blog going to be? What features will you implement?**_ The scope of your blog plays a HUGE role in how you design and build it. Are you just creating a simple personal blog with text and images, or are you adding complex features like comments, user profiles, media uploads, and social media integrations? The more features you include, the more planning, coding, and testing you’ll need to ensure everything works smoothly. Keep in mind that adding too many features can complicate the user experience and increase the chances of something breaking down, and that something too complex could make you lose motivation to create it.
-- 
+  
 - _**How is your data within your blog going to be stored and where is it being stored?**_ Choosing the right database solution is critical, whether it's some form of SQL, Firebase, or some other database tool. Data always needs to be backed up, because things will inevitably end up going horribly wrong and you could lose all your data.
 
 - _**How will you handle user authentication and authorization?**_ If you want to allow comments or user-generated content, you'll need to implement secure login systems and manage user roles effectively.
