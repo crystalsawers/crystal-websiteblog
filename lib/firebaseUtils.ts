@@ -7,6 +7,7 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 import { db } from './firebaseConfig';
+import { searchAllCollections } from './searchUtils';
 
 // Check if email is already subscribed
 export const checkSubscriberExists = async (
@@ -101,4 +102,8 @@ export const getSubscriberEmails = async () => {
     console.error('Error fetching subscriber emails:', error);
     throw error; // Propagate the error for handling in the caller function
   }
+};
+
+export const performSearch = async (keyword: string) => {
+  return await searchAllCollections(keyword);
 };

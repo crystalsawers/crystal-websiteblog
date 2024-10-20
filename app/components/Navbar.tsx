@@ -10,10 +10,12 @@ import LogoutButton from './LogoutButton';
 import SubscribeButton from './SubscribeButton';
 import FeedbackButton from './FeedbackButton';
 import SearchBar from './SearchBar'; 
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchVisible, setSearchVisible] = useState(false);
+  const router = useRouter();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -22,6 +24,33 @@ const Navbar = () => {
   const toggleSearch = () => {
     setSearchVisible((prev) => !prev);
   };
+
+  const handleSearch = async (query: string) => {
+    if (query.trim()) {
+      try {
+        const response = await fetch('/api/search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ keyword: query }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const results = await response.json();
+        const queryString = new URLSearchParams({ results: JSON.stringify(results) }).toString();
+        router.push(`/results?${queryString}`);
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    }
+    setSearchVisible(false);
+  };
+  
+  
 
   return (
     <nav className="relative flex flex-col items-center p-4">
@@ -154,7 +183,7 @@ const Navbar = () => {
       )}
 
       {/* Search Bar */}
-      {isSearchVisible && <SearchBar onSearch={() => setSearchVisible(false)} />}
+      {isSearchVisible && <SearchBar onSearch={handleSearch} />}
     </nav>
   );
 };
