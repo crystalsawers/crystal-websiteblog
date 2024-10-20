@@ -14,6 +14,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(results);
   } catch (error) {
     console.error('Error fetching search results:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 },
+    );
   }
 }

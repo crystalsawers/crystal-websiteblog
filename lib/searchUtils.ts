@@ -6,9 +6,17 @@ interface SearchResult {
   title: string;
 }
 
-const collectionsToSearch = ['cricket', 'formula1', 'lifestyle', 'makeup', 'music'];
+const collectionsToSearch = [
+  'cricket',
+  'formula1',
+  'lifestyle',
+  'makeup',
+  'music',
+];
 
-export const searchAllCollections = async (keyword: string): Promise<SearchResult[]> => {
+export const searchAllCollections = async (
+  keyword: string,
+): Promise<SearchResult[]> => {
   const results: SearchResult[] = [];
 
   for (const collectionName of collectionsToSearch) {

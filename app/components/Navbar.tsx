@@ -4,12 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons'; 
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Logo from './cs-high-resolution-logo-transparent.png'; // personal logo from logo.com
 import LogoutButton from './LogoutButton';
 import SubscribeButton from './SubscribeButton';
 import FeedbackButton from './FeedbackButton';
-import SearchBar from './SearchBar'; 
+import SearchBar from './SearchBar';
 import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
@@ -35,13 +35,15 @@ const Navbar = () => {
           },
           body: JSON.stringify({ keyword: query }),
         });
-  
+
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-  
+
         const results = await response.json();
-        const queryString = new URLSearchParams({ results: JSON.stringify(results) }).toString();
+        const queryString = new URLSearchParams({
+          results: JSON.stringify(results),
+        }).toString();
         router.push(`/results?${queryString}`);
       } catch (error) {
         console.error('Error fetching search results:', error);
@@ -49,8 +51,6 @@ const Navbar = () => {
     }
     setSearchVisible(false);
   };
-  
-  
 
   return (
     <nav className="relative flex flex-col items-center p-4">
@@ -97,7 +97,10 @@ const Navbar = () => {
             <FeedbackButton />
             <LogoutButton />
             {/* Search Icon */}
-            <button onClick={toggleSearch} className="text-[var(--navbar-text)]">
+            <button
+              onClick={toggleSearch}
+              className="text-[var(--navbar-text)]"
+            >
               <FontAwesomeIcon icon={faSearch} />
             </button>
           </div>
@@ -175,7 +178,10 @@ const Navbar = () => {
             <FeedbackButton />
             <LogoutButton />
             {/* Search Icon */}
-            <button onClick={toggleSearch} className="text-[var(--navbar-text)]">
+            <button
+              onClick={toggleSearch}
+              className="text-[var(--navbar-text)]"
+            >
               <FontAwesomeIcon icon={faSearch} />
             </button>
           </div>
