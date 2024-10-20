@@ -1,17 +1,26 @@
+// components/Navbar.tsx
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons'; 
 import Logo from './cs-high-resolution-logo-transparent.png'; // personal logo from logo.com
 import LogoutButton from './LogoutButton';
 import SubscribeButton from './SubscribeButton';
 import FeedbackButton from './FeedbackButton';
+import SearchBar from './SearchBar'; 
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchVisible, setSearchVisible] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleSearch = () => {
+    setSearchVisible((prev) => !prev);
   };
 
   return (
@@ -58,6 +67,10 @@ const Navbar = () => {
             <SubscribeButton />
             <FeedbackButton />
             <LogoutButton />
+            {/* Search Icon */}
+            <button onClick={toggleSearch} className="text-[var(--navbar-text)]">
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
           </div>
         </div>
 
@@ -132,9 +145,16 @@ const Navbar = () => {
             <SubscribeButton />
             <FeedbackButton />
             <LogoutButton />
+            {/* Search Icon */}
+            <button onClick={toggleSearch} className="text-[var(--navbar-text)]">
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
           </div>
         </div>
       )}
+
+      {/* Search Bar */}
+      {isSearchVisible && <SearchBar onSearch={() => setSearchVisible(false)} />}
     </nav>
   );
 };
