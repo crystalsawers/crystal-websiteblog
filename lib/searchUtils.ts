@@ -10,7 +10,7 @@ const collectionsToSearch = [
   'cricket',
   'formula1',
   'lifestyle',
-  'makeup',
+  'misc',
   'music',
 ];
 

@@ -8,13 +8,13 @@ const Reviews = () => {
         <h1 className="card-title">Reviews</h1>
         <ul className="list-disc pl-5">
           <li className="mb-2">
-            <Link href="/reviews/misc" className="card-link">
-              Miscellaneous
+            <Link href="/reviews/lifestyle" className="card-link">
+              Lifestyle
             </Link>
           </li>
           <li className="mb-2">
-            <Link href="/reviews/lifestyle" className="card-link">
-              Lifestyle
+            <Link href="/reviews/misc" className="card-link">
+              Miscellaneous
             </Link>
           </li>
         </ul>

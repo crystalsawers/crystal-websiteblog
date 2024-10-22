@@ -47,7 +47,7 @@ If you are seeing my site thinking that it would be straight forward to be able 
 - **About Me:** A section introducing myself and my background.
 - **Journey in My IT Degree:** Insights into my experiences and learning throughout my degree.
 - **Opinions:** My thoughts on my main interests, including Formula 1 and Cricket.
-- **Reviews:** Insights on makeup and lifestyle products.
+- **Reviews:** Insights on lifestyle products and miscellaneous things.
 
 ## Technologies Used
 
