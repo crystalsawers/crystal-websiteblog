@@ -22,7 +22,7 @@ interface Post {
 }
 
 const isReviewCategory = (category: string): boolean => {
-  const reviewCategories = ['lifestyle', 'makeup'];
+  const reviewCategories = ['lifestyle', 'misc'];
   return reviewCategories.includes(category);
 };
 
@@ -33,7 +33,7 @@ const ResultsPage = () => {
   const [error, setError] = useState('');
 
   const categories = useMemo(
-    () => ['cricket', 'formula1', 'music', 'lifestyle', 'makeup'],
+    () => ['cricket', 'formula1', 'music', 'lifestyle', 'misc'],
     [],
   );
 

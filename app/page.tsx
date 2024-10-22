@@ -20,7 +20,7 @@ import { useAuth } from './components/AuthContext';
 import EditForm from './components/EditForm';
 import CreateForm from './components/CreateForm';
 
-const categories = ['cricket', 'formula1', 'music', 'lifestyle', 'makeup'];
+const categories = ['cricket', 'formula1', 'music', 'lifestyle', 'misc'];
 
 interface Post {
   id: string;
@@ -35,7 +35,7 @@ interface Post {
 }
 
 const isReviewCategory = (category: string): boolean => {
-  const reviewCategories = ['lifestyle', 'makeup'];
+  const reviewCategories = ['lifestyle', 'misc'];
   return reviewCategories.includes(category);
 };
 
@@ -82,7 +82,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { isAuthenticated } = useAuth();
-  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false); // State to toggle CreateForm
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
   const specificPostIds = [
     'Y4f0mW8ZiX35uLxGyg1S',
     '02V6uLUBhnKstE8ofH6H',
@@ -93,7 +93,7 @@ const HomePage = () => {
     async function getPosts() {
       try {
         setLoading(true);
-        const fetchedPosts = await fetchPosts(isAuthenticated); // Pass authentication status to fetchPosts
+        const fetchedPosts = await fetchPosts(isAuthenticated);
         const sortedPosts = sortPostsByDate(fetchedPosts, 'date');
         setPosts(sortedPosts);
       } catch (error) {
@@ -104,7 +104,7 @@ const HomePage = () => {
     }
 
     getPosts();
-  }, [isAuthenticated]); // Re-fetch posts when authentication status changes
+  }, [isAuthenticated]);
 
   const handleEdit = (post: Post) => {
     setEditingPost(post);
@@ -183,7 +183,6 @@ const HomePage = () => {
                 {post.title && (
                   <div className={post.imageUrl ? 'pt-4' : ''}>
                     <h2 className="card-title">{post.title}</h2>
-                    {/* Add a draft indicator */}
                     {post.isDraft && (
                       <span className="font-semibold text-red-500">Draft</span>
                     )}

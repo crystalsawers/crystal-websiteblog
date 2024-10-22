@@ -21,7 +21,7 @@ import renderContent from '@/lib/utils/renderContent';
 import { truncateContent } from '@/lib/utils/truncateContent';
 import Image from 'next/image';
 
-interface MakeupDocument {
+interface MiscDocument {
   id: string;
   type: string;
   title?: string;
@@ -32,24 +32,24 @@ interface MakeupDocument {
   isDraft?: boolean;
 }
 
-const Makeup = () => {
-  const [data, setData] = useState<MakeupDocument[]>([]);
+const Miscellaneous = () => {
+  const [data, setData] = useState<MiscDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
-  const [editingPost, setEditingPost] = useState<MakeupDocument | null>(null);
+  const [editingPost, setEditingPost] = useState<MiscDocument | null>(null);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
-  const category = 'makeup';
+  const category = 'misc';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
-          collection(db, 'makeup'),
+          collection(db, 'misc'),
         );
-        const items: MakeupDocument[] = querySnapshot.docs.map((doc) => {
-          const data = doc.data() as MakeupDocument;
+        const items: MiscDocument[] = querySnapshot.docs.map((doc) => {
+          const data = doc.data() as MiscDocument;
           return {
             id: doc.id,
             type: data.type,
@@ -65,7 +65,7 @@ const Makeup = () => {
         const sortedItems = sortPostsByDate(items, 'date');
         setData(sortedItems);
       } catch (error) {
-        setError('Error fetching Makeup data');
+        setError('Error fetching Miscellaneous data');
       } finally {
         setLoading(false);
       }
@@ -91,13 +91,13 @@ const Makeup = () => {
     if (!isAuthenticated) return;
 
     try {
-      const docRef = doc(db, 'makeup', id);
+      const docRef = doc(db, 'misc', id);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         setEditingPost({
           id: docSnap.id,
-          ...(docSnap.data() as Omit<MakeupDocument, 'id'>),
+          ...(docSnap.data() as Omit<MiscDocument, 'id'>),
         });
       }
     } catch (error) {
@@ -117,7 +117,7 @@ const Makeup = () => {
     }
 
     try {
-      const docRef = doc(db, 'makeup', id);
+      const docRef = doc(db, 'misc', id);
       await deleteDoc(docRef);
       setData(data.filter((item) => item.id !== id));
     } catch (error) {
@@ -127,14 +127,12 @@ const Makeup = () => {
   };
 
   if (loading)
-    return (
-      <p className="text-center text-custom-green">Loading Makeup posts...</p>
-    );
+    return <p className="text-center text-custom-green">Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="lg:mx-auto lg:max-w-screen-lg lg:p-8">
-      <h1 className="page-title">Makeup</h1>
+      <h1 className="page-title">Miscellaneous</h1>
       <div className="mb-4 flex justify-between">
         <button
           onClick={handleBack}
@@ -168,7 +166,7 @@ const Makeup = () => {
         </div>
       )}
       {data.length === 0 ? (
-        <p>No Makeup posts yet</p>
+        <p>No Miscellaneous posts yet</p>
       ) : (
         data.map((item) => {
           if (item.isDraft && !isAuthenticated) return null;
@@ -179,7 +177,7 @@ const Makeup = () => {
                 <div className="relative h-48 w-full">
                   <Image
                     src={item.imageUrl}
-                    alt={item.title || 'Makeup post image'}
+                    alt={item.title || 'Misc post image'}
                     layout="fill"
                     objectFit="cover"
                     className="card-img"
@@ -189,7 +187,6 @@ const Makeup = () => {
               {item.title && (
                 <div className={item.imageUrl ? 'pt-4' : ''}>
                   <h2 className="card-title">{item.title}</h2>
-                  {/* Indicate if the post is a draft */}
                   {item.isDraft && (
                     <span className="text-bold text-red-500">Draft</span>
                   )}
@@ -209,7 +206,7 @@ const Makeup = () => {
               <p className="card-text">
                 {renderContent(truncateContent(item.content, 110))}
               </p>
-              <a href={`/reviews/makeup/${item.id}`} className="card-link">
+              <a href={`/reviews/misc/${item.id}`} className="card-link">
                 Read more
               </a>
               {isAuthenticated && (
@@ -236,4 +233,4 @@ const Makeup = () => {
   );
 };
 
-export default Makeup;
+export default Miscellaneous;

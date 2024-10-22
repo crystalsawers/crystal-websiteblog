@@ -17,7 +17,7 @@ const CreateForm = ({
   onClose,
   isMainPage = false,
 }: CreateFormProps) => {
-  const reviewCategories = ['makeup', 'lifestyle'];
+  const reviewCategories = ['misc', 'lifestyle'];
   const interestCategories = ['formula1', 'cricket', 'music'];
 
   const [title, setTitle] = useState('');
@@ -228,7 +228,7 @@ const CreateForm = ({
               <option value="cricket">Cricket</option>
               <option value="music">Music</option>
               <option value="lifestyle">Lifestyle</option>
-              <option value="makeup">Makeup</option>
+              <option value="misc">Miscellaneous</option>
             </select>
           </div>
         )}
