@@ -174,7 +174,7 @@ const Miscellaneous = () => {
           return (
             <div key={item.id} className="card">
               {item.imageUrl && (
-                <div className="relative h-48 w-full">
+                <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
                   <Image
                     src={item.imageUrl}
                     alt={item.title || 'Misc post image'}
