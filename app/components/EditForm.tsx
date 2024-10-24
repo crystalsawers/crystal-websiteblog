@@ -33,7 +33,6 @@ const EditForm = ({
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [imageObjectPosition, setImageObjectPosition] = useState('0% 0%');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -45,44 +44,6 @@ const EditForm = ({
   const handleRemoveImage = () => {
     setFile(null);
     setImageUrl('');
-  };
-
-  const handleImageMouseDown: React.MouseEventHandler<HTMLImageElement> = (
-    event,
-  ) => {
-    const target = event.target as HTMLElement;
-    if (!target || !target.parentNode) return; // add a null check
-
-    const startX = event.clientX;
-    const startY = event.clientY;
-    const container = target.parentNode as HTMLElement;
-    const containerWidth = container.offsetWidth;
-    const containerHeight = container.offsetHeight;
-    const initialObjectPositionX = target.style.left;
-    const initialObjectPositionY = target.style.top;
-    let isDragging = false;
-
-    const handleMouseMove = (event: MouseEvent) => {
-      if (!isDragging) return;
-      const offsetX = event.clientX - startX;
-      const offsetY = event.clientY - startY;
-      const objectPositionX = `${parseFloat(initialObjectPositionX) + (offsetX / containerWidth) * 100}%`;
-      const objectPositionY = `${parseFloat(initialObjectPositionY) + (offsetY / containerHeight) * 100}%`;
-      setImageObjectPosition(`${objectPositionX} ${objectPositionY}`);
-    };
-
-    const handleMouseUp = () => {
-      isDragging = false; // set the flag to false when the user releases the mouse button
-      document.removeEventListener('mousemove', handleMouseMove, false);
-    };
-
-    const handleMouseDown = () => {
-      isDragging = true; // set the flag to true when the user presses the mouse button
-    };
-
-    document.addEventListener('mousemove', handleMouseMove, false);
-    document.addEventListener('mouseup', handleMouseUp, false);
-    target.addEventListener('mousedown', handleMouseDown, false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -258,9 +219,8 @@ const EditForm = ({
               alt="Preview"
               layout="fill"
               objectFit="cover"
-              objectPosition={imageObjectPosition}
+              objectPosition="top-center"
               className="h-full w-full"
-              onMouseDown={handleImageMouseDown}
             />
             <button
               type="button"

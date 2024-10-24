@@ -29,7 +29,6 @@ const CreateForm = ({
   const [contentError, setContentError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const router = useRouter();
-  const [imageObjectPosition, setImageObjectPosition] = useState('0% 0%');
 
   useEffect(() => {
     // Get the current date and time in NZ time (Pacific/Auckland)
@@ -63,44 +62,6 @@ const CreateForm = ({
   const handleRemoveImage = () => {
     setFile(null);
     setImageUrl(null);
-  };
-
-  const handleImageMouseDown: React.MouseEventHandler<HTMLImageElement> = (
-    event,
-  ) => {
-    const target = event.target as HTMLElement;
-    if (!target || !target.parentNode) return;
-
-    const startX = event.clientX;
-    const startY = event.clientY;
-    const container = target.parentNode as HTMLElement;
-    const containerWidth = container.offsetWidth;
-    const containerHeight = container.offsetHeight;
-    const initialObjectPositionX = target.style.left;
-    const initialObjectPositionY = target.style.top;
-    let isDragging = false;
-
-    const handleMouseMove = (event: MouseEvent) => {
-      if (!isDragging) return;
-      const offsetX = event.clientX - startX;
-      const offsetY = event.clientY - startY;
-      const objectPositionX = `${parseFloat(initialObjectPositionX) + (offsetX / containerWidth) * 100}%`;
-      const objectPositionY = `${parseFloat(initialObjectPositionY) + (offsetY / containerHeight) * 100}%`;
-      setImageObjectPosition(`${objectPositionX} ${objectPositionY}`);
-    };
-
-    const handleMouseUp = () => {
-      isDragging = false;
-      document.removeEventListener('mousemove', handleMouseMove, false);
-    };
-
-    const handleMouseDown = () => {
-      isDragging = true;
-    };
-
-    document.addEventListener('mousemove', handleMouseMove, false);
-    document.addEventListener('mouseup', handleMouseUp, false);
-    target.addEventListener('mousedown', handleMouseDown, false);
   };
 
   const handleSubmit = async (e: React.FormEvent, isDraft: boolean) => {
@@ -171,7 +132,8 @@ const CreateForm = ({
 
       const redirectPath = finalCategory ? `/${finalCategory}` : '/';
       router.push(redirectPath);
-      window.location.reload();
+      // window.location.reload();
+      onClose();
     } catch (error) {
       console.error('Error creating document:', error);
     }
@@ -249,9 +211,8 @@ const CreateForm = ({
               alt="Preview"
               layout="fill"
               objectFit="cover"
-              objectPosition={imageObjectPosition}
+              objectPosition="top-center"
               className="h-full w-full"
-              onMouseDown={handleImageMouseDown}
             />
             <button
               type="button"
