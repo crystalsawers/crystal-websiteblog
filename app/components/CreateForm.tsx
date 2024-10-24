@@ -93,10 +93,13 @@ const CreateForm = ({
 
       const finalCategory = isMainPage ? selectedCategory : category;
 
+      // Only set the date if the post is not a draft
+      const postDate = isDraft ? null : date;
+
       const docRef = await addDoc(collection(db, finalCategory || ''), {
         title,
         content,
-        date,
+        date: postDate,
         imageUrl,
         isDraft, // Save whether it's a draft
       });
