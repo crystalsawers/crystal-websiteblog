@@ -214,7 +214,7 @@ const CreateForm = ({
               alt="Preview"
               layout="fill"
               objectFit="cover"
-              objectPosition="top-center"
+              objectPosition="top center"
               className="h-full w-full"
             />
             <button
