@@ -93,13 +93,10 @@ const CreateForm = ({
 
       const finalCategory = isMainPage ? selectedCategory : category;
 
-      // Only set the date if the post is not a draft
-      const postDate = isDraft ? null : date;
-
       const docRef = await addDoc(collection(db, finalCategory || ''), {
         title,
         content,
-        date: postDate,
+        date,
         imageUrl,
         isDraft, // Save whether it's a draft
       });
@@ -136,7 +133,7 @@ const CreateForm = ({
       const redirectPath = finalCategory ? `/${finalCategory}` : '/';
       router.push(redirectPath);
       // window.location.reload();
-      onClose();
+      onClose(); // doesn't automatically close the form
     } catch (error) {
       console.error('Error creating document:', error);
     }
