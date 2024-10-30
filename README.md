@@ -16,6 +16,7 @@ _1st Deployment as of 15 September 2024:_ [Visit the Blog](https://crystal-websi
   - [Features](#features)
   - [Technologies Used](#technologies-used)
   - [Future Plans](#future-plans)
+  - [References](#references)
   - [Contact](#contact)
 
 ## Overview
