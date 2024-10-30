@@ -60,6 +60,14 @@ If you are seeing my site thinking that it would be straight forward to be able 
 
 - A full automated **backup** and **restore** system for all my blog data, currently I am just manually backing my data up. Main barrier is that I have to use Google Cloud as Firebase is linked with Google Cloud, and that I may have to pay to do it
 
+## References
+
+- This Next 13 Crash Course series on [Youtube](https://www.youtube.com/playlist?list=PL4cUxeGkcC9jZIVqmy_QhfQdi6mzQvJnT) took a big inspiration into starting this project
+- ChatGPT was used a fair bit to progress on some ideas like subscription and feedback. 
+
+
+
+
 ## Contact
 
 **Crystal Sawers**
