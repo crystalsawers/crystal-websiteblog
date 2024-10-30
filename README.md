@@ -64,7 +64,8 @@ If you are seeing my site thinking that it would be straight forward to be able 
 ## References
 
 - This Next 13 Crash Course series on [Youtube](https://www.youtube.com/playlist?list=PL4cUxeGkcC9jZIVqmy_QhfQdi6mzQvJnT) took a big inspiration into starting this project
-- ChatGPT was used a fair bit to progress on some ideas like subscription and feedback. 
+- ChatGPT was used a fair bit to progress on some ideas like subscription and feedback.
+- I create my own logo from [Logo.com](https://logo.com/)
 
 
 
