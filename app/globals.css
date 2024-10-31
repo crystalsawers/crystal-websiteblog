@@ -285,3 +285,7 @@ main nav {
 .markdown-content th {
   @apply bg-emerald-500;
 }
+
+.markdown-content a {
+  text-decoration: underline;
+}

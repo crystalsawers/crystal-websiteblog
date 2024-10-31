@@ -67,9 +67,6 @@ If you are seeing my site thinking that it would be straight forward to be able 
 - ChatGPT was used a fair bit to progress on some ideas like subscription and feedback.
 - I created my own logo from [Logo.com](https://logo.com/)
 
-
-
-
 ## Contact
 
 **Crystal Sawers**
