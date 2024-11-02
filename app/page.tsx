@@ -9,6 +9,7 @@ import {
   orderBy,
   doc,
   deleteDoc,
+  getDoc,
 } from 'firebase/firestore';
 import { sortPostsByDate } from '../lib/utils/sortPostsByDate';
 import { formatDate } from '../lib/utils/formatDate';
@@ -83,6 +84,8 @@ const HomePage = () => {
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { isAuthenticated } = useAuth();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+  const [pinnedPostId, setPinnedPostId] = useState<string | null>(null);
+
   const specificPostIds = [
     'Y4f0mW8ZiX35uLxGyg1S',
     '02V6uLUBhnKstE8ofH6H',
@@ -94,6 +97,10 @@ const HomePage = () => {
       try {
         setLoading(true);
         const fetchedPosts = await fetchPosts(isAuthenticated);
+        const settingsRef = doc(db, 'settings', 'siteConfig');
+        const settingsSnap = await getDoc(settingsRef);
+        const pinnedId = settingsSnap.data()?.pinnedPostId || null;
+        setPinnedPostId(pinnedId);
         const sortedPosts = sortPostsByDate(fetchedPosts, 'date');
         setPosts(sortedPosts);
       } catch (error) {
@@ -158,12 +165,10 @@ const HomePage = () => {
         )}
 
         <div>
-          {posts.map((post) => {
-            const section = isReviewCategory(post.category)
-              ? 'reviews'
-              : 'interests';
-            return (
-              <div key={post.id} className="card mb-4">
+          {/* Render the pinned post if it exists */}
+          {pinnedPostId && posts.some(post => post.id === pinnedPostId) && (
+            posts.filter(post => post.id === pinnedPostId).map((post) => (
+              <div key={post.id} className="card mb-4 relative">
                 {post.imageUrl && (
                   <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
                     <Image
@@ -176,6 +181,77 @@ const HomePage = () => {
                           ? 'center'
                           : 'top center'
                       }
+                      className="card-img"
+                    />
+                  </div>
+                )}
+                {post.title && (
+                  <div className={post.imageUrl ? 'pt-4' : ''}>
+                    <h2 className="card-title">{post.title}</h2>
+                    {post.isDraft && (
+                      <span className="font-semibold text-red-500">Draft</span>
+                    )}
+                  </div>
+                )}
+                {post.date && (
+                  <p className="card-text">
+                    <strong>Posted:</strong> {formatDate(new Date(post.date))}
+                  </p>
+                )}
+                {post.editedDate && (
+                  <p className="card-text">
+                    <strong>Edited:</strong>{' '}
+                    {formatDate(new Date(post.editedDate))}
+                  </p>
+                )}
+                <p className="card-text">
+                  {renderContent(truncateContent(post.content, 110))}
+                </p>
+                <a
+                  href={`/${isReviewCategory(post.category) ? 'reviews' : 'interests'}/${post.category}/${post.id}`}
+                  className="card-link"
+                >
+                  Read more
+                </a>
+                {isAuthenticated && (
+                  <div className="mt-2 flex space-x-2">
+                    <button
+                      onClick={() => handleEdit(post)}
+                      className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(post)}
+                      className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                    >
+                      Delete
+                    </button>
+                </div>
+                )}
+                {/* Pinned label  */}
+                <div className="absolute bottom-2 right-2">
+                  <span className="text-xl font-semibold text-white mr-4">Pinned</span>
+                </div>
+              </div>
+            ))
+          )}
+
+          {/* Render the rest of the posts */}
+          {posts.filter(post => post.id !== pinnedPostId).map((post) => {
+            const section = isReviewCategory(post.category)
+              ? 'reviews'
+              : 'interests';
+            return (
+              <div key={post.id} className="card mb-4">
+                {post.imageUrl && (
+                  <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                    <Image
+                      src={post.imageUrl}
+                      alt={post.title || 'Posted image'}
+                      layout="fill"
+                      objectFit="cover"
+                      objectPosition='top center'
                       className="card-img"
                     />
                   </div>
