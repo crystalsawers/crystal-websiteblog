@@ -34,6 +34,7 @@ const EditForm = ({
   const [contentError, setContentError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pinned, setPinned] = useState(false);
+  const [pinError, setPinError] = useState<string | null>(null);
 
   // Fetch the current pinned status on load
   useEffect(() => {
@@ -62,17 +63,26 @@ const EditForm = ({
 
   const handleTogglePin = async () => {
     const settingsRef = doc(db, 'settings', 'siteConfig');
+    const settingsSnap = await getDoc(settingsRef);
+    const pinnedPostId = settingsSnap.data()?.pinnedPostId; 
+
+    // Check if there is already a pinned post
+    if (pinnedPostId && pinnedPostId !== postId && !pinned) {
+        setPinError('Another post is already pinned. Unpin it before pinning this one.');
+        return; 
+    }
+
+    setPinError(null); 
 
     if (!pinned) {
-      // If the current post is not pinned, set it as the pinned post
-      await updateDoc(settingsRef, { pinnedPostId: postId });
+        await updateDoc(settingsRef, { pinnedPostId: postId });
     } else {
-      // If it is pinned, unpin it by setting pinnedPostId to null
-      await updateDoc(settingsRef, { pinnedPostId: null });
+        await updateDoc(settingsRef, { pinnedPostId: null });
     }
 
     setPinned(!pinned); // Toggle the pinned state in the UI
-  };
+};
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -208,6 +218,7 @@ const EditForm = ({
       <form onSubmit={handleSubmit} className="create-form">
         <h2 className="create-form-title">Edit Post</h2>
         {error && <p className="create-form-error">{error}</p>}
+        {pinError && <p className="text-red-700">{pinError}</p>}
 
         <label className="create-form-label" htmlFor="title">
           Title:
