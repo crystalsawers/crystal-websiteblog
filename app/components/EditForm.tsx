@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db, storage } from '../../lib/firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -33,6 +33,20 @@ const EditForm = ({
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [pinned, setPinned] = useState(false);
+
+  // Fetch the current pinned status on load
+  useEffect(() => {
+    const checkPinnedStatus = async () => {
+      const settingsRef = doc(db, 'settings', 'siteConfig');
+      const settingsSnap = await getDoc(settingsRef);
+      const pinnedPostId = settingsSnap.data()?.pinnedPostId;
+
+      // Check if the current post is the pinned post
+      setPinned(pinnedPostId === postId);
+    };
+    checkPinnedStatus();
+  }, [postId]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -44,6 +58,20 @@ const EditForm = ({
   const handleRemoveImage = () => {
     setFile(null);
     setImageUrl('');
+  };
+
+  const handleTogglePin = async () => {
+    const settingsRef = doc(db, 'settings', 'siteConfig');
+
+    if (!pinned) {
+      // If the current post is not pinned, set it as the pinned post
+      await updateDoc(settingsRef, { pinnedPostId: postId });
+    } else {
+      // If it is pinned, unpin it by setting pinnedPostId to null
+      await updateDoc(settingsRef, { pinnedPostId: null });
+    }
+
+    setPinned(!pinned); // Toggle the pinned state in the UI
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,6 +120,7 @@ const EditForm = ({
         imageUrl: newImageUrl,
         isDraft: false,
         editedDate: new Date().toISOString(),
+        pinned: pinned, // Ensure the pinned status is saved
       });
 
       // If the post was a draft and is now being published, notify subscribers
@@ -163,6 +192,7 @@ const EditForm = ({
         imageUrl: newImageUrl,
         draft: true, // Mark as draft
         editedDate: new Date().toISOString(),
+        pinned, // Ensure the pinned status is saved
       });
 
       window.location.reload();
@@ -233,6 +263,13 @@ const EditForm = ({
         )}
 
         <div className="mt-4 flex justify-center">
+          <button
+            type="button"
+            onClick={handleTogglePin}
+            className={`p-2 rounded ${pinned ? 'bg-red-500' : 'bg-yellow-500'} text-white mr-4`}
+          >
+            {pinned ? 'Unpin Post' : 'Pin Post'}
+          </button>
           <button
             type="button"
             onClick={handleSaveDraft}
