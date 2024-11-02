@@ -64,25 +64,26 @@ const EditForm = ({
   const handleTogglePin = async () => {
     const settingsRef = doc(db, 'settings', 'siteConfig');
     const settingsSnap = await getDoc(settingsRef);
-    const pinnedPostId = settingsSnap.data()?.pinnedPostId; 
+    const pinnedPostId = settingsSnap.data()?.pinnedPostId;
 
     // Check if there is already a pinned post
     if (pinnedPostId && pinnedPostId !== postId && !pinned) {
-        setPinError('Another post is already pinned. Unpin it before pinning this one.');
-        return; 
+      setPinError(
+        'Another post is already pinned. Unpin it before pinning this one.',
+      );
+      return;
     }
 
-    setPinError(null); 
+    setPinError(null);
 
     if (!pinned) {
-        await updateDoc(settingsRef, { pinnedPostId: postId });
+      await updateDoc(settingsRef, { pinnedPostId: postId });
     } else {
-        await updateDoc(settingsRef, { pinnedPostId: null });
+      await updateDoc(settingsRef, { pinnedPostId: null });
     }
 
     setPinned(!pinned); // Toggle the pinned state in the UI
-};
-
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -277,7 +278,7 @@ const EditForm = ({
           <button
             type="button"
             onClick={handleTogglePin}
-            className={`p-2 rounded ${pinned ? 'bg-red-500' : 'bg-yellow-500'} text-white mr-4`}
+            className={`rounded p-2 ${pinned ? 'bg-red-500' : 'bg-yellow-500'} mr-4 text-white`}
           >
             {pinned ? 'Unpin Post' : 'Pin Post'}
           </button>
