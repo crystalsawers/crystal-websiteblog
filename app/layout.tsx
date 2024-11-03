@@ -4,6 +4,9 @@ import './globals.css';
 import Navbar from './components/Navbar';
 import { AuthProvider } from './components/AuthContext';
 import Head from 'next/head';
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -26,6 +29,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const analytics = getAnalytics();
+
+  useEffect(() => {
+    logEvent(analytics, 'page_view', {
+      page_path: pathname,
+    });
+  }, [pathname, analytics]);
+
   return (
     <AuthProvider>
       <html lang="en">
