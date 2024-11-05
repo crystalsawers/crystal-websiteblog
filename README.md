@@ -8,7 +8,7 @@ _1st Deployment as of 15 September 2024:_ [Visit the Blog](https://crystal-websi
 
 _Domain name change as of 5 November 2024: https://crystalsawers.co.nz/_
 
-**Note:** the vercel.app will still work but it will redirect to the new one
+**Note:** the `https://crystal-websiteblog.vercel.app/` url will still work but it will redirect to the new one
 
 ## Table of Contents
 
