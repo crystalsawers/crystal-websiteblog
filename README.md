@@ -45,7 +45,7 @@ If you are seeing my site thinking that it would be straight forward to be able 
 ## Project Timeframe
 
 **Start Date:** 13 September 2024  
-**Current Status:** Present
+**Current Status:** Active
 
 ## Features
 
@@ -60,6 +60,7 @@ If you are seeing my site thinking that it would be straight forward to be able 
 - Backend: [Firebase](https://firebase.google.com/)
 - Styling: [Tailwind CSS](https://tailwindcss.com/)
 - Deployment: [Vercel](https://vercel.com/)
+- Custom Domain: [GoDaddy](https://www.godaddy.com)
 
 ## Future Plans
 
@@ -70,6 +71,7 @@ If you are seeing my site thinking that it would be straight forward to be able 
 - This Next 13 Crash Course series on [Youtube](https://www.youtube.com/playlist?list=PL4cUxeGkcC9jZIVqmy_QhfQdi6mzQvJnT) took a big inspiration into starting this project
 - ChatGPT was used a fair bit to progress on some ideas like subscription and feedback.
 - I created my own logo from [Logo.com](https://logo.com/)
+- For regisering my custom domain I used [GoDaddy](https://www.godaddy.com)
 
 ## Contact
 
