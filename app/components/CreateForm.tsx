@@ -111,7 +111,7 @@ const CreateForm = ({
             ? 'interests'
             : '';
 
-        const BASE_URL = 'https://crystal-websiteblog.vercel.app/';
+        const BASE_URL = 'https://crystalsawers.co.nz/';
 
         const postUrl = `${BASE_URL}${categoryPrefix}/${finalCategory || ''}/${postId}`;
 
