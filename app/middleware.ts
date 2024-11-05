@@ -8,6 +8,12 @@ export function middleware(request: NextRequest) {
 
   const isLoggedIn = (loggedInCookie?.value ?? '') === 'true';
 
+  // Redirect from .vercel.app to the new domain
+  if (request.headers.get('host') === 'crystal-websiteblog.vercel.app') {
+    url.hostname = 'crystalsawers.co.nz';
+    return NextResponse.redirect(url, 301); // Permanent redirect
+  }
+
   if (!isLoggedIn && url.pathname.startsWith('/protected-page')) {
     url.pathname = '/login';
     return NextResponse.redirect(url);
@@ -17,5 +23,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/protected-page'], // Adjust if needed
+  matcher: ['/protected-page'],
 };
