@@ -50,7 +50,7 @@ const SubscribePage = () => {
             },
             body: JSON.stringify({
               postTitle: 'New Subscription',
-              postUrl: 'https://crystal-websiteblog.vercel.app/',
+              postUrl: 'https://crystalsawers.co.nz/',
               notificationEmail: process.env.NEXT_PUBLIC_EMAIL_USER,
             }),
           });
