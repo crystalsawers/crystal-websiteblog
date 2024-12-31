@@ -87,6 +87,9 @@ const HomePage = () => {
   const { isAuthenticated } = useAuth();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
   const [pinnedPostId, setPinnedPostId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const postsPerPage = 15;
 
   const specificPostIds = [
     'Y4f0mW8ZiX35uLxGyg1S',
@@ -104,7 +107,14 @@ const HomePage = () => {
         const pinnedId = settingsSnap.data()?.pinnedPostId || null;
         setPinnedPostId(pinnedId);
         const sortedPosts = sortPostsByDate(fetchedPosts, 'date');
-        setPosts(sortedPosts);
+
+        const startIndex = (currentPage - 1) * postsPerPage;
+        const paginatedPosts = sortedPosts.slice(
+          startIndex,
+          startIndex + postsPerPage,
+        );
+        setPosts(paginatedPosts);
+        setTotalPages(Math.ceil(sortedPosts.length / postsPerPage));
       } catch (error) {
         console.error('Error fetching posts:', error);
       } finally {
@@ -113,7 +123,7 @@ const HomePage = () => {
     }
 
     getPosts();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, currentPage]);
 
   const handleEdit = (post: Post) => {
     setEditingPost(post);
@@ -320,6 +330,35 @@ const HomePage = () => {
               );
             })}
         </div>
+
+        {/* Pagination Controls */}
+        <div className="mt-6 text-center">
+          {/* Prev Button */}
+          <button
+            className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1} // Disabled on first page
+          >
+            Prev
+          </button>
+
+          {/* Page Number Display (Page X of Y) */}
+          <span className="mx-2 text-lg">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          {/* Next Button */}
+          <button
+            className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages} // Disabled on last page
+          >
+            Next
+          </button>
+        </div>
+
         {isCreateFormOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <CreateForm
