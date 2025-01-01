@@ -1,4 +1,3 @@
-// app/create-post/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,8 +7,12 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
 import { getSubscriberEmails } from '@/lib/firebaseUtils';
+import { usePathname } from 'next/navigation';
 
 const CreatePost = () => {
+  const reviewCategories = ['misc', 'lifestyle'];
+  const interestCategories = ['formula1', 'cricket', 'music'];
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
@@ -17,11 +20,28 @@ const CreatePost = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(''); // Default to empty string for default state
+  const [categoryPrefix, setCategoryPrefix] = useState<string>(''); // Define categoryPrefix here
 
   const router = useRouter();
+  const pathname = usePathname(); // Access the current path with usePathname
 
   useEffect(() => {
+    const categoryPrefixFromPath = pathname.split('/')[1]; // Get the first part of the path, either 'interests' or 'reviews'
+
+    // Determine the category prefix from the path
+    if (categoryPrefixFromPath === 'interests' || categoryPrefixFromPath === 'reviews') {
+      setCategoryPrefix(categoryPrefixFromPath);
+      const category = pathname.split('/')[2]; // Get category after /interests/ or /reviews/
+      if (category) {
+        setSelectedCategory(category); // Set the selected category based on the path
+      }
+    } else {
+      setSelectedCategory(''); // Default state for '/'; should show "Select Category"
+      setCategoryPrefix(''); // Reset categoryPrefix to empty for '/' route
+    }
+
+    // Get the current date and time in NZ time (Pacific/Auckland)
     const today = new Date();
     const options: Intl.DateTimeFormatOptions = {
       timeZone: 'Pacific/Auckland',
@@ -40,7 +60,7 @@ const CreatePost = () => {
     const formattedDateTime = `${formattedDate}T${timePart}:00`;
 
     setDate(formattedDateTime);
-  }, []);
+  }, [pathname]); // Add pathname as dependency to re-run when path changes
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -95,8 +115,15 @@ const CreatePost = () => {
         const subscriberEmails = await getSubscriberEmails();
         const postId = docRef.id;
 
+        // Determine whether it's an 'interests' or 'reviews' post
+        const categoryPrefixFromPath = reviewCategories.includes(finalCategory)
+          ? 'reviews'
+          : interestCategories.includes(finalCategory)
+          ? 'interests'
+          : '';
+
         const BASE_URL = 'https://crystalsawers.co.nz/';
-        const postUrl = `${BASE_URL}${finalCategory}/${postId}`;
+        const postUrl = `${BASE_URL}${categoryPrefixFromPath}/${finalCategory}/${postId}`;
 
         for (const email of subscriberEmails) {
           await fetch('/api/sendNotification', {
@@ -113,7 +140,7 @@ const CreatePost = () => {
         }
       }
 
-      router.push(`/${finalCategory}`);
+      router.push(`/${categoryPrefix}/${finalCategory}`);
     } catch (error) {
       console.error('Error creating document:', error);
     }
@@ -123,9 +150,9 @@ const CreatePost = () => {
     <div className="create-post-page">
       <div className="create-post-form">
         <h2 className="create-post-title">Create Post</h2>
-  
+
         <form onSubmit={(e) => handleSubmit(e, false)}>
-          <div className="mb-6"> 
+          <div className="mb-6">
             <label htmlFor="title" className="create-post-label">Title:</label>
             <input
               id="title"
@@ -136,8 +163,8 @@ const CreatePost = () => {
             />
             {titleError && <p className="create-post-input-error">{titleError}</p>}
           </div>
-  
-          <div className="mb-6"> 
+
+          <div className="mb-6">
             <label htmlFor="content" className="create-post-label">Content:</label>
             <textarea
               id="content"
@@ -147,8 +174,8 @@ const CreatePost = () => {
             />
             {contentError && <p className="create-post-textarea-error">{contentError}</p>}
           </div>
-  
-          <div className="mb-6"> 
+
+          <div className="mb-6">
             <label htmlFor="category" className="create-post-label">Category:</label>
             <select
               id="category"
@@ -164,7 +191,7 @@ const CreatePost = () => {
               <option value="misc">Miscellaneous</option>
             </select>
           </div>
-  
+
           <div className="mb-6">
             <label htmlFor="file" className="create-post-label">Image:</label>
             <div className="create-post-file-input-container">
@@ -179,7 +206,7 @@ const CreatePost = () => {
                 {file ? file.name : 'No file selected'}
               </span>
             </div>
-  
+
             {imageUrl && (
               <div className="create-post-image-preview">
                 <Image src={imageUrl} alt="Preview" layout="fill" objectFit="cover" />
@@ -193,8 +220,8 @@ const CreatePost = () => {
               </div>
             )}
           </div>
-  
-          <div className="create-post-button-group mt-6"> 
+
+          <div className="create-post-button-group mt-6">
             <button type="submit" className="create-post-button">Create Post</button>
             <button
               type="button"
@@ -208,7 +235,6 @@ const CreatePost = () => {
       </div>
     </div>
   );
-  
 };
 
 export default CreatePost;

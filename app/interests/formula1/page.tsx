@@ -14,7 +14,6 @@ import { db } from '../../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
-import CreateForm from '../../components/CreateForm';
 import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 import renderContent from '@/lib/utils/renderContent';
@@ -92,14 +91,15 @@ const Formula1 = () => {
     fetchData();
   }, [category, currentPage, searchParams]);
 
-  const handleCreate = () => {
-    setIsCreating(true);
-  };
 
   const handleBack = () => {
     router.back();
   };
 
+  const handleCreatePost = () => {
+    router.push('/create-post');
+  };
+  
   const handleCloseForm = () => {
     setIsCreating(false);
     setEditingPost(null);
@@ -171,7 +171,7 @@ const Formula1 = () => {
         </button>
         {isAuthenticated && !isCreating && (
           <button
-            onClick={handleCreate}
+            onClick={handleCreatePost}
             className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
           >
             Create Post
@@ -179,11 +179,6 @@ const Formula1 = () => {
         )}
       </div>
 
-      {isCreating && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <CreateForm category={category} onClose={handleCloseForm} />
-        </div>
-      )}
 
       {editingPost && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
