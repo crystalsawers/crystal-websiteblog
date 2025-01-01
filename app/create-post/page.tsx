@@ -123,9 +123,9 @@ const CreatePost = () => {
     <div className="create-post-page">
       <div className="create-post-form">
         <h2 className="create-post-title">Create Post</h2>
-
+  
         <form onSubmit={(e) => handleSubmit(e, false)}>
-          <div>
+          <div className="mb-6"> 
             <label htmlFor="title" className="create-post-label">Title:</label>
             <input
               id="title"
@@ -136,8 +136,8 @@ const CreatePost = () => {
             />
             {titleError && <p className="create-post-input-error">{titleError}</p>}
           </div>
-
-          <div>
+  
+          <div className="mb-6"> 
             <label htmlFor="content" className="create-post-label">Content:</label>
             <textarea
               id="content"
@@ -147,8 +147,8 @@ const CreatePost = () => {
             />
             {contentError && <p className="create-post-textarea-error">{contentError}</p>}
           </div>
-
-          <div>
+  
+          <div className="mb-6"> 
             <label htmlFor="category" className="create-post-label">Category:</label>
             <select
               id="category"
@@ -164,39 +164,37 @@ const CreatePost = () => {
               <option value="misc">Miscellaneous</option>
             </select>
           </div>
-
-          <div>
-                <label htmlFor="file" className="create-post-label">Image:</label>
-                <div className="create-post-file-input-container">
-                    <input
-                    id="file"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="create-post-input"
-                    />
-                    <span className="file-placeholder">
-                    {file ? file.name : 'No file selected'}
-                    </span>
-                </div>
-
-                {imageUrl && (
-                    <div className="create-post-image-preview">
-                    <Image src={imageUrl} alt="Preview" layout="fill" objectFit="cover" />
-                    <button
-                        type="button"
-                        onClick={handleRemoveImage}
-                        className="create-post-remove-button"
-                    >
-                        Remove
-                    </button>
-                    </div>
-                )}
-                </div>
-
-
-
-          <div className="create-post-button-group">
+  
+          <div className="mb-6">
+            <label htmlFor="file" className="create-post-label">Image:</label>
+            <div className="create-post-file-input-container">
+              <input
+                id="file"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="create-post-input"
+              />
+              <span className="file-placeholder">
+                {file ? file.name : 'No file selected'}
+              </span>
+            </div>
+  
+            {imageUrl && (
+              <div className="create-post-image-preview">
+                <Image src={imageUrl} alt="Preview" layout="fill" objectFit="cover" />
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="create-post-remove-button"
+                >
+                  Remove
+                </button>
+              </div>
+            )}
+          </div>
+  
+          <div className="create-post-button-group mt-6"> 
             <button type="submit" className="create-post-button">Create Post</button>
             <button
               type="button"
@@ -210,6 +208,7 @@ const CreatePost = () => {
       </div>
     </div>
   );
+  
 };
 
 export default CreatePost;
