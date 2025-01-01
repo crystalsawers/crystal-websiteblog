@@ -13,7 +13,7 @@ import {
 import { db } from '../../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
 import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
@@ -42,8 +42,16 @@ const Formula1 = () => {
   const router = useRouter();
   const category = 'formula1';
   const specificPostIds = ['02V6uLUBhnKstE8ofH6H']; // Center this specific post
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const postsPerPage = 15;
+  const searchParams = useSearchParams();
 
   useEffect(() => {
+    // Sync the current page from the URL query param
+    const pageFromUrl = searchParams.get('page');
+    setCurrentPage(pageFromUrl ? parseInt(pageFromUrl) : 1); // Default to page 1 if no query parameter
+
     const fetchData = async () => {
       try {
         const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
@@ -64,7 +72,16 @@ const Formula1 = () => {
         });
 
         const sortedItems = sortPostsByDate(items, 'date');
-        setData(sortedItems);
+
+        // Pagination
+        const startIndex = (currentPage - 1) * postsPerPage;
+        const paginatedPosts = sortedItems.slice(
+          startIndex,
+          startIndex + postsPerPage,
+        );
+
+        setData(paginatedPosts);
+        setTotalPages(Math.ceil(sortedItems.length / postsPerPage));
       } catch (error) {
         setError('Error fetching Formula 1 data');
       } finally {
@@ -73,7 +90,7 @@ const Formula1 = () => {
     };
 
     fetchData();
-  }, [category]);
+  }, [category, currentPage, searchParams]);
 
   const handleCreate = () => {
     setIsCreating(true);
@@ -125,6 +142,13 @@ const Formula1 = () => {
       console.error('Error deleting document:', error);
       setError('Failed to delete post.');
     }
+  };
+
+  // Added: Update the URL when navigating between pages
+  const goToPage = (page: number) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('page', page.toString());
+    window.history.pushState({}, '', '?' + searchParams.toString());
   };
 
   if (loading)
@@ -245,6 +269,32 @@ const Formula1 = () => {
           );
         })
       )}
+
+      {/* Pagination Controls */}
+      <div className="mt-6 text-center">
+        {/* Prev Button */}
+        <button
+          className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+          onClick={() => goToPage(Math.max(currentPage - 1, 1))} // Use goToPage for "Prev"
+          disabled={currentPage === 1} // Disabled on first page
+        >
+          Prev
+        </button>
+
+        {/* Page Number Display (Page X of Y) */}
+        <span className="mx-2 text-lg">
+          Page {currentPage} of {totalPages}
+        </span>
+
+        {/* Next Button */}
+        <button
+          className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
+          onClick={() => goToPage(Math.min(currentPage + 1, totalPages))} // Use goToPage for "Next"
+          disabled={currentPage === totalPages} // Disabled on last page
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

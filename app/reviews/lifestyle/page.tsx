@@ -13,7 +13,7 @@ import {
 import { db } from '../../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import CreateForm from '../../components/CreateForm';
 import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
@@ -43,8 +43,15 @@ const Lifestyle = () => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const category = 'lifestyle';
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const postsPerPage = 15;
+  const searchParams = useSearchParams();
 
   useEffect(() => {
+    const pageFromUrl = searchParams.get('page');
+    setCurrentPage(pageFromUrl ? parseInt(pageFromUrl) : 1);
+
     const fetchData = async () => {
       try {
         const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
@@ -65,7 +72,15 @@ const Lifestyle = () => {
         });
 
         const sortedItems = sortPostsByDate(items, 'date');
-        setData(sortedItems);
+
+        const startIndex = (currentPage - 1) * postsPerPage;
+        const paginatedPosts = sortedItems.slice(
+          startIndex,
+          startIndex + postsPerPage,
+        );
+
+        setData(paginatedPosts);
+        setTotalPages(Math.ceil(sortedItems.length / postsPerPage));
       } catch (error) {
         setError('Error fetching Lifestyle data');
       } finally {
@@ -74,7 +89,7 @@ const Lifestyle = () => {
     };
 
     fetchData();
-  }, []);
+  }, [currentPage, searchParams]);
 
   const handleCreate = () => {
     setIsCreating(true);
@@ -126,6 +141,12 @@ const Lifestyle = () => {
       console.error('Error deleting document:', error);
       setError('Failed to delete post.');
     }
+  };
+
+  const goToPage = (page: number) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('page', page.toString());
+    window.history.pushState({}, '', '?' + searchParams.toString());
   };
 
   if (loading)
@@ -232,6 +253,32 @@ const Lifestyle = () => {
           );
         })
       )}
+
+      {/* Pagination Controls */}
+      <div className="mt-6 text-center">
+        {/* Prev Button */}
+        <button
+          className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+          onClick={() => goToPage(Math.max(currentPage - 1, 1))} // Use goToPage for "Prev"
+          disabled={currentPage === 1} // Disabled on first page
+        >
+          Prev
+        </button>
+
+        {/* Page Number Display (Page X of Y) */}
+        <span className="mx-2 text-lg">
+          Page {currentPage} of {totalPages}
+        </span>
+
+        {/* Next Button */}
+        <button
+          className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
+          onClick={() => goToPage(Math.min(currentPage + 1, totalPages))} // Use goToPage for "Next"
+          disabled={currentPage === totalPages} // Disabled on last page
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
