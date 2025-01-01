@@ -1,7 +1,8 @@
-'use client'; 
+// app/create-post/page.tsx
+'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import { addDoc, collection } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
@@ -9,9 +10,6 @@ import Image from 'next/image';
 import { getSubscriberEmails } from '@/lib/firebaseUtils';
 
 const CreatePost = () => {
-  const reviewCategories = ['misc', 'lifestyle'];
-  const interestCategories = ['formula1', 'cricket', 'music'];
-
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
@@ -21,10 +19,9 @@ const CreatePost = () => {
   const [contentError, setContentError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const router = useRouter(); // Using App Router's useRouter hook
+  const router = useRouter();
 
   useEffect(() => {
-    // Get the current date and time in NZ time (Pacific/Auckland)
     const today = new Date();
     const options: Intl.DateTimeFormatOptions = {
       timeZone: 'Pacific/Auckland',
@@ -84,28 +81,22 @@ const CreatePost = () => {
         imageUrl = await getDownloadURL(imageRef);
       }
 
-      const finalCategory = selectedCategory || 'misc'; // Default to 'misc' category if not selected
+      const finalCategory = selectedCategory || 'misc';
 
       const docRef = await addDoc(collection(db, finalCategory), {
         title,
         content,
         date,
         imageUrl,
-        isDraft, // Save whether it's a draft
+        isDraft,
       });
 
       if (!isDraft) {
         const subscriberEmails = await getSubscriberEmails();
         const postId = docRef.id;
 
-        const categoryPrefix = reviewCategories.includes(finalCategory)
-          ? 'reviews'
-          : interestCategories.includes(finalCategory)
-          ? 'interests'
-          : '';
-
         const BASE_URL = 'https://crystalsawers.co.nz/';
-        const postUrl = `${BASE_URL}${categoryPrefix}/${finalCategory}/${postId}`;
+        const postUrl = `${BASE_URL}${finalCategory}/${postId}`;
 
         for (const email of subscriberEmails) {
           await fetch('/api/sendNotification', {
@@ -122,112 +113,93 @@ const CreatePost = () => {
         }
       }
 
-      router.push(`/${finalCategory}`); // Navigate after post is created
+      router.push(`/${finalCategory}`);
     } catch (error) {
       console.error('Error creating document:', error);
     }
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Create {selectedCategory || 'Miscellaneous'} Post</h2>
-      <form onSubmit={(e) => handleSubmit(e, false)} className="create-form">
-        <label htmlFor="title" className="create-form-label">
-          Title:
-        </label>
-        <input
-          id="title"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="create-form-input"
-        />
-        {titleError && <p className="text-red-700">{titleError}</p>}
+    <div className="create-post-page">
+      <div className="create-post-form">
+        <h2 className="create-post-title">Create Post</h2>
 
-        <label htmlFor="content" className="create-form-label">
-          Content:
-        </label>
-        <textarea
-          id="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="create-form-textarea"
-        />
-        {contentError && <p className="text-red-700">{contentError}</p>}
-
-        <label htmlFor="date" className="create-form-label">
-          Date:
-        </label>
-        <input
-          id="date"
-          type="datetime-local"
-          value={date}
-          readOnly
-          className="create-form-input"
-        />
-
-        <div>
-          <label htmlFor="category" className="create-form-label">
-            Category:
-          </label>
-          <select
-            id="category"
-            value={selectedCategory || ''}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="create-form-input"
-          >
-            <option value="">Select Category</option>
-            <option value="formula1">Formula 1</option>
-            <option value="cricket">Cricket</option>
-            <option value="music">Music</option>
-            <option value="lifestyle">Lifestyle</option>
-            <option value="misc">Miscellaneous</option>
-          </select>
-        </div>
-
-        <label htmlFor="file" className="create-form-label">
-          Image:
-        </label>
-        <input
-          id="file"
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="create-form-input"
-        />
-        {imageUrl && (
-          <div className="relative mt-4 h-48 w-full">
-            <Image
-              src={imageUrl}
-              alt="Preview"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="top center"
-              className="h-full w-full"
+        <form onSubmit={(e) => handleSubmit(e, false)}>
+          <div>
+            <label htmlFor="title" className="create-post-label">Title:</label>
+            <input
+              id="title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="create-post-input"
             />
+            {titleError && <p className="create-post-input-error">{titleError}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="content" className="create-post-label">Content:</label>
+            <textarea
+              id="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="create-post-textarea"
+            />
+            {contentError && <p className="create-post-textarea-error">{contentError}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="category" className="create-post-label">Category:</label>
+            <select
+              id="category"
+              value={selectedCategory || ''}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="create-post-category-select"
+            >
+              <option value="">Select Category</option>
+              <option value="formula1">Formula 1</option>
+              <option value="cricket">Cricket</option>
+              <option value="music">Music</option>
+              <option value="lifestyle">Lifestyle</option>
+              <option value="misc">Miscellaneous</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="file" className="create-post-label">Image:</label>
+            <input
+              id="file"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="create-post-input"
+            />
+            {imageUrl && (
+              <div className="create-post-image-preview">
+                <Image src={imageUrl} alt="Preview" layout="fill" objectFit="cover" />
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="create-post-remove-button"
+                >
+                  Remove
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="create-post-button-group">
+            <button type="submit" className="create-post-button">Create Post</button>
             <button
               type="button"
-              onClick={handleRemoveImage}
-              className="absolute right-2 top-2 rounded bg-red-500 p-2 text-white"
+              onClick={(e) => handleSubmit(e, true)}
+              className="create-post-draft-button"
             >
-              Remove
+              Save as Draft
             </button>
           </div>
-        )}
-
-        <div className="mt-4 flex justify-center">
-          <button
-            type="button"
-            onClick={(e) => handleSubmit(e, true)} 
-            className="draft-form-button"
-          >
-            Save as Draft
-          </button>
-          <button type="submit" className="create-form-button">
-            Create Post
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };

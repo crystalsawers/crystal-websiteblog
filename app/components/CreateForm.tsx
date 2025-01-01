@@ -1,4 +1,4 @@
-
+// not using this anymore
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { addDoc, collection } from 'firebase/firestore';
