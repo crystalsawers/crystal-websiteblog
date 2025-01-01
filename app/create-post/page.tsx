@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { addDoc, collection } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -10,8 +10,8 @@ import { getSubscriberEmails } from '@/lib/firebaseUtils';
 import { usePathname } from 'next/navigation';
 
 const CreatePost = () => {
-  const reviewCategories = ['misc', 'lifestyle'];
-  const interestCategories = ['formula1', 'cricket', 'music'];
+  const reviewCategories = useMemo(() => ['misc', 'lifestyle'], []);
+  const interestCategories = useMemo(() => ['formula1', 'cricket', 'music'], []);
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -20,28 +20,26 @@ const CreatePost = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(''); // Default to empty string for default state
-  const [categoryPrefix, setCategoryPrefix] = useState<string>(''); // Define categoryPrefix here
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [categoryPrefix, setCategoryPrefix] = useState<string>('');
 
   const router = useRouter();
-  const pathname = usePathname(); // Access the current path with usePathname
+  const pathname = usePathname();
 
   useEffect(() => {
-    const categoryPrefixFromPath = pathname.split('/')[1]; // Get the first part of the path, either 'interests' or 'reviews'
+    const categoryPrefixFromPath = pathname.split('/')[1];
+    const categoryFromPath = pathname.split('/')[2];
 
-    // Determine the category prefix from the path
     if (categoryPrefixFromPath === 'interests' || categoryPrefixFromPath === 'reviews') {
       setCategoryPrefix(categoryPrefixFromPath);
-      const category = pathname.split('/')[2]; // Get category after /interests/ or /reviews/
-      if (category) {
-        setSelectedCategory(category); // Set the selected category based on the path
+      if (categoryFromPath && (interestCategories.includes(categoryFromPath) || reviewCategories.includes(categoryFromPath))) {
+        setSelectedCategory(categoryFromPath);
       }
     } else {
-      setSelectedCategory(''); // Default state for '/'; should show "Select Category"
-      setCategoryPrefix(''); // Reset categoryPrefix to empty for '/' route
+      setCategoryPrefix('');
+      setSelectedCategory('');
     }
 
-    // Get the current date and time in NZ time (Pacific/Auckland)
     const today = new Date();
     const options: Intl.DateTimeFormatOptions = {
       timeZone: 'Pacific/Auckland',
@@ -52,7 +50,6 @@ const CreatePost = () => {
       minute: '2-digit',
       hour12: false,
     };
-
     const nzDateTime = today.toLocaleString('en-GB', options);
     const [datePart, timePart] = nzDateTime.split(', ');
 
@@ -60,7 +57,7 @@ const CreatePost = () => {
     const formattedDateTime = `${formattedDate}T${timePart}:00`;
 
     setDate(formattedDateTime);
-  }, [pathname]); // Add pathname as dependency to re-run when path changes
+  }, [pathname, interestCategories, reviewCategories]); // Only depend on 'pathname' here
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -115,7 +112,6 @@ const CreatePost = () => {
         const subscriberEmails = await getSubscriberEmails();
         const postId = docRef.id;
 
-        // Determine whether it's an 'interests' or 'reviews' post
         const categoryPrefixFromPath = reviewCategories.includes(finalCategory)
           ? 'reviews'
           : interestCategories.includes(finalCategory)
