@@ -22,6 +22,7 @@ import EditForm from './components/EditForm';
 import CreateForm from './components/CreateForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
+import { useSearchParams } from 'next/navigation';
 
 const categories = ['cricket', 'formula1', 'music', 'lifestyle', 'misc'];
 
@@ -90,6 +91,7 @@ const HomePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const postsPerPage = 15;
+  const searchParams = useSearchParams();
 
   const specificPostIds = [
     'Y4f0mW8ZiX35uLxGyg1S',
@@ -98,6 +100,10 @@ const HomePage = () => {
   ]; // make the ones I want centered
 
   useEffect(() => {
+    // Sync the current page from the URL query param
+    const pageFromUrl = searchParams.get('page');
+    setCurrentPage(pageFromUrl ? parseInt(pageFromUrl) : 1); // Default to page 1 if no query parameter
+
     async function getPosts() {
       try {
         setLoading(true);
@@ -113,6 +119,7 @@ const HomePage = () => {
           startIndex,
           startIndex + postsPerPage,
         );
+
         setPosts(paginatedPosts);
         setTotalPages(Math.ceil(sortedPosts.length / postsPerPage));
       } catch (error) {
@@ -123,7 +130,7 @@ const HomePage = () => {
     }
 
     getPosts();
-  }, [isAuthenticated, currentPage]);
+  }, [isAuthenticated, currentPage, searchParams]);
 
   const handleEdit = (post: Post) => {
     setEditingPost(post);
@@ -159,8 +166,16 @@ const HomePage = () => {
     setIsCreateFormOpen(false); // Close the CreateForm
   };
 
+  // Added: Update the URL when navigating between pages
+  const goToPage = (page: number) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('page', page.toString());
+    window.history.pushState({}, '', '?' + searchParams.toString());
+  };
+
   if (loading) return <Loading />;
 
+  /* RENDER */
   return (
     <div>
       <div className="mx-auto max-w-4xl">
@@ -336,7 +351,7 @@ const HomePage = () => {
           {/* Prev Button */}
           <button
             className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            onClick={() => goToPage(Math.max(currentPage - 1, 1))} // Use goToPage for "Prev"
             disabled={currentPage === 1} // Disabled on first page
           >
             Prev
@@ -350,9 +365,7 @@ const HomePage = () => {
           {/* Next Button */}
           <button
             className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
+            onClick={() => goToPage(Math.min(currentPage + 1, totalPages))} // Use goToPage for "Next"
             disabled={currentPage === totalPages} // Disabled on last page
           >
             Next
