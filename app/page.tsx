@@ -162,7 +162,6 @@ const HomePage = () => {
     router.push('/create-post');
   };
 
-
   // Added: Update the URL when navigating between pages
   const goToPage = (page: number) => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -368,8 +367,6 @@ const HomePage = () => {
             Next
           </button>
         </div>
-
-        
 
         {editingPost && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">

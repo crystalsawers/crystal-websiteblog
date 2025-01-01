@@ -99,8 +99,8 @@ const CreateForm = () => {
         const categoryPrefix = reviewCategories.includes(finalCategory)
           ? 'reviews'
           : interestCategories.includes(finalCategory)
-          ? 'interests'
-          : '';
+            ? 'interests'
+            : '';
 
         const BASE_URL = 'https://crystalsawers.co.nz/';
         const postUrl = `${BASE_URL}${categoryPrefix}/${finalCategory}/${postId}`;
@@ -128,7 +128,9 @@ const CreateForm = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Create {selectedCategory || 'Miscellaneous'} Post</h2>
+      <h2 className="mb-4 text-2xl font-bold">
+        Create {selectedCategory || 'Miscellaneous'} Post
+      </h2>
       <form onSubmit={(e) => handleSubmit(e, false)} className="create-form">
         <label htmlFor="title" className="create-form-label">
           Title:

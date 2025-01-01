@@ -7,11 +7,13 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
 import { getSubscriberEmails } from '@/lib/firebaseUtils';
-import { usePathname } from 'next/navigation';
 
 const CreatePost = () => {
   const reviewCategories = useMemo(() => ['misc', 'lifestyle'], []);
-  const interestCategories = useMemo(() => ['formula1', 'cricket', 'music'], []);
+  const interestCategories = useMemo(
+    () => ['formula1', 'cricket', 'music'],
+    [],
+  );
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -21,25 +23,11 @@ const CreatePost = () => {
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [categoryPrefix, setCategoryPrefix] = useState<string>('');
 
   const router = useRouter();
-  const pathname = usePathname();
 
   useEffect(() => {
-    const categoryPrefixFromPath = pathname.split('/')[1];
-    const categoryFromPath = pathname.split('/')[2];
-
-    if (categoryPrefixFromPath === 'interests' || categoryPrefixFromPath === 'reviews') {
-      setCategoryPrefix(categoryPrefixFromPath);
-      if (categoryFromPath && (interestCategories.includes(categoryFromPath) || reviewCategories.includes(categoryFromPath))) {
-        setSelectedCategory(categoryFromPath);
-      }
-    } else {
-      setCategoryPrefix('');
-      setSelectedCategory('');
-    }
-
+    // Handle the current date formatting to be in the right format
     const today = new Date();
     const options: Intl.DateTimeFormatOptions = {
       timeZone: 'Pacific/Auckland',
@@ -57,7 +45,7 @@ const CreatePost = () => {
     const formattedDateTime = `${formattedDate}T${timePart}:00`;
 
     setDate(formattedDateTime);
-  }, [pathname, interestCategories, reviewCategories]); // Only depend on 'pathname' here
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -115,8 +103,8 @@ const CreatePost = () => {
         const categoryPrefixFromPath = reviewCategories.includes(finalCategory)
           ? 'reviews'
           : interestCategories.includes(finalCategory)
-          ? 'interests'
-          : '';
+            ? 'interests'
+            : '';
 
         const BASE_URL = 'https://crystalsawers.co.nz/';
         const postUrl = `${BASE_URL}${categoryPrefixFromPath}/${finalCategory}/${postId}`;
@@ -136,7 +124,8 @@ const CreatePost = () => {
         }
       }
 
-      router.push(`/${categoryPrefix}/${finalCategory}`);
+      router.push('/');
+      window.location.href = '/';
     } catch (error) {
       console.error('Error creating document:', error);
     }
@@ -149,7 +138,9 @@ const CreatePost = () => {
 
         <form onSubmit={(e) => handleSubmit(e, false)}>
           <div className="mb-6">
-            <label htmlFor="title" className="create-post-label">Title:</label>
+            <label htmlFor="title" className="create-post-label">
+              Title:
+            </label>
             <input
               id="title"
               type="text"
@@ -157,22 +148,30 @@ const CreatePost = () => {
               onChange={(e) => setTitle(e.target.value)}
               className="create-post-input"
             />
-            {titleError && <p className="create-post-input-error">{titleError}</p>}
+            {titleError && (
+              <p className="create-post-input-error">{titleError}</p>
+            )}
           </div>
 
           <div className="mb-6">
-            <label htmlFor="content" className="create-post-label">Content:</label>
+            <label htmlFor="content" className="create-post-label">
+              Content:
+            </label>
             <textarea
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               className="create-post-textarea"
             />
-            {contentError && <p className="create-post-textarea-error">{contentError}</p>}
+            {contentError && (
+              <p className="create-post-textarea-error">{contentError}</p>
+            )}
           </div>
 
           <div className="mb-6">
-            <label htmlFor="category" className="create-post-label">Category:</label>
+            <label htmlFor="category" className="create-post-label">
+              Category:
+            </label>
             <select
               id="category"
               value={selectedCategory || ''}
@@ -189,7 +188,9 @@ const CreatePost = () => {
           </div>
 
           <div className="mb-6">
-            <label htmlFor="file" className="create-post-label">Image:</label>
+            <label htmlFor="file" className="create-post-label">
+              Image:
+            </label>
             <div className="create-post-file-input-container">
               <input
                 id="file"
@@ -205,7 +206,12 @@ const CreatePost = () => {
 
             {imageUrl && (
               <div className="create-post-image-preview">
-                <Image src={imageUrl} alt="Preview" layout="fill" objectFit="cover" />
+                <Image
+                  src={imageUrl}
+                  alt="Preview"
+                  layout="fill"
+                  objectFit="cover"
+                />
                 <button
                   type="button"
                   onClick={handleRemoveImage}
@@ -218,7 +224,13 @@ const CreatePost = () => {
           </div>
 
           <div className="create-post-button-group mt-6">
-            <button type="submit" className="create-post-button">Create Post</button>
+            <button
+              type="button"
+              onClick={(e) => handleSubmit(e, true)}
+              className="create-post-button"
+            >
+              Create Post
+            </button>
             <button
               type="button"
               onClick={(e) => handleSubmit(e, true)}

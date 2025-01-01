@@ -166,35 +166,33 @@ main nav {
   @apply mt-2 text-center text-red-500;
 }
 
-
-
 /* CreatePost styles */
 .create-post-page {
-  @apply min-h-screen flex items-center justify-center;
+  @apply flex min-h-screen items-center justify-center;
 }
 
 .create-post-form {
-  @apply w-full max-w-6xl p-12 shadow-lg space-y-8;
+  @apply w-full max-w-6xl space-y-8 p-12 shadow-lg;
 }
 
 .create-post-title {
-  @apply text-4xl font-semibold text-center;
+  @apply text-center text-4xl font-semibold;
   color: var(--navbar-text);
 }
 
 .create-post-error {
-  @apply text-center text-red-500 mt-2;
+  @apply mt-2 text-center text-red-500;
 }
 
 .create-post-label {
-  @apply block text-sm font-medium mb-2;
+  @apply mb-2 block text-sm font-medium;
   color: var(--navbar-text);
 }
 
 .create-post-input,
 .create-post-textarea,
 .create-post-category-select {
-  @apply mt-2 block w-full rounded-lg border border-gray-300 px-6 py-4 font-medium text-black shadow-md focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:text-sm;
+  @apply mt-2 block w-full rounded-lg border border-gray-300 px-6 py-4 font-medium text-black shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm;
 }
 
 .create-post-textarea {
@@ -206,7 +204,7 @@ main nav {
 }
 
 .create-post-image-preview {
-  @apply relative mt-4 h-72 w-full rounded-lg overflow-hidden;
+  @apply relative mt-4 h-72 w-full overflow-hidden rounded-lg;
 }
 
 .create-post-button-group {
@@ -215,7 +213,7 @@ main nav {
 
 .create-post-button,
 .create-post-draft-button {
-  @apply rounded-md px-8 py-4 font-semibold text-white w-1/3;
+  @apply w-1/3 rounded-md px-8 py-4 font-semibold text-white;
 }
 
 .create-post-button {
@@ -227,7 +225,7 @@ main nav {
 }
 
 .create-post-remove-button {
-  @apply absolute top-2 right-2 rounded-full bg-red-500 p-2 text-white hover:bg-red-600;
+  @apply absolute right-2 top-2 rounded-full bg-red-500 p-2 text-white hover:bg-red-600;
 }
 
 .create-post-input-error,
@@ -235,33 +233,28 @@ main nav {
   @apply mt-1 text-sm text-red-500;
 }
 
-
 .create-post-file-input-container {
   @apply relative mt-2 flex items-center;
 }
 
 .create-post-input {
-  @apply w-full py-4 px-4 border border-gray-300 rounded-md;
+  @apply w-full rounded-md border border-gray-300 px-4 py-4;
 }
 
 .file-placeholder {
-  @apply absolute left-0 top-1/2 transform -translate-y-1/2 text-sm pointer-events-none;
+  @apply pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 transform text-sm;
   color: var(--navbar-text);
   padding-left: 120px;
   padding-top: 7px;
 }
-
-
 
 .create-post-image-preview {
   @apply relative mt-2;
 }
 
 .create-post-remove-button {
-  @apply absolute top-1 right-1 bg-red-500 text-white p-2 rounded-md hover:bg-red-600;
+  @apply absolute right-1 top-1 rounded-md bg-red-500 p-2 text-white hover:bg-red-600;
 }
-
-
 
 /* Rendered post content*/
 .markdown-content {

@@ -91,7 +91,6 @@ const Formula1 = () => {
     fetchData();
   }, [category, currentPage, searchParams]);
 
-
   const handleBack = () => {
     router.back();
   };
@@ -99,7 +98,7 @@ const Formula1 = () => {
   const handleCreatePost = () => {
     router.push('/create-post');
   };
-  
+
   const handleCloseForm = () => {
     setIsCreating(false);
     setEditingPost(null);
@@ -178,7 +177,6 @@ const Formula1 = () => {
           </button>
         )}
       </div>
-
 
       {editingPost && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
