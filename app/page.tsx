@@ -18,7 +18,6 @@ import { truncateContent } from '@/lib/utils/truncateContent';
 import Loading from './loading';
 import Image from 'next/image';
 import { useAuth } from './components/AuthContext';
-import EditForm from './components/EditForm';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
@@ -84,7 +83,6 @@ const fetchPosts = async (isAuthenticated: boolean): Promise<Post[]> => {
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [pinnedPostId, setPinnedPostId] = useState<string | null>(null);
@@ -133,11 +131,7 @@ const HomePage = () => {
   }, [isAuthenticated, currentPage, searchParams]);
 
   const handleEdit = (post: Post) => {
-    setEditingPost(post);
-  };
-
-  const handleCloseEditForm = () => {
-    setEditingPost(null);
+    router.push(`/edit-post/${post.category}/${post.id}`);
   };
 
   const handleDelete = async (post: Post) => {
@@ -367,17 +361,6 @@ const HomePage = () => {
             Next
           </button>
         </div>
-
-        {editingPost && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <EditForm
-              category={editingPost.category}
-              postId={editingPost.id}
-              initialData={editingPost}
-              onClose={handleCloseEditForm}
-            />
-          </div>
-        )}
       </div>
     </div>
   );
