@@ -14,7 +14,6 @@ import { db } from '../../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
-import CreateForm from '../../components/CreateForm';
 import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 import renderContent from '@/lib/utils/renderContent';
@@ -36,7 +35,6 @@ const Lifestyle = () => {
   const [data, setData] = useState<LifestyleDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isCreating, setIsCreating] = useState(false);
   const [editingPost, setEditingPost] = useState<LifestyleDocument | null>(
     null,
   );
@@ -92,7 +90,7 @@ const Lifestyle = () => {
   }, [currentPage, searchParams]);
 
   const handleCreate = () => {
-    setIsCreating(true);
+    router.push('/create-post');
   };
 
   const handleBack = () => {
@@ -100,7 +98,6 @@ const Lifestyle = () => {
   };
 
   const handleCloseForm = () => {
-    setIsCreating(false);
     setEditingPost(null);
   };
 
@@ -167,7 +164,7 @@ const Lifestyle = () => {
         >
           Back
         </button>
-        {isAuthenticated && !isCreating && (
+        {isAuthenticated && (
           <button
             onClick={handleCreate}
             className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
@@ -176,11 +173,6 @@ const Lifestyle = () => {
           </button>
         )}
       </div>
-      {isCreating && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <CreateForm category={category} onClose={handleCloseForm} />
-        </div>
-      )}
 
       {editingPost && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
