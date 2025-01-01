@@ -7,14 +7,12 @@ import {
   DocumentData,
   QuerySnapshot,
   doc,
-  getDoc,
   deleteDoc,
 } from 'firebase/firestore';
 import { db } from '../../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
-import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 import renderContent from '@/lib/utils/renderContent';
 import { truncateContent } from '@/lib/utils/truncateContent';
@@ -35,7 +33,6 @@ const Cricket = () => {
   const [data, setData] = useState<CricketDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [editingPost, setEditingPost] = useState<CricketDocument | null>(null);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const category = 'cricket';
@@ -95,26 +92,9 @@ const Cricket = () => {
     router.back();
   };
 
-  const handleCloseForm = () => {
-    setEditingPost(null);
-  };
-
-  const handleEdit = async (id: string) => {
+  const handleEdit = (id: string) => {
     if (!isAuthenticated) return;
-
-    try {
-      const docRef = doc(db, 'cricket', id);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        setEditingPost({
-          id: docSnap.id,
-          ...(docSnap.data() as Omit<CricketDocument, 'id'>),
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching document for editing:', error);
-    }
+    router.push(`/edit-post/${category}/${id}`);
   };
 
   const handleDelete = async (id: string) => {
@@ -170,16 +150,6 @@ const Cricket = () => {
         )}
       </div>
 
-      {editingPost && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <EditForm
-            category={category}
-            postId={editingPost.id}
-            initialData={editingPost}
-            onClose={handleCloseForm}
-          />
-        </div>
-      )}
       {data.length === 0 ? (
         <p>No Cricket posts yet</p>
       ) : (

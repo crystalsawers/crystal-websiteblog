@@ -7,14 +7,12 @@ import {
   DocumentData,
   QuerySnapshot,
   doc,
-  getDoc,
   deleteDoc,
 } from 'firebase/firestore';
 import { db } from '../../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import { useAuth } from '../../components/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
-import EditForm from '../../components/EditForm';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 import renderContent from '@/lib/utils/renderContent';
 import { truncateContent } from '@/lib/utils/truncateContent';
@@ -35,7 +33,6 @@ const Music = () => {
   const [data, setData] = useState<MusicDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [editingPost, setEditingPost] = useState<MusicDocument | null>(null);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const category = 'music';
@@ -95,26 +92,9 @@ const Music = () => {
     router.back();
   };
 
-  const handleCloseForm = () => {
-    setEditingPost(null);
-  };
-
-  const handleEdit = async (id: string) => {
+  const handleEdit = (id: string) => {
     if (!isAuthenticated) return;
-
-    try {
-      const docRef = doc(db, 'music', id);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        setEditingPost({
-          id: docSnap.id,
-          ...(docSnap.data() as Omit<MusicDocument, 'id'>),
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching document for editing:', error);
-    }
+    router.push(`/edit-post/${category}/${id}`);
   };
 
   const handleDelete = async (id: string) => {
@@ -169,17 +149,6 @@ const Music = () => {
           </button>
         )}
       </div>
-
-      {editingPost && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <EditForm
-            category={category}
-            postId={editingPost.id}
-            initialData={editingPost}
-            onClose={handleCloseForm}
-          />
-        </div>
-      )}
 
       {data.length === 0 ? (
         <p>No Music posts yet</p>
