@@ -166,27 +166,35 @@ const CreatePost = () => {
           </div>
 
           <div>
-            <label htmlFor="file" className="create-post-label">Image:</label>
-            <input
-              id="file"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="create-post-input"
-            />
-            {imageUrl && (
-              <div className="create-post-image-preview">
-                <Image src={imageUrl} alt="Preview" layout="fill" objectFit="cover" />
-                <button
-                  type="button"
-                  onClick={handleRemoveImage}
-                  className="create-post-remove-button"
-                >
-                  Remove
-                </button>
-              </div>
-            )}
-          </div>
+                <label htmlFor="file" className="create-post-label">Image:</label>
+                <div className="create-post-file-input-container">
+                    <input
+                    id="file"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="create-post-input"
+                    />
+                    <span className="file-placeholder">
+                    {file ? file.name : 'No file selected'}
+                    </span>
+                </div>
+
+                {imageUrl && (
+                    <div className="create-post-image-preview">
+                    <Image src={imageUrl} alt="Preview" layout="fill" objectFit="cover" />
+                    <button
+                        type="button"
+                        onClick={handleRemoveImage}
+                        className="create-post-remove-button"
+                    >
+                        Remove
+                    </button>
+                    </div>
+                )}
+                </div>
+
+
 
           <div className="create-post-button-group">
             <button type="submit" className="create-post-button">Create Post</button>

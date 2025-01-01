@@ -170,11 +170,11 @@ main nav {
 
 /* CreatePost styles */
 .create-post-page {
-  @apply min-h-screen flex items-center justify-center; /* Center the form without background */
+  @apply min-h-screen flex items-center justify-center;
 }
 
 .create-post-form {
-  @apply w-full max-w-6xl p-12 shadow-lg space-y-8; /* Wider form with more space and no background */
+  @apply w-full max-w-6xl p-12 shadow-lg space-y-8;
 }
 
 .create-post-title {
@@ -188,28 +188,21 @@ main nav {
 
 .create-post-label {
   @apply block text-sm font-medium mb-2;
-  color: var(--navbar-text); /* Use custom color for the labels */
+  color: var(--navbar-text);
 }
 
 .create-post-input,
-.create-post-textarea {
-  @apply mt-2 block w-full rounded-lg border border-gray-300 px-6 py-4 font-medium text-black shadow-md focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:text-sm;
-}
-
-.create-post-textarea {
-  @apply h-64; /* Increased height for the textarea */
-}
-
+.create-post-textarea,
 .create-post-category-select {
   @apply mt-2 block w-full rounded-lg border border-gray-300 px-6 py-4 font-medium text-black shadow-md focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:text-sm;
 }
 
-.create-post-file-label {
-  @apply mt-2 block text-sm font-medium mb-2 text-emerald-500; /* Green color for the file label */
+.create-post-textarea {
+  @apply h-64;
 }
 
 .create-post-file-info {
-  @apply mt-2 text-sm font-medium text-emerald-500; /* Green color for the file name info */
+  @apply ml-4 text-sm font-medium text-emerald-500;
 }
 
 .create-post-image-preview {
@@ -241,6 +234,33 @@ main nav {
 .create-post-textarea-error {
   @apply mt-1 text-sm text-red-500;
 }
+
+
+.create-post-file-input-container {
+  @apply relative mt-2 flex items-center;
+}
+
+.create-post-input {
+  @apply w-full py-2 px-4 border border-gray-300 rounded-md;
+}
+
+.file-placeholder {
+  @apply absolute left-0 top-1/2 transform -translate-y-1/2 text-sm pointer-events-none;
+  color: var(--navbar-text);
+  padding-left: 120px;
+  padding-top: 7px;
+}
+
+
+
+.create-post-image-preview {
+  @apply relative mt-2;
+}
+
+.create-post-remove-button {
+  @apply absolute top-1 right-1 bg-red-500 text-white p-2 rounded-md hover:bg-red-600;
+}
+
 
 
 
