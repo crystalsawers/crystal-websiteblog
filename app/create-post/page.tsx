@@ -1,13 +1,14 @@
+'use client'; 
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation'; 
 import { addDoc, collection } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
-import { getSubscriberEmails } from '../../lib/firebaseUtils';
+import { getSubscriberEmails } from '@/lib/firebaseUtils';
 
-const CreateForm = () => {
+const CreatePost = () => {
   const reviewCategories = ['misc', 'lifestyle'];
   const interestCategories = ['formula1', 'cricket', 'music'];
 
@@ -19,7 +20,8 @@ const CreateForm = () => {
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const router = useRouter();
+
+  const router = useRouter(); // Using App Router's useRouter hook
 
   useEffect(() => {
     // Get the current date and time in NZ time (Pacific/Auckland)
@@ -120,7 +122,7 @@ const CreateForm = () => {
         }
       }
 
-      router.push(`/${finalCategory}`);
+      router.push(`/${finalCategory}`); // Navigate after post is created
     } catch (error) {
       console.error('Error creating document:', error);
     }
@@ -216,7 +218,7 @@ const CreateForm = () => {
         <div className="mt-4 flex justify-center">
           <button
             type="button"
-            onClick={(e) => handleSubmit(e, true)} // For saving draft
+            onClick={(e) => handleSubmit(e, true)} 
             className="draft-form-button"
           >
             Save as Draft
@@ -230,4 +232,4 @@ const CreateForm = () => {
   );
 };
 
-export default CreateForm;
+export default CreatePost;

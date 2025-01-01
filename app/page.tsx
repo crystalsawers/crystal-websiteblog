@@ -19,7 +19,7 @@ import Loading from './loading';
 import Image from 'next/image';
 import { useAuth } from './components/AuthContext';
 import EditForm from './components/EditForm';
-import CreateForm from './components/CreateForm';
+import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'next/navigation';
@@ -86,7 +86,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { isAuthenticated } = useAuth();
-  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+  const router = useRouter();
   const [pinnedPostId, setPinnedPostId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -159,12 +159,9 @@ const HomePage = () => {
   };
 
   const handleCreatePost = () => {
-    setIsCreateFormOpen(true); // Open the CreateForm
+    router.push('/create-post');
   };
 
-  const handleCloseCreateForm = () => {
-    setIsCreateFormOpen(false); // Close the CreateForm
-  };
 
   // Added: Update the URL when navigating between pages
   const goToPage = (page: number) => {
@@ -372,15 +369,7 @@ const HomePage = () => {
           </button>
         </div>
 
-        {isCreateFormOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <CreateForm
-              category=""
-              onClose={handleCloseCreateForm}
-              isMainPage
-            />
-          </div>
-        )}
+        
 
         {editingPost && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
