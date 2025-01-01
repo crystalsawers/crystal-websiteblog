@@ -8,7 +8,6 @@ import { formatDate } from '@/lib/utils/formatDate';
 import renderContent from '../../lib/utils/renderContent';
 import NotFound from '../../app/not-found';
 import Image from 'next/image';
-import EditForm from '../components/EditForm';
 import { useAuth } from '../components/AuthContext';
 
 interface DocumentData {
@@ -202,17 +201,6 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
             </>
           ) : // If the post is a draft and the user isn't authenticated, show nothing
           null}
-        </div>
-      )}
-
-      {editMode && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <EditForm
-            category={collectionName}
-            postId={id}
-            initialData={data}
-            onClose={() => setEditMode(false)}
-          />
         </div>
       )}
     </div>
