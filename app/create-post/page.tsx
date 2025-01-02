@@ -109,19 +109,18 @@ const CreatePost = () => {
         const BASE_URL = 'https://crystalsawers.co.nz/';
         const postUrl = `${BASE_URL}${categoryPrefixFromPath}/${finalCategory}/${postId}`;
 
-        for (const email of subscriberEmails) {
-          await fetch('/api/sendNotification', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              postTitle: `New Post: ${title}`,
-              postUrl: postUrl,
-              notificationEmail: email,
-            }),
-          });
-        }
+        // Send all subscriber emails in one API call
+        await fetch('/api/sendNotification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            postTitle: `New Post: ${title}`,
+            postUrl,
+            notificationEmails: subscriberEmails, // Send all emails at once
+          }),
+        });
       }
 
       router.push('/');
@@ -226,7 +225,7 @@ const CreatePost = () => {
           <div className="create-post-button-group mt-6">
             <button
               type="button"
-              onClick={(e) => handleSubmit(e, true)}
+              onClick={(e) => handleSubmit(e, false)}
               className="create-post-button"
             >
               Create Post

@@ -88,54 +88,22 @@ export async function POST(request: Request) {
 
   // Handle new post notifications
   if (postTitle.startsWith('New Post:')) {
-    // Notify all subscribers about the new post
-    const promises = emails.map((email) => {
+    try {
       const mailOptions = {
         from: process.env.NEXT_PUBLIC_EMAIL_USER,
-        to: email,
-        subject: `${postTitle}`,
+        to: emails.join(','), // Combine all subscriber emails
+        subject: postTitle,
         text: `Check out my new post here: ${postUrl}`,
       };
 
-      console.log(`Sending email to: ${email}`); // Log sending
-      return transporter
-        .sendMail(mailOptions)
-        .then(() => console.log(`Email sent to: ${email}`))
-        .catch((err: unknown) => {
-          if (err instanceof Error) {
-            console.error(`Failed to send email to ${email}:`, err.message);
-          } else {
-            console.error(
-              `Failed to send email to ${email}: An unknown error occurred.`,
-            );
-          }
-        });
-    });
-
-    try {
-      await Promise.all(promises);
-      console.log(
-        'All notification emails sent successfully for the new post.',
-      );
+      await transporter.sendMail(mailOptions); // Send one email to all
       return NextResponse.json({ success: true });
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          'Error sending notification emails for new post:',
-          error.message,
-        );
-        return NextResponse.json({
-          success: false,
-          error:
-            'Error sending notification emails for new post: ' + error.message,
-        });
-      } else {
-        console.error('An unknown error occurred:', error);
-        return NextResponse.json({
-          success: false,
-          error: 'An unknown error occurred.',
-        });
-      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      return NextResponse.json({
+        success: false,
+        error: 'Error sending email',
+      });
     }
   }
 
