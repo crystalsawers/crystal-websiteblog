@@ -7,7 +7,11 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
 import { getSubscriberEmails } from '@/lib/firebaseUtils';
-import CreateSeries from '../components/CreateSeries';
+import dynamic from 'next/dynamic';
+
+// Dynamically import CreateSeries
+const CreateSeries = dynamic(() => import('../components/CreateSeries'), { ssr: false });
+
 
 const CreatePost = () => {
   const reviewCategories = useMemo(() => ['misc', 'lifestyle'], []);
@@ -188,8 +192,6 @@ const CreatePost = () => {
               <option value="misc">Miscellaneous</option>
             </select>
           </div>
-
-          <CreateSeries />
           
           <div className="mb-6">
             <label htmlFor="file" className="create-post-label">
@@ -207,6 +209,7 @@ const CreatePost = () => {
                 {file ? file.name : 'No file selected'}
               </span>
             </div>
+
 
             {imageUrl && (
               <div className="create-post-image-preview">
@@ -227,6 +230,7 @@ const CreatePost = () => {
             )}
           </div>
 
+          <CreateSeries />
           <div className="create-post-button-group mt-6">
             <button
               type="button"
