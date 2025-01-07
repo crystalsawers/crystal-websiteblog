@@ -39,7 +39,7 @@ const Formula1 = () => {
   const specificPostIds = ['02V6uLUBhnKstE8ofH6H']; // Center this specific post
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const postsPerPage = 15;
+  const postsPerPage = 10;
   const searchParams = useSearchParams();
 
   useEffect(() => {

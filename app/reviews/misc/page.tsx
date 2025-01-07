@@ -38,7 +38,7 @@ const Miscellaneous = () => {
   const category = 'misc';
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const postsPerPage = 15;
+  const postsPerPage = 10;
   const searchParams = useSearchParams();
 
   useEffect(() => {

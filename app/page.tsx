@@ -43,7 +43,10 @@ const isReviewCategory = (category: string): boolean => {
   return reviewCategories.includes(category);
 };
 
-const fetchPosts = async (isAuthenticated: boolean, seriesId?: string): Promise<Post[]> => {
+const fetchPosts = async (
+  isAuthenticated: boolean,
+  seriesId?: string,
+): Promise<Post[]> => {
   const allPosts: Post[] = [];
 
   for (const category of categories) {
@@ -54,12 +57,16 @@ const fetchPosts = async (isAuthenticated: boolean, seriesId?: string): Promise<
       const data = documentSnapshot.data();
 
       if (data.isDraft === undefined) {
-        console.error(`Post ${documentSnapshot.id} is missing the isDraft field.`);
+        console.error(
+          `Post ${documentSnapshot.id} is missing the isDraft field.`,
+        );
         return;
       }
 
       // Check if the post belongs to the selected series
-      const postBelongsToSeries = !seriesId || (Array.isArray(data.seriesIds) && data.seriesIds.includes(seriesId));
+      const postBelongsToSeries =
+        !seriesId ||
+        (Array.isArray(data.seriesIds) && data.seriesIds.includes(seriesId));
 
       if ((isAuthenticated || data.isDraft === false) && postBelongsToSeries) {
         allPosts.push({
@@ -81,8 +88,6 @@ const fetchPosts = async (isAuthenticated: boolean, seriesId?: string): Promise<
   return allPosts;
 };
 
-
-
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -94,7 +99,9 @@ const HomePage = () => {
   const postsPerPage = 10;
   const searchParams = useSearchParams();
   const [selectedSeries, setSelectedSeries] = useState<string | null>(null);
-  const [seriesOptions, setSeriesOptions] = useState<{ id: string; name: string }[]>([]);
+  const [seriesOptions, setSeriesOptions] = useState<
+    { id: string; name: string }[]
+  >([]);
 
   const specificPostIds = [
     'Y4f0mW8ZiX35uLxGyg1S',
@@ -102,7 +109,7 @@ const HomePage = () => {
     'vcVid0cpfoGh4KdozgcS',
   ]; // make the ones I want centered
 
-// fetch the series collection from backend
+  // fetch the series collection from backend
   useEffect(() => {
     async function fetchSeries() {
       try {
@@ -116,50 +123,51 @@ const HomePage = () => {
         console.error('Error fetching series:', error);
       }
     }
-  
+
     fetchSeries();
   }, []); // Runs only once when the component mounts
-
-  
 
   useEffect(() => {
     const pageFromUrl = searchParams.get('page');
     setCurrentPage(pageFromUrl ? parseInt(pageFromUrl) : 1);
-  
+
     async function getPosts() {
       try {
         setLoading(true);
-  
+
         let seriesPostIds: string[] = [];
         if (selectedSeries) {
           // Fetch postIds for the selected series
           const seriesRef = doc(db, 'series', selectedSeries);
           const seriesSnap = await getDoc(seriesRef);
-  
+
           if (seriesSnap.exists()) {
             seriesPostIds = seriesSnap.data().postIds || [];
           } else {
             console.warn('Selected series not found in database.');
           }
         }
-  
+
         // Fetch all posts and filter by seriesPostIds
         const fetchedPosts = await fetchPosts(isAuthenticated);
         const filteredPosts = selectedSeries
           ? fetchedPosts.filter((post) => seriesPostIds.includes(post.id))
           : fetchedPosts;
-  
+
         // Get site settings for pinned post
         const settingsRef = doc(db, 'settings', 'siteConfig');
         const settingsSnap = await getDoc(settingsRef);
         const pinnedId = settingsSnap.data()?.pinnedPostId || null;
         setPinnedPostId(pinnedId);
-  
+
         // Sort and paginate the posts
         const sortedPosts = sortPostsByDate(filteredPosts, 'date');
         const startIndex = (currentPage - 1) * postsPerPage;
-        const paginatedPosts = sortedPosts.slice(startIndex, startIndex + postsPerPage);
-  
+        const paginatedPosts = sortedPosts.slice(
+          startIndex,
+          startIndex + postsPerPage,
+        );
+
         setPosts(paginatedPosts);
         setTotalPages(Math.ceil(sortedPosts.length / postsPerPage));
       } catch (error) {
@@ -168,10 +176,9 @@ const HomePage = () => {
         setLoading(false);
       }
     }
-  
+
     getPosts();
   }, [isAuthenticated, currentPage, searchParams, selectedSeries]);
-  
 
   const handleEdit = (post: Post) => {
     router.push(`/edit-post/${post.category}/${post.id}`);
@@ -214,29 +221,28 @@ const HomePage = () => {
       <div className="mx-auto max-w-4xl">
         <h2 className="page-title mb-6 text-center">Latest Posts</h2>
 
-         {/* Series Filter */}
-          <div className="mb-6 flex flex-col items-center">
-            <label
-              htmlFor="series-filter"
-              className="text-sm font-medium text-emerald-300 mb-2"
-            >
-              Filter by Blog Series
-            </label>
-            <select
-              id="series-filter"
-              className="w-64 rounded-md border border-gray-300 bg-white p-2 text-black shadow-md focus:border-indigo-500 focus:ring focus:ring-indigo-300"
-              value={selectedSeries || ''}
-              onChange={(e) => setSelectedSeries(e.target.value || null)}
-            >
-              <option value="">All Series</option>
-              {seriesOptions.map((series) => (
-                <option key={series.id} value={series.id}>
-                  {series.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
+        {/* Series Filter */}
+        <div className="mb-6 flex flex-col items-center">
+          <label
+            htmlFor="series-filter"
+            className="mb-2 text-sm font-medium text-emerald-300"
+          >
+            Filter by Blog Series
+          </label>
+          <select
+            id="series-filter"
+            className="w-64 rounded-md border border-gray-300 bg-white p-2 text-black shadow-md focus:border-indigo-500 focus:ring focus:ring-indigo-300"
+            value={selectedSeries || ''}
+            onChange={(e) => setSelectedSeries(e.target.value || null)}
+          >
+            <option value="">All Series</option>
+            {seriesOptions.map((series) => (
+              <option key={series.id} value={series.id}>
+                {series.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
         {isAuthenticated && (
           <div className="mb-6 flex justify-between">
