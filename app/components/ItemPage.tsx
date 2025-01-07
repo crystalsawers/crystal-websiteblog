@@ -69,10 +69,11 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   };
 
   const handleEdit = () => {
-    if (!isAuthenticated) {
-      alert('You must be logged in to edit this post.');
-      return;
+
+    if (data) {
+      router.push(`/edit-post/${collectionName}/${id}`);
     }
+
     setEditMode(true);
   };
 
