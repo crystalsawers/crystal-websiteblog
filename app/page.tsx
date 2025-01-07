@@ -222,7 +222,7 @@ const HomePage = () => {
         <h2 className="page-title mb-6 text-center">Latest Posts</h2>
 
         {/* Series Filter */}
-        <div className="mb-6 flex flex-col items-center">
+        <div className="mb-6 flex flex-col items-end">
           <label
             htmlFor="series-filter"
             className="mb-2 text-sm font-medium text-custom-green"
@@ -231,7 +231,7 @@ const HomePage = () => {
           </label>
           <select
             id="series-filter"
-            className="w-64 rounded-md border border-gray-300 bg-white p-2 text-black shadow-md focus:border-indigo-500 focus:ring focus:ring-indigo-300"
+            className="w-64 rounded-md border border-gray-300 bg-custom-green p-2 text-black shadow-md focus:border-indigo-500 focus:ring focus:ring-indigo-300"
             value={selectedSeries || ''}
             onChange={(e) => setSelectedSeries(e.target.value || null)}
           >
