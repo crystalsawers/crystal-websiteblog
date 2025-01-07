@@ -171,15 +171,23 @@ const HomePage = () => {
       <div className="mx-auto max-w-4xl">
         <h2 className="page-title mb-6 text-center">Latest Posts</h2>
         {isAuthenticated && (
-          <div className="mb-6 flex justify-end">
-            <button
-              onClick={handleCreatePost}
-              className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
-            >
-              Create Post
-            </button>
-          </div>
-        )}
+  <div className="mb-6 flex justify-between">
+ <button
+      onClick={() => router.push('/create-series')}
+      className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+    >
+      Create New Series
+    </button>
+
+    <button
+      onClick={handleCreatePost}
+      className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+    >
+      Create Post
+    </button>
+  </div>
+)}
+
 
         <div>
           {/* Render the pinned post if it exists */}

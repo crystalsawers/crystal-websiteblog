@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { createSeries } from "@/lib/utils/createSeries";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebaseConfig";
+import { useRouter } from "next/navigation";
 
-export default function CreateSeries({ postId }: { postId: string | null }) {
+export default function CreateSeries() {
   const [name, setName] = useState("");
   const [status, setStatus] = useState<"success" | "error" | "duplicate" | null>(null);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,14 +15,7 @@ export default function CreateSeries({ postId }: { postId: string | null }) {
 
     if (name.trim()) {
       try {
-        // Create the new series and get its ID
-        const seriesId = await createSeries(name);
-
-        // Associate the post with the new series
-        if (postId) {
-          await updateDoc(doc(db, "posts", postId), { seriesId });
-        }
-
+        await createSeries(name); // Only creates the series
         setName("");
         setStatus("success");
       } catch (error: unknown) {
@@ -59,9 +52,17 @@ export default function CreateSeries({ postId }: { postId: string | null }) {
       >
         Create
       </button>
-      {status === "success" && <p className="text-green-500 text-sm">Series created and associated successfully!</p>}
+      {status === "success" && <p className="text-green-500 text-sm">Series created successfully!</p>}
       {status === "duplicate" && <p className="text-yellow-500 text-sm">Series already exists!</p>}
       {status === "error" && <p className="text-red-500 text-sm">Failed to create series. Try again.</p>}
+      <button
+        type="button"
+        onClick={() => router.push('/')}
+        className="mt-4 px-3 py-2 text-sm font-semibold text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+      >
+        Close
+      </button>
     </form>
+    
   );
 }
