@@ -129,37 +129,37 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAuthenticated) return;
-  
+
     setTitleError(null);
     setContentError(null);
-  
+
     if (!title.trim()) {
       setTitleError('Title is required.');
     }
-  
+
     if (!content.trim()) {
       setContentError('Content is required.');
     }
-  
+
     if (!title.trim() || !content.trim()) {
       return;
     }
-  
+
     try {
       const docRef = doc(db, category, postId);
       let newImageUrl = imageUrl;
-  
+
       if (file) {
         const imageRef = ref(storage, `images/${file.name}`);
         await uploadBytes(imageRef, file);
         newImageUrl = await getDownloadURL(imageRef);
       }
-  
+
       // Ensure seriesId is an array, even if it's a single string
       const seriesIds = Array.isArray(selectedSeriesId)
         ? selectedSeriesId // If it's already an array, use it
         : [selectedSeriesId]; // If it's a single string, convert to an array
-  
+
       // Update the post document with seriesIds as an array
       await updateDoc(docRef, {
         title,
@@ -170,41 +170,44 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
         pinned,
         seriesId: seriesIds, // Store seriesIds as an array
       });
-  
+
       // Update each series document to include this postId
       for (const seriesId of seriesIds) {
         const seriesRef = doc(db, 'series', seriesId);
         const seriesSnap = await getDoc(seriesRef);
-  
+
         if (seriesSnap.exists()) {
           const seriesData = seriesSnap.data();
           const currentPostIds = seriesData?.postIds || [];
-  
+
           console.log(`Current postIds in series ${seriesId}:`, currentPostIds);
-  
+
           // Add postId to the series' postIds array if it's not already there
           if (postId && !currentPostIds.includes(postId)) {
             await updateDoc(seriesRef, {
               postIds: [...currentPostIds, postId], // Add postId to the postIds array
             });
-  
-            console.log(`Post ID added to postIds array in series ${seriesId}:`, postId);
+
+            console.log(
+              `Post ID added to postIds array in series ${seriesId}:`,
+              postId,
+            );
           } else {
-            console.log(`Post ID already in postIds array for series ${seriesId} or not valid.`);
+            console.log(
+              `Post ID already in postIds array for series ${seriesId} or not valid.`,
+            );
           }
         } else {
           console.log(`Series document not found for series ${seriesId}.`);
         }
       }
-  
+
       window.location.href = '/';
     } catch (error) {
       console.error('Error updating document:', error);
       setError('Failed to update post.');
     }
   };
-  
-  
 
   const handleSaveDraft = async () => {
     if (!isAuthenticated) return;
