@@ -34,7 +34,7 @@ export default function CreateSeries() {
       className="flex flex-col items-center space-y-4 mx-auto w-1/3"
     >
       <label htmlFor="series-name" className="create-post-label text-center">
-        New Series Name:
+        Create A New Series:
       </label>
       <input
         id="series-name"
