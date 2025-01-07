@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { doc, updateDoc, getDoc } from 'firebase/firestore';
+import { doc, updateDoc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { db, storage } from '@/lib/firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useAuth } from '../../../components/AuthContext';
 import Image from 'next/image';
-import { getSubscriberEmails } from '../../../../lib/firebaseUtils';
 import { useRouter } from 'next/navigation';
 
 interface EditPostPageProps {
@@ -22,6 +21,12 @@ interface PostData {
   imageUrl?: string;
   type: string;
   date?: string;
+  seriesId?: string; 
+}
+
+interface SeriesData {
+  id: string;
+  name: string;
 }
 
 const EditPostPage = ({ params }: EditPostPageProps) => {
@@ -36,6 +41,8 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
   const [contentError, setContentError] = useState<string | null>(null);
   const [pinned, setPinned] = useState(false);
   const [pinError, setPinError] = useState<string | null>(null);
+  const [seriesList, setSeriesList] = useState<SeriesData[]>([]); // State to store series list
+  const [selectedSeriesId, setSelectedSeriesId] = useState<string>(''); // State to store selected series
   const router = useRouter();
   const { isAuthenticated } = useAuth();
 
@@ -50,6 +57,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
           setTitle(postData.title || '');
           setContent(postData.content || '');
           setImageUrl(postData.imageUrl || '');
+          setSelectedSeriesId(postData.seriesId || ''); 
         } else {
           setError('Post not found.');
         }
@@ -59,7 +67,22 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
       }
     };
 
+    const fetchSeries = async () => {
+      try {
+        const seriesRef = collection(db, 'series'); 
+        const seriesSnapshot = await getDocs(seriesRef);
+        const seriesData = seriesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          name: doc.data().name,
+        }));
+        setSeriesList(seriesData);
+      } catch (err) {
+        console.error('Error fetching series:', err);
+      }
+    };
+
     fetchPost();
+    fetchSeries();
   }, [category, postId]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,28 +156,8 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
         isDraft: false,
         editedDate: new Date().toISOString(),
         pinned,
+        seriesId: selectedSeriesId, // Add seriesId to the update
       });
-
-      const postSnapshot = await getDoc(docRef);
-      if (postSnapshot.data()?.isDraft) {
-        const subscriberEmails = await getSubscriberEmails();
-        const BASE_URL = 'https://crystal-websiteblog.vercel.app/';
-        const postUrl = `${BASE_URL}${category}/${postId}`;
-
-        for (const email of subscriberEmails) {
-          await fetch('/api/sendNotification', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              postTitle: `New Post: ${title}`,
-              postUrl: postUrl,
-              notificationEmail: email,
-            }),
-          });
-        }
-      }
 
       window.location.href = '/';
     } catch (error) {
@@ -198,6 +201,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
         isDraft: true,
         editedDate: new Date().toISOString(),
         pinned,
+        seriesId: selectedSeriesId, 
       });
 
       window.location.href = '/';
@@ -245,6 +249,23 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
           className="create-post-textarea"
         />
         {contentError && <p className="text-red-700">{contentError}</p>}
+
+        <label className="create-post-label" htmlFor="series">
+          Series:
+        </label>
+        <select
+          id="series"
+          value={selectedSeriesId}
+          onChange={(e) => setSelectedSeriesId(e.target.value)}
+          className="create-post-input"
+        >
+          <option value="">Select a Series</option>
+          {seriesList.map((series) => (
+            <option key={series.id} value={series.id}>
+              {series.name}
+            </option>
+          ))}
+        </select>
 
         <label className="create-post-label" htmlFor="file">
           Image:
