@@ -8,10 +8,7 @@ import { useAuth } from '../../../components/AuthContext';
 import Image from 'next/image';
 import { getSubscriberEmails } from '../../../../lib/firebaseUtils';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
 
-// Dynamically import CreateSeries
-const CreateSeries = dynamic(() => import('../../../components/CreateSeries'), { ssr: false });
 
 interface EditPostPageProps {
   params: {
@@ -284,7 +281,6 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
             </button>
           </div>
         )}
-<CreateSeries />
         <div className="create-post-button-group mt-6 flex justify-center space-x-4">
           <button
             type="button"

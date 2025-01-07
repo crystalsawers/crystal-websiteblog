@@ -13,9 +13,10 @@ export const createSeries = async (name: string) => {
   }
 
   // If no duplicate, create the series
-  await addDoc(seriesRef, {
+  const docRef = await addDoc(seriesRef, {
     name,
     postsCount: 0,
     createdAt: serverTimestamp(),
   });
+  return docRef.id;
 };

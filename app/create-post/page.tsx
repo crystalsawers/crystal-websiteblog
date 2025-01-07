@@ -7,10 +7,6 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
 import { getSubscriberEmails } from '@/lib/firebaseUtils';
-import dynamic from 'next/dynamic';
-
-// Dynamically import CreateSeries
-const CreateSeries = dynamic(() => import('../components/CreateSeries'), { ssr: false });
 
 
 const CreatePost = () => {
@@ -230,7 +226,6 @@ const CreatePost = () => {
             )}
           </div>
 
-          <CreateSeries />
           <div className="create-post-button-group mt-6">
             <button
               type="button"

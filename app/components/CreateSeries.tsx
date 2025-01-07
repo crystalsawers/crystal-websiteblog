@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { createSeries } from "@/lib/utils/createSeries";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/lib/firebaseConfig";
 
-export default function CreateSeries() {
+export default function CreateSeries({ postId }: { postId: string | null }) {
   const [name, setName] = useState("");
   const [status, setStatus] = useState<"success" | "error" | "duplicate" | null>(null);
 
@@ -13,7 +15,14 @@ export default function CreateSeries() {
 
     if (name.trim()) {
       try {
-        await createSeries(name);
+        // Create the new series and get its ID
+        const seriesId = await createSeries(name);
+
+        // Associate the post with the new series
+        if (postId) {
+          await updateDoc(doc(db, "posts", postId), { seriesId });
+        }
+
         setName("");
         setStatus("success");
       } catch (error: unknown) {
@@ -41,7 +50,7 @@ export default function CreateSeries() {
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-500"
+        className="w-full p-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-500"
         placeholder="Series name"
       />
       <button
@@ -50,7 +59,7 @@ export default function CreateSeries() {
       >
         Create
       </button>
-      {status === "success" && <p className="text-green-500 text-sm">Series created successfully!</p>}
+      {status === "success" && <p className="text-green-500 text-sm">Series created and associated successfully!</p>}
       {status === "duplicate" && <p className="text-yellow-500 text-sm">Series already exists!</p>}
       {status === "error" && <p className="text-red-500 text-sm">Failed to create series. Try again.</p>}
     </form>
