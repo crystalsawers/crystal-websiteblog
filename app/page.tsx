@@ -91,7 +91,7 @@ const HomePage = () => {
   const [pinnedPostId, setPinnedPostId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const postsPerPage = 15;
+  const postsPerPage = 10;
   const searchParams = useSearchParams();
   const [selectedSeries, setSelectedSeries] = useState<string | null>(null);
   const [seriesOptions, setSeriesOptions] = useState<{ id: string; name: string }[]>([]);
@@ -214,25 +214,29 @@ const HomePage = () => {
       <div className="mx-auto max-w-4xl">
         <h2 className="page-title mb-6 text-center">Latest Posts</h2>
 
-          {/* series filter */}
-          <div className="mb-4">
-          <label htmlFor="series-filter" className="block text-sm font-medium text-emerald-500">
-            Filter by Series
-          </label>
-          <select
-            id="series-filter"
-            className="mt-1 block w-full rounded-md border-gray-300 text-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            value={selectedSeries || ''}
-            onChange={(e) => setSelectedSeries(e.target.value || null)}
-          >
-            <option value="">All Series</option>
-            {seriesOptions.map((series) => (
-              <option key={series.id} value={series.id}>
-                {series.name}
-              </option>
-            ))}
-          </select>
-        </div>
+         {/* Series Filter */}
+          <div className="mb-6 flex flex-col items-center">
+            <label
+              htmlFor="series-filter"
+              className="text-sm font-medium text-emerald-300 mb-2"
+            >
+              Filter by Blog Series
+            </label>
+            <select
+              id="series-filter"
+              className="w-64 rounded-md border border-gray-300 bg-white p-2 text-black shadow-md focus:border-indigo-500 focus:ring focus:ring-indigo-300"
+              value={selectedSeries || ''}
+              onChange={(e) => setSelectedSeries(e.target.value || null)}
+            >
+              <option value="">All Series</option>
+              {seriesOptions.map((series) => (
+                <option key={series.id} value={series.id}>
+                  {series.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
 
         {isAuthenticated && (
           <div className="mb-6 flex justify-between">
