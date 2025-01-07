@@ -2,11 +2,16 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
 import { getSubscriberEmails } from '@/lib/firebaseUtils';
+
+interface SeriesData {
+  id: string;
+  name: string;
+}
 
 const CreatePost = () => {
   const reviewCategories = useMemo(() => ['misc', 'lifestyle'], []);
@@ -23,8 +28,24 @@ const CreatePost = () => {
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [seriesList, setSeriesList] = useState<SeriesData[]>([]);
+  const [selectedSeriesId, setSelectedSeriesId] = useState<string>('');
 
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchSeries = async () => {
+      const seriesRef = collection(db, 'series');
+      const seriesSnapshot = await getDocs(seriesRef);
+      setSeriesList(
+        seriesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          name: doc.data().name,
+        })),
+      );
+    };
+    fetchSeries();
+  }, []);
 
   useEffect(() => {
     // Handle the current date formatting to be in the right format
@@ -94,6 +115,7 @@ const CreatePost = () => {
         date,
         imageUrl,
         isDraft,
+        seriesId: selectedSeriesId,
       });
 
       if (!isDraft) {
@@ -183,6 +205,25 @@ const CreatePost = () => {
               <option value="music">Music</option>
               <option value="lifestyle">Lifestyle</option>
               <option value="misc">Miscellaneous</option>
+            </select>
+          </div>
+
+          <div className="mb-6">
+            <label htmlFor="series" className="create-post-label">
+              Series:
+            </label>
+            <select
+              id="series"
+              value={selectedSeriesId}
+              onChange={(e) => setSelectedSeriesId(e.target.value)}
+              className="create-post-input"
+            >
+              <option value="">Select a Series</option>
+              {seriesList.map((series) => (
+                <option key={series.id} value={series.id}>
+                  {series.name}
+                </option>
+              ))}
             </select>
           </div>
 
