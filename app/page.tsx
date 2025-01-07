@@ -225,7 +225,7 @@ const HomePage = () => {
         <div className="mb-6 flex flex-col items-center">
           <label
             htmlFor="series-filter"
-            className="mb-2 text-sm font-medium text-emerald-300"
+            className="mb-2 text-sm font-medium text-custom-green"
           >
             Filter by Blog Series
           </label>
@@ -263,185 +263,202 @@ const HomePage = () => {
         )}
 
         <div>
-          {/* Render the pinned post if it exists */}
-          {pinnedPostId &&
-            posts.some((post) => post.id === pinnedPostId) &&
-            posts
-              .filter((post) => post.id === pinnedPostId)
-              .map((post) => (
-                <div key={post.id} className="card relative mb-4">
-                  {post.imageUrl && (
-                    <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
-                      <Image
-                        src={post.imageUrl}
-                        alt={post.title || 'Posted image'}
-                        layout="fill"
-                        objectFit="cover"
-                        objectPosition={
-                          specificPostIds.includes(post.id)
-                            ? 'center'
-                            : 'top center'
-                        }
-                        className="card-img"
-                      />
-                    </div>
-                  )}
-                  {post.title && (
-                    <div className={post.imageUrl ? 'pt-4' : ''}>
-                      <h2 className="card-title">{post.title}</h2>
-                      {post.isDraft && (
-                        <span className="font-semibold text-red-500">
-                          Draft
-                        </span>
+          {/* No Posts Yet */}
+          {posts.length === 0 && selectedSeries ? (
+            <p className="text-center text-xl text-custom-green">
+              No posts yet. Stay tuned for this upcoming series.
+            </p>
+          ) : (
+            <>
+              {/* Render the pinned post if it exists */}
+              {pinnedPostId &&
+                posts.some((post) => post.id === pinnedPostId) &&
+                posts
+                  .filter((post) => post.id === pinnedPostId)
+                  .map((post) => (
+                    <div key={post.id} className="card relative mb-4">
+                      {post.imageUrl && (
+                        <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                          <Image
+                            src={post.imageUrl}
+                            alt={post.title || 'Posted image'}
+                            layout="fill"
+                            objectFit="cover"
+                            objectPosition={
+                              specificPostIds.includes(post.id)
+                                ? 'center'
+                                : 'top center'
+                            }
+                            className="card-img"
+                          />
+                        </div>
                       )}
-                    </div>
-                  )}
-                  {post.date && (
-                    <p className="card-text">
-                      <strong>Posted:</strong> {formatDate(new Date(post.date))}
-                    </p>
-                  )}
-                  {post.editedDate && (
-                    <p className="card-text">
-                      <strong>Edited:</strong>{' '}
-                      {formatDate(new Date(post.editedDate))}
-                    </p>
-                  )}
-                  <p className="card-text">
-                    {renderContent(truncateContent(post.content, 110))}
-                  </p>
-                  <a
-                    href={`/${isReviewCategory(post.category) ? 'reviews' : 'interests'}/${post.category}/${post.id}`}
-                    className="card-link"
-                  >
-                    Read more
-                  </a>
-                  {isAuthenticated && (
-                    <div className="mt-2 flex space-x-2">
-                      <button
-                        onClick={() => handleEdit(post)}
-                        className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                      {post.title && (
+                        <div className={post.imageUrl ? 'pt-4' : ''}>
+                          <h2 className="card-title">{post.title}</h2>
+                          {post.isDraft && (
+                            <span className="font-semibold text-red-500">
+                              Draft
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {post.date && (
+                        <p className="card-text">
+                          <strong>Posted:</strong>{' '}
+                          {formatDate(new Date(post.date))}
+                        </p>
+                      )}
+                      {post.editedDate && (
+                        <p className="card-text">
+                          <strong>Edited:</strong>{' '}
+                          {formatDate(new Date(post.editedDate))}
+                        </p>
+                      )}
+                      <p className="card-text">
+                        {renderContent(truncateContent(post.content, 110))}
+                      </p>
+                      <a
+                        href={`/${
+                          isReviewCategory(post.category)
+                            ? 'reviews'
+                            : 'interests'
+                        }/${post.category}/${post.id}`}
+                        className="card-link"
                       >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(post)}
-                        className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-                      >
-                        Delete
-                      </button>
+                        Read more
+                      </a>
+                      {isAuthenticated && (
+                        <div className="mt-2 flex space-x-2">
+                          <button
+                            onClick={() => handleEdit(post)}
+                            className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(post)}
+                            className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                      <div className="absolute bottom-5 right-5 flex items-center">
+                        <span className="text-xl font-semibold text-white">
+                          Pinned
+                        </span>
+                        <FontAwesomeIcon
+                          icon={faThumbtack}
+                          className="ml-2 text-white"
+                        />
+                      </div>
                     </div>
-                  )}
-                  {/* Pinned label */}
-                  <div className="absolute bottom-5 right-5 flex items-center">
-                    <span className="text-xl font-semibold text-white">
-                      Pinned
-                    </span>
-                    <FontAwesomeIcon
-                      icon={faThumbtack}
-                      className="ml-2 text-white"
-                    />
-                  </div>
-                </div>
-              ))}
+                  ))}
 
-          {/* Render the rest of the posts */}
-          {posts
-            .filter((post) => post.id !== pinnedPostId)
-            .map((post) => {
-              const section = isReviewCategory(post.category)
-                ? 'reviews'
-                : 'interests';
-              return (
-                <div key={post.id} className="card mb-4">
-                  {post.imageUrl && (
-                    <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
-                      <Image
-                        src={post.imageUrl}
-                        alt={post.title || 'Posted image'}
-                        layout="fill"
-                        objectFit="cover"
-                        objectPosition="top center"
-                        className="card-img"
-                      />
-                    </div>
-                  )}
-                  {post.title && (
-                    <div className={post.imageUrl ? 'pt-4' : ''}>
-                      <h2 className="card-title">{post.title}</h2>
-                      {post.isDraft && (
-                        <span className="font-semibold text-red-500">
-                          Draft
-                        </span>
+              {/* Render the rest of the posts */}
+              {posts
+                .filter((post) => post.id !== pinnedPostId)
+                .map((post) => {
+                  const section = isReviewCategory(post.category)
+                    ? 'reviews'
+                    : 'interests';
+                  return (
+                    <div key={post.id} className="card mb-4">
+                      {post.imageUrl && (
+                        <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                          <Image
+                            src={post.imageUrl}
+                            alt={post.title || 'Posted image'}
+                            layout="fill"
+                            objectFit="cover"
+                            objectPosition="top center"
+                            className="card-img"
+                          />
+                        </div>
+                      )}
+                      {post.title && (
+                        <div className={post.imageUrl ? 'pt-4' : ''}>
+                          <h2 className="card-title">{post.title}</h2>
+                          {post.isDraft && (
+                            <span className="font-semibold text-red-500">
+                              Draft
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {post.date && (
+                        <p className="card-text">
+                          <strong>Posted:</strong>{' '}
+                          {formatDate(new Date(post.date))}
+                        </p>
+                      )}
+                      {post.editedDate && (
+                        <p className="card-text">
+                          <strong>Edited:</strong>{' '}
+                          {formatDate(new Date(post.editedDate))}
+                        </p>
+                      )}
+                      <p className="card-text">
+                        {renderContent(truncateContent(post.content, 110))}
+                      </p>
+                      <a
+                        href={`/${section}/${post.category}/${post.id}`}
+                        className="card-link"
+                      >
+                        Read more
+                      </a>
+                      {isAuthenticated && (
+                        <div className="mt-2 flex space-x-2">
+                          <button
+                            onClick={() => handleEdit(post)}
+                            className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(post)}
+                            className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       )}
                     </div>
-                  )}
-                  {post.date && (
-                    <p className="card-text">
-                      <strong>Posted:</strong> {formatDate(new Date(post.date))}
-                    </p>
-                  )}
-                  {post.editedDate && (
-                    <p className="card-text">
-                      <strong>Edited:</strong>{' '}
-                      {formatDate(new Date(post.editedDate))}
-                    </p>
-                  )}
-                  <p className="card-text">
-                    {renderContent(truncateContent(post.content, 110))}
-                  </p>
-                  <a
-                    href={`/${section}/${post.category}/${post.id}`}
-                    className="card-link"
-                  >
-                    Read more
-                  </a>
-                  {isAuthenticated && (
-                    <div className="mt-2 flex space-x-2">
-                      <button
-                        onClick={() => handleEdit(post)}
-                        className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(post)}
-                        className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                  );
+                })}
+            </>
+          )}
         </div>
 
         {/* Pagination Controls */}
-        <div className="mt-6 text-center">
-          {/* Prev Button */}
-          <button
-            className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
-            onClick={() => goToPage(Math.max(currentPage - 1, 1))} // Use goToPage for "Prev"
-            disabled={currentPage === 1} // Disabled on first page
-          >
-            Prev
-          </button>
-
-          {/* Page Number Display (Page X of Y) */}
-          <span className="mx-2 text-lg">
-            Page {currentPage} of {totalPages}
-          </span>
-
-          {/* Next Button */}
-          <button
-            className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
-            onClick={() => goToPage(Math.min(currentPage + 1, totalPages))} // Use goToPage for "Next"
-            disabled={currentPage === totalPages} // Disabled on last page
-          >
-            Next
-          </button>
-        </div>
+        {posts.length > 0 && (
+          <div className="mt-6 text-center">
+            <button
+              className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
+                currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+              }`}
+              onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+            <span className="mx-2 text-lg">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
+                currentPage === totalPages
+                  ? 'cursor-not-allowed opacity-50'
+                  : ''
+              }`}
+              onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
