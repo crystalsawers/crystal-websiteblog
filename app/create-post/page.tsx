@@ -7,6 +7,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
 import { getSubscriberEmails } from '@/lib/firebaseUtils';
+import CreateSeries from '../components/CreateSeries';
 
 const CreatePost = () => {
   const reviewCategories = useMemo(() => ['misc', 'lifestyle'], []);
@@ -135,6 +136,8 @@ const CreatePost = () => {
       <div className="create-post-form">
         <h2 className="create-post-title">Create Post</h2>
 
+
+    
         <form onSubmit={(e) => handleSubmit(e, false)}>
           <div className="mb-6">
             <label htmlFor="title" className="create-post-label">
@@ -186,6 +189,8 @@ const CreatePost = () => {
             </select>
           </div>
 
+          <CreateSeries />
+          
           <div className="mb-6">
             <label htmlFor="file" className="create-post-label">
               Image:
