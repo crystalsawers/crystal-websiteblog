@@ -69,7 +69,6 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   };
 
   const handleEdit = () => {
-
     if (data) {
       router.push(`/edit-post/${collectionName}/${id}`);
     }

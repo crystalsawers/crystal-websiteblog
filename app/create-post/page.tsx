@@ -8,7 +8,6 @@ import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
 import { getSubscriberEmails } from '@/lib/firebaseUtils';
 
-
 const CreatePost = () => {
   const reviewCategories = useMemo(() => ['misc', 'lifestyle'], []);
   const interestCategories = useMemo(
@@ -136,8 +135,6 @@ const CreatePost = () => {
       <div className="create-post-form">
         <h2 className="create-post-title">Create Post</h2>
 
-
-    
         <form onSubmit={(e) => handleSubmit(e, false)}>
           <div className="mb-6">
             <label htmlFor="title" className="create-post-label">
@@ -188,7 +185,7 @@ const CreatePost = () => {
               <option value="misc">Miscellaneous</option>
             </select>
           </div>
-          
+
           <div className="mb-6">
             <label htmlFor="file" className="create-post-label">
               Image:
@@ -205,7 +202,6 @@ const CreatePost = () => {
                 {file ? file.name : 'No file selected'}
               </span>
             </div>
-
 
             {imageUrl && (
               <div className="create-post-image-preview">
@@ -242,12 +238,12 @@ const CreatePost = () => {
               Save as Draft
             </button>
             <button
-            type="button"
-            onClick={() => router.push('/')}
-            className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
-          >
-            Close
-          </button>
+              type="button"
+              onClick={() => router.push('/')}
+              className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+            >
+              Close
+            </button>
           </div>
         </form>
       </div>

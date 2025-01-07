@@ -9,7 +9,6 @@ import Image from 'next/image';
 import { getSubscriberEmails } from '../../../../lib/firebaseUtils';
 import { useRouter } from 'next/navigation';
 
-
 interface EditPostPageProps {
   params: {
     category: string;
