@@ -25,7 +25,7 @@ export const createSeries = async (name: string) => {
   // If no duplicate, create the series
   const docRef = await addDoc(seriesRef, {
     name,
-    postIds: [],  // Initialize postIds as an empty array
+    postIds: [], // Initialize postIds as an empty array
     createdAt: serverTimestamp(),
   });
 
@@ -33,7 +33,10 @@ export const createSeries = async (name: string) => {
 };
 
 // New function to associate a post with a series dynamically
-export const associatePostWithSeries = async (seriesId: string, postId: string) => {
+export const associatePostWithSeries = async (
+  seriesId: string,
+  postId: string,
+) => {
   const seriesRef = doc(db, 'series', seriesId);
   const seriesDoc = await getDoc(seriesRef); // Use getDoc here for a single document
 

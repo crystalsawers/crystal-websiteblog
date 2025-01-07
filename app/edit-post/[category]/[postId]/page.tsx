@@ -1,7 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { doc, updateDoc, getDoc, collection, getDocs } from 'firebase/firestore';
+import {
+  doc,
+  updateDoc,
+  getDoc,
+  collection,
+  getDocs,
+} from 'firebase/firestore';
 import { db, storage } from '@/lib/firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useAuth } from '../../../components/AuthContext';
@@ -21,7 +27,7 @@ interface PostData {
   imageUrl?: string;
   type: string;
   date?: string;
-  seriesId?: string; 
+  seriesId?: string;
 }
 
 interface SeriesData {
@@ -57,7 +63,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
           setTitle(postData.title || '');
           setContent(postData.content || '');
           setImageUrl(postData.imageUrl || '');
-          setSelectedSeriesId(postData.seriesId || ''); 
+          setSelectedSeriesId(postData.seriesId || '');
         } else {
           setError('Post not found.');
         }
@@ -69,9 +75,9 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
 
     const fetchSeries = async () => {
       try {
-        const seriesRef = collection(db, 'series'); 
+        const seriesRef = collection(db, 'series');
         const seriesSnapshot = await getDocs(seriesRef);
-        const seriesData = seriesSnapshot.docs.map(doc => ({
+        const seriesData = seriesSnapshot.docs.map((doc) => ({
           id: doc.id,
           name: doc.data().name,
         }));
@@ -159,6 +165,33 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
         seriesId: selectedSeriesId, // Add seriesId to the update
       });
 
+      if (selectedSeriesId) {
+        const seriesRef = doc(db, 'series', selectedSeriesId);
+        const seriesSnap = await getDoc(seriesRef);
+
+        if (seriesSnap.exists()) {
+          const seriesData = seriesSnap.data();
+          const currentPostIds = seriesData?.postIds || []; // Use postIds here
+
+          console.log('Current postIds in series:', currentPostIds);
+
+          // Ensure postId is properly added to the postIds array
+          if (postId && !currentPostIds.includes(postId)) {
+            await updateDoc(seriesRef, {
+              postIds: [...currentPostIds, postId], // Add the actual postId here
+            });
+
+            console.log('Post ID added to postIds array:', postId);
+          } else {
+            console.log('Post ID already in postIds array or not valid.');
+          }
+        } else {
+          console.log('Series document not found.');
+        }
+      } else {
+        console.log('No series selected.');
+      }
+
       window.location.href = '/';
     } catch (error) {
       console.error('Error updating document:', error);
@@ -201,7 +234,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
         isDraft: true,
         editedDate: new Date().toISOString(),
         pinned,
-        seriesId: selectedSeriesId, 
+        seriesId: selectedSeriesId,
       });
 
       window.location.href = '/';
