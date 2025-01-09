@@ -19,49 +19,42 @@ export const checkSubscriberExists = async (
 };
 
 // Function to send email notification to the admin to say that someone has subscribed
-const sendEmailNotification = async (subscriberEmail: string) => {
+const sendEmailNotification = async (subscriberEmail: string, subscriberName: string) => {
   try {
-    // const EMAIL_USER = process.env.NEXT_PUBLIC_EMAIL_USER; // Access the email user
-
     await fetch('/api/sendNotification', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        postTitle: `New Subscriber: ${subscriberEmail}`,
+        postTitle: `New Subscriber: ${subscriberName} (${subscriberEmail})`,
         postUrl: 'https://crystal-websiteblog.vercel.app/',
-        notificationEmail: subscriberEmail, // Pass the subscriber's email here
+        notificationEmail: subscriberEmail,
       }),
     });
-
-    // console.log('Notification sent to:', EMAIL_USER);
   } catch (error) {
     console.error('Error sending notification:', error);
   }
 };
 
+
 // Add a subscriber to Firestore
-export const addSubscriber = async (email: string): Promise<boolean> => {
+export const addSubscriber = async (email: string, name: string): Promise<boolean> => {
   try {
     const exists = await checkSubscriberExists(email);
     if (exists) {
       console.error('Email already subscribed:', email);
       return false;
     }
-    await addDoc(collection(db, 'subscribers'), { email });
-    // console.log('Successfully subscribed:', email);
-
-    // Send notification to the designated email
-    // console.log('Preparing to send notification to:', email);
-    await sendEmailNotification(email);
-
+    await addDoc(collection(db, 'subscribers'), { email, name });
+    await sendEmailNotification(email, name); // Pass name to the notification
     return true;
   } catch (error) {
     console.error('Error adding subscriber:', error);
     return false;
   }
 };
+
 
 // Remove a subscriber (unsubscribe)
 export const removeSubscriber = async (email: string): Promise<boolean> => {

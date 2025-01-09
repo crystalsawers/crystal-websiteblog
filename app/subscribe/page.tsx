@@ -7,10 +7,11 @@ import {
   addSubscriber,
   checkSubscriberExists,
   removeSubscriber,
-} from '../../lib/firebaseUtils';
+} from '../../lib/subscriberUtils';
 
 const SubscribePage = () => {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,11 +32,11 @@ const SubscribePage = () => {
       const exists = await checkSubscriberExists(email);
       if (exists) {
         setMessage(
-          "You're already signed up. Please contact us if there are any issues.",
+          "You're already signed up. Please contact crystal.websiteblog@gmail.com if there are any issues.",
         );
         return;
       }
-      const success = await addSubscriber(email);
+      const success = await addSubscriber(email,name);
       if (success) {
         setMessage(
           'Thank you for subscribing! A confirmation email has been sent.',
@@ -91,6 +92,14 @@ const SubscribePage = () => {
             : 'Unsubscribe from My Posts'}
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+        <input
+            type="text"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="create-form-input"
+          />
           <input
             type="email"
             placeholder="Enter your email"
@@ -103,7 +112,6 @@ const SubscribePage = () => {
             {isSubscribing ? 'Subscribe' : 'Unsubscribe'}
           </button>
         </form>
-        {message && <p className="mt-4 text-gray-200">{message}</p>}
         <p className="mt-4 text-gray-200">
           The subscription is completely free! There is no money involved here.
           When you subscribe you only stay updated with my latest posts, unless

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import { getSubscriberEmails } from '../../../lib/firebaseUtils';
+import { getSubscriberEmails } from '../../../lib/subscriberUtils';
 import dotenv from 'dotenv';
 
 dotenv.config(); // Load environment variables

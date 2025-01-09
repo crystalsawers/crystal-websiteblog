@@ -6,7 +6,7 @@ import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
-import { getSubscriberEmails } from '@/lib/firebaseUtils';
+import { getSubscriberEmails } from '@/lib/subscriberUtils';
 
 interface SeriesData {
   id: string;
