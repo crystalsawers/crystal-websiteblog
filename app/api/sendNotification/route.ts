@@ -15,8 +15,8 @@ export async function POST(request: Request) {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-      user: process.env.NEXT_PUBLIC_EMAIL_USER,
-      pass: process.env.NEXT_PUBLIC_EMAIL_PASS,
+      user: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER,
+      pass: process.env.BLOG_EMAIL_PASS,
     },
   });
 
@@ -39,8 +39,8 @@ export async function POST(request: Request) {
 
     // Notify admin about the new subscriber
     const adminMailOptions = {
-      from: process.env.NEXT_PUBLIC_EMAIL_USER,
-      to: process.env.NEXT_PUBLIC_EMAIL_USER, // Admin email
+      from: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER,
+      to: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER, // Admin email
       subject: `New Subscriber: ${newSubscriberEmail}`,
       text: `A new subscriber has joined: ${newSubscriberEmail}.`,
     };
