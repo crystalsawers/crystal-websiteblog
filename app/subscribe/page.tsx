@@ -36,7 +36,7 @@ const SubscribePage = () => {
         );
         return;
       }
-      const success = await addSubscriber(email,name);
+      const success = await addSubscriber(email, name);
       if (success) {
         setMessage(
           'Thank you for subscribing! A confirmation email has been sent.',
@@ -92,7 +92,7 @@ const SubscribePage = () => {
             : 'Unsubscribe from My Posts'}
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-        <input
+          <input
             type="text"
             placeholder="Enter your name"
             value={name}
@@ -118,7 +118,17 @@ const SubscribePage = () => {
           you unsubscribe of course.
         </p>
 
-        {message && <p className="mt-4 text-gray-200">{message}</p>}
+        {message && (
+          <p
+            className={`mt-4 ${
+              message.includes('error') || message.includes('issues')
+                ? 'text-red-500' // Render red text for error messages
+                : 'text-black' // Render black text for success messages
+            }`}
+          >
+            {message}
+          </p>
+        )}
 
         <button
           onClick={() => setIsSubscribing(!isSubscribing)}

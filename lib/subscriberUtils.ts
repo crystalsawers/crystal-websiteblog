@@ -19,7 +19,10 @@ export const checkSubscriberExists = async (
 };
 
 // Function to send email notification to the admin to say that someone has subscribed
-const sendEmailNotification = async (subscriberEmail: string, subscriberName: string) => {
+const sendEmailNotification = async (
+  subscriberEmail: string,
+  subscriberName: string,
+) => {
   try {
     await fetch('/api/sendNotification', {
       method: 'POST',
@@ -37,9 +40,11 @@ const sendEmailNotification = async (subscriberEmail: string, subscriberName: st
   }
 };
 
-
 // Add a subscriber to Firestore
-export const addSubscriber = async (email: string, name: string): Promise<boolean> => {
+export const addSubscriber = async (
+  email: string,
+  name: string,
+): Promise<boolean> => {
   try {
     const exists = await checkSubscriberExists(email);
     if (exists) {
@@ -54,7 +59,6 @@ export const addSubscriber = async (email: string, name: string): Promise<boolea
     return false;
   }
 };
-
 
 // Remove a subscriber (unsubscribe)
 export const removeSubscriber = async (email: string): Promise<boolean> => {
