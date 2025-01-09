@@ -166,7 +166,11 @@ main nav {
   @apply mt-2 text-center text-red-500;
 }
 
-/* About and journey edit styles */
+/* form input */
+
+.create-form-input {
+  @apply mt-1 block w-full rounded-md border border-gray-300 px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm;
+}
 
 /* CreatePost styles */
 .create-post-page {
