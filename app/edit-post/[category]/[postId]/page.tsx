@@ -171,8 +171,8 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
         seriesId: seriesIds, // Store seriesIds as an array
       });
 
-      // Update each series document to include this postId
-      for (const seriesId of seriesIds) {
+      // Skip the loop if seriesIds contains an empty string
+      for (const seriesId of seriesIds.filter((id) => id)) {
         const seriesRef = doc(db, 'series', seriesId);
         const seriesSnap = await getDoc(seriesRef);
 
@@ -180,22 +180,11 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
           const seriesData = seriesSnap.data();
           const currentPostIds = seriesData?.postIds || [];
 
-          console.log(`Current postIds in series ${seriesId}:`, currentPostIds);
-
-          // Add postId to the series' postIds array if it's not already there
+          // Add postId if it's not already in postIds
           if (postId && !currentPostIds.includes(postId)) {
             await updateDoc(seriesRef, {
-              postIds: [...currentPostIds, postId], // Add postId to the postIds array
+              postIds: [...currentPostIds, postId],
             });
-
-            console.log(
-              `Post ID added to postIds array in series ${seriesId}:`,
-              postId,
-            );
-          } else {
-            console.log(
-              `Post ID already in postIds array for series ${seriesId} or not valid.`,
-            );
           }
         } else {
           console.log(`Series document not found for series ${seriesId}.`);
