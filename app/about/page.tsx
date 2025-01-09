@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  collection,
-  getDocs,
-  QuerySnapshot
-} from 'firebase/firestore';
+import { collection, getDocs, QuerySnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebaseConfig';
 import { useAuth } from '../components/AuthContext';
 
