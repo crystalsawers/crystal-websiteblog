@@ -89,14 +89,20 @@ export async function POST(request: Request) {
   // Handle new post notifications
   if (postTitle.startsWith('New Post:')) {
     try {
+      // Ensure email sending logic runs once and remove duplicates
+      const uniqueEmails = Array.from(new Set(emails));
+
       const mailOptions = {
         from: process.env.NEXT_PUBLIC_EMAIL_USER,
-        to: emails.join(','), // Combine all subscriber emails
-        subject: postTitle,
+        bcc: uniqueEmails.join(','), // Use BCC to send one email without exposing addresses
+        subject: `${postTitle}`,
         text: `Check out my new post here: ${postUrl}`,
       };
 
-      await transporter.sendMail(mailOptions); // Send one email to all
+      // Send a single email to all in BCC
+      await transporter.sendMail(mailOptions);
+      console.log(`Email sent successfully to all subscribers.`);
+
       return NextResponse.json({ success: true });
     } catch (error) {
       console.error('Error sending email:', error);
