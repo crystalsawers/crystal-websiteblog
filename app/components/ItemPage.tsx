@@ -2,13 +2,15 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { doc, getDoc, deleteDoc, updateDoc, increment, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc, updateDoc, increment, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import renderContent from '../../lib/utils/renderContent';
 import NotFound from '../../app/not-found';
 import Image from 'next/image';
 import { useAuth } from '../components/AuthContext';
+import { v4 as uuidv4 } from 'uuid';
+
 
 interface DocumentData {
   type: string;
@@ -43,6 +45,18 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   const [activeReaction, setActiveReaction] = useState<string | null>(null);
   const [reacting, setReacting] = useState(false);
   const { isAuthenticated } = useAuth();
+
+
+  
+const getAnonymousUserId = () => {
+  let userId = localStorage.getItem('anon_user_id');
+  if (!userId) {
+    userId = uuidv4(); // Generate a unique user ID
+    localStorage.setItem('anon_user_id', userId);
+  }
+  return userId;
+};
+
 
   // Fetch post data
   useEffect(() => {
@@ -82,16 +96,24 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   // Set up real-time reaction listeners
   useEffect(() => {
     if (!id) return;
-
+  
+    const userId = getAnonymousUserId();
+  
     const unsubscribes = REACTIONS.map(reaction => {
       const ref = doc(db, `${collectionName}/${id}/reactions/${reaction.id}`);
       return onSnapshot(ref, (doc) => {
-        setReactionCounts(prev => ({ ...prev, [reaction.id]: doc.data()?.count || 0 }));
+        const data = doc.data();
+        setReactionCounts(prev => ({ ...prev, [reaction.id]: data?.count || 0 }));
+  
+        if (data?.userIds?.includes(userId)) {
+          setActiveReaction(reaction.id);
+        }
       });
     });
-
+  
     return () => unsubscribes.forEach(unsub => unsub());
   }, [id, collectionName]);
+  
 
   // Check localStorage for existing reaction
   useEffect(() => {
@@ -137,29 +159,56 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
     }
   };
 
+  // HANDLE REACTION 
   const handleReaction = async (reactionId: string) => {
     if (reacting) return;
     setReacting(true);
-
+  
     try {
+      const userId = getAnonymousUserId(); // Get the unique device/session ID
       const reactionRef = doc(db, `${collectionName}/${id}/reactions/${reactionId}`);
-
-      if (activeReaction === reactionId) {
-        // Remove reaction
-        await updateDoc(reactionRef, { count: increment(-1) });
-        setActiveReaction(null);
-        localStorage.removeItem(`reaction_${collectionName}_${id}`);
-      } else {
-        // Remove previous reaction if exists
-        if (activeReaction) {
-          const prevRef = doc(db, `${collectionName}/${id}/reactions/${activeReaction}`);
-          await updateDoc(prevRef, { count: increment(-1) });
+      const reactionSnap = await getDoc(reactionRef);
+  
+      if (reactionSnap.exists()) {
+        const data = reactionSnap.data();
+        const userIds = data.userIds || [];
+        const hasReacted = userIds.includes(userId);
+  
+        if (hasReacted) {
+          // Remove reaction
+          await updateDoc(reactionRef, {
+            count: increment(-1),
+            userIds: userIds.filter((uid: string) => uid !== userId), // Remove user from list
+          });
+          setActiveReaction(null); // Update the UI
+        } else {
+          // Remove previous reaction if exists
+          if (activeReaction) {
+            const prevRef = doc(db, `${collectionName}/${id}/reactions/${activeReaction}`);
+            const prevSnap = await getDoc(prevRef);
+            if (prevSnap.exists()) {
+              const prevData = prevSnap.data();
+              await updateDoc(prevRef, {
+                count: increment(-1),
+                userIds: prevData.userIds.filter((uid: string) => uid !== userId),
+              });
+            }
+          }
+  
+          // Add new reaction
+          await updateDoc(reactionRef, {
+            count: increment(1),
+            userIds: [...userIds, userId], // Add user to list
+          });
+          setActiveReaction(reactionId); // Update the UI with new reaction
         }
-
-        // Add new reaction
-        await updateDoc(reactionRef, { count: increment(1) });
-        setActiveReaction(reactionId);
-        localStorage.setItem(`reaction_${collectionName}_${id}`, reactionId);
+      } else {
+        // First reaction on this post
+        await setDoc(reactionRef, {
+          count: 1,
+          userIds: [userId],
+        });
+        setActiveReaction(reactionId); // Update the UI with the first reaction
       }
     } catch (error) {
       console.error('Error updating reaction:', error);
@@ -167,6 +216,8 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
       setReacting(false);
     }
   };
+  
+  
 
   if (loading) return <p className="text-center text-custom-green">Loading...</p>;
   if (fetchError) return <p>{fetchError}</p>;
