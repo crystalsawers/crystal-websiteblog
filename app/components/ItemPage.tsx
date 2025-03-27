@@ -21,14 +21,14 @@ interface DocumentData {
 }
 
 const REACTIONS = [
-  { id: 'like', emoji: '👍' },
-  { id: 'love', emoji: '❤️' },
-  { id: 'agree', emoji: '✅' },
-  { id: 'disagree', emoji: '❌' },
-  { id: 'wow', emoji: '😲' },
-  { id: 'fire', emoji: '🔥' },
-  { id: 'laugh', emoji: '😂' },
-  { id: 'clap', emoji: '👏' },
+  { id: 'like', emoji: '👍', description: 'Like' },
+  { id: 'love', emoji: '❤️', description: 'Love'  },
+  { id: 'agree', emoji: '✅', description: 'I agree with this post'  },
+  { id: 'disagree', emoji: '❌', description: 'I disagree with this post'  },
+  { id: 'wow', emoji: '😲', description: 'Wow'  },
+  { id: 'fire', emoji: '🔥', description: 'Exciting'  },
+  { id: 'laugh', emoji: '😂', description: 'Funny'  },
+  { id: 'clap', emoji: '👏', description: 'Appreciation'  },
 ];
 
 const ItemPage = ({ collectionName }: { collectionName: string }) => {
@@ -257,24 +257,27 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
                 )}
                 <div className="card-text">{renderContent(data.content)}</div>
                 
-                <div className="mt-8 border-t pt-6">
-                  <div className="flex flex-wrap gap-4">
-                    {REACTIONS.map((reaction) => (
-                      <button
-                        key={reaction.id}
-                        onClick={() => handleReaction(reaction.id)}
-                        disabled={reacting}
-                        className={`flex items-center gap-2 rounded-full border px-4 py-2 hover:bg-emerald-700 ${
-                          activeReaction === reaction.id ? 'bg-emerald-700 border-blue-300' : ''
-                        }`}
-                        aria-label={`${reaction.id} (${reactionCounts[reaction.id] || 0})`}
-                      >
-                        <span className="text-xl">{reaction.emoji}</span>
-                        <span className="text-sm">{reactionCounts[reaction.id] || 0}</span>
-                      </button>
-                    ))}
-                  </div>
+              {/* Reaction bar */}
+              <div className="mt-8 border-t pt-6">
+                <div className="flex flex-wrap gap-4">
+                  {REACTIONS.map((reaction) => (
+                    <button
+                      key={reaction.id}
+                      onClick={() => handleReaction(reaction.id)}
+                      disabled={reacting}
+                      className={`flex items-center gap-2 rounded-full border px-4 py-2 hover:bg-emerald-700 ${
+                        activeReaction === reaction.id ? 'bg-emerald-700 border-blue-300' : ''
+                      }`}
+                      aria-label={`${reaction.id} (${reactionCounts[reaction.id] || 0})`}
+                      title={reaction.description} // to describe what the emojis mean
+                    >
+                      <span className="text-xl">{reaction.emoji}</span>
+                      <span className="text-sm">{reactionCounts[reaction.id] || 0}</span>
+                    </button>
+                  ))}
                 </div>
+              </div>
+
               </div>
             </>
           ) : null}
