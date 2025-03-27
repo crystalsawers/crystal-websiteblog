@@ -2,7 +2,15 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { doc, getDoc, deleteDoc, updateDoc, increment, onSnapshot, setDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  deleteDoc,
+  updateDoc,
+  increment,
+  onSnapshot,
+  setDoc,
+} from 'firebase/firestore';
 import { db } from '../../lib/firebaseConfig';
 import { formatDate } from '@/lib/utils/formatDate';
 import renderContent from '../../lib/utils/renderContent';
@@ -10,7 +18,6 @@ import NotFound from '../../app/not-found';
 import Image from 'next/image';
 import { useAuth } from '../components/AuthContext';
 import { v4 as uuidv4 } from 'uuid';
-
 
 interface DocumentData {
   type: string;
@@ -24,13 +31,13 @@ interface DocumentData {
 
 const REACTIONS = [
   { id: 'like', emoji: '👍', description: 'Like' },
-  { id: 'love', emoji: '❤️', description: 'Love'  },
-  { id: 'agree', emoji: '✅', description: 'I agree with this post'  },
-  { id: 'disagree', emoji: '❌', description: 'I disagree with this post'  },
-  { id: 'wow', emoji: '😲', description: 'Wow'  },
-  { id: 'fire', emoji: '🔥', description: 'Exciting'  },
-  { id: 'laugh', emoji: '😂', description: 'Funny'  },
-  { id: 'clap', emoji: '👏', description: 'Appreciation'  },
+  { id: 'love', emoji: '❤️', description: 'Love' },
+  { id: 'agree', emoji: '✅', description: 'I agree with this post' },
+  { id: 'disagree', emoji: '❌', description: 'I disagree with this post' },
+  { id: 'wow', emoji: '😲', description: 'Wow' },
+  { id: 'fire', emoji: '🔥', description: 'Exciting' },
+  { id: 'laugh', emoji: '😂', description: 'Funny' },
+  { id: 'clap', emoji: '👏', description: 'Appreciation' },
 ];
 
 const ItemPage = ({ collectionName }: { collectionName: string }) => {
@@ -41,22 +48,21 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const [reactionCounts, setReactionCounts] = useState<Record<string, number>>({});
+  const [reactionCounts, setReactionCounts] = useState<Record<string, number>>(
+    {},
+  );
   const [activeReaction, setActiveReaction] = useState<string | null>(null);
   const [reacting, setReacting] = useState(false);
   const { isAuthenticated } = useAuth();
 
-
-  
-const getAnonymousUserId = () => {
-  let userId = localStorage.getItem('anon_user_id');
-  if (!userId) {
-    userId = uuidv4(); // Generate a unique user ID
-    localStorage.setItem('anon_user_id', userId);
-  }
-  return userId;
-};
-
+  const getAnonymousUserId = () => {
+    let userId = localStorage.getItem('anon_user_id');
+    if (!userId) {
+      userId = uuidv4(); // Generate a unique user ID
+      localStorage.setItem('anon_user_id', userId);
+    }
+    return userId;
+  };
 
   // Fetch post data
   useEffect(() => {
@@ -96,30 +102,34 @@ const getAnonymousUserId = () => {
   // Set up real-time reaction listeners
   useEffect(() => {
     if (!id) return;
-  
+
     const userId = getAnonymousUserId();
-  
-    const unsubscribes = REACTIONS.map(reaction => {
+
+    const unsubscribes = REACTIONS.map((reaction) => {
       const ref = doc(db, `${collectionName}/${id}/reactions/${reaction.id}`);
       return onSnapshot(ref, (doc) => {
         const data = doc.data();
-        setReactionCounts(prev => ({ ...prev, [reaction.id]: data?.count || 0 }));
-  
+        setReactionCounts((prev) => ({
+          ...prev,
+          [reaction.id]: data?.count || 0,
+        }));
+
         if (data?.userIds?.includes(userId)) {
           setActiveReaction(reaction.id);
         }
       });
     });
-  
-    return () => unsubscribes.forEach(unsub => unsub());
+
+    return () => unsubscribes.forEach((unsub) => unsub());
   }, [id, collectionName]);
-  
 
   // Check localStorage for existing reaction
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const savedReaction = localStorage.getItem(`reaction_${collectionName}_${id}`);
-      if (savedReaction && REACTIONS.some(r => r.id === savedReaction)) {
+      const savedReaction = localStorage.getItem(
+        `reaction_${collectionName}_${id}`,
+      );
+      if (savedReaction && REACTIONS.some((r) => r.id === savedReaction)) {
         setActiveReaction(savedReaction);
       }
     }
@@ -159,21 +169,24 @@ const getAnonymousUserId = () => {
     }
   };
 
-  // HANDLE REACTION 
+  // HANDLE REACTION
   const handleReaction = async (reactionId: string) => {
     if (reacting) return;
     setReacting(true);
-  
+
     try {
       const userId = getAnonymousUserId(); // Get the unique device/session ID
-      const reactionRef = doc(db, `${collectionName}/${id}/reactions/${reactionId}`);
+      const reactionRef = doc(
+        db,
+        `${collectionName}/${id}/reactions/${reactionId}`,
+      );
       const reactionSnap = await getDoc(reactionRef);
-  
+
       if (reactionSnap.exists()) {
         const data = reactionSnap.data();
         const userIds = data.userIds || [];
         const hasReacted = userIds.includes(userId);
-  
+
         if (hasReacted) {
           // Remove reaction
           await updateDoc(reactionRef, {
@@ -184,17 +197,22 @@ const getAnonymousUserId = () => {
         } else {
           // Remove previous reaction if exists
           if (activeReaction) {
-            const prevRef = doc(db, `${collectionName}/${id}/reactions/${activeReaction}`);
+            const prevRef = doc(
+              db,
+              `${collectionName}/${id}/reactions/${activeReaction}`,
+            );
             const prevSnap = await getDoc(prevRef);
             if (prevSnap.exists()) {
               const prevData = prevSnap.data();
               await updateDoc(prevRef, {
                 count: increment(-1),
-                userIds: prevData.userIds.filter((uid: string) => uid !== userId),
+                userIds: prevData.userIds.filter(
+                  (uid: string) => uid !== userId,
+                ),
               });
             }
           }
-  
+
           // Add new reaction
           await updateDoc(reactionRef, {
             count: increment(1),
@@ -216,10 +234,9 @@ const getAnonymousUserId = () => {
       setReacting(false);
     }
   };
-  
-  
 
-  if (loading) return <p className="text-center text-custom-green">Loading...</p>;
+  if (loading)
+    return <p className="text-center text-custom-green">Loading...</p>;
   if (fetchError) return <p>{fetchError}</p>;
   if (!data) return <NotFound />;
 
@@ -252,7 +269,11 @@ const getAnonymousUserId = () => {
             )}
             {!isAuthenticated && (
               <button
-                onClick={() => router.push(`/feedback?postId=${id}&category=${collectionName}`)}
+                onClick={() =>
+                  router.push(
+                    `/feedback?postId=${id}&category=${collectionName}`,
+                  )
+                }
                 className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
               >
                 Comment
@@ -274,7 +295,8 @@ const getAnonymousUserId = () => {
 
               {data.editedDate && (
                 <p className="card-text mb-4">
-                  <strong>Edited:</strong> {formatDate(new Date(data.editedDate))}
+                  <strong>Edited:</strong>{' '}
+                  {formatDate(new Date(data.editedDate))}
                 </p>
               )}
 
@@ -307,28 +329,31 @@ const getAnonymousUserId = () => {
                   <span className="text-bold text-red-500">Draft</span>
                 )}
                 <div className="card-text">{renderContent(data.content)}</div>
-                
-              {/* Reaction bar */}
-              <div className="mt-8 border-t pt-6">
-                <div className="flex flex-wrap gap-4">
-                  {REACTIONS.map((reaction) => (
-                    <button
-                      key={reaction.id}
-                      onClick={() => handleReaction(reaction.id)}
-                      disabled={reacting}
-                      className={`flex items-center gap-2 rounded-full border px-4 py-2 hover:bg-emerald-700 ${
-                        activeReaction === reaction.id ? 'bg-emerald-700 border-blue-300' : ''
-                      }`}
-                      aria-label={`${reaction.id} (${reactionCounts[reaction.id] || 0})`}
-                      title={reaction.description} // to describe what the emojis mean
-                    >
-                      <span className="text-xl">{reaction.emoji}</span>
-                      <span className="text-sm">{reactionCounts[reaction.id] || 0}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
 
+                {/* Reaction bar */}
+                <div className="mt-8 border-t pt-6">
+                  <div className="flex flex-wrap gap-4">
+                    {REACTIONS.map((reaction) => (
+                      <button
+                        key={reaction.id}
+                        onClick={() => handleReaction(reaction.id)}
+                        disabled={reacting}
+                        className={`flex items-center gap-2 rounded-full border px-4 py-2 hover:bg-emerald-700 ${
+                          activeReaction === reaction.id
+                            ? 'border-blue-300 bg-emerald-700'
+                            : ''
+                        }`}
+                        aria-label={`${reaction.id} (${reactionCounts[reaction.id] || 0})`}
+                        title={reaction.description} // to describe what the emojis mean
+                      >
+                        <span className="text-xl">{reaction.emoji}</span>
+                        <span className="text-sm">
+                          {reactionCounts[reaction.id] || 0}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </>
           ) : null}
