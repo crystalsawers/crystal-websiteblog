@@ -32,12 +32,8 @@ interface DocumentData {
 const REACTIONS = [
   { id: 'like', emoji: '👍', description: 'Like' },
   { id: 'love', emoji: '❤️', description: 'Love' },
-  { id: 'agree', emoji: '✅', description: 'I agree with this post' },
-  { id: 'disagree', emoji: '❌', description: 'I disagree with this post' },
   { id: 'wow', emoji: '😲', description: 'Wow' },
-  { id: 'fire', emoji: '🔥', description: 'Exciting' },
   { id: 'laugh', emoji: '😂', description: 'Funny' },
-  { id: 'clap', emoji: '👏', description: 'Appreciation' },
 ];
 
 const ItemPage = ({ collectionName }: { collectionName: string }) => {
