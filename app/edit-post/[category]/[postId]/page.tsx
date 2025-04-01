@@ -319,9 +319,17 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
             <Image
               src={imageUrl}
               alt="Preview"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="top-center"
+              width={500}
+              height={300}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: "cover",
+                objectPosition: 'top center'
+              }}
               className="h-full w-full"
             />
             <button

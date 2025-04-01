@@ -132,9 +132,17 @@ const ResultsPage = () => {
                     <Image
                       src={post.imageUrl}
                       alt={post.title || 'Posted image'}
-                      layout="fill"
-                      objectFit="cover"
-                      objectPosition="top center"
+                      width={500}
+                      height={300}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: "cover",
+                        objectPosition: 'top center'
+                      }}
                       className="card-img"
                     />
                   </div>

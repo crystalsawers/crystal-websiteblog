@@ -167,9 +167,18 @@ const Lifestyle = () => {
                   <Image
                     src={item.imageUrl}
                     alt={item.title || 'Lifestyle post image'}
-                    layout="fill"
-                    objectFit="cover"
+                    width={500}
+                    height={300}
                     className="card-img"
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: "cover",
+                      objectPosition: 'top center'
+                    }}
                   />
                 </div>
               )}

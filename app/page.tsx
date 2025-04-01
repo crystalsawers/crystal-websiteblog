@@ -278,20 +278,25 @@ const HomePage = () => {
                   .map((post) => (
                     <div key={post.id} className="card relative mb-4">
                       {post.imageUrl && (
-                        <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
-                          <Image
-                            src={post.imageUrl}
-                            alt={post.title || 'Posted image'}
-                            layout="fill"
-                            objectFit="cover"
-                            objectPosition={
-                              specificPostIds.includes(post.id)
-                                ? 'center'
-                                : 'top center'
-                            }
-                            className="card-img"
-                          />
-                        </div>
+                       <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                       <Image
+                         src={post.imageUrl}
+                         alt={post.title || 'Posted image'}
+                         width={500} 
+                         height={300} 
+                         style={{
+                           position: 'absolute',
+                           top: 0,
+                           left: 0,
+                           width: '100%',
+                           height: '100%',
+                           objectFit: 'cover',
+                           objectPosition: specificPostIds.includes(post.id) ? 'center' : 'top center'
+                         }}
+                         className="card-img"
+                       />
+                     </div>
+                     
                       )}
                       {post.title && (
                         <div className={post.imageUrl ? 'pt-4' : ''}>
@@ -367,15 +372,23 @@ const HomePage = () => {
                     <div key={post.id} className="card mb-4">
                       {post.imageUrl && (
                         <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
-                          <Image
-                            src={post.imageUrl}
-                            alt={post.title || 'Posted image'}
-                            layout="fill"
-                            objectFit="cover"
-                            objectPosition="top center"
-                            className="card-img"
-                          />
-                        </div>
+                        <Image
+                          src={post.imageUrl}
+                          alt={post.title || 'Posted image'}
+                          width={500} 
+                          height={300} 
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            objectPosition: specificPostIds.includes(post.id) ? 'center' : 'top center'
+                          }}
+                          className="card-img"
+                        />
+                      </div>
                       )}
                       {post.title && (
                         <div className={post.imageUrl ? 'pt-4' : ''}>

@@ -164,10 +164,18 @@ const Cricket = () => {
                   <Image
                     src={item.imageUrl}
                     alt={item.title || 'Cricket post image'}
-                    layout="fill"
-                    objectFit="cover"
                     className="card-img"
-                    objectPosition={'top center'}
+                    width={500} 
+                    height={300}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: "cover",
+                      objectPosition: 'top center'
+                    }}
                   />
                 </div>
               )}

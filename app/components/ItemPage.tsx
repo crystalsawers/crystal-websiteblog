@@ -309,7 +309,6 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
                   <Image
                     src={data.imageUrl}
                     alt={data.title || 'Image'}
-                    layout="responsive"
                     width={800}
                     height={400}
                     style={{ maxHeight: '600px', objectFit: 'cover' }}
