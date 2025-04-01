@@ -7,14 +7,17 @@ type ContentElement = JSX.Element | null;
 
 const renderContent = (content: string): ContentElement => {
   return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      rehypePlugins={[rehypeRaw]} // Optional: to support raw HTML if used in content
-      className="markdown-content"
-    >
-      {content}
-    </ReactMarkdown>
+    <div className="markdown-wrapper">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]} // Optional: to support raw HTML if used in content
+        className="markdown-content"
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
   );
 };
+
 
 export default renderContent;

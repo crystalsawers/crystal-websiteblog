@@ -315,9 +315,9 @@ const HomePage = () => {
                           {formatDate(new Date(post.editedDate))}
                         </p>
                       )}
-                      <p className="card-text">
+                      <div className="card-text">
                         {renderContent(truncateContent(post.content, 110))}
-                      </p>
+                      </div>
                       <a
                         href={`/${
                           isReviewCategory(post.category)
@@ -399,9 +399,9 @@ const HomePage = () => {
                           {formatDate(new Date(post.editedDate))}
                         </p>
                       )}
-                      <p className="card-text">
+                      <div className="card-text">
                         {renderContent(truncateContent(post.content, 110))}
-                      </p>
+                      </div>
                       <a
                         href={`/${section}/${post.category}/${post.id}`}
                         className="card-link"

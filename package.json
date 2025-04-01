@@ -20,7 +20,7 @@
     "dotenv": "^16.4.5",
     "firebase": "^10.13.1",
     "firebase-admin": "^12.5.0",
-    "next": "14.2.11",
+    "next": "^15.2.4",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.15",
     "react": "^18.3.1",
