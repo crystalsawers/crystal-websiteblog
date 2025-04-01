@@ -172,6 +172,7 @@ const Formula1 = () => {
                     alt={item.title || 'Formula 1 post image'}
                     width={500} 
                     height={300}
+                    priority={true}
                     style={{
                       position: 'absolute',
                       top: 0,

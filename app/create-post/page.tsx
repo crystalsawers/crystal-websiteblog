@@ -251,6 +251,7 @@ const CreatePost = () => {
                   alt="Preview"
                   width={500} 
                   height={300}
+                  priority={true}
                   style={{
                     position: 'absolute',
                     top: 0,

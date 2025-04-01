@@ -311,6 +311,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
                     alt={data.title || 'Image'}
                     width={800}
                     height={400}
+                    priority={true}
                     style={{ maxHeight: '600px', objectFit: 'cover' }}
                   />
                 </div>

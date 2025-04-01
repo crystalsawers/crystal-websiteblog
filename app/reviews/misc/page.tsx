@@ -162,6 +162,7 @@ const Miscellaneous = () => {
                     alt={item.title || 'Misc post image'}
                     width={500}
                     height={300}
+                    priority={true}
                     className="card-img"
                     style={{
                       position: 'absolute',

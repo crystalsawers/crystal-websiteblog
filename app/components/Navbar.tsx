@@ -61,6 +61,7 @@ const Navbar = () => {
             width={70}
             placeholder="blur"
             quality={100}
+            priority={true}
           />
           <h1 className="text-[var(--navbar-text)]">Crystal&#39;s Blog</h1>
         </Link>
