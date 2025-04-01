@@ -33,7 +33,10 @@ interface SeriesData {
 }
 
 const EditPostPage = ({ params }: EditPostPageProps) => {
-  const [unwrappedParams, setUnwrappedParams] = useState<{ category: string; postId: string } | null>(null);
+  const [unwrappedParams, setUnwrappedParams] = useState<{
+    category: string;
+    postId: string;
+  } | null>(null);
 
   const [post, setPost] = useState<PostData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -64,9 +67,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
     fetchParams(); // Fetch params once component is mounted
   }, [params]); // Fetch params only once
 
-
   useEffect(() => {
-
     if (!unwrappedParams) return; // Wait until params are resolved
 
     const { category, postId } = unwrappedParams; // Now you can access the params
@@ -122,16 +123,14 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
   };
 
   const handleTogglePin = async () => {
-
     if (!unwrappedParams) return; // Make sure params are resolved
 
-  const { postId } = unwrappedParams;
+    const { postId } = unwrappedParams;
 
     const settingsRef = doc(db, 'settings', 'siteConfig');
     const settingsSnap = await getDoc(settingsRef);
     const pinnedPostId = settingsSnap.data()?.pinnedPostId;
 
-    
     if (pinnedPostId && pinnedPostId !== postId && !pinned) {
       setPinError(
         'Another post is already pinned. Unpin it before pinning this one.',
@@ -170,12 +169,12 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
     }
 
     // Ensure that unwrappedParams is available and postId is there
-  if (!unwrappedParams?.postId) {
-    setError('Post ID not found.');
-    return;
-  }
+    if (!unwrappedParams?.postId) {
+      setError('Post ID not found.');
+      return;
+    }
 
-  const { category, postId } = unwrappedParams; // Get postId from unwrappedParams
+    const { category, postId } = unwrappedParams; // Get postId from unwrappedParams
 
     try {
       const docRef = doc(db, category, postId);
@@ -248,15 +247,14 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
       return;
     }
 
-        // Ensure that unwrappedParams is available and postId is there
-  if (!unwrappedParams?.postId) {
-    setError('Post ID not found.');
-    return;
-  }
+    // Ensure that unwrappedParams is available and postId is there
+    if (!unwrappedParams?.postId) {
+      setError('Post ID not found.');
+      return;
+    }
 
-  const { category, postId } = unwrappedParams; // Get postId from unwrappedParams
+    const { category, postId } = unwrappedParams; // Get postId from unwrappedParams
 
-  
     try {
       const docRef = doc(db, category, postId);
       let newImageUrl = imageUrl;
@@ -328,7 +326,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
         </label>
         <select
           id="series"
-          value={selectedSeriesId}
+          value={typeof selectedSeriesId === 'string' ? selectedSeriesId : ''}
           onChange={(e) => setSelectedSeriesId(e.target.value)}
           className="create-post-input"
         >
