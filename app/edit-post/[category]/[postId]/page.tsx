@@ -15,10 +15,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 interface EditPostPageProps {
-  params: {
-    category: string;
-    postId: string;
-  };
+  params: Promise<{ category: string; postId: string }>; // Make sure params is a Promise
 }
 
 interface PostData {
@@ -36,7 +33,8 @@ interface SeriesData {
 }
 
 const EditPostPage = ({ params }: EditPostPageProps) => {
-  const { category, postId } = params;
+  const [unwrappedParams, setUnwrappedParams] = useState<{ category: string; postId: string } | null>(null);
+
   const [post, setPost] = useState<PostData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [title, setTitle] = useState('');
@@ -53,6 +51,26 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    const fetchParams = async () => {
+      try {
+        const resolvedParams = await params; // Await the Promise
+        setUnwrappedParams(resolvedParams); // Set the resolved params
+      } catch (err) {
+        console.error('Error fetching params:', err);
+        setError('Error loading params.');
+      }
+    };
+
+    fetchParams(); // Fetch params once component is mounted
+  }, [params]); // Fetch params only once
+
+
+  useEffect(() => {
+
+    if (!unwrappedParams) return; // Wait until params are resolved
+
+    const { category, postId } = unwrappedParams; // Now you can access the params
+
     const fetchPost = async () => {
       try {
         const postRef = doc(db, category, postId);
@@ -89,7 +107,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
 
     fetchPost();
     fetchSeries();
-  }, [category, postId]);
+  }, [unwrappedParams]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -104,10 +122,16 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
   };
 
   const handleTogglePin = async () => {
+
+    if (!unwrappedParams) return; // Make sure params are resolved
+
+  const { postId } = unwrappedParams;
+
     const settingsRef = doc(db, 'settings', 'siteConfig');
     const settingsSnap = await getDoc(settingsRef);
     const pinnedPostId = settingsSnap.data()?.pinnedPostId;
 
+    
     if (pinnedPostId && pinnedPostId !== postId && !pinned) {
       setPinError(
         'Another post is already pinned. Unpin it before pinning this one.',
@@ -144,6 +168,14 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
     if (!title.trim() || !content.trim()) {
       return;
     }
+
+    // Ensure that unwrappedParams is available and postId is there
+  if (!unwrappedParams?.postId) {
+    setError('Post ID not found.');
+    return;
+  }
+
+  const { category, postId } = unwrappedParams; // Get postId from unwrappedParams
 
     try {
       const docRef = doc(db, category, postId);
@@ -216,6 +248,15 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
       return;
     }
 
+        // Ensure that unwrappedParams is available and postId is there
+  if (!unwrappedParams?.postId) {
+    setError('Post ID not found.');
+    return;
+  }
+
+  const { category, postId } = unwrappedParams; // Get postId from unwrappedParams
+
+  
     try {
       const docRef = doc(db, category, postId);
       let newImageUrl = imageUrl;
