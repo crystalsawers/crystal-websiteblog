@@ -170,7 +170,7 @@ const Formula1 = () => {
                   <Image
                     src={item.imageUrl}
                     alt={item.title || 'Formula 1 post image'}
-                    width={500} 
+                    width={500}
                     height={300}
                     priority={true}
                     style={{
@@ -179,8 +179,10 @@ const Formula1 = () => {
                       left: 0,
                       width: '100%',
                       height: '100%',
-                      objectFit:"cover",
-                      objectPosition: specificPostIds.includes(item.id) ? 'center' : 'top center'
+                      objectFit: 'cover',
+                      objectPosition: specificPostIds.includes(item.id)
+                        ? 'center'
+                        : 'top center',
                     }}
                     className="card-img"
                   />
@@ -206,9 +208,9 @@ const Formula1 = () => {
                   {formatDate(new Date(item.editedDate))}
                 </p>
               )}
-              <p className="card-text">
+              <div className="card-text">
                 {renderContent(truncateContent(item.content, 110))}
-              </p>
+              </div>
 
               <a href={`/interests/formula1/${item.id}`} className="card-link">
                 Read more

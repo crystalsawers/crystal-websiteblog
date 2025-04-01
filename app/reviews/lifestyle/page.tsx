@@ -177,8 +177,8 @@ const Lifestyle = () => {
                       left: 0,
                       width: '100%',
                       height: '100%',
-                      objectFit: "cover",
-                      objectPosition: 'top center'
+                      objectFit: 'cover',
+                      objectPosition: 'top center',
                     }}
                   />
                 </div>
@@ -199,9 +199,9 @@ const Lifestyle = () => {
                   {formatDate(new Date(item.editedDate))}
                 </p>
               )}
-              <p className="card-text">
+              <div className="card-text">
                 {renderContent(truncateContent(item.content, 110))}
-              </p>
+              </div>
               <a href={`/reviews/lifestyle/${item.id}`} className="card-link">
                 Read more
               </a>

@@ -249,7 +249,7 @@ const CreatePost = () => {
                 <Image
                   src={imageUrl}
                   alt="Preview"
-                  width={500} 
+                  width={500}
                   height={300}
                   priority={true}
                   style={{
@@ -258,7 +258,7 @@ const CreatePost = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    objectFit:"cover",
+                    objectFit: 'cover',
                   }}
                 />
                 <button

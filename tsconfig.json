@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -22,13 +18,9 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "typeRoots": ["node_modules/@types"],
     "target": "ES2017"
   },
   "include": [
@@ -40,7 +32,5 @@
     "backend/importData.js",
     "backend/updateStatus.js"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

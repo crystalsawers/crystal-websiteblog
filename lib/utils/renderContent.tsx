@@ -19,5 +19,4 @@ const renderContent = (content: string): ContentElement => {
   );
 };
 
-
 export default renderContent;

@@ -170,7 +170,7 @@ const Miscellaneous = () => {
                       left: 0,
                       width: '100%',
                       height: '100%',
-                      objectFit: "cover",
+                      objectFit: 'cover',
                     }}
                   />
                 </div>
@@ -194,9 +194,9 @@ const Miscellaneous = () => {
                   {formatDate(new Date(item.editedDate))}
                 </p>
               )}
-              <p className="card-text">
+              <div className="card-text">
                 {renderContent(truncateContent(item.content, 110))}
-              </p>
+              </div>
               <a href={`/reviews/misc/${item.id}`} className="card-link">
                 Read more
               </a>

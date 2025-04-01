@@ -328,8 +328,8 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                objectFit: "cover",
-                objectPosition: 'top center'
+                objectFit: 'cover',
+                objectPosition: 'top center',
               }}
               className="h-full w-full"
             />

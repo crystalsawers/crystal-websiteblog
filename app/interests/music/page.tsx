@@ -164,7 +164,7 @@ const Music = () => {
                     src={item.imageUrl}
                     alt={item.title || 'Music post image'}
                     className="card-img"
-                    width={500} 
+                    width={500}
                     height={300}
                     priority={true}
                     style={{
@@ -173,8 +173,8 @@ const Music = () => {
                       left: 0,
                       width: '100%',
                       height: '100%',
-                      objectFit: "cover",
-                      objectPosition: 'top center'
+                      objectFit: 'cover',
+                      objectPosition: 'top center',
                     }}
                   />
                 </div>
@@ -199,9 +199,9 @@ const Music = () => {
                   {formatDate(new Date(item.editedDate))}
                 </p>
               )}
-              <p className="card-text">
+              <div className="card-text">
                 {renderContent(truncateContent(item.content, 110))}
-              </p>
+              </div>
               <a href={`/interests/music/${item.id}`} className="card-link">
                 Read more
               </a>

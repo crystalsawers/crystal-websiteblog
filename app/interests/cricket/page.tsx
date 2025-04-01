@@ -165,7 +165,7 @@ const Cricket = () => {
                     src={item.imageUrl}
                     alt={item.title || 'Cricket post image'}
                     className="card-img"
-                    width={500} 
+                    width={500}
                     height={300}
                     priority={true}
                     style={{
@@ -174,8 +174,8 @@ const Cricket = () => {
                       left: 0,
                       width: '100%',
                       height: '100%',
-                      objectFit: "cover",
-                      objectPosition: 'top center'
+                      objectFit: 'cover',
+                      objectPosition: 'top center',
                     }}
                   />
                 </div>
@@ -200,9 +200,9 @@ const Cricket = () => {
                   {formatDate(new Date(item.editedDate))}
                 </p>
               )}
-              <p className="card-text">
+              <div className="card-text">
                 {renderContent(truncateContent(item.content, 110))}
-              </p>
+              </div>
 
               <a href={`/interests/cricket/${item.id}`} className="card-link">
                 Read more
