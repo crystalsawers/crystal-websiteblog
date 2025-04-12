@@ -66,7 +66,7 @@ const Navbar = () => {
           <h1 className="text-[var(--navbar-text)]">Crystal&#39;s Blog</h1>
         </Link>
 
-        <div className="hidden sm:flex sm:flex-row sm:items-center sm:space-x-4">
+        <div className="hidden md:flex md:flex-row md:items-center md:space-x-4">
           <Link
             href="/about"
             className="block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
@@ -109,7 +109,7 @@ const Navbar = () => {
         {/* Hamburger Icon for small screens */}
         <button
           onClick={toggleMenu}
-          className="flex items-center text-[var(--navbar-text)] focus:outline-none sm:hidden"
+          className="flex items-center text-[var(--navbar-text)] focus:outline-none md:hidden"
           aria-label="Toggle Menu"
         >
           {isOpen ? (
@@ -147,36 +147,36 @@ const Navbar = () => {
       </div>
 
       {isOpen && (
-        <div className="mt-2 flex flex-col items-center space-y-2 sm:hidden">
+        <div className="mt-2 flex flex-col items-center space-y-2 md:hidden">
           <Link
             href="/about"
-            className="text-md block text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+            className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
           >
             About
           </Link>
           <Link
             href="/journey"
-            className="text-md block text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+            className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
           >
             Journey
           </Link>
           <Link
             href="/interests"
-            className="text-md block text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+            className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
           >
             Interests
           </Link>
           <Link
             href="/reviews"
-            className="text-md block text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+            className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
           >
             Reviews
           </Link>
 
           <div className="flex flex-col items-center space-y-2">
-            <SubscribeButton />
-            <FeedbackButton />
-            <LogoutButton />
+            <SubscribeButton mobileMenu />
+            <FeedbackButton mobileMenu />
+            <LogoutButton mobileMenu />
             {/* Search Icon */}
             <button
               onClick={toggleSearch}

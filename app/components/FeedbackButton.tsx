@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthContext';
 
-const FeedbackButton = () => {
+const FeedbackButton = ({ mobileMenu = false }: { mobileMenu?: boolean }) => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
 
@@ -17,7 +17,14 @@ const FeedbackButton = () => {
   };
 
   return (
-    <button onClick={handleFeedback} className="feedback-button">
+    <button
+      onClick={handleFeedback}
+      className={
+        mobileMenu
+          ? 'text-md block w-full text-center text-[var(--navbar-text)] hover:text-white'
+          : 'block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base'
+      }
+    >
       Feedback
     </button>
   );

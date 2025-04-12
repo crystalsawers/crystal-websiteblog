@@ -5,7 +5,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../lib/firebaseConfig';
 import { useAuth } from './AuthContext';
 
-const LogoutButton = () => {
+const LogoutButton = ({ mobileMenu = false }: { mobileMenu?: boolean }) => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
 
@@ -27,7 +27,14 @@ const LogoutButton = () => {
   }
 
   return (
-    <button onClick={handleLogout} className="logout-button">
+    <button
+      onClick={handleLogout}
+      className={
+        mobileMenu
+          ? 'text-md block w-full text-center text-[var(--navbar-text)] hover:text-white'
+          : 'block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base'
+      }
+    >
       Logout
     </button>
   );

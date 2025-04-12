@@ -4,22 +4,27 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthContext';
 
-const SubscribeButton = () => {
+const SubscribeButton = ({ mobileMenu = false }: { mobileMenu?: boolean }) => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
 
-  // Render the Subscribe link if the user is NOT authenticated
   const handleSubscribe = () => {
-    router.push('/subscribe'); // Navigate to the subscribe page
+    router.push('/subscribe');
   };
 
-  // If the user is authenticated, render nothing
   if (isAuthenticated) {
     return null;
   }
 
   return (
-    <button onClick={handleSubscribe} className="subscribe-button">
+    <button
+      onClick={handleSubscribe}
+      className={
+        mobileMenu
+          ? 'text-md block w-full text-center text-[var(--navbar-text)] hover:text-white'
+          : 'block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base'
+      }
+    >
       Subscribe
     </button>
   );
