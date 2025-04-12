@@ -276,7 +276,10 @@ const HomePage = () => {
                 posts
                   .filter((post) => post.id === pinnedPostId)
                   .map((post) => (
-                    <div key={post.id} className="card relative mb-4">
+                    <div
+                      key={post.id}
+                      className="card relative mb-4 border-2 border-yellow-400 bg-yellow-50"
+                    >
                       {post.imageUrl && (
                         <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
                           <Image
@@ -351,13 +354,13 @@ const HomePage = () => {
                           </button>
                         </div>
                       )}
-                      <div className="absolute bottom-5 right-5 flex items-center">
-                        <span className="text-xl font-semibold text-white">
+                      <div className="absolute bottom-5 right-5 flex items-center rounded px-2 py-1">
+                        <span className="text-xl font-semibold text-black">
                           Pinned
                         </span>
                         <FontAwesomeIcon
                           icon={faThumbtack}
-                          className="ml-2 text-white"
+                          className="ml-2 text-yellow-400"
                         />
                       </div>
                     </div>

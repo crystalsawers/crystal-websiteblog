@@ -64,19 +64,19 @@ const FeedbackForm = () => {
 
   return (
     <div className="create-form mx-auto w-full max-w-lg rounded-lg bg-emerald-500 p-6 shadow-md">
-      <h2 className="create-form-title mb-4 text-2xl font-bold text-gray-100">
+      <h2 className="create-form-title mb-4 text-2xl font-bold text-black">
         Feedback Form
       </h2>
 
       {postId && postTitle && (
-        <p className="mb-5 text-center font-bold text-gray-200">
+        <p className="mb-5 text-center font-bold text-black">
           For Post: {postTitle}
         </p>
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <label
-          className="create-form-label mb-1 text-sm font-medium text-gray-200"
+          className="create-form-label mb-1 text-sm font-medium text-black"
           htmlFor="name"
         >
           Name
@@ -92,7 +92,7 @@ const FeedbackForm = () => {
         />
 
         <label
-          className="create-form-label mb-1 text-sm font-medium text-gray-200"
+          className="create-form-label mb-1 text-sm font-medium text-black"
           htmlFor="email"
         >
           Email
@@ -108,7 +108,7 @@ const FeedbackForm = () => {
         />
 
         <label
-          className="create-form-label mb-1 text-sm font-medium text-gray-200"
+          className="create-form-label mb-1 text-sm font-medium text-black"
           htmlFor="message"
         >
           Message

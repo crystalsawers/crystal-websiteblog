@@ -27,7 +27,7 @@ body {
 
 h1,
 h2 {
-  @apply text-lg font-bold text-gray-100;
+  @apply text-lg font-bold text-black;
 }
 
 main {
@@ -106,19 +106,19 @@ main nav {
 
 /* Reusable classes */
 .card {
-  @apply mb-6 rounded-lg bg-emerald-500 p-6 shadow-md;
+  @apply mb-6 rounded-lg bg-emerald-400 p-6 shadow-md;
 }
 
 .card-header {
-  @apply mb-2 text-lg font-semibold text-gray-100;
+  @apply mb-2 text-lg font-semibold text-black;
 }
 
 .card-title {
-  @apply mb-4 text-2xl font-bold text-gray-100;
+  @apply mb-4 text-2xl font-bold text-black;
 }
 
 .card-text {
-  @apply mb-4 text-sm text-gray-100;
+  @apply mb-4 text-sm text-black;
 }
 
 .card-link {
@@ -267,6 +267,12 @@ main nav {
   line-height: 1.6;
 }
 
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid black;
+  margin: 1em 0;
+}
+
 .markdown-content h1,
 .markdown-content h2,
 .markdown-content h3 {
@@ -342,7 +348,7 @@ main nav {
 .markdown-content th,
 .markdown-content td {
   padding: 0.5em;
-  border: 1px solid #ddd;
+  border: 1px solid black;
 }
 
 .markdown-content th {

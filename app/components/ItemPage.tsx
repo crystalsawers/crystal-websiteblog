@@ -327,14 +327,14 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
                 <div className="card-text">{renderContent(data.content)}</div>
 
                 {/* Reaction bar */}
-                <div className="mt-8 border-t pt-6">
+                <div className="mt-8 border-t border-black pt-6 text-black">
                   <div className="flex flex-wrap gap-4">
                     {REACTIONS.map((reaction) => (
                       <button
                         key={reaction.id}
                         onClick={() => handleReaction(reaction.id)}
                         disabled={reacting}
-                        className={`flex items-center gap-2 rounded-full border px-4 py-2 hover:bg-emerald-700 ${
+                        className={`flex items-center gap-2 rounded-full border border-black px-4 py-2 hover:bg-emerald-700 ${
                           activeReaction === reaction.id
                             ? 'border-blue-300 bg-emerald-700'
                             : ''

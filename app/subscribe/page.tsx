@@ -86,7 +86,7 @@ const SubscribePage = () => {
   return (
     <main className="mx-auto my-12 max-w-5xl px-8">
       <div className="subscribe-card rounded-lg bg-emerald-500 p-6 shadow-md">
-        <h1 className="page-title mb-4 text-gray-100">
+        <h1 className="mb-4 text-2xl font-bold text-black">
           {isSubscribing
             ? 'Subscribe to My Latest Posts'
             : 'Unsubscribe from My Posts'}
@@ -112,7 +112,7 @@ const SubscribePage = () => {
             {isSubscribing ? 'Subscribe' : 'Unsubscribe'}
           </button>
         </form>
-        <p className="mt-4 text-gray-200">
+        <p className="mt-4 text-black">
           The subscription is completely free! There is no money involved here.
           When you subscribe you only stay updated with my latest posts, unless
           you unsubscribe of course.
@@ -132,7 +132,7 @@ const SubscribePage = () => {
 
         <button
           onClick={() => setIsSubscribing(!isSubscribing)}
-          className="mt-4 text-gray-200 underline"
+          className="mt-4 text-black underline"
         >
           {isSubscribing ? 'Want to unsubscribe?' : 'Want to subscribe?'}
         </button>
