@@ -91,6 +91,12 @@ const Navbar = () => {
           >
             Reviews
           </Link>
+          <Link
+            href="/projects"
+            className="block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+          >
+            Projects
+          </Link>
 
           <div className="flex items-center space-x-4">
             <SubscribeButton />
@@ -171,6 +177,12 @@ const Navbar = () => {
             className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
           >
             Reviews
+          </Link>
+          <Link
+            href="/projects"
+            className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
+          >
+            Projects
           </Link>
 
           <div className="flex flex-col items-center space-y-2">
