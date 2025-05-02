@@ -23,7 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'next/navigation';
 
-const categories = ['cricket', 'formula1', 'music', 'lifestyle', 'misc'];
+const categories = ['cricket', 'formula1', 'music', 'lifestyle', 'misc', 'apps', 'devops', 'embedded'];
 
 interface Post {
   id: string;
@@ -38,10 +38,18 @@ interface Post {
   seriesIds?: string[];
 }
 
+const reviewCategories = ['lifestyle', 'misc'];
+const projectCategories = ['apps', 'devops', 'embedded'];
+
 const isReviewCategory = (category: string): boolean => {
-  const reviewCategories = ['lifestyle', 'misc'];
   return reviewCategories.includes(category);
 };
+
+const isProjectCategory = (category: string): boolean => {
+  return projectCategories.includes(category);
+};
+
+
 
 const fetchPosts = async (
   isAuthenticated: boolean,
@@ -329,13 +337,16 @@ const HomePage = () => {
                         {renderContent(truncateContent(post.content, 110))}
                       </div>
                       <a
-                        href={`/${
-                          isReviewCategory(post.category)
-                            ? 'reviews'
-                            : 'interests'
-                        }/${post.category}/${post.id}`}
-                        className="card-link"
-                      >
+                       href={`/${
+                         isReviewCategory(post.category)
+                           ? 'reviews'
+                           : isProjectCategory(post.category)
+                             ? 'projects'
+                             : 'interests'
+                       }/${post.category}/${post.id}`}
+                       className="card-link"
+                     >
+                     
                         Read more
                       </a>
                       {isAuthenticated && (

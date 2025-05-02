@@ -19,7 +19,11 @@ const CreatePost = () => {
     () => ['formula1', 'cricket', 'music'],
     [],
   );
-
+  const projectCategories = useMemo(
+    () => ['apps', 'devops', 'embedded'],
+    [],
+  );
+  
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
@@ -123,10 +127,13 @@ const CreatePost = () => {
         const postId = docRef.id;
 
         const categoryPrefixFromPath = reviewCategories.includes(finalCategory)
-          ? 'reviews'
+        ? 'reviews'
+        : projectCategories.includes(finalCategory)
+          ? 'projects'
           : interestCategories.includes(finalCategory)
             ? 'interests'
             : '';
+      
 
         const BASE_URL = 'https://crystalsawers.co.nz/';
         const postUrl = `${BASE_URL}${categoryPrefixFromPath}/${finalCategory}/${postId}`;
@@ -205,6 +212,9 @@ const CreatePost = () => {
               <option value="music">Music</option>
               <option value="lifestyle">Lifestyle</option>
               <option value="misc">Miscellaneous</option>
+              <option value="apps">Applications and Data</option>
+              <option value="devops">Operations, DevOps, and Security</option>
+              <option value="embedded">Embedded Systems</option>
             </select>
           </div>
 
