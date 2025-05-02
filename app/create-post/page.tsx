@@ -19,11 +19,8 @@ const CreatePost = () => {
     () => ['formula1', 'cricket', 'music'],
     [],
   );
-  const projectCategories = useMemo(
-    () => ['apps', 'devops', 'embedded'],
-    [],
-  );
-  
+  const projectCategories = useMemo(() => ['apps', 'devops', 'embedded'], []);
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
@@ -127,13 +124,12 @@ const CreatePost = () => {
         const postId = docRef.id;
 
         const categoryPrefixFromPath = reviewCategories.includes(finalCategory)
-        ? 'reviews'
-        : projectCategories.includes(finalCategory)
-          ? 'projects'
-          : interestCategories.includes(finalCategory)
-            ? 'interests'
-            : '';
-      
+          ? 'reviews'
+          : projectCategories.includes(finalCategory)
+            ? 'projects'
+            : interestCategories.includes(finalCategory)
+              ? 'interests'
+              : '';
 
         const BASE_URL = 'https://crystalsawers.co.nz/';
         const postUrl = `${BASE_URL}${categoryPrefixFromPath}/${finalCategory}/${postId}`;

@@ -126,7 +126,9 @@ const DevOps = () => {
 
   if (loading)
     return (
-      <p className="text-center text-custom-green">Loading Applications and Data posts...</p>
+      <p className="text-center text-custom-green">
+        Loading Applications and Data posts...
+      </p>
     );
   if (error) return <p>{error}</p>;
 
@@ -151,7 +153,9 @@ const DevOps = () => {
       </div>
 
       {data.length === 0 ? (
-        <p className="text-center text-custom-green">No Applications and Data posts yet.</p>
+        <p className="text-center text-custom-green">
+          No Applications and Data posts yet.
+        </p>
       ) : (
         data.map((item) => {
           if (item.isDraft && !isAuthenticated) return null;

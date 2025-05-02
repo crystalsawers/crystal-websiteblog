@@ -23,7 +23,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'next/navigation';
 
-const categories = ['cricket', 'formula1', 'music', 'lifestyle', 'misc', 'apps', 'devops', 'embedded'];
+const categories = [
+  'cricket',
+  'formula1',
+  'music',
+  'lifestyle',
+  'misc',
+  'apps',
+  'devops',
+  'embedded',
+];
 
 interface Post {
   id: string;
@@ -48,8 +57,6 @@ const isReviewCategory = (category: string): boolean => {
 const isProjectCategory = (category: string): boolean => {
   return projectCategories.includes(category);
 };
-
-
 
 const fetchPosts = async (
   isAuthenticated: boolean,
@@ -337,16 +344,15 @@ const HomePage = () => {
                         {renderContent(truncateContent(post.content, 110))}
                       </div>
                       <a
-                       href={`/${
-                         isReviewCategory(post.category)
-                           ? 'reviews'
-                           : isProjectCategory(post.category)
-                             ? 'projects'
-                             : 'interests'
-                       }/${post.category}/${post.id}`}
-                       className="card-link"
-                     >
-                     
+                        href={`/${
+                          isReviewCategory(post.category)
+                            ? 'reviews'
+                            : isProjectCategory(post.category)
+                              ? 'projects'
+                              : 'interests'
+                        }/${post.category}/${post.id}`}
+                        className="card-link"
+                      >
                         Read more
                       </a>
                       {isAuthenticated && (
@@ -382,10 +388,10 @@ const HomePage = () => {
                 .filter((post) => post.id !== pinnedPostId)
                 .map((post) => {
                   const section = isReviewCategory(post.category)
-                  ? 'reviews'
-                  : isProjectCategory(post.category)
-                  ? 'projects'
-                  : 'interests';
+                    ? 'reviews'
+                    : isProjectCategory(post.category)
+                      ? 'projects'
+                      : 'interests';
                   return (
                     <div key={post.id} className="card mb-4">
                       {post.imageUrl && (

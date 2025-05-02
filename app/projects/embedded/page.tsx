@@ -151,7 +151,9 @@ const Embedded = () => {
       </div>
 
       {data.length === 0 ? (
-        <p className="text-center text-custom-green">No Embedded Systems posts yet.</p>
+        <p className="text-center text-custom-green">
+          No Embedded Systems posts yet.
+        </p>
       ) : (
         data.map((item) => {
           if (item.isDraft && !isAuthenticated) return null;
