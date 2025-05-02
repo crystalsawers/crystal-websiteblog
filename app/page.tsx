@@ -382,8 +382,10 @@ const HomePage = () => {
                 .filter((post) => post.id !== pinnedPostId)
                 .map((post) => {
                   const section = isReviewCategory(post.category)
-                    ? 'reviews'
-                    : 'interests';
+                  ? 'reviews'
+                  : isProjectCategory(post.category)
+                  ? 'projects'
+                  : 'interests';
                   return (
                     <div key={post.id} className="card mb-4">
                       {post.imageUrl && (
