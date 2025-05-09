@@ -237,7 +237,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   if (!data) return <NotFound />;
 
   return (
-    <div className="lg:mx-auto lg:max-w-screen-lg lg:p-8">
+    <div className="responsive-container">
       <div className="mb-4 flex justify-between">
         <button
           onClick={handleBack}
@@ -302,7 +302,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
                   style={{
                     maxWidth: '800px',
                     margin: '0 auto',
-                    maxHeight: '400px',
+                    maxHeight: '500px',
                     overflow: 'hidden',
                   }}
                 >
@@ -319,7 +319,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
 
               <div>
                 {data.title && (
-                  <h1 className="card-title pt-6">{data.title}</h1>
+                  <h1 className="card-title pt-6 text-center">{data.title}</h1>
                 )}
                 {data.isDraft && (
                   <span className="text-bold text-red-500">Draft</span>
