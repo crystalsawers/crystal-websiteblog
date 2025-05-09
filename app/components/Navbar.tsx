@@ -52,7 +52,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative flex flex-col items-center p-4">
+    <nav className="relative mx-auto flex w-full max-w-screen-2xl flex-col items-center p-4">
       <div className="flex w-full items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Image
