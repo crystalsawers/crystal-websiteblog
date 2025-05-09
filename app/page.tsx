@@ -233,7 +233,7 @@ const HomePage = () => {
   /* RENDER */
   return (
     <div>
-      <div className="mx-auto max-w-4xl">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12"> 
         <h2 className="page-title mb-6 text-center">Latest Posts</h2>
 
         {/* Series Filter */}
@@ -277,7 +277,7 @@ const HomePage = () => {
           </div>
         )}
 
-        <div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* No Posts Yet */}
           {posts.length === 0 && selectedSeries ? (
             <p className="text-center text-xl text-custom-green">
