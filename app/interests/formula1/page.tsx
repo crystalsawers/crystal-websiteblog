@@ -160,82 +160,85 @@ const Formula1 = () => {
         <p>No Formula 1 posts yet</p>
       ) : (
         <div className="card-grid">
-        {data.map((item) => {
-          // Only show draft posts if the user is authenticated
-          if (item.isDraft && !isAuthenticated) return null;
+          {data.map((item) => {
+            // Only show draft posts if the user is authenticated
+            if (item.isDraft && !isAuthenticated) return null;
 
-          return (
-            <div key={item.id} className="card mb-4">
-              {item.imageUrl && (
-                <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.title || 'Formula 1 post image'}
-                    width={500}
-                    height={300}
-                    priority={true}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      objectPosition: specificPostIds.includes(item.id)
-                        ? 'center'
-                        : 'top center',
-                    }}
-                    className="card-img"
-                  />
+            return (
+              <div key={item.id} className="card mb-4">
+                {item.imageUrl && (
+                  <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.title || 'Formula 1 post image'}
+                      width={500}
+                      height={300}
+                      priority={true}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: specificPostIds.includes(item.id)
+                          ? 'center'
+                          : 'top center',
+                      }}
+                      className="card-img"
+                    />
+                  </div>
+                )}
+                {item.title && (
+                  <div className={item.imageUrl ? 'pt-4' : ''}>
+                    <h2 className="card-title">{item.title}</h2>
+                    {/* Indicate if the post is a draft */}
+                    {item.isDraft && (
+                      <span className="text-bold text-red-500">Draft</span>
+                    )}
+                  </div>
+                )}
+                {item.date && (
+                  <p className="card-text">
+                    <strong>Posted:</strong> {formatDate(new Date(item.date))}
+                  </p>
+                )}
+                {item.editedDate && (
+                  <p className="card-text">
+                    <strong>Edited:</strong>{' '}
+                    {formatDate(new Date(item.editedDate))}
+                  </p>
+                )}
+                <div className="card-text">
+                  {renderContent(truncateContent(item.content, 110))}
                 </div>
-              )}
-              {item.title && (
-                <div className={item.imageUrl ? 'pt-4' : ''}>
-                  <h2 className="card-title">{item.title}</h2>
-                  {/* Indicate if the post is a draft */}
-                  {item.isDraft && (
-                    <span className="text-bold text-red-500">Draft</span>
-                  )}
-                </div>
-              )}
-              {item.date && (
-                <p className="card-text">
-                  <strong>Posted:</strong> {formatDate(new Date(item.date))}
-                </p>
-              )}
-              {item.editedDate && (
-                <p className="card-text">
-                  <strong>Edited:</strong>{' '}
-                  {formatDate(new Date(item.editedDate))}
-                </p>
-              )}
-              <div className="card-text">
-                {renderContent(truncateContent(item.content, 110))}
+
+                <a
+                  href={`/interests/formula1/${item.id}`}
+                  className="card-link"
+                >
+                  Read more
+                </a>
+
+                {isAuthenticated && (
+                  <div className="mt-2 flex space-x-2">
+                    <button
+                      onClick={() => handleEdit(item.id)}
+                      className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
-
-              <a href={`/interests/formula1/${item.id}`} className="card-link">
-                Read more
-              </a>
-
-              {isAuthenticated && (
-                <div className="mt-2 flex space-x-2">
-                  <button
-                    onClick={() => handleEdit(item.id)}
-                    className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item.id)}
-                    className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-            </div>
-          );
-        })}
+            );
+          })}
         </div>
       )}
 

@@ -155,12 +155,10 @@ const DevOps = () => {
           No Operations, DevOps, and Security posts yet.
         </p>
       ) : (
-
         <div>
-
           {data.map((item) => {
             if (item.isDraft && !isAuthenticated) return null;
-  
+
             return (
               <div key={item.id} className="card">
                 {item.imageUrl && (

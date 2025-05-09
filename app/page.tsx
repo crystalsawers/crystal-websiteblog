@@ -233,7 +233,7 @@ const HomePage = () => {
   /* RENDER */
   return (
     <div>
-      <div className="responsive-container"> 
+      <div className="responsive-container">
         <h2 className="page-title mb-6 text-center">Latest Posts</h2>
 
         {/* Series Filter */}
