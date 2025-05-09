@@ -95,12 +95,11 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
     fetchData();
   }, [id, collectionName]);
 
-
   useEffect(() => {
-  if (data?.title) {
-    document.title = data.title;
-  }
-}, [data?.title]);
+    if (data?.title) {
+      document.title = data.title;
+    }
+  }, [data?.title]);
 
   // Set up real-time reaction listeners
   useEffect(() => {
