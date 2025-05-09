@@ -131,7 +131,7 @@ const DevOps = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="lg:mx-auto lg:max-w-screen-lg lg:p-8">
+    <div className="responsive-container">
       <h1 className="page-title">Operations, DevOps, and Security</h1>
       <div className="mb-4 flex justify-between">
         <button
@@ -155,77 +155,81 @@ const DevOps = () => {
           No Operations, DevOps, and Security posts yet.
         </p>
       ) : (
-        data.map((item) => {
-          if (item.isDraft && !isAuthenticated) return null;
 
-          return (
-            <div key={item.id} className="card">
-              {item.imageUrl && (
-                <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.title || 'DevOps post image'}
-                    className="card-img"
-                    width={500}
-                    height={300}
-                    priority={true}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      objectPosition: 'top center',
-                    }}
-                  />
+        <div>
+
+          {data.map((item) => {
+            if (item.isDraft && !isAuthenticated) return null;
+  
+            return (
+              <div key={item.id} className="card">
+                {item.imageUrl && (
+                  <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.title || 'DevOps post image'}
+                      className="card-img"
+                      width={500}
+                      height={300}
+                      priority={true}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'top center',
+                      }}
+                    />
+                  </div>
+                )}
+                {item.title && (
+                  <div className={item.imageUrl ? 'pt-4' : ''}>
+                    <h2 className="card-title">{item.title}</h2>
+                    {/* Indicate if the post is a draft */}
+                    {item.isDraft && (
+                      <span className="text-bold text-red-500">Draft</span>
+                    )}
+                  </div>
+                )}
+                {item.date && (
+                  <p className="card-text">
+                    <strong>Posted:</strong> {formatDate(new Date(item.date))}
+                  </p>
+                )}
+                {item.editedDate && (
+                  <p className="card-text">
+                    <strong>Edited:</strong>{' '}
+                    {formatDate(new Date(item.editedDate))}
+                  </p>
+                )}
+                <div className="card-text">
+                  {renderContent(truncateContent(item.content, 110))}
                 </div>
-              )}
-              {item.title && (
-                <div className={item.imageUrl ? 'pt-4' : ''}>
-                  <h2 className="card-title">{item.title}</h2>
-                  {/* Indicate if the post is a draft */}
-                  {item.isDraft && (
-                    <span className="text-bold text-red-500">Draft</span>
-                  )}
-                </div>
-              )}
-              {item.date && (
-                <p className="card-text">
-                  <strong>Posted:</strong> {formatDate(new Date(item.date))}
-                </p>
-              )}
-              {item.editedDate && (
-                <p className="card-text">
-                  <strong>Edited:</strong>{' '}
-                  {formatDate(new Date(item.editedDate))}
-                </p>
-              )}
-              <div className="card-text">
-                {renderContent(truncateContent(item.content, 110))}
+                <a href={`/projects/devops/${item.id}`} className="card-link">
+                  Read more
+                </a>
+                {isAuthenticated && (
+                  <div className="mt-2 flex space-x-2">
+                    <button
+                      onClick={() => handleEdit(item.id)}
+                      className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
-              <a href={`/projects/devops/${item.id}`} className="card-link">
-                Read more
-              </a>
-              {isAuthenticated && (
-                <div className="mt-2 flex space-x-2">
-                  <button
-                    onClick={() => handleEdit(item.id)}
-                    className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item.id)}
-                    className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-            </div>
-          );
-        })
+            );
+          })}
+        </div>
       )}
 
       {/* Pagination Controls */}

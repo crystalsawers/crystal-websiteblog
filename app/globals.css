@@ -109,6 +109,10 @@ main nav {
   @apply mb-6 rounded-lg bg-emerald-400 p-6 shadow-md;
 }
 
+.card-grid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-4
+}
+
 .card-header {
   @apply mb-2 text-lg font-semibold text-black;
 }
@@ -122,7 +126,7 @@ main nav {
 }
 
 .card-link {
-  @apply text-lg text-gray-800 hover:underline !important;
+  @apply text-xl font-bold text-gray-800 hover:underline !important;
 }
 
 .page-title {

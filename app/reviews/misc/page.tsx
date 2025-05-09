@@ -128,7 +128,7 @@ const Miscellaneous = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="lg:mx-auto lg:max-w-screen-lg lg:p-8">
+    <div className="responsive-container">
       <h1 className="page-title">Miscellaneous</h1>
       <div className="mb-4 flex justify-between">
         <button
@@ -150,7 +150,8 @@ const Miscellaneous = () => {
       {data.length === 0 ? (
         <p>No Miscellaneous posts yet</p>
       ) : (
-        data.map((item) => {
+        <div className="card-grid">
+        {data.map((item) => {
           if (item.isDraft && !isAuthenticated) return null;
 
           return (
@@ -218,7 +219,8 @@ const Miscellaneous = () => {
               )}
             </div>
           );
-        })
+        })}
+        </div>
       )}
 
       {/* Pagination Controls */}

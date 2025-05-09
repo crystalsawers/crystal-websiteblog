@@ -137,7 +137,7 @@ const Formula1 = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="lg:mx-auto lg:max-w-screen-lg lg:p-8">
+    <div className="responsive-container">
       <h1 className="page-title">Formula 1</h1>
       <div className="mb-4 flex justify-between">
         <button
@@ -159,7 +159,8 @@ const Formula1 = () => {
       {data.length === 0 ? (
         <p>No Formula 1 posts yet</p>
       ) : (
-        data.map((item) => {
+        <div className="card-grid">
+        {data.map((item) => {
           // Only show draft posts if the user is authenticated
           if (item.isDraft && !isAuthenticated) return null;
 
@@ -234,7 +235,8 @@ const Formula1 = () => {
               )}
             </div>
           );
-        })
+        })}
+        </div>
       )}
 
       {/* Pagination Controls */}

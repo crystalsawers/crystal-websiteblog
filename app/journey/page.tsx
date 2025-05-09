@@ -69,7 +69,7 @@ const Journey = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="lg:mx-auto lg:max-w-screen-lg lg:p-8">
+    <div className="responsive-container">
       <h1 className="page-title">My Journey</h1>
       {data.length === 0 ? (
         <p>No Journey data available</p>

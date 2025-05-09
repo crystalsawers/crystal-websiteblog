@@ -135,7 +135,7 @@ const Lifestyle = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="lg:mx-auto lg:max-w-screen-lg lg:p-8">
+    <div className="responsive-container">
       <h1 className="page-title">Lifestyle</h1>
       <div className="mb-4 flex justify-between">
         <button
@@ -157,7 +157,8 @@ const Lifestyle = () => {
       {data.length === 0 ? (
         <p>No Lifestyle posts yet</p>
       ) : (
-        data.map((item) => {
+          <div className="card-grid">
+        {data.map((item) => {
           if (item.isDraft && !isAuthenticated) return null;
 
           return (
@@ -223,7 +224,8 @@ const Lifestyle = () => {
               )}
             </div>
           );
-        })
+        })}
+        </div>
       )}
 
       {/* Pagination Controls */}

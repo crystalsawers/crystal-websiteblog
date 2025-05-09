@@ -277,7 +277,7 @@ const HomePage = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="card-grid">
           {/* No Posts Yet */}
           {posts.length === 0 && selectedSeries ? (
             <p className="text-center text-xl text-custom-green">
