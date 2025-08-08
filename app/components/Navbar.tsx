@@ -66,7 +66,7 @@ const Navbar = () => {
           <h1 className="text-[var(--navbar-text)]">Crystal&#39;s Blog</h1>
         </Link>
 
-        <div className="hidden md:flex md:flex-row md:items-center md:space-x-4">
+        <div className="hidden lg:flex lg:flex-row lg:items-center lg:space-x-4">
           <Link
             href="/about"
             className="block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
@@ -115,7 +115,7 @@ const Navbar = () => {
         {/* Hamburger Icon for small screens */}
         <button
           onClick={toggleMenu}
-          className="flex items-center text-[var(--navbar-text)] focus:outline-none md:hidden"
+          className="flex items-center text-[var(--navbar-text)] focus:outline-none lg:hidden"
           aria-label="Toggle Menu"
         >
           {isOpen ? (
@@ -153,7 +153,7 @@ const Navbar = () => {
       </div>
 
       {isOpen && (
-        <div className="mt-2 flex flex-col items-center space-y-2 md:hidden">
+        <div className="mt-2 flex flex-col items-center space-y-2 lg:hidden">
           <Link
             href="/about"
             className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"

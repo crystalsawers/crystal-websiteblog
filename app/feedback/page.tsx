@@ -65,7 +65,7 @@ const FeedbackForm = () => {
   return (
     <div className="create-form mx-auto w-full max-w-lg rounded-lg bg-emerald-500 p-6 shadow-md">
       <h2 className="create-form-title mb-4 text-2xl font-bold text-black">
-        Feedback Form
+        Comment
       </h2>
 
       {postId && postTitle && (
