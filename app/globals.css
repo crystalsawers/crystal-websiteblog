@@ -352,18 +352,31 @@ main nav {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 1em;
+  table-layout: fixed; /* force equal-width columns */
+  word-wrap: break-word; /* allow text to break inside cells */
 }
 
 .markdown-content th,
 .markdown-content td {
   padding: 0.5em;
   border: 1px solid black;
+  font-size: 0.85rem; /* slightly smaller text on small screens */
 }
 
 .markdown-content th {
   @apply bg-emerald-500;
 }
 
+@media (max-width: 600px) {
+  .markdown-content table {
+    font-size: 0.8rem; /* scale down more on small screens */
+  }
+
+  .markdown-content th,
+  .markdown-content td {
+    padding: 0.4em; /* tighter padding */
+  }
+}
 .markdown-content a {
   text-decoration: underline;
 }
