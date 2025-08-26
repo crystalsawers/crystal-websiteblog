@@ -14,6 +14,10 @@ import { useRouter } from 'next/navigation';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchVisible, setSearchVisible] = useState(false);
+  const [interestsOpen, setInterestsOpen] = useState(false);
+  const [reviewsOpen, setReviewsOpen] = useState(false);
+  const [projectsOpen, setProjectsOpen] = useState(false);
+
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -79,24 +83,81 @@ const Navbar = () => {
           >
             Journey
           </Link>
-          <Link
-            href="/interests"
-            className="block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
-          >
-            Interests
-          </Link>
-          <Link
-            href="/reviews"
-            className="block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
-          >
-            Reviews
-          </Link>
-          <Link
-            href="/projects"
-            className="block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
-          >
-            Projects
-          </Link>
+
+          {/* Interests Dropdown */}
+          <div className="group relative">
+            <button className="block text-sm text-[var(--navbar-text)] hover:text-white md:text-base">
+              Interests
+            </button>
+            <div className="invisible absolute left-0 top-full z-50 flex w-48 flex-col rounded-lg bg-[var(--navbar-bg)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
+              <Link
+                href="/interests/cricket"
+                className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
+              >
+                Cricket
+              </Link>
+              <Link
+                href="/interests/formula1"
+                className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
+              >
+                Formula 1
+              </Link>
+              <Link
+                href="/interests/music"
+                className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
+              >
+                Music
+              </Link>
+            </div>
+          </div>
+
+          {/* Reviews Dropdown */}
+          <div className="group relative">
+            <button className="block text-sm text-[var(--navbar-text)] hover:text-white md:text-base">
+              Reviews
+            </button>
+            <div className="invisible absolute left-0 top-full z-50 flex w-48 flex-col rounded-lg bg-[var(--navbar-bg)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
+              <Link
+                href="/reviews/lifestyle"
+                className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
+              >
+                Lifestyle
+              </Link>
+              <Link
+                href="/reviews/misc"
+                className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
+              >
+                Misc
+              </Link>
+            </div>
+          </div>
+
+          {/* Projects Dropdown */}
+          <div className="group relative">
+            <button className="block text-sm text-[var(--navbar-text)] hover:text-white md:text-base">
+              Projects
+            </button>
+            <div className="invisible absolute left-0 top-full z-50 flex w-48 flex-col rounded-lg bg-[var(--navbar-bg)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
+              <Link
+                href="/projects/embedded"
+                className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
+              >
+                Embedded
+              </Link>
+              <Link
+                href="/projects/devops"
+                className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
+              >
+                DevOps
+              </Link>
+              <Link
+                href="/projects/apps"
+                className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
+              >
+                Apps
+              </Link>
+            </div>
+          </div>
 
           <div className="flex items-center space-x-4">
             <SubscribeButton />
@@ -166,24 +227,96 @@ const Navbar = () => {
           >
             Journey
           </Link>
-          <Link
-            href="/interests"
-            className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
-          >
-            Interests
-          </Link>
-          <Link
-            href="/reviews"
-            className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
-          >
-            Reviews
-          </Link>
-          <Link
-            href="/projects"
-            className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
-          >
-            Projects
-          </Link>
+
+          {/* Interests Dropdown */}
+          <div className="flex flex-col items-center">
+            <button
+              onClick={() => setInterestsOpen(!interestsOpen)}
+              className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
+            >
+              Interests
+            </button>
+            {interestsOpen && (
+              <div className="mt-1 flex flex-col items-center space-y-2">
+                <Link
+                  href="/interests/cricket"
+                  className="block text-sm text-[var(--navbar-text)] hover:text-white"
+                >
+                  Cricket
+                </Link>
+                <Link
+                  href="/interests/formula1"
+                  className="block text-sm text-[var(--navbar-text)] hover:text-white"
+                >
+                  Formula 1
+                </Link>
+                <Link
+                  href="/interests/music"
+                  className="block text-sm text-[var(--navbar-text)] hover:text-white"
+                >
+                  Music
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Reviews Dropdown */}
+          <div className="flex flex-col items-center">
+            <button
+              onClick={() => setReviewsOpen(!reviewsOpen)}
+              className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
+            >
+              Reviews
+            </button>
+            {reviewsOpen && (
+              <div className="mt-1 flex flex-col items-center space-y-2">
+                <Link
+                  href="/reviews/lifestyle"
+                  className="block text-sm text-[var(--navbar-text)] hover:text-white"
+                >
+                  Lifestyle
+                </Link>
+                <Link
+                  href="/reviews/misc"
+                  className="block text-sm text-[var(--navbar-text)] hover:text-white"
+                >
+                  Misc
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Projects Dropdown */}
+          <div className="flex flex-col items-center">
+            <button
+              onClick={() => setProjectsOpen(!projectsOpen)}
+              className="text-md block text-[var(--navbar-text)] hover:text-white md:text-base"
+            >
+              Projects
+            </button>
+            {projectsOpen && (
+              <div className="mt-1 flex flex-col items-center space-y-2">
+                <Link
+                  href="/projects/embedded"
+                  className="block text-sm text-[var(--navbar-text)] hover:text-white"
+                >
+                  Embedded
+                </Link>
+                <Link
+                  href="/projects/devops"
+                  className="block text-sm text-[var(--navbar-text)] hover:text-white"
+                >
+                  DevOps
+                </Link>
+                <Link
+                  href="/projects/apps"
+                  className="block text-sm text-[var(--navbar-text)] hover:text-white"
+                >
+                  Apps
+                </Link>
+              </div>
+            )}
+          </div>
 
           <div className="flex flex-col items-center space-y-2">
             <SubscribeButton mobileMenu />
