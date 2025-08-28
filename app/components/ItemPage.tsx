@@ -306,19 +306,19 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
                 <div
                   className="relative mb-4 w-full"
                   style={{
-                    maxWidth: '800px',
+                    maxWidth: '1500px',
                     margin: '0 auto',
-                    maxHeight: '500px',
+                    maxHeight: '750px',
                     overflow: 'hidden',
                   }}
                 >
                   <Image
                     src={data.imageUrl}
                     alt={data.title || 'Image'}
-                    width={800}
-                    height={400}
+                    width={1500}
+                    height={750}
                     priority={true}
-                    style={{ maxHeight: '600px', objectFit: 'cover' }}
+                    style={{ maxHeight: '750px', objectFit: 'cover' }}
                   />
                 </div>
               )}
