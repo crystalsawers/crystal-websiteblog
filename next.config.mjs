@@ -7,7 +7,6 @@ const nextConfig = {
         hostname: 'firebasestorage.googleapis.com',
       },
     ],
-    quality: 75, // default for all images
   },
 };
 
