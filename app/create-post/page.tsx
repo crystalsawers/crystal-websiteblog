@@ -131,7 +131,7 @@ const CreatePost = () => {
               ? 'interests'
               : '';
 
-        const BASE_URL = 'https://crystalsawers.co.nz/';
+        const BASE_URL = 'https://loglapandover.co.nz/'; // new URL
         const postUrl = `${BASE_URL}${categoryPrefixFromPath}/${finalCategory}/${postId}`;
 
         // Send all subscriber emails in one API call
