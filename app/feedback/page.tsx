@@ -63,13 +63,13 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div className="create-form mx-auto w-full max-w-lg rounded-lg bg-emerald-500 p-6 shadow-md">
-      <h2 className="create-form-title mb-4 text-2xl font-bold text-black">
+    <div className="create-form mx-auto w-full rounded-lg bg-emerald-500 p-6 shadow-md min-h-[700px]">
+      <h2 className="create-form-title mb-4 text-2xl font-bold text-black text-center">
         Comment
       </h2>
 
       {postId && postTitle && (
-        <p className="mb-5 text-center font-bold text-black">
+        <p className="mb-5 text-center font-bold text-black text-xl">
           For Post: {postTitle}
         </p>
       )}
@@ -119,12 +119,13 @@ const FeedbackForm = () => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Your feedback"
           required
-          className="create-form-textarea h-32 w-full rounded-lg border border-gray-300 px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+          className="create-form-textarea min-h-[300px] w-full rounded-lg border border-gray-300 px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm resize-y"
         />
 
         <button type="submit" className="login-card-button">
           Send Feedback
         </button>
+
       </form>
       {status && (
         <p
