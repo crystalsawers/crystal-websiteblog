@@ -31,7 +31,7 @@ const sendEmailNotification = async (
       },
       body: JSON.stringify({
         postTitle: `New Subscriber: ${subscriberName} (${subscriberEmail})`,
-        postUrl: 'https://crystal-websiteblog.vercel.app/',
+        postUrl: 'https://loglapandover.co.nz/',
         notificationEmail: subscriberEmail,
       }),
     });
