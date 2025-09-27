@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import Logo from './cs-high-resolution-logo-transparent.png'; // personal logo from logo.com
+import Logo from './log-lap-and-over-high-resolution-logo-transparent.png'; // new blog logo from logo.com
 import LogoutButton from './LogoutButton';
 import SubscribeButton from './SubscribeButton';
 import FeedbackButton from './FeedbackButton';
@@ -61,12 +61,12 @@ const Navbar = () => {
         <Link href="/" className="flex items-center space-x-2">
           <Image
             src={Logo}
-            alt="Crystal Sawers logo"
-            width={70}
+            alt="Blog logo"
+            width={60}
             placeholder="blur"
             priority={true}
           />
-          <h1 className="text-[var(--navbar-text)]">Crystal&#39;s Blog</h1>
+          <h1 className="text-[var(--navbar-text)] p-6">Log, Lap, and Over</h1>
         </Link>
 
         <div className="hidden lg:flex lg:flex-row lg:items-center lg:space-x-4">
