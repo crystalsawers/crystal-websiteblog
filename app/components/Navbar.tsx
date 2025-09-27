@@ -66,7 +66,7 @@ const Navbar = () => {
             placeholder="blur"
             priority={true}
           />
-          <h1 className="text-[var(--navbar-text)] p-6">Log, Lap, and Over</h1>
+          <h1 className="p-6 text-[var(--navbar-text)]">Log, Lap, and Over</h1>
         </Link>
 
         <div className="hidden lg:flex lg:flex-row lg:items-center lg:space-x-4">

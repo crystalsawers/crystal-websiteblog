@@ -66,7 +66,9 @@ const About = () => {
             <p className="card-text">{item.personal_story}</p>
             <h2 className="card-header">Contact Info</h2>
             <p className="card-text">
-              <span className="normal-text font-semibold">Email for Blog-related Enquiries:</span>{' '}
+              <span className="normal-text font-semibold">
+                Email for Blog-related Enquiries:
+              </span>{' '}
               <a
                 href={`mailto:${item.contact_info.blog_email}`}
                 className="text-sm text-gray-800 hover:underline"
