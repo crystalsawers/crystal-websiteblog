@@ -6,13 +6,13 @@
 
 _1st Deployment as of 15 September 2024:_ [Visit the Blog](https://crystal-websiteblog.vercel.app/)
 
-_Domain name change as of 5 November 2024: https://crystalsawers.co.nz/_
+_Domain name change as of 27 September 2025: https://loglapandover.co.nz/_
 
-**Note:** the `https://crystal-websiteblog.vercel.app/` url will still work but it will redirect to the new one
+**Note:** the `https://crystal-websiteblog.vercel.app/` url will still work but it will redirect to the new one, but the `https://crystalsawers.co.nz/` one will NOT work.
 
 ## Table of Contents
 
-- [Crystal's Blog (New Version)](#crystals-blog-new-version)
+- [Log, Lap, and Over (formerly Crystal's Blog)](#crystals-blog-new-version)
   - [Live Demo](#live-demo)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
@@ -78,6 +78,6 @@ If you are seeing my site thinking that it would be straight forward to be able 
 **Crystal Sawers**
 
 - Email: [crystalsawers39@gmail.com](mailto:crystalsawers39@gmail.com)
-- Email for ONLY regarding this blog: [crystal.websiteblog@gmail.com](mailto:crystal.websiteblog@gmail.com)
+- Blog email (for any blog-related enquiries): [loglapandover@gmail.com](mailto:loglapandover@gmail.com)
 - GitHub: [crystalsawers](https://github.com/crystalsawers)
 - LinkedIn: [Crystal Sawers](https://www.linkedin.com/in/crystal-sawers-33b643259/)
