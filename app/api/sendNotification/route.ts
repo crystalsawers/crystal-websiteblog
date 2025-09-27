@@ -55,7 +55,7 @@ export async function POST(request: Request) {
       from: process.env.NEXT_PUBLIC_EMAIL_USER,
       to: newSubscriberEmail, // Send to the new subscriber's email
       subject: `Thank you for subscribing to my blog!`,
-      text: `Thank you for subscribing! Here is the link to our latest post: ${postUrl}`,
+      text: `Thank you for subscribing! Here is the link to my latest post after you've subscribed: ${postUrl}`,
     };
 
     try {
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
         text: `Check out my new post here: ${postUrl}`,
       };
 
-      // Send a single email to all in BCC
+      // Send a single email to all subs in BCC, this is so no emails are exposed
       await transporter.sendMail(mailOptions);
       console.log(`Email sent successfully to all subscribers.`);
 
