@@ -232,27 +232,44 @@ const DevOps = () => {
 
       {/* Pagination Controls */}
       <div className="mt-6 text-center">
-        {/* Prev Button */}
         <button
-          className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
-          onClick={() => goToPage(Math.max(currentPage - 1, 1))} // Use goToPage for "Prev"
-          disabled={currentPage === 1} // Disabled on first page
+          className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
+            currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+          }`}
+          onClick={() => goToPage(1)}
+          disabled={currentPage === 1}
+        >
+          First
+        </button>
+        <button
+          className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
+            currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+          }`}
+          onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+          disabled={currentPage === 1}
         >
           Prev
         </button>
-
-        {/* Page Number Display (Page X of Y) */}
         <span className="mx-2 text-lg">
           Page {currentPage} of {totalPages}
         </span>
-
-        {/* Next Button */}
         <button
-          className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
-          onClick={() => goToPage(Math.min(currentPage + 1, totalPages))} // Use goToPage for "Next"
-          disabled={currentPage === totalPages} // Disabled on last page
+          className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
+            currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
+          }`}
+          onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
+          disabled={currentPage === totalPages}
         >
           Next
+        </button>
+        <button
+          className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
+            currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
+          }`}
+          onClick={() => goToPage(totalPages)}
+          disabled={currentPage === totalPages}
+        >
+          Last
         </button>
       </div>
     </div>

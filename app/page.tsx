@@ -478,6 +478,15 @@ const HomePage = () => {
               className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
                 currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
               }`}
+              onClick={() => goToPage(1)}
+              disabled={currentPage === 1}
+            >
+              First
+            </button>
+            <button
+              className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
+                currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+              }`}
               onClick={() => goToPage(Math.max(currentPage - 1, 1))}
               disabled={currentPage === 1}
             >
@@ -496,6 +505,17 @@ const HomePage = () => {
               disabled={currentPage === totalPages}
             >
               Next
+            </button>
+            <button
+              className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
+                currentPage === totalPages
+                  ? 'cursor-not-allowed opacity-50'
+                  : ''
+              }`}
+              onClick={() => goToPage(totalPages)}
+              disabled={currentPage === totalPages}
+            >
+              Last
             </button>
           </div>
         )}
