@@ -96,7 +96,7 @@ export async function POST(request: Request) {
         from: process.env.NEXT_PUBLIC_EMAIL_USER,
         bcc: uniqueEmails.join(','), // Use BCC to send one email without exposing addresses
         subject: `${postTitle}`,
-        text: `Check out my new post here: ${postUrl}`,
+        text: `Check out my new post here: ${postUrl}, The name Crystal's Blog has now been changed to Log, Lap and Over, go to https://loglapandover.co.nz/, but it's still the same blog.`,
       };
 
       // Send a single email to all subs in BCC, this is so no emails are exposed
