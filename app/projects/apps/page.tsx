@@ -127,14 +127,14 @@ const DevOps = () => {
   if (loading)
     return (
       <p className="text-center text-custom-green">
-        Loading Applications and Data posts...
+        Loading Apps, Software, and Other IT posts...
       </p>
     );
   if (error) return <p>{error}</p>;
 
   return (
     <div className="responsive-container">
-      <h1 className="page-title">Applications and Data</h1>
+      <h1 className="page-title">Apps, Software, and Other IT</h1>
       <div className="mb-4 flex justify-between">
         <button
           onClick={handleBack}
@@ -154,7 +154,7 @@ const DevOps = () => {
 
       {data.length === 0 ? (
         <p className="text-center text-custom-green">
-          No Applications and Data posts yet.
+          No Apps, Software, and Other IT posts yet.
         </p>
       ) : (
         <div className="card-grid">

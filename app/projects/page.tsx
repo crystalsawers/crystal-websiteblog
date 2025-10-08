@@ -19,7 +19,7 @@ const Projects = () => {
           </li>
           <li className="mb-2">
             <Link href="/projects/apps" className="card-link">
-              Applications and Data
+              Apps, Software, and Other IT
             </Link>
           </li>
         </ul>

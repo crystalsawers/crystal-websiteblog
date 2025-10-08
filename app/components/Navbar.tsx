@@ -141,19 +141,19 @@ const Navbar = () => {
                 href="/projects/embedded"
                 className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
               >
-                Embedded
+                Embedded Systems
               </Link>
               <Link
                 href="/projects/devops"
                 className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
               >
-                DevOps
+                DevOps & Security
               </Link>
               <Link
                 href="/projects/apps"
                 className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
               >
-                Apps
+                Apps & Other IT
               </Link>
             </div>
           </div>
@@ -311,7 +311,7 @@ const Navbar = () => {
                   href="/projects/apps"
                   className="block text-sm text-[var(--navbar-text)] hover:text-white"
                 >
-                  Apps
+                  Apps, Software, and Other IT
                 </Link>
               </div>
             )}

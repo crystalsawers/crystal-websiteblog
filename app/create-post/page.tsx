@@ -2,7 +2,14 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  arrayUnion,
+} from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebaseConfig';
 import Image from 'next/image';
@@ -119,6 +126,13 @@ const CreatePost = () => {
         seriesId: selectedSeriesId,
       });
 
+      if (selectedSeriesId) {
+        const seriesRef = doc(db, 'series', selectedSeriesId);
+        await updateDoc(seriesRef, {
+          postIds: arrayUnion(docRef.id),
+        });
+      }
+
       if (!isDraft) {
         const subscriberEmails = await getSubscriberEmails();
         const postId = docRef.id;
@@ -208,7 +222,7 @@ const CreatePost = () => {
               <option value="music">Music</option>
               <option value="lifestyle">Lifestyle</option>
               <option value="misc">Miscellaneous</option>
-              <option value="apps">Applications and Data</option>
+              <option value="apps">Apps, Software, and Other IT</option>
               <option value="devops">Operations, DevOps, and Security</option>
               <option value="embedded">Embedded Systems</option>
             </select>
