@@ -336,13 +336,14 @@ main nav {
 
 .markdown-content code {
   font-family: monospace;
-  background-color: #f4f4f4;
+  background-color: black;
+  color: #99ffd3;
   padding: 0.2em 0.4em;
   border-radius: 4px;
 }
 
 .markdown-content pre {
-  background-color: #f4f4f4;
+  background-color: black;
   padding: 1em;
   border-radius: 4px;
   overflow-x: auto;
