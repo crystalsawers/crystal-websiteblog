@@ -53,7 +53,8 @@ export default function ExistingFilesPage() {
 
 return (
   <div style={{ padding: "2rem", width: "100%", margin: "0 auto" }}>
-    <h1>Media Library</h1>
+
+    <h1 className="page-title">Image Upload Library</h1>
 
     {files.length === 0 && <p>No files found in the images folder.</p>}
 
@@ -78,14 +79,19 @@ return (
               muted
               loop
               style={{
+                ...{
                 width: "100%",
                 height: "150px",
                 objectFit: "cover",
                 borderRadius: 4,
                 cursor: "pointer",
-                backgroundColor: "#000", // optional: shows black before first frame loads
-              }}
-              onClick={() => setUrl(file.url)}
+                backgroundColor: "#000",
+                },
+                border: file.url === url ? "3px solid red" : "none", // selected border
+            }}
+            onClick={() => setUrl(file.url)}
+            onMouseOver={(e) => (e.currentTarget.style.opacity = "0.5")}
+            onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
             />
           )
         }
@@ -97,13 +103,18 @@ return (
             src={file.url}
             alt={file.name}
             style={{
-              width: "100%",
-              height: "150px",
-              objectFit: "cover",
-              borderRadius: 4,
-              cursor: "pointer",
+            ...{
+                width: "100%",
+                height: "150px",
+                objectFit: "cover",
+                borderRadius: 4,
+                cursor: "pointer",
+            },
+            border: file.url === url ? "3px solid red" : "none", // selected border
             }}
             onClick={() => setUrl(file.url)}
+            onMouseOver={(e) => (e.currentTarget.style.opacity = "0.5")}
+            onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
           />
         )
       })}

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Logo from './log-lap-and-over-high-resolution-logo-transparent.png'; // new blog logo from logo.com
 import LogoutButton from './LogoutButton';
+import UploadButton from './UploadButton';
 import SubscribeButton from './SubscribeButton';
 import FeedbackButton from './FeedbackButton';
 import SearchBar from './SearchBar';
@@ -161,6 +162,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <SubscribeButton />
             <FeedbackButton />
+            <UploadButton />
             <LogoutButton />
             {/* Search Icon */}
             <button
