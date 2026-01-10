@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import Image from 'next/image';
-import { storage } from '@/lib/firebaseConfig';
 
 type StorageFile = {
   name: string;
