@@ -56,7 +56,7 @@ return (
 
     <h1 className="page-title">Image Upload Library</h1>
 
-    {files.length === 0 && <p>No files found in the images folder.</p>}
+    {files.length === 0 && <p className="text-center text-custom-green">Loading...</p>}
 
     <div
       style={{
@@ -120,13 +120,117 @@ return (
       })}
     </div>
 
-    {url && (
-      <>
-        <p style={{ marginTop: "1rem" }}>Markdown for selected file:</p>
-        <pre>{`![alt text](${url})`}</pre>
-        <button onClick={copyMarkdown}>Copy to clipboard</button>
-      </>
-    )}
+{/* Copy to clipboard pop-up */}
+{url && (
+  <div
+    onClick={() => setUrl("")} // click outside to close
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      backgroundColor: "rgba(0,0,0,0.6)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 1000,
+    }}
+  >
+    <div
+  onClick={(e) => e.stopPropagation()}
+  style={{
+    position: "relative",
+    backgroundColor: "#00ffd5",
+    padding: "1.5rem",
+    borderRadius: 8,
+    maxWidth: "600px",
+    width: "90%",
+    textAlign: "center",
+  }}
+>
+  {/* Top-right container for Close button */}
+  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+    <button
+      onClick={() => setUrl("")}
+      style={{
+        background: "transparent",
+        border: "none",
+        fontSize: "1.25rem",
+        cursor: "pointer",
+        fontWeight: "bold",
+        color: "#000",
+      }}
+      aria-label="Close"
+    >
+      ✕
+    </button>
+  </div>
+     
+      {/* Media Preview */}
+      {url.match(/\.(mp4|mov|mkv|webm)$/i) ? (
+        <video
+          src={url}
+          controls
+          style={{
+            width: "100%",
+            maxHeight: "400px",
+            borderRadius: 4,
+            marginBottom: "1rem",
+          }}
+        />
+      ) : (
+        <img
+          src={url}
+          alt="Selected media"
+          style={{
+            width: "100%",
+            maxHeight: "400px",
+            objectFit: "contain",
+            borderRadius: 4,
+            marginBottom: "1rem",
+          }}
+        />
+      )}
+
+      {/* Markdown */}
+      <pre
+        style={{
+          backgroundColor: "#005c4d",
+          padding: "0.75rem",
+          borderRadius: 4,
+          fontFamily: "monospace",
+          fontSize: "0.9rem",
+          marginBottom: "1rem",
+          overflowX: "auto",
+        }}
+      >
+        {`![alt text](${url})`}
+      </pre>
+
+      {/* Copy Button */}
+      <button
+        onClick={copyMarkdown}
+        style={{
+          backgroundColor: "#ef4444",
+          color: "#fff",
+          padding: "0.5rem 1rem",
+          border: "none",
+          borderRadius: 4,
+          cursor: "pointer",
+          fontWeight: "bold",
+          transition: "0.2s",
+        }}
+        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#dc2626")}
+        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#ef4444")}
+      >
+        Copy to clipboard
+      </button>
+    </div>
+  </div>
+)}
+
+
   </div>
 )
 }
