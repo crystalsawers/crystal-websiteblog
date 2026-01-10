@@ -69,7 +69,7 @@ export default function ExistingFilesPage() {
           const isVideo = file.url.match(/\.(mp4|mov|mkv|webm)$/i);
 
           if (isVideo) {
-            // Video element displays first frame automatically
+            // Video element should display first frame automatically, but it's not working currently
             return (
               <video
                 key={file.name}
