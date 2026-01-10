@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import Image from "next/image"
-import { ref, listAll, getDownloadURL } from "firebase/storage"
 import { storage } from "@/lib/firebaseConfig"
 
 type StorageFile = {
@@ -27,34 +26,32 @@ export default function ExistingFilesPage() {
   }, [])
 
   useEffect(() => {
-  if (!authed) return
+    if (!authed) return
 
-  const fetchFiles = async () => {
-    try {
-      const res = await fetch("/api/list-images")
-      const urls: string[] = await res.json()
-      setFiles(urls.map((url) => ({ name: url.split("/").pop()!, url })))
-    } catch (err) {
-      console.error("Error fetching files:", err)
-      setFiles([])
+    const fetchFiles = async () => {
+      try {
+        const res = await fetch("/api/list-images")
+        const urls: string[] = await res.json()
+        setFiles(urls.map((url) => ({ name: url.split("/").pop()!, url })))
+      } catch (err) {
+        console.error("Error fetching files:", err)
+        setFiles([])
+      }
     }
-  }
 
-  fetchFiles()
-}, [authed])
+    fetchFiles()
+  }, [authed])
 
-function copyMarkdown() {
+  function copyMarkdown() {
     if (!url) return
     const markdown = `![alt text](${url})`
     navigator.clipboard.writeText(markdown)
-      .then(() => console.log("Markdown copied!"))
-      .catch((err) => console.error("Copy failed:", err))
   }
 
   if (checking) return null
   if (!authed) return null
 
-  return (
+return (
   <div style={{ padding: "2rem", width: "100%", margin: "0 auto" }}>
     <h1>Media Library</h1>
 
@@ -68,25 +65,33 @@ function copyMarkdown() {
         marginTop: "1rem",
       }}
     >
-      {files.map((file) =>
-        file.url.match(/\.(mp4|mkv|mov|webm|gif)$/i) ? (
-          <video
-            key={file.name}
-            src={file.url}
-            style={{
-              width: "100%",
-              height: "150px",
-              objectFit: "cover",
-              borderRadius: 4,
-              cursor: "pointer",
-            }}
-            muted
-            loop
-            autoPlay
-            controls
-            onClick={() => setUrl(file.url)}
-          />
-        ) : (
+      {files.map((file) => {
+        const isVideo = file.url.match(/\.(mp4|mov|mkv|webm)$/i)
+
+        if (isVideo) {
+          // Video element displays first frame automatically
+          return (
+            <video
+              key={file.name}
+              src={file.url}
+              controls
+              muted
+              loop
+              style={{
+                width: "100%",
+                height: "150px",
+                objectFit: "cover",
+                borderRadius: 4,
+                cursor: "pointer",
+                backgroundColor: "#000", // optional: shows black before first frame loads
+              }}
+              onClick={() => setUrl(file.url)}
+            />
+          )
+        }
+
+        // Everything else (images + GIFs)
+        return (
           <img
             key={file.name}
             src={file.url}
@@ -101,7 +106,7 @@ function copyMarkdown() {
             onClick={() => setUrl(file.url)}
           />
         )
-      )}
+      })}
     </div>
 
     {url && (
@@ -113,7 +118,4 @@ function copyMarkdown() {
     )}
   </div>
 )
-
-
-
 }
