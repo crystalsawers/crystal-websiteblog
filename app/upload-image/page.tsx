@@ -58,54 +58,62 @@ export default function ExistingFilesPage() {
       )}
 
       {/* Upload Button */}
-<div style={{ marginBottom: '1rem' }}>
-  <input
-    type="file"
-    id="fileInput"
-    accept="image/*,video/*,image/gif"
-    style={{ display: 'none' }}
-    onChange={async (e) => {
-      const file = e.target.files?.[0]
-      if (!file) return
+      <div style={{ marginBottom: '1rem' }}>
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*,video/*,image/gif"
+          style={{ display: 'none' }}
+          onChange={async (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
 
-      try {
-        // Dynamically import Firebase Storage functions
-        const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
-        const { storage } = await import('@/lib/firebaseConfig')
+            try {
+              // Dynamically import Firebase Storage functions
+              const { ref, uploadBytes, getDownloadURL } =
+                await import('firebase/storage');
+              const { storage } = await import('@/lib/firebaseConfig');
 
-        const storageRef = ref(storage, `images/${Date.now()}-${file.name}`)
-        await uploadBytes(storageRef, file)
-        const downloadUrl = await getDownloadURL(storageRef)
-        alert('Upload successful!')
+              const storageRef = ref(
+                storage,
+                `images/${Date.now()}-${file.name}`,
+              );
+              await uploadBytes(storageRef, file);
+              const downloadUrl = await getDownloadURL(storageRef);
+              alert('Upload successful!');
 
-        // Optionally refresh the files list
-        setFiles((prev) => [...prev, { name: file.name, url: downloadUrl }])
-      } catch (err) {
-        console.error(err)
-        alert('Upload failed. Check console.')
-      }
-    }}
-  />
-  <button
-    onClick={() => document.getElementById('fileInput')?.click()}
-    style={{
-      backgroundColor: '#00c853',
-      color: '#fff',
-      border: 'none',
-      borderRadius: 4,
-      padding: '0.5rem 1rem',
-      cursor: 'pointer',
-      fontWeight: 'bold',
-    }}
-    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#00b34d')}
-    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#00c853')}
-  >
-    Add Media
-  </button>
-</div>
-
-
-
+              // Optionally refresh the files list
+              setFiles((prev) => [
+                ...prev,
+                { name: file.name, url: downloadUrl },
+              ]);
+            } catch (err) {
+              console.error(err);
+              alert('Upload failed. Check console.');
+            }
+          }}
+        />
+        <button
+          onClick={() => document.getElementById('fileInput')?.click()}
+          style={{
+            backgroundColor: '#00c853',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 4,
+            padding: '0.5rem 1rem',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+          }}
+          onMouseOver={(e) =>
+            (e.currentTarget.style.backgroundColor = '#00b34d')
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor = '#00c853')
+          }
+        >
+          Add Media
+        </button>
+      </div>
 
       <div
         style={{
