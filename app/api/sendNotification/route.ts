@@ -34,10 +34,10 @@ export async function POST(request: Request) {
   }
 
   // Check for new subscriber logic
-  if (postTitle.startsWith('New Subscriber:')) {
+  if (postTitle.startsWith('NEW SUBSCRIBER:')) {
     const newSubscriberEmail = postTitle.split(': ')[1].trim();
 
-    // Notify admin about the new subscriber
+    // Notify ADMIN about the new subscriber
     const adminMailOptions = {
       from: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER,
       to: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER, // Admin email
@@ -50,11 +50,11 @@ export async function POST(request: Request) {
       newSubscriberEmail,
     );
 
-    // Send email to the new subscriber
+    // Send email to the NEW SUBSCRIBER
     const subscriberMailOptions = {
       from: process.env.NEXT_PUBLIC_EMAIL_USER,
       to: newSubscriberEmail, // Send to the new subscriber's email
-      subject: `Thank you for subscribing to my blog!`,
+      subject: `NEW SUBSCRIBER: Thank you for subscribing to my blog!`,
       text: `Thank you for subscribing! Here is the link to my latest post after you've subscribed: ${postUrl}`,
     };
 
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
   }
 
   // Handle new post notifications
-  if (postTitle.startsWith('New Post:')) {
+  if (postTitle.startsWith('NEW POST:')) {
     try {
       // Ensure email sending logic runs once and remove duplicates
       const uniqueEmails = Array.from(new Set(emails));
@@ -111,19 +111,6 @@ export async function POST(request: Request) {
         error: 'Error sending email',
       });
     }
-  }
-
-  // Handle generic subscription request
-  if (postTitle === 'New Subscription') {
-    // Prevent sending a welcome email here if a new subscriber was just added
-    console.log(
-      `Ignoring request for new subscription since it's already handled as a new subscriber: ${notificationEmail}`,
-    );
-    return NextResponse.json({
-      success: false,
-      error:
-        'This subscription has already been processed as a new subscriber.',
-    });
   }
 
   // If the postTitle does not match any expected values

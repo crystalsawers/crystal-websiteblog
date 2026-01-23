@@ -155,7 +155,7 @@ const CreatePost = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            postTitle: `New Post: ${title}`,
+            postTitle: `NEW POST: ${title}`,
             postUrl,
             notificationEmails: subscriberEmails, // Send all emails at once
           }),

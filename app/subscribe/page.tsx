@@ -42,19 +42,19 @@ const SubscribePage = () => {
           'Thank you for subscribing! A confirmation email has been sent.',
         );
 
-        // Trigger notification to new subscribers
+        // Trigger notification to NEW SUBSCRIBERS
         try {
           const response = await fetch('/api/sendNotification', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              postTitle: 'New Subscription',
-              postUrl: 'https://crystalsawers.co.nz/',
-              notificationEmail: process.env.NEXT_PUBLIC_EMAIL_USER,
-            }),
-          });
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            postTitle:  `NEW SUBSCRIBER: ${email}`,
+            postUrl: 'https://loglapandover.co.nz/',
+          }),
+        });
+
 
           if (!response.ok) {
             const errorResponse = await response.json();
