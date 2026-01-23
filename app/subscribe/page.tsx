@@ -171,7 +171,7 @@ const SubscribePage = () => {
           <p
             className={`mt-4 ${
               message.includes('error') || message.includes('issues')
-                ? 'text-red-500' // Render red text for error messages
+                ? 'text-red-700' // Render red text for error messages
                 : 'text-black' // Render black text for success messages
             }`}
           >
