@@ -6,10 +6,11 @@ import dotenv from 'dotenv';
 dotenv.config(); // Load environment variables
 
 export async function POST(request: Request) {
-  const { postTitle, postUrl, notificationEmail } = await request.json();
+  const body = await request.json();
+  const { postTitle, postUrl, subscriberEmail, subscriberName } = body;
 
-  // Log the incoming data for debugging
-  console.log('Incoming request:', { postTitle, postUrl, notificationEmail });
+  // Log for debugging
+  console.log('Incoming request:', { postTitle, postUrl, subscriberEmail, subscriberName });
 
   // Create the transporter for sending emails
   const transporter = nodemailer.createTransport({
@@ -35,18 +36,21 @@ export async function POST(request: Request) {
 
   // Check for new subscriber logic
   if (postTitle.startsWith('NEW SUBSCRIBER:')) {
-    const newSubscriberEmail = postTitle.split(': ')[1].trim();
+
+    const newSubscriberEmail = body.subscriberEmail;
+    const newSubscriberName = body.subscriberName;
 
     // Notify ADMIN about the new subscriber
     const adminMailOptions = {
-      from: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER,
-      to: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER, // Admin email
-      subject: `New Subscriber: ${newSubscriberEmail}`,
-      text: `A new subscriber has joined: ${newSubscriberEmail}.`,
-    };
+        from: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER,
+        to: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER, // Admin email
+        subject: `New Subscriber: ${newSubscriberName} (${newSubscriberEmail})`,
+        text: `A new subscriber has joined: ${newSubscriberName} (${newSubscriberEmail}).`,
+      };
 
     console.log(
       'Sending notification email to admin about new subscriber:',
+      newSubscriberName,
       newSubscriberEmail,
     );
 
@@ -54,8 +58,8 @@ export async function POST(request: Request) {
     const subscriberMailOptions = {
       from: process.env.NEXT_PUBLIC_EMAIL_USER,
       to: newSubscriberEmail, // Send to the new subscriber's email
-      subject: `NEW SUBSCRIBER: Thank you for subscribing to my blog!`,
-      text: `Thank you for subscribing! Here is the link to my latest post after you've subscribed: ${postUrl}`,
+      subject: `Thank you for subscribing, ${newSubscriberName}!`,
+      text: `Hi ${newSubscriberName},\n\nThank you for subscribing! Here is the link to my latest post since you've subscribed to this blog: ${postUrl}`,
     };
 
     try {

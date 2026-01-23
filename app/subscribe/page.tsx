@@ -1,4 +1,3 @@
-// /app/subscribe/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,6 +7,8 @@ import {
   checkSubscriberExists,
   removeSubscriber,
 } from '../../lib/subscriberUtils';
+import { collection, DocumentData, getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
+import { db } from '@/lib/firebaseConfig';
 
 const SubscribePage = () => {
   const [email, setEmail] = useState('');
@@ -32,7 +33,7 @@ const SubscribePage = () => {
       const exists = await checkSubscriberExists(email);
       if (exists) {
         setMessage(
-          "You're already signed up. Please contact crystal.websiteblog@gmail.com if there are any issues.",
+          "You're already signed up. Please contact loglapandover@gmail.com if there are any issues.",
         );
         return;
       }
@@ -42,16 +43,64 @@ const SubscribePage = () => {
           'Thank you for subscribing! A confirmation email has been sent.',
         );
 
-        // Trigger notification to NEW SUBSCRIBERS
         try {
+          // ======= STEP 1: Fetch the latest post from all categories =======
+          const allCategories = ['misc', 'lifestyle', 'formula1', 'cricket', 'music', 'apps', 'devops', 'embedded'];
+          let latestPostDoc: QueryDocumentSnapshot<DocumentData> | null = null;
+          let latestPostDate = 0;
+          let finalCategory = '';
+
+          for (const category of allCategories) {
+            const snap = await getDocs(collection(db, category));
+
+
+            for (const doc of snap.docs) {  
+            const data = doc.data();
+            const postTime = new Date(data.date).getTime();
+            if (postTime > latestPostDate) {
+              latestPostDate = postTime;
+              latestPostDoc = doc;
+              finalCategory = category;
+            }
+          }
+
+          }
+
+          if (!latestPostDoc) {
+            console.warn('No posts found.');
+            return;
+          }
+
+          const postId = latestPostDoc.id;
+
+              // ======= STEP 2: Build dynamic post URL =======
+          const reviewCategories = ['misc', 'lifestyle'];
+          const interestCategories = ['formula1', 'cricket', 'music'];
+          const projectCategories = ['apps', 'devops', 'embedded'];
+
+          const categoryPrefixFromPath = reviewCategories.includes(finalCategory)
+            ? 'reviews'
+            : projectCategories.includes(finalCategory)
+            ? 'projects'
+            : interestCategories.includes(finalCategory)
+            ? 'interests'
+            : '';
+
+          const BASE_URL = 'https://loglapandover.co.nz/';
+          const postUrl = `${BASE_URL}${categoryPrefixFromPath}/${finalCategory}/${postId}`;
+
+
+          // ======= STEP 3: Trigger notification to NEW SUBSCRIBERS =======
           const response = await fetch('/api/sendNotification', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            postTitle:  `NEW SUBSCRIBER: ${email}`,
-            postUrl: 'https://loglapandover.co.nz/',
+            postTitle:  `NEW SUBSCRIBER: ${name}, ${email}`,
+            subscriberName: name,     // new field for backend to use
+            subscriberEmail: email, 
+            postUrl,
           }),
         });
 
@@ -66,14 +115,14 @@ const SubscribePage = () => {
           console.error('Network error while sending notification:', error);
         }
       } else {
-        setMessage('There was an error. Please try again.');
+        setMessage('There was an error. Please try again. Please contact loglapandover@gmail.com if there are any issues.');
       }
     } else {
       const success = await removeSubscriber(email);
       if (success) {
         setMessage('You have successfully unsubscribed.');
       } else {
-        setMessage('There was an error. Please try again.');
+        setMessage('There was an error. Please try again. Please contact loglapandover@gmail.com if there are any issues.');
       }
     }
   };
