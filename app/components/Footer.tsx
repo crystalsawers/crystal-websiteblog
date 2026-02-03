@@ -1,23 +1,32 @@
 "use client";
-import React from "react";
+import React, { forwardRef } from "react";
 import Link from "next/link";
 
-const Footer: React.FC = () => {
+const Footer = forwardRef<HTMLElement>((props, ref) => {
 
-const scrollToTop = () => {
+  const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="bg-black text-white py-6 w-full left-0 absolute bottom-0 shadow-t border-t border-gray-800">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
-        {/* Copyright */}
+    <footer
+      ref={ref} // <-- attach the ref here
+      className="bg-black text-white py-6 w-full left-0 absolute bottom-0 shadow-t border-t border-gray-800"
+    >
+      <div className="container mx-auto flex flex-col max-[799px]:flex-col lg:flex-row items-center justify-between px-4">
+
+        {/* Copyright - DO NOT MOVE*/}
         <p className="text-sm text-custom-green mb-2 md:mb-0">
           &copy; {new Date().getFullYear()} Log, Lap, and Over. All rights reserved.
         </p>
 
+        {/* Slogan below the icons */}
+        <p className="text-sm text-custom-green italic mt-2 mb-3 text-center">
+          Sharing logs, laps, and insights.
+        </p>
+
         <div className="flex items-center gap-6">
-        
+
           {/* Social icons */}
           <div className="flex gap-4">
             {/* LinkedIn */}
@@ -70,21 +79,23 @@ const scrollToTop = () => {
               </svg>
             </Link>
 
-
-         {/* Back to top button */}
-          <button
-            onClick={scrollToTop}
-            className="text-custom-green hover:text-white transition-colors duration-200 ml-2"
-            aria-label="Back to top"
-          >
-            ↑ Back to Top
-          </button>
+            {/* Back to top button */}
+            <button
+              onClick={scrollToTop}
+              className="text-custom-green hover:text-white transition-colors duration-200 ml-2"
+              aria-label="Back to top"
+            >
+              ↑ Back to Top
+            </button>
 
           </div>
         </div>
       </div>
     </footer>
   );
-};
+});
+
+// Fix display name for DevTools
+Footer.displayName = "Footer";
 
 export default Footer;
