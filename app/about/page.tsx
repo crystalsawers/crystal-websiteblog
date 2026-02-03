@@ -13,7 +13,6 @@ interface AboutMeDocument {
   contact_info: {
     email: string;
     blog_email: string;
-    linkedin: string;
     github: string;
   };
 }
@@ -77,17 +76,6 @@ const About = () => {
               </a>
             </p>
 
-            <p className="card-text">
-              <span className="normal-text font-semibold">LinkedIn:</span>{' '}
-              <a
-                href={item.contact_info.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-gray-800 hover:underline"
-              >
-                {item.contact_info.linkedin}
-              </a>
-            </p>
             <p className="card-text">
               <span className="normal-text font-semibold">Github:</span>{' '}
               <a

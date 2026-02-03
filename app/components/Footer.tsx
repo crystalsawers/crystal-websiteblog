@@ -27,23 +27,6 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
         <div className="flex items-center gap-6">
           {/* Social icons */}
           <div className="flex gap-4">
-            {/* LinkedIn */}
-            <Link
-              href="https://www.linkedin.com/in/crystal-sawers-33b643259/"
-              target="_blank"
-              className="text-custom-green transition-colors duration-200 hover:text-white"
-              aria-label="LinkedIn"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0V8zm7.5 0h4.8v2.1h.07c.67-1.3 2.3-2.67 4.73-2.67 5.06 0 6 3.34 6 7.68V24h-5v-7c0-1.67-.03-3.8-2.32-3.8-2.33 0-2.68 1.81-2.68 3.67V24h-5V8z" />
-              </svg>
-            </Link>
-
             {/* GitHub */}
             <Link
               href="https://github.com/crystalsawers"

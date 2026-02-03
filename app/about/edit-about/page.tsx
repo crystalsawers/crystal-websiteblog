@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebaseConfig';
-import { useRouter } from 'next/navigation'; // Import useRouter for navigation
+import { useRouter } from 'next/navigation';
 
 const EditAbout = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +12,6 @@ const EditAbout = () => {
     contact_info: {
       email: '',
       blog_email: '',
-      linkedin: '',
       github: '',
     },
   });
@@ -32,7 +31,6 @@ const EditAbout = () => {
             contact_info: {
               email: string;
               blog_email: string;
-              linkedin: string;
               github: string;
             };
           },
@@ -46,7 +44,7 @@ const EditAbout = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    if (['email', 'blog_email', 'linkedin', 'github'].includes(name)) {
+    if (['email', 'blog_email', 'github'].includes(name)) {
       setFormData((prev) => ({
         ...prev,
         contact_info: {
@@ -123,18 +121,6 @@ const EditAbout = () => {
           onChange={handleInputChange}
           className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
         />
-
-        <label className="mb-2 block font-medium text-custom-green">
-          LinkedIn:
-        </label>
-        <input
-          type="text"
-          name="linkedin"
-          value={formData.contact_info.linkedin}
-          onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
-        />
-
         <label className="mb-2 block font-medium text-custom-green">
           GitHub:
         </label>
