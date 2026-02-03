@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState, ReactNode } from "react";
-import Footer from "./Footer";
+import { useEffect, useRef, useState, ReactNode } from 'react';
+import Footer from './Footer';
 
 interface Props {
   children: ReactNode;
@@ -20,8 +20,8 @@ export default function ContentWrapper({ children }: Props) {
     };
 
     update(); // initial call
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, []);
 
   // determine extra padding based on screen width

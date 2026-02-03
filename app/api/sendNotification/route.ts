@@ -10,7 +10,12 @@ export async function POST(request: Request) {
   const { postTitle, postUrl, subscriberEmail, subscriberName } = body;
 
   // Log for debugging
-  console.log('Incoming request:', { postTitle, postUrl, subscriberEmail, subscriberName });
+  console.log('Incoming request:', {
+    postTitle,
+    postUrl,
+    subscriberEmail,
+    subscriberName,
+  });
 
   // Create the transporter for sending emails
   const transporter = nodemailer.createTransport({
@@ -36,17 +41,16 @@ export async function POST(request: Request) {
 
   // Check for new subscriber logic
   if (postTitle.startsWith('NEW SUBSCRIBER:')) {
-
     const newSubscriberEmail = body.subscriberEmail;
     const newSubscriberName = body.subscriberName;
 
     // Notify ADMIN about the new subscriber
     const adminMailOptions = {
-        from: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER,
-        to: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER, // Admin email
-        subject: `New Subscriber: ${newSubscriberName} (${newSubscriberEmail})`,
-        text: `A new subscriber has joined: ${newSubscriberName} (${newSubscriberEmail}).`,
-      };
+      from: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER,
+      to: process.env.NEXT_PUBLIC_BLOG_EMAIL_USER, // Admin email
+      subject: `New Subscriber: ${newSubscriberName} (${newSubscriberEmail})`,
+      text: `A new subscriber has joined: ${newSubscriberName} (${newSubscriberEmail}).`,
+    };
 
     console.log(
       'Sending notification email to admin about new subscriber:',

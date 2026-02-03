@@ -1,39 +1,37 @@
-"use client";
-import React, { forwardRef } from "react";
-import Link from "next/link";
+'use client';
+import React, { forwardRef } from 'react';
+import Link from 'next/link';
 
 const Footer = forwardRef<HTMLElement>((props, ref) => {
-
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <footer
-      ref={ref} // <-- attach the ref here
-      className="bg-black text-white py-6 w-full left-0 absolute bottom-0 shadow-t border-t border-gray-800"
+      ref={ref}
+      className="shadow-t absolute bottom-0 left-0 w-full border-t border-gray-800 bg-black py-6 text-white"
     >
-      <div className="container mx-auto flex flex-col max-[799px]:flex-col lg:flex-row items-center justify-between px-4">
-
-        {/* Copyright - DO NOT MOVE*/}
-        <p className="text-sm text-custom-green mb-2 md:mb-0">
-          &copy; {new Date().getFullYear()} Log, Lap, and Over. All rights reserved.
+      <div className="container mx-auto flex flex-col items-center justify-between px-4 max-[799px]:flex-col lg:flex-row">
+        {/* Copyright 2026 */}
+        <p className="mb-2 text-sm text-custom-green md:mb-0">
+          &copy; {new Date().getFullYear()} Log, Lap, and Over. All rights
+          reserved.
         </p>
 
-        {/* Slogan below the icons */}
-        <p className="text-sm text-custom-green italic mt-2 mb-3 text-center">
-          Sharing logs, laps, and insights.
+        {/* Slogan */}
+        <p className="mb-3 mt-2 text-center text-sm italic text-custom-green">
+          Sport, music, side projects, and everything in between.
         </p>
 
         <div className="flex items-center gap-6">
-
           {/* Social icons */}
           <div className="flex gap-4">
             {/* LinkedIn */}
             <Link
               href="https://www.linkedin.com/in/crystal-sawers-33b643259/"
               target="_blank"
-              className="text-custom-green hover:text-white transition-colors duration-200"
+              className="text-custom-green transition-colors duration-200 hover:text-white"
               aria-label="LinkedIn"
             >
               <svg
@@ -50,7 +48,7 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
             <Link
               href="https://github.com/crystalsawers"
               target="_blank"
-              className="text-custom-green hover:text-white transition-colors duration-200"
+              className="text-custom-green transition-colors duration-200 hover:text-white"
               aria-label="GitHub"
             >
               <svg
@@ -66,7 +64,7 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
             {/* Email */}
             <Link
               href="mailto:loglapandover@gmail.com"
-              className="text-custom-green hover:text-white transition-colors duration-200"
+              className="text-custom-green transition-colors duration-200 hover:text-white"
               aria-label="Email"
             >
               <svg
@@ -82,12 +80,11 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
             {/* Back to top button */}
             <button
               onClick={scrollToTop}
-              className="text-custom-green hover:text-white transition-colors duration-200 ml-2"
+              className="ml-2 text-custom-green transition-colors duration-200 hover:text-white"
               aria-label="Back to top"
             >
               ↑ Back to Top
             </button>
-
           </div>
         </div>
       </div>
@@ -96,6 +93,6 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
 });
 
 // Fix display name for DevTools
-Footer.displayName = "Footer";
+Footer.displayName = 'Footer';
 
 export default Footer;

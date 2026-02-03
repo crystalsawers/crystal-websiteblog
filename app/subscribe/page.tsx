@@ -7,7 +7,12 @@ import {
   checkSubscriberExists,
   removeSubscriber,
 } from '../../lib/subscriberUtils';
-import { collection, DocumentData, getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  DocumentData,
+  getDocs,
+  QueryDocumentSnapshot,
+} from 'firebase/firestore';
 import { db } from '@/lib/firebaseConfig';
 
 const SubscribePage = () => {
@@ -45,7 +50,16 @@ const SubscribePage = () => {
 
         try {
           // ======= STEP 1: Fetch the latest post from all categories =======
-          const allCategories = ['misc', 'lifestyle', 'formula1', 'cricket', 'music', 'apps', 'devops', 'embedded'];
+          const allCategories = [
+            'misc',
+            'lifestyle',
+            'formula1',
+            'cricket',
+            'music',
+            'apps',
+            'devops',
+            'embedded',
+          ];
           let latestPostDoc: QueryDocumentSnapshot<DocumentData> | null = null;
           let latestPostDate = 0;
           let finalCategory = '';
@@ -53,17 +67,15 @@ const SubscribePage = () => {
           for (const category of allCategories) {
             const snap = await getDocs(collection(db, category));
 
-
-            for (const doc of snap.docs) {  
-            const data = doc.data();
-            const postTime = new Date(data.date).getTime();
-            if (postTime > latestPostDate) {
-              latestPostDate = postTime;
-              latestPostDoc = doc;
-              finalCategory = category;
+            for (const doc of snap.docs) {
+              const data = doc.data();
+              const postTime = new Date(data.date).getTime();
+              if (postTime > latestPostDate) {
+                latestPostDate = postTime;
+                latestPostDoc = doc;
+                finalCategory = category;
+              }
             }
-          }
-
           }
 
           if (!latestPostDoc) {
@@ -73,37 +85,37 @@ const SubscribePage = () => {
 
           const postId = latestPostDoc.id;
 
-              // ======= STEP 2: Build dynamic post URL =======
+          // ======= STEP 2: Build dynamic post URL =======
           const reviewCategories = ['misc', 'lifestyle'];
           const interestCategories = ['formula1', 'cricket', 'music'];
           const projectCategories = ['apps', 'devops', 'embedded'];
 
-          const categoryPrefixFromPath = reviewCategories.includes(finalCategory)
+          const categoryPrefixFromPath = reviewCategories.includes(
+            finalCategory,
+          )
             ? 'reviews'
             : projectCategories.includes(finalCategory)
-            ? 'projects'
-            : interestCategories.includes(finalCategory)
-            ? 'interests'
-            : '';
+              ? 'projects'
+              : interestCategories.includes(finalCategory)
+                ? 'interests'
+                : '';
 
           const BASE_URL = 'https://loglapandover.co.nz/';
           const postUrl = `${BASE_URL}${categoryPrefixFromPath}/${finalCategory}/${postId}`;
 
-
           // ======= STEP 3: Trigger notification to NEW SUBSCRIBERS =======
           const response = await fetch('/api/sendNotification', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            postTitle:  `NEW SUBSCRIBER: ${name}, ${email}`,
-            subscriberName: name,     // new field for backend to use
-            subscriberEmail: email, 
-            postUrl,
-          }),
-        });
-
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              postTitle: `NEW SUBSCRIBER: ${name}, ${email}`,
+              subscriberName: name, // new field for backend to use
+              subscriberEmail: email,
+              postUrl,
+            }),
+          });
 
           if (!response.ok) {
             const errorResponse = await response.json();
@@ -115,14 +127,18 @@ const SubscribePage = () => {
           console.error('Network error while sending notification:', error);
         }
       } else {
-        setMessage('There was an error. Please try again. Please contact loglapandover@gmail.com if there are any issues.');
+        setMessage(
+          'There was an error. Please try again. Please contact loglapandover@gmail.com if there are any issues.',
+        );
       }
     } else {
       const success = await removeSubscriber(email);
       if (success) {
         setMessage('You have successfully unsubscribed.');
       } else {
-        setMessage('There was an error. Please try again. Please contact loglapandover@gmail.com if there are any issues.');
+        setMessage(
+          'There was an error. Please try again. Please contact loglapandover@gmail.com if there are any issues.',
+        );
       }
     }
   };

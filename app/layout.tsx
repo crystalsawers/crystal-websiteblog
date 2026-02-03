@@ -1,4 +1,3 @@
-
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
@@ -28,7 +27,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <AuthProvider>
       <html lang="en">
@@ -49,12 +47,10 @@ export default function RootLayout({
           />
         </Head>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen `}
+          className={`${geistSans.variable} ${geistMono.variable} relative min-h-screen antialiased`}
         >
           <Navbar />
-        <ContentWrapper>
-        {children}
-      </ContentWrapper>
+          <ContentWrapper>{children}</ContentWrapper>
         </body>
       </html>
     </AuthProvider>
