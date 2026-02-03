@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from './components/Navbar';
 import { AuthProvider } from './components/AuthContext';
 import Head from 'next/head';
+import Footer from './components/Footer';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -46,10 +47,11 @@ export default function RootLayout({
           />
         </Head>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen `}
         >
           <Navbar />
           {children}
+          <Footer />
         </body>
       </html>
     </AuthProvider>
