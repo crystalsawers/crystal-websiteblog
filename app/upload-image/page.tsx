@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Image from 'next/image';
 
 type StorageFile = {
   name: string;
@@ -42,7 +43,9 @@ export default function ExistingFilesPage() {
 
   function copyMarkdown() {
     if (!url) return;
-    const markdown = `![alt text](${url})`;
+    const markdown = `<div style="text-align: center;">
+            <img src="${url}" alt="image" width="700" style="display: inline-block;"/> 
+            </div>`;
     navigator.clipboard.writeText(markdown);
   }
 
@@ -155,23 +158,24 @@ export default function ExistingFilesPage() {
 
           // Everything else (images + GIFs)
           return (
-            <img
+            <Image
               key={file.name}
               src={file.url}
               alt={file.name}
+              width={300}
+              height={150}
               style={{
-                ...{
-                  width: '100%',
-                  height: '150px',
-                  objectFit: 'cover',
-                  borderRadius: 4,
-                  cursor: 'pointer',
-                },
+                width: '100%',
+                height: '150px',
+                objectFit: 'cover',
+                borderRadius: 4,
+                cursor: 'pointer',
                 border: file.url === url ? '3px solid red' : 'none', // selected border
               }}
               onClick={() => setUrl(file.url)}
               onMouseOver={(e) => (e.currentTarget.style.opacity = '0.5')}
               onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
+              unoptimized
             />
           );
         })}
@@ -237,9 +241,11 @@ export default function ExistingFilesPage() {
                 }}
               />
             ) : (
-              <img
+              <Image
                 src={url}
                 alt="Selected media"
+                width={700}
+                height={400}
                 style={{
                   width: '100%',
                   maxHeight: '400px',
@@ -247,6 +253,7 @@ export default function ExistingFilesPage() {
                   borderRadius: 4,
                   marginBottom: '1rem',
                 }}
+                unoptimized
               />
             )}
 
@@ -257,12 +264,15 @@ export default function ExistingFilesPage() {
                 padding: '0.75rem',
                 borderRadius: 4,
                 fontFamily: 'monospace',
-                fontSize: '0.9rem',
+                fontSize: '1rem',
                 marginBottom: '1rem',
                 overflowX: 'auto',
+                textAlign: 'left',
               }}
             >
-              {`![alt text](${url})`}
+              {`<div style="text-align: center;">
+  <img src="${url}" alt="image" width="700" style="display: inline-block;"/> 
+</div>`}
             </pre>
 
             {/* Copy Button */}
