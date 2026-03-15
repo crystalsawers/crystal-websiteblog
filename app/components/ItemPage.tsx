@@ -34,6 +34,7 @@ const REACTIONS = [
   { id: 'love', emoji: '❤️', description: 'Love' },
   { id: 'wow', emoji: '😲', description: 'Wow' },
   { id: 'laugh', emoji: '😂', description: 'Funny' },
+  { id: 'shaka', emoji: '🤙', description: 'Shaka' },
 ];
 
 const ItemPage = ({ collectionName }: { collectionName: string }) => {
