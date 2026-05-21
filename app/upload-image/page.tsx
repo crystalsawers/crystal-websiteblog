@@ -44,8 +44,8 @@ export default function ExistingFilesPage() {
   function copyMarkdown() {
     if (!url) return;
     const markdown = `<div style="text-align: center;">
-            <img src="${url}" alt="image" width="700" style="display: inline-block;"/> 
-            </div>`;
+    <img src="${url}" alt="image" width="1000" style="display: inline-block;"/> 
+</div>`;
     navigator.clipboard.writeText(markdown);
   }
 
@@ -271,7 +271,7 @@ export default function ExistingFilesPage() {
               }}
             >
               {`<div style="text-align: center;">
-  <img src="${url}" alt="image" width="1000" style="display: inline-block;"/> 
+    <img src="${url}" alt="image" width="1000" style="display: inline-block;"/> 
 </div>`}
             </pre>
 
