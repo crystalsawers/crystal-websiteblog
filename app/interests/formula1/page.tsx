@@ -15,7 +15,6 @@ import { useAuth } from '../../components/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { sortPostsByDate } from '@/lib/utils/sortPostsByDate';
 import renderContent from '@/lib/utils/renderContent';
-import { truncateContent } from '@/lib/utils/truncateContent';
 import Image from 'next/image';
 
 interface Formula1Document {
@@ -209,8 +208,8 @@ const Formula1 = () => {
                     {formatDate(new Date(item.editedDate))}
                   </p>
                 )}
-                <div className="card-text">
-                  {renderContent(truncateContent(item.content, 110))}
+                <div className="card-text line-clamp-3">
+                  {renderContent(item.content)}
                 </div>
 
                 <a

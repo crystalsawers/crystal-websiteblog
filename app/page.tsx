@@ -14,7 +14,6 @@ import {
 import { sortPostsByDate } from '../lib/utils/sortPostsByDate';
 import { formatDate } from '../lib/utils/formatDate';
 import renderContent from '@/lib/utils/renderContent';
-import { truncateContent } from '@/lib/utils/truncateContent';
 import Loading from './loading';
 import Image from 'next/image';
 import { useAuth } from './components/AuthContext';
@@ -340,8 +339,8 @@ const HomePage = () => {
                           {formatDate(new Date(post.editedDate))}
                         </p>
                       )}
-                      <div className="card-text">
-                        {renderContent(truncateContent(post.content, 110))}
+                      <div className="card-text line-clamp-3">
+                        {renderContent(post.content)}
                       </div>
                       <a
                         href={`/${
@@ -439,8 +438,8 @@ const HomePage = () => {
                           {formatDate(new Date(post.editedDate))}
                         </p>
                       )}
-                      <div className="card-text">
-                        {renderContent(truncateContent(post.content, 110))}
+                      <div className="card-text line-clamp-3">
+                        {renderContent(post.content)}
                       </div>
                       <a
                         href={`/${section}/${post.category}/${post.id}`}
