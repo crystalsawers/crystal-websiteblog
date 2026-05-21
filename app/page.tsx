@@ -246,7 +246,7 @@ const HomePage = () => {
           </label>
           <select
             id="series-filter"
-            className="w-64 rounded-md border border-gray-300 bg-custom-green p-2 text-black shadow-md focus:border-indigo-500 focus:ring focus:ring-indigo-300"
+            className="w-64 rounded-md border border-gray-300 bg-[#99ffd3] p-2 text-black shadow-md focus:border-indigo-500 focus:ring focus:ring-indigo-300"
             value={selectedSeries || ''}
             onChange={(e) => setSelectedSeries(e.target.value || null)}
           >

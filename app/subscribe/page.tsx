@@ -163,7 +163,7 @@ const SubscribePage = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="create-form-input"
+            className="create-form-input bg-[#99ffd3]"
           />
           <input
             type="email"
@@ -171,7 +171,7 @@ const SubscribePage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="create-form-input"
+            className="create-form-input bg-[#99ffd3]"
           />
           <button type="submit" className="login-card-button">
             {isSubscribing ? 'Subscribe' : 'Unsubscribe'}
