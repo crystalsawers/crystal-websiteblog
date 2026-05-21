@@ -43,7 +43,7 @@ const LoginPage = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="login-card-input"
+              className="login-card-input bg-[#99ffd3]"
             />
           </label>
           <label className="login-card-label">
@@ -52,7 +52,7 @@ const LoginPage = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="login-card-input"
+              className="login-card-input bg-[#99ffd3]"
             />
           </label>
           <button type="submit" className="login-card-button">
