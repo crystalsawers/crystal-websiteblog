@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { formatDate } from '@/lib/utils/formatDate';
 import renderContent from '@/lib/utils/renderContent';
-import { truncateContent } from '@/lib/utils/truncateContent';
 import Loading from '../loading';
 import { db } from '../../lib/firebaseConfig';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
@@ -164,9 +163,9 @@ const ResultsPage = () => {
                     {formatDate(new Date(post.editedDate))}
                   </p>
                 )}
-                <p className="card-text">
-                  {renderContent(truncateContent(post.content, 110))}
-                </p>
+                <div className="card-text line-clamp-3">
+                  {renderContent(post.content)}
+                </div>
                 <a
                   href={`/${section}/${post.category}/${post.id}`}
                   className="card-link"
