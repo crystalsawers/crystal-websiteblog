@@ -67,26 +67,28 @@ const Navbar = () => {
             placeholder="blur"
             priority={true}
           />
-          <h1 className="p-6 text-[var(--navbar-text)]">Log, Lap, and Over</h1>
+          <h1 style={{ color: '#99ffd3' }} className="text-lg font-bold whitespace-nowrap p-6">
+            Log, Lap, and Over
+          </h1>
         </Link>
 
         <div className="hidden lg:flex lg:flex-row lg:items-center lg:space-x-4">
           <Link
             href="/about"
-            className="block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+            className="block text-xs text-[#99ffd3] hover:text-white sm:text-sm md:text-base"
           >
             About
           </Link>
           <Link
             href="/journey"
-            className="block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base"
+            className="block text-xs text-[#99ffd3] hover:text-white sm:text-sm md:text-base"
           >
             Journey
           </Link>
 
           {/* Interests Dropdown */}
           <div className="group relative">
-            <button className="block text-sm text-[var(--navbar-text)] hover:text-white md:text-base">
+            <button className="block text-sm text-[#99ffd3] hover:text-white md:text-base">
               Interests
             </button>
             <div className="invisible absolute left-0 top-full z-50 flex w-48 flex-col rounded-lg bg-[var(--navbar-bg)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">

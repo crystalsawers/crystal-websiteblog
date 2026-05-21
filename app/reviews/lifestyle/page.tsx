@@ -128,7 +128,7 @@ const Lifestyle = () => {
 
   if (loading)
     return (
-      <p className="text-center text-custom-green">
+      <p className="text-center text-[#99ffd3]">
         Loading Lifestyle posts...
       </p>
     );

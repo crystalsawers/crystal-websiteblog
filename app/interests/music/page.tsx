@@ -126,7 +126,7 @@ const Music = () => {
 
   if (loading)
     return (
-      <p className="text-center text-custom-green">Loading Music posts...</p>
+      <p className="text-center text-[#99ffd3]">Loading Music posts...</p>
     );
   if (error) return <p>{error}</p>;
 

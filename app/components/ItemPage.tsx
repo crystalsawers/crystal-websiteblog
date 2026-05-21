@@ -239,7 +239,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   };
 
   if (loading)
-    return <p className="text-center text-custom-green">Loading...</p>;
+    return <p className="text-center text-[#99ffd3]">Loading...</p>;
   if (fetchError) return <p>{fetchError}</p>;
   if (!data) return <NotFound />;
 

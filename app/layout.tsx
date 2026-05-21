@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import { AuthProvider } from './components/AuthContext';
 import Head from 'next/head';
 import ContentWrapper from './components/ContentWrapper';
+import { Analytics } from '@vercel/analytics/next';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -52,6 +53,7 @@ export default function RootLayout({
         >
           <Navbar />
           <ContentWrapper>{children}</ContentWrapper>
+          <Analytics />
         </body>
       </html>
     </AuthProvider>

@@ -73,34 +73,34 @@ const EditAbout = () => {
 
   return (
     <div className="p-8">
-      <h1 className="mb-4 text-center text-2xl font-bold text-custom-green">
+      <h1 className="mb-4 text-center text-2xl font-bold text-[#99ffd3]">
         Edit About Me
       </h1>
       {successMessage && (
         <p className="mb-4 text-green-500">{successMessage}</p>
       )}
       <form onSubmit={handleSubmit}>
-        <label className="mb-2 block font-medium text-custom-green">
+        <label className="mb-2 block font-medium text-[#99ffd3]">
           Introduction:
         </label>
         <textarea
           name="introduction"
           value={formData.introduction}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
         />
 
-        <label className="mb-2 block font-medium text-custom-green">
+        <label className="mb-2 block font-medium text-[#99ffd3]">
           Personal Story:
         </label>
         <textarea
           name="personal_story"
           value={formData.personal_story}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
         />
 
-        <label className="mb-2 block font-medium text-custom-green">
+        <label className="mb-2 block font-medium text-[#99ffd3]">
           Personal Email:
         </label>
         <input
@@ -108,10 +108,10 @@ const EditAbout = () => {
           name="email"
           value={formData.contact_info.email}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
         />
 
-        <label className="mb-2 block font-medium text-custom-green">
+        <label className="mb-2 block font-medium text-[#99ffd3]">
           Blog Email:
         </label>
         <input
@@ -119,9 +119,9 @@ const EditAbout = () => {
           name="blog_email"
           value={formData.contact_info.blog_email}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
         />
-        <label className="mb-2 block font-medium text-custom-green">
+        <label className="mb-2 block font-medium text-[#99ffd3]">
           GitHub:
         </label>
         <input
@@ -129,7 +129,7 @@ const EditAbout = () => {
           name="github"
           value={formData.contact_info.github}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
         />
 
         <button

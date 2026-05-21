@@ -57,7 +57,7 @@ export default function ExistingFilesPage() {
       <h1 className="page-title">Image Upload Library</h1>
 
       {files.length === 0 && (
-        <p className="text-center text-custom-green">Loading...</p>
+        <p className="text-center text-[#99ffd3]">Loading...</p>
       )}
 
       {/* Upload Button */}
@@ -271,7 +271,7 @@ export default function ExistingFilesPage() {
               }}
             >
               {`<div style="text-align: center;">
-  <img src="${url}" alt="image" width="700" style="display: inline-block;"/> 
+  <img src="${url}" alt="image" width="1000" style="display: inline-block;"/> 
 </div>`}
             </pre>
 

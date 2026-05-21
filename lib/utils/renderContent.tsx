@@ -1,17 +1,16 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm'; // For GitHub Flavored Markdown support
-import rehypeRaw from 'rehype-raw'; // To handle raw HTML if needed (optional)
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
-type ContentElement = JSX.Element | null;
+type ContentElement = React.ReactElement | null;
 
 const renderContent = (content: string): ContentElement => {
   return (
-    <div className="markdown-wrapper">
+    <div className="markdown-wrapper markdown-content">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeRaw]} // Optional: to support raw HTML if used in content
-        className="markdown-content"
+        rehypePlugins={[rehypeRaw]}
       >
         {content}
       </ReactMarkdown>

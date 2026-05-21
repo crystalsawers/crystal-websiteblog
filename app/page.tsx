@@ -240,7 +240,7 @@ const HomePage = () => {
         <div className="mb-6 flex flex-col items-end">
           <label
             htmlFor="series-filter"
-            className="mb-2 text-sm font-medium text-custom-green"
+            className="mb-2 text-sm font-medium text-[#99ffd3]"
           >
             Filter by Blog Series
           </label>
@@ -280,7 +280,7 @@ const HomePage = () => {
         <div className="card-grid">
           {/* No Posts Yet */}
           {posts.length === 0 && selectedSeries ? (
-            <p className="text-center text-xl text-custom-green">
+            <p className="text-center text-xl text-[#99ffd3]">
               No posts yet. Stay tuned for this upcoming series.
             </p>
           ) : (

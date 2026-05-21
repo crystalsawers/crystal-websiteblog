@@ -124,7 +124,7 @@ const Miscellaneous = () => {
   };
 
   if (loading)
-    return <p className="text-center text-custom-green">Loading...</p>;
+    return <p className="text-center text-[#99ffd3]">Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (

@@ -64,7 +64,7 @@ const Journey = () => {
 
   if (loading)
     return (
-      <p className="text-center text-custom-green">Loading Journey page...</p>
+      <p className="text-center text-[#99ffd3]">Loading Journey page...</p>
     );
   if (error) return <p>{error}</p>;
 

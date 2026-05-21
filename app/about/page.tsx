@@ -47,7 +47,7 @@ const About = () => {
 
   if (loading)
     return (
-      <p className="text-center text-custom-green">Loading About Me page...</p>
+      <p className="text-center text-[#99ffd3]">Loading About Me page...</p>
     );
   if (error) return <p>{error}</p>;
 

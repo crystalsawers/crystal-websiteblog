@@ -130,7 +130,7 @@ const Formula1 = () => {
 
   if (loading)
     return (
-      <p className="text-center text-custom-green">
+      <p className="text-center text-[#99ffd3]">
         Loading Formula 1 posts...
       </p>
     );

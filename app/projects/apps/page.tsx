@@ -126,7 +126,7 @@ const DevOps = () => {
 
   if (loading)
     return (
-      <p className="text-center text-custom-green">
+      <p className="text-center text-[#99ffd3]">
         Loading Apps, Software, and Other IT posts...
       </p>
     );
@@ -153,7 +153,7 @@ const DevOps = () => {
       </div>
 
       {data.length === 0 ? (
-        <p className="text-center text-custom-green">
+        <p className="text-center text-[#99ffd3]">
           No Apps, Software, and Other IT posts yet.
         </p>
       ) : (

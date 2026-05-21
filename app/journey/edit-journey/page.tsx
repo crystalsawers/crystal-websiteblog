@@ -121,30 +121,30 @@ const EditJourney = () => {
 
   return (
     <div className="p-8">
-      <h1 className="mb-4 text-center text-2xl font-bold text-custom-green">
+      <h1 className="mb-4 text-center text-2xl font-bold text-[#99ffd3]">
         Edit My Journey
       </h1>
       {successMessage && (
         <p className="mb-4 text-green-500">{successMessage}</p>
       )}
       <form onSubmit={handleSubmit}>
-        <label className="mb-2 block font-medium text-custom-green">
+        <label className="mb-2 block font-medium text-[#99ffd3]">
           Start of Journey:
         </label>
         <textarea
           name="start_of_journey"
           value={formData.start_of_journey}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
         />
 
         <div className="mb-8 rounded-md border border-gray-700 p-4">
-          <h2 className="mb-4 text-lg font-semibold text-custom-green">
+          <h2 className="mb-4 text-lg font-semibold text-[#99ffd3]">
             Milestones
           </h2>
           {formData.milestones.map((milestone, index) => (
             <div key={index} className="mb-6">
-              <label className="mb-2 block font-medium text-custom-green">
+              <label className="mb-2 block font-medium text-[#99ffd3]">
                 Milestone Date:
               </label>
               <input
@@ -154,9 +154,9 @@ const EditJourney = () => {
                 onChange={(e) =>
                   handleInputChange(e, index, 'milestones', 'date')
                 }
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
               />
-              <label className="mb-2 block font-medium text-custom-green">
+              <label className="mb-2 block font-medium text-[#99ffd3]">
                 Milestone Description:
               </label>
               <textarea
@@ -165,7 +165,7 @@ const EditJourney = () => {
                 onChange={(e) =>
                   handleInputChange(e, index, 'milestones', 'description')
                 }
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
               />
               <button
                 type="button"
@@ -188,12 +188,12 @@ const EditJourney = () => {
         </div>
 
         <div className="mb-8 rounded-md border border-gray-700 p-4">
-          <h2 className="mb-4 text-lg font-semibold text-custom-green">
+          <h2 className="mb-4 text-lg font-semibold text-[#99ffd3]">
             Challenges
           </h2>
           {formData.challenges.map((challenge, index) => (
             <div key={index} className="mb-6">
-              <label className="mb-2 block font-medium text-custom-green">
+              <label className="mb-2 block font-medium text-[#99ffd3]">
                 Challenge:
               </label>
               <textarea
@@ -202,9 +202,9 @@ const EditJourney = () => {
                 onChange={(e) =>
                   handleInputChange(e, index, 'challenges', 'description')
                 }
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
               />
-              <label className="mb-2 block font-medium text-custom-green">
+              <label className="mb-2 block font-medium text-[#99ffd3]">
                 Solution:
               </label>
               <textarea
@@ -213,7 +213,7 @@ const EditJourney = () => {
                 onChange={(e) =>
                   handleInputChange(e, index, 'challenges', 'solution')
                 }
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
               />
               <button
                 type="button"
@@ -236,12 +236,12 @@ const EditJourney = () => {
         </div>
 
         <div className="mb-8 rounded-md border border-gray-700 p-4">
-          <h2 className="mb-4 text-lg font-semibold text-custom-green">
+          <h2 className="mb-4 text-lg font-semibold text-[#99ffd3]">
             Skills
           </h2>
           {formData.skills.map((skill, index) => (
             <div key={index} className="mb-6">
-              <label className="mb-2 block font-medium text-custom-green">
+              <label className="mb-2 block font-medium text-[#99ffd3]">
                 Skill Name:
               </label>
               <input
@@ -249,9 +249,9 @@ const EditJourney = () => {
                 placeholder="Enter skill name"
                 value={skill.name}
                 onChange={(e) => handleInputChange(e, index, 'skills', 'name')}
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
               />
-              <label className="mb-2 block font-medium text-custom-green">
+              <label className="mb-2 block font-medium text-[#99ffd3]">
                 Details:
               </label>
               <textarea
@@ -260,7 +260,7 @@ const EditJourney = () => {
                 onChange={(e) =>
                   handleInputChange(e, index, 'skills', 'details')
                 }
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-custom-green focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
               />
               <button
                 type="button"

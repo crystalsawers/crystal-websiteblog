@@ -126,7 +126,7 @@ const Embedded = () => {
 
   if (loading)
     return (
-      <p className="text-center text-custom-green">Loading Embedded posts...</p>
+      <p className="text-center text-[#99ffd3]">Loading Embedded posts...</p>
     );
   if (error) return <p>{error}</p>;
 
@@ -150,7 +150,7 @@ const Embedded = () => {
         )}
       </div>
       {data.length === 0 ? (
-        <p className="text-center text-custom-green">
+        <p className="text-center text-[#99ffd3]">
           No Embedded Systems posts yet.
         </p>
       ) : (

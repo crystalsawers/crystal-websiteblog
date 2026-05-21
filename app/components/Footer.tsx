@@ -14,13 +14,13 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
     >
       <div className="container mx-auto flex flex-col items-center justify-between px-4 max-[799px]:flex-col lg:flex-row">
         {/* Copyright 2026 */}
-        <p className="mb-2 text-sm text-custom-green md:mb-0">
+        <p className="mb-2 text-sm text-[#99ffd3] md:mb-0">
           &copy; {new Date().getFullYear()} Log, Lap, and Over. All rights
           reserved.
         </p>
 
         {/* Slogan */}
-        <p className="mb-3 mt-2 text-center text-sm italic text-custom-green">
+        <p className="mb-3 mt-2 text-center text-sm italic text-[#99ffd3]">
           Sport, music, side projects, and everything in between.
         </p>
 
@@ -31,7 +31,7 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
             <Link
               href="https://github.com/crystalsawers"
               target="_blank"
-              className="text-custom-green transition-colors duration-200 hover:text-white"
+              className="text-[#99ffd3] transition-colors duration-200 hover:text-white"
               aria-label="GitHub"
             >
               <svg
@@ -47,7 +47,7 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
             {/* Email */}
             <Link
               href="mailto:loglapandover@gmail.com"
-              className="text-custom-green transition-colors duration-200 hover:text-white"
+              className="text-[#99ffd3] transition-colors duration-200 hover:text-white"
               aria-label="Email"
             >
               <svg
@@ -63,7 +63,7 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
             {/* Back to top button */}
             <button
               onClick={scrollToTop}
-              className="ml-2 text-custom-green transition-colors duration-200 hover:text-white"
+              className="ml-2 text-[#99ffd3] transition-colors duration-200 hover:text-white"
               aria-label="Back to top"
             >
               ↑ Back to Top

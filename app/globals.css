@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
 
 @layer components {
   .responsive-container {
@@ -131,11 +130,11 @@ main nav {
 }
 
 .card-link {
-  @apply text-xl font-bold text-gray-800 hover:underline !important;
+  @apply text-xl font-bold text-gray-800 hover:underline;
 }
 
 .page-title {
-  @apply mb-6 text-center text-2xl font-bold text-custom-green;
+  @apply mb-6 text-center text-2xl font-bold text-[#99ffd3];
 }
 
 .card-img {

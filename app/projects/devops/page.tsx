@@ -126,7 +126,7 @@ const DevOps = () => {
 
   if (loading)
     return (
-      <p className="text-center text-custom-green">Loading DevOps posts...</p>
+      <p className="text-center text-[#99ffd3]">Loading DevOps posts...</p>
     );
   if (error) return <p>{error}</p>;
 
@@ -151,7 +151,7 @@ const DevOps = () => {
       </div>
 
       {data.length === 0 ? (
-        <p className="text-center text-custom-green">
+        <p className="text-center text-[#99ffd3]">
           No Operations, DevOps, and Security posts yet.
         </p>
       ) : (

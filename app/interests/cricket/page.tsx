@@ -126,7 +126,7 @@ const Cricket = () => {
 
   if (loading)
     return (
-      <p className="text-center text-custom-green">Loading Cricket posts...</p>
+      <p className="text-center text-[#99ffd3]">Loading Cricket posts...</p>
     );
   if (error) return <p>{error}</p>;
 
