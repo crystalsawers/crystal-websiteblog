@@ -57,7 +57,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative mx-auto flex w-full max-w-screen-2xl flex-col items-center p-4">
+    <div className="relative mx-auto flex w-full max-w-screen-2xl flex-col items-center p-4 border-b border-gray-600 mb-7">
       <div className="flex w-full items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Image
@@ -338,7 +338,7 @@ const Navbar = () => {
 
       {/* Search Bar */}
       {isSearchVisible && <SearchBar onSearch={handleSearch} />}
-    </nav>
+    </div>
   );
 };
 
