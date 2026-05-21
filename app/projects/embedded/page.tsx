@@ -160,7 +160,7 @@ const Embedded = () => {
             return (
               <div key={item.id} className="card">
                 {item.imageUrl && (
-                  <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                  <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
                     <Image
                       src={item.imageUrl}
                       alt={item.title || 'Embedded post image'}

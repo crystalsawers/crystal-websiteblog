@@ -127,7 +127,7 @@ const ResultsPage = () => {
             return (
               <div key={post.id} className="card mb-4">
                 {post.imageUrl && (
-                  <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                  <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
                     <Image
                       src={post.imageUrl}
                       alt={post.title || 'Posted image'}

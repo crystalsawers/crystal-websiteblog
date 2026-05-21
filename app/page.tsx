@@ -295,7 +295,7 @@ const HomePage = () => {
                       className="card relative mb-4 border-2 border-yellow-400 bg-yellow-50"
                     >
                       {post.imageUrl && (
-                        <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                        <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
                           <Image
                             src={post.imageUrl}
                             alt={post.title || 'Posted image'}
@@ -370,7 +370,7 @@ const HomePage = () => {
                           </button>
                         </div>
                       )}
-                      <div className="absolute bottom-5 right-5 flex items-center rounded px-2 py-1">
+                      <div className="absolute right-5 bottom-5 flex items-center rounded px-2 py-1">
                         <span className="text-xl font-semibold text-black">
                           Pinned
                         </span>
@@ -394,7 +394,7 @@ const HomePage = () => {
                   return (
                     <div key={post.id} className="card mb-4">
                       {post.imageUrl && (
-                        <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                        <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
                           <Image
                             src={post.imageUrl}
                             alt={post.title || 'Posted image'}

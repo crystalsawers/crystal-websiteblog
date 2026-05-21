@@ -129,9 +129,7 @@ const Formula1 = () => {
 
   if (loading)
     return (
-      <p className="text-center text-[#99ffd3]">
-        Loading Formula 1 posts...
-      </p>
+      <p className="text-center text-[#99ffd3]">Loading Formula 1 posts...</p>
     );
   if (error) return <p>{error}</p>;
 
@@ -166,7 +164,7 @@ const Formula1 = () => {
             return (
               <div key={item.id} className="card mb-4">
                 {item.imageUrl && (
-                  <div className="lg:h-70 relative h-48 w-full overflow-hidden md:h-56">
+                  <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
                     <Image
                       src={item.imageUrl}
                       alt={item.title || 'Formula 1 post image'}

@@ -52,20 +52,20 @@ export default function CreateSeries() {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 p-4 text-lg text-black focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="w-full rounded-lg border border-gray-300 p-4 text-lg text-black focus:ring-2 focus:ring-emerald-500 focus:outline-none"
           placeholder="Enter series name"
         />
         <div className="mt-6 flex justify-center space-x-4">
           <button
             type="submit"
-            className="h-16 w-24 rounded-lg bg-emerald-500 text-lg font-bold text-white hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-500"
+            className="h-16 w-24 rounded-lg bg-emerald-500 text-lg font-bold text-white hover:bg-emerald-600 focus:ring-4 focus:ring-emerald-500 focus:outline-none"
           >
             Create
           </button>
           <button
             type="button"
             onClick={() => router.push('/')}
-            className="h-16 w-24 rounded-lg bg-red-500 text-lg font-bold text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-500"
+            className="h-16 w-24 rounded-lg bg-red-500 text-lg font-bold text-white hover:bg-red-600 focus:ring-4 focus:ring-red-500 focus:outline-none"
           >
             Close
           </button>

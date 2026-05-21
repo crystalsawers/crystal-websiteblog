@@ -135,7 +135,7 @@ const EditJourney = () => {
           name="start_of_journey"
           value={formData.start_of_journey}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="focus:ring-custom-green mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
         />
 
         <div className="mb-8 rounded-md border border-gray-700 p-4">
@@ -154,7 +154,7 @@ const EditJourney = () => {
                 onChange={(e) =>
                   handleInputChange(e, index, 'milestones', 'date')
                 }
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="focus:ring-custom-green mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
               />
               <label className="mb-2 block font-medium text-[#99ffd3]">
                 Milestone Description:
@@ -165,12 +165,12 @@ const EditJourney = () => {
                 onChange={(e) =>
                   handleInputChange(e, index, 'milestones', 'description')
                 }
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="focus:ring-custom-green mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => handleRemoveItem('milestones', index)}
-                className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600 focus:ring-2 focus:ring-red-500 focus:outline-none"
               >
                 Remove
               </button>
@@ -181,7 +181,7 @@ const EditJourney = () => {
             onClick={() =>
               handleAddItem('milestones', { date: '', description: '' })
             }
-            className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
           >
             Add Milestone
           </button>
@@ -202,7 +202,7 @@ const EditJourney = () => {
                 onChange={(e) =>
                   handleInputChange(e, index, 'challenges', 'description')
                 }
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="focus:ring-custom-green mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
               />
               <label className="mb-2 block font-medium text-[#99ffd3]">
                 Solution:
@@ -213,12 +213,12 @@ const EditJourney = () => {
                 onChange={(e) =>
                   handleInputChange(e, index, 'challenges', 'solution')
                 }
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="focus:ring-custom-green mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => handleRemoveItem('challenges', index)}
-                className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600 focus:ring-2 focus:ring-red-500 focus:outline-none"
               >
                 Remove
               </button>
@@ -229,16 +229,14 @@ const EditJourney = () => {
             onClick={() =>
               handleAddItem('challenges', { description: '', solution: '' })
             }
-            className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
           >
             Add Challenge
           </button>
         </div>
 
         <div className="mb-8 rounded-md border border-gray-700 p-4">
-          <h2 className="mb-4 text-lg font-semibold text-[#99ffd3]">
-            Skills
-          </h2>
+          <h2 className="mb-4 text-lg font-semibold text-[#99ffd3]">Skills</h2>
           {formData.skills.map((skill, index) => (
             <div key={index} className="mb-6">
               <label className="mb-2 block font-medium text-[#99ffd3]">
@@ -249,7 +247,7 @@ const EditJourney = () => {
                 placeholder="Enter skill name"
                 value={skill.name}
                 onChange={(e) => handleInputChange(e, index, 'skills', 'name')}
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="focus:ring-custom-green mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
               />
               <label className="mb-2 block font-medium text-[#99ffd3]">
                 Details:
@@ -260,12 +258,12 @@ const EditJourney = () => {
                 onChange={(e) =>
                   handleInputChange(e, index, 'skills', 'details')
                 }
-                className="mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+                className="focus:ring-custom-green mb-2 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => handleRemoveItem('skills', index)}
-                className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600 focus:ring-2 focus:ring-red-500 focus:outline-none"
               >
                 Remove
               </button>
@@ -274,7 +272,7 @@ const EditJourney = () => {
           <button
             type="button"
             onClick={() => handleAddItem('skills', { name: '', details: '' })}
-            className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
           >
             Add Skill
           </button>
@@ -282,7 +280,7 @@ const EditJourney = () => {
 
         <button
           type="submit"
-          className="mx-auto block rounded-md bg-custom-green px-6 py-3 text-lg text-black hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="bg-custom-green focus:ring-custom-green mx-auto block rounded-md px-6 py-3 text-lg text-black hover:bg-green-700 focus:ring-2 focus:outline-none"
         >
           Save
         </button>

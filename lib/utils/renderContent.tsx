@@ -8,10 +8,7 @@ type ContentElement = React.ReactElement | null;
 const renderContent = (content: string): ContentElement => {
   return (
     <div className="markdown-wrapper markdown-content">
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeRaw]}
-      >
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
         {content}
       </ReactMarkdown>
     </div>

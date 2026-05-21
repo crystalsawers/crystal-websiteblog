@@ -87,7 +87,7 @@ const EditAbout = () => {
           name="introduction"
           value={formData.introduction}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="focus:ring-custom-green mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
         />
 
         <label className="mb-2 block font-medium text-[#99ffd3]">
@@ -97,7 +97,7 @@ const EditAbout = () => {
           name="personal_story"
           value={formData.personal_story}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="focus:ring-custom-green mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
         />
 
         <label className="mb-2 block font-medium text-[#99ffd3]">
@@ -108,7 +108,7 @@ const EditAbout = () => {
           name="email"
           value={formData.contact_info.email}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="focus:ring-custom-green mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
         />
 
         <label className="mb-2 block font-medium text-[#99ffd3]">
@@ -119,22 +119,20 @@ const EditAbout = () => {
           name="blog_email"
           value={formData.contact_info.blog_email}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="focus:ring-custom-green mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
         />
-        <label className="mb-2 block font-medium text-[#99ffd3]">
-          GitHub:
-        </label>
+        <label className="mb-2 block font-medium text-[#99ffd3]">GitHub:</label>
         <input
           type="text"
           name="github"
           value={formData.contact_info.github}
           onChange={handleInputChange}
-          className="mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="focus:ring-custom-green mb-4 w-full rounded-md border bg-gray-800 p-2 text-[#99ffd3] focus:ring-2 focus:outline-none"
         />
 
         <button
           type="submit"
-          className="mx-auto block rounded-md bg-custom-green px-6 py-3 text-lg text-black hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-custom-green"
+          className="bg-custom-green focus:ring-custom-green mx-auto block rounded-md px-6 py-3 text-lg text-black hover:bg-green-700 focus:ring-2 focus:outline-none"
         >
           Save
         </button>

@@ -88,7 +88,7 @@ const FeedbackForm = () => {
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name"
           required
-          className="create-form-input w-full rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#99ffd3]"
+          className="create-form-input w-full rounded-lg border border-gray-300 bg-[#99ffd3] p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
 
         <label
@@ -104,11 +104,11 @@ const FeedbackForm = () => {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Your email"
           required
-          className="create-form-input w-full rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#99ffd3]"
+          className="create-form-input w-full rounded-lg border border-gray-300 bg-[#99ffd3] p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
 
         <label
-          className="create-form-label mb-1 text-sm font-medium text-black "
+          className="create-form-label mb-1 text-sm font-medium text-black"
           htmlFor="message"
         >
           Message
@@ -119,7 +119,7 @@ const FeedbackForm = () => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Your feedback"
           required
-          className="create-form-textarea min-h-[300px] w-full resize-y rounded-lg border border-gray-300 px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-[#99ffd3]"
+          className="create-form-textarea min-h-[300px] w-full resize-y rounded-lg border border-gray-300 bg-[#99ffd3] px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
         />
 
         <button type="submit" className="login-card-button">

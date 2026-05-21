@@ -57,7 +57,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="relative mx-auto flex w-full max-w-screen-2xl flex-col items-center p-4 border-b border-gray-600 mb-7">
+    <div className="relative mx-auto mb-7 flex w-full max-w-screen-2xl flex-col items-center border-b border-gray-600 p-4">
       <div className="flex w-full items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Image
@@ -67,7 +67,10 @@ const Navbar = () => {
             placeholder="blur"
             priority={true}
           />
-          <h1 style={{ color: '#99ffd3' }} className="text-lg font-bold whitespace-nowrap p-6">
+          <h1
+            style={{ color: '#99ffd3' }}
+            className="p-6 text-lg font-bold whitespace-nowrap"
+          >
             Log, Lap, and Over
           </h1>
         </Link>
@@ -91,7 +94,7 @@ const Navbar = () => {
             <button className="block text-sm text-[#99ffd3] hover:text-white md:text-base">
               Interests
             </button>
-            <div className="invisible absolute left-0 top-full z-50 flex w-48 flex-col rounded-lg bg-[var(--navbar-bg)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
+            <div className="invisible absolute top-full left-0 z-50 flex w-48 flex-col rounded-lg bg-[var(--navbar-bg)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
               <Link
                 href="/interests/cricket"
                 className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
@@ -118,7 +121,7 @@ const Navbar = () => {
             <button className="block text-sm text-[var(--navbar-text)] hover:text-white md:text-base">
               Reviews
             </button>
-            <div className="invisible absolute left-0 top-full z-50 flex w-48 flex-col rounded-lg bg-[var(--navbar-bg)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
+            <div className="invisible absolute top-full left-0 z-50 flex w-48 flex-col rounded-lg bg-[var(--navbar-bg)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
               <Link
                 href="/reviews/lifestyle"
                 className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"
@@ -139,7 +142,7 @@ const Navbar = () => {
             <button className="block text-sm text-[var(--navbar-text)] hover:text-white md:text-base">
               Projects
             </button>
-            <div className="invisible absolute left-0 top-full z-50 flex w-48 flex-col rounded-lg bg-[var(--navbar-bg)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
+            <div className="invisible absolute top-full left-0 z-50 flex w-48 flex-col rounded-lg bg-[var(--navbar-bg)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
               <Link
                 href="/projects/embedded"
                 className="rounded-md px-4 py-2 text-base text-[var(--navbar-text)] hover:bg-[var(--navbar-hover)] hover:text-white"

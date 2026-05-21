@@ -20,7 +20,7 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
         </p>
 
         {/* Slogan */}
-        <p className="mb-3 mt-2 text-center text-sm italic text-[#99ffd3]">
+        <p className="mt-2 mb-3 text-center text-sm text-[#99ffd3] italic">
           Sport, music, side projects, and everything in between.
         </p>
 
