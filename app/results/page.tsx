@@ -108,24 +108,22 @@ const ResultsPage = () => {
 
   return (
     <div>
-      <div className="mx-auto max-w-4xl">
-        <h2 className="page-title mb-6 text-center">Search Results</h2>
+      <div className="responsive-container">
+      <h2 className="page-title mb-6 text-center">Search Results</h2>
 
-        {posts.length === 0 ? (
-          <p className="feedback-button text-center">No results found.</p>
-        ) : (
-          posts.map((post) => {
+      {posts.length === 0 ? (
+        <p className="feedback-button text-center">No results found.</p>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {posts.map((post) => {
             const section = isReviewCategory(post.category)
               ? 'reviews'
               : 'interests';
 
-            if (!post.category) {
-              console.warn('Category is undefined for post:', post);
-              return null; // Skip rendering this post
-            }
+            if (!post.category) return null;
 
             return (
-              <div key={post.id} className="card mb-4">
+              <div key={post.id} className="card">
                 {post.imageUrl && (
                   <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
                     <Image
@@ -143,29 +141,33 @@ const ResultsPage = () => {
                         objectFit: 'cover',
                         objectPosition: 'top center',
                       }}
-                      className="card-img"
                     />
                   </div>
                 )}
+
                 {post.title && (
                   <div className={post.imageUrl ? 'pt-4' : ''}>
                     <h2 className="card-title">{post.title}</h2>
                   </div>
                 )}
+
                 {post.date && (
                   <p className="card-text">
                     <strong>Posted:</strong> {formatDate(new Date(post.date))}
                   </p>
                 )}
+
                 {post.editedDate && (
                   <p className="card-text">
                     <strong>Edited:</strong>{' '}
                     {formatDate(new Date(post.editedDate))}
                   </p>
                 )}
+
                 <div className="card-text line-clamp-3">
                   {renderContent(post.content)}
                 </div>
+
                 <a
                   href={`/${section}/${post.category}/${post.id}`}
                   className="card-link"
@@ -174,10 +176,11 @@ const ResultsPage = () => {
                 </a>
               </div>
             );
-          })
-        )}
-      </div>
+          })}
+        </div>
+      )}
     </div>
+  </div>
   );
 };
 

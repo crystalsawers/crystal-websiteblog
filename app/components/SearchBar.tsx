@@ -22,7 +22,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         placeholder="Search..."
         aria-label="Search"
         required
-        className="w-full rounded border p-2 text-black"
+        className="w-full rounded border p-2 text-black bg-[#99ffd3]"
       />
       <button
         type="submit"
