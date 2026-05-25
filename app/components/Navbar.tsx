@@ -29,32 +29,12 @@ const Navbar = () => {
     setSearchVisible((prev) => !prev);
   };
 
-  const handleSearch = async (query: string) => {
-    if (query.trim()) {
-      try {
-        const response = await fetch('/api/search', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ keyword: query }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const results = await response.json();
-        const queryString = new URLSearchParams({
-          results: JSON.stringify(results),
-        }).toString();
-        router.push(`/results?${queryString}`);
-      } catch (error) {
-        console.error('Error fetching search results:', error);
-      }
-    }
-    setSearchVisible(false);
-  };
+  const handleSearch = (query: string) => {
+  if (query.trim()) {
+    router.push(`/results?q=${encodeURIComponent(query)}`);
+  }
+  setSearchVisible(false);
+};
 
   return (
     <div className="relative mx-auto mb-7 flex w-full max-w-screen-2xl flex-col items-center border-b border-gray-600 p-4">

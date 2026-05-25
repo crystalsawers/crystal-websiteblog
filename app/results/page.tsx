@@ -58,65 +58,54 @@ const ResultsPage = () => {
   );
 
   const fetchSearchResults = useCallback(
-    async (titles: string[]) => {
-      const allPosts: Post[] = [];
+  async (titles: string[]) => {
+    const allPosts: Post[] = [];
 
-      try {
-        for (const category of categories) {
-          const q = query(collection(db, category), orderBy('date', 'desc'));
-          const querySnapshot = await getDocs(q);
+    console.log('SEARCH FUNCTION RUNNING:', titles);
 
-          querySnapshot.forEach((documentSnapshot) => {
-            const data = documentSnapshot.data();
+    for (const category of categories) {
+      const q = query(collection(db, category), orderBy('date', 'desc'));
+      const querySnapshot = await getDocs(q);
 
-            if (data.isDraft === undefined) {
-              console.error(
-                `Post ${documentSnapshot.id} is missing the isDraft field.`,
-              );
-              return;
-            }
+      querySnapshot.forEach((documentSnapshot) => {
+        const data = documentSnapshot.data();
 
-            // Filter posts based on the search query
-            if (titles.some((title) => data.title?.includes(title))) {
-              allPosts.push({
-                id: documentSnapshot.id,
-                title: data.title || '',
-                content: data.content || '',
-                date: data.date || '',
-                editedDate: data.editedDate || '',
-                category,
-                imageUrl: data.imageUrl || '',
-                type: data.type || 'default',
-                isDraft: data.isDraft || false,
-                seriesIds: data.seriesIds || [], // Ensure seriesIds is included
-              } as Post);
-            }
-          });
+        const title = (data.title || '').toLowerCase().replace(/\s+/g, '');
+
+        if (titles.some((t) => title.includes(t.toLowerCase().replace(/\s+/g, '')))) {
+          allPosts.push({
+            id: documentSnapshot.id,
+            title: data.title || '',
+            content: data.content || '',
+            date: data.date || '',
+            editedDate: data.editedDate || '',
+            category,
+            imageUrl: data.imageUrl || '',
+            type: data.type || 'default',
+            isDraft: data.isDraft || false,
+            seriesIds: data.seriesIds || [],
+          } as Post);
         }
-      } catch (error) {
-        console.error('Error fetching search results:', error);
-        setError('Failed to load results');
-      }
+      });
+    }
 
-      return allPosts;
-    },
-    [categories],
-  );
+    return allPosts;
+  },
+  [categories],
+);
 
   useEffect(() => {
     const fetchResults = async () => {
       try {
+
+        // Extract search query
         const queryParams = new URLSearchParams(window.location.search);
-        const searchQueryString = queryParams.get('results') || '';
-        const searchQuery = JSON.parse(searchQueryString); // Parse the JSON string
+        const searchQuery = queryParams.get('q') || '';
+        const results = await fetchSearchResults([searchQuery]);
+        console.log('RESULTS FROM SEARCH:', results);
 
-        // Check if searchQuery is an array and get the titles
-        const titles = searchQuery.map((item: { title: string }) => item.title);
-
-        const results = await fetchSearchResults(titles);
-
+        // Sorting and Pagination
         const sortedPosts = sortPostsByDate(results, 'date');
-
         const startIndex = (currentPage - 1) * postsPerPage;
 
         const paginatedPosts = sortedPosts.slice(
@@ -126,6 +115,8 @@ const ResultsPage = () => {
 
         setPosts(paginatedPosts);
         setTotalPages(Math.ceil(sortedPosts.length / postsPerPage));
+        console.log('SEARCH QUERY:', searchQuery);
+        
 
       } catch (error) {
         console.error('Error parsing search query:', error);

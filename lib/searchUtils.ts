@@ -12,12 +12,15 @@ const collectionsToSearch = [
   'lifestyle',
   'misc',
   'music',
+  'apps',
+  'devops',
+  'embedded',
 ];
 
-export const searchAllCollections = async (
-  keyword: string,
-): Promise<SearchResult[]> => {
+export const searchAllCollections = async (keyword: string) => {
   const results: SearchResult[] = [];
+
+  const cleanKeyword = keyword.toLowerCase().trim().replace(/\s+/g, '');
 
   for (const collectionName of collectionsToSearch) {
     const collectionRef = collection(db, collectionName);
@@ -25,11 +28,17 @@ export const searchAllCollections = async (
 
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      const id = doc.id;
+      const title = (data.title || '').toLowerCase().replace(/\s+/g, '');
 
-      // Check if the title matches the keyword
-      if (data.title?.toLowerCase().includes(keyword.toLowerCase())) {
-        results.push({ id, title: data.title });
+      console.log('RAW TITLE:', title);
+      console.log('RAW KEYWORD:', cleanKeyword);
+      console.log('---');
+
+      if (title.includes(cleanKeyword)) {
+        results.push({
+          id: doc.id,
+          title: data.title,
+        });
       }
     });
   }
