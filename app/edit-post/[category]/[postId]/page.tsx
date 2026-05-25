@@ -347,7 +347,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
             type="file"
             accept="image/*"
             onChange={handleFileChange}
-            className="create-post-input file:bg-emerald-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:mr-4"
+            className="create-post-input file:mr-4 file:rounded-lg file:border-0 file:bg-emerald-600 file:px-4 file:py-2 file:text-white"
           />
         </div>
         {imageUrl && (
