@@ -205,11 +205,11 @@ main nav {
 .create-post-input,
 .create-post-textarea,
 .create-post-category-select {
-  @apply mt-2 block w-full rounded-lg border border-gray-300 px-6 py-4 font-medium text-black shadow-md focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:text-sm;
+  @apply mt-2 block w-full rounded-lg border border-gray-300 px-6 py-4 font-medium text-black bg-[#99ffd3] shadow-md focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:text-sm;
 }
 
 .create-post-textarea {
-  @apply h-64;
+  @apply h-64 bg-[#99ffd3];
 }
 
 .create-post-file-info {
@@ -247,7 +247,7 @@ main nav {
 }
 
 .create-post-file-input-container {
-  @apply relative mt-2 flex items-center;
+  @apply relative mt-2 flex items-center text-black;
 }
 
 .create-post-input {
@@ -256,7 +256,6 @@ main nav {
 
 .file-placeholder {
   @apply pointer-events-none absolute top-1/2 left-0 -translate-y-1/2 transform text-sm;
-  color: var(--navbar-text);
   padding-left: 120px;
   padding-top: 7px;
 }

@@ -257,11 +257,8 @@ const CreatePost = () => {
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
-                className="create-post-input"
+                className="create-post-input file:bg-emerald-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:mr-4"
               />
-              <span className="file-placeholder">
-                {file ? file.name : 'No file selected'}
-              </span>
             </div>
 
             {imageUrl && (

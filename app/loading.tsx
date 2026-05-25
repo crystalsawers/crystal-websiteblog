@@ -2,8 +2,8 @@
 export default function Loading() {
   return (
     <main className="text-center text-[#99ffd3]">
-      <h2 className="text-primary text-[#99ffd3]">Loading...</h2>
-      <p>This may take a while to load. Please be patient </p>
+      <h2 className="!text-[#99ffd3] font-bold">Loading...</h2>
+      <p>This may take a while to load. Please be patient... </p>
     </main>
   );
 }
