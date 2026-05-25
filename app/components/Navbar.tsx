@@ -30,11 +30,11 @@ const Navbar = () => {
   };
 
   const handleSearch = (query: string) => {
-  if (query.trim()) {
-    router.push(`/results?q=${encodeURIComponent(query)}`);
-  }
-  setSearchVisible(false);
-};
+    if (query.trim()) {
+      router.push(`/results?q=${encodeURIComponent(query)}`);
+    }
+    setSearchVisible(false);
+  };
 
   return (
     <div className="relative mx-auto mb-7 flex w-full max-w-screen-2xl flex-col items-center border-b border-gray-600 p-4">

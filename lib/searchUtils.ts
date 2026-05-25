@@ -30,10 +30,6 @@ export const searchAllCollections = async (keyword: string) => {
       const data = doc.data();
       const title = (data.title || '').toLowerCase().replace(/\s+/g, '');
 
-      console.log('RAW TITLE:', title);
-      console.log('RAW KEYWORD:', cleanKeyword);
-      console.log('---');
-
       if (title.includes(cleanKeyword)) {
         results.push({
           id: doc.id,
