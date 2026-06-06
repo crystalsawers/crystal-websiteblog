@@ -6,6 +6,9 @@ import { AuthProvider } from './components/AuthContext';
 import Head from 'next/head';
 import ContentWrapper from './components/ContentWrapper';
 import { Analytics } from '@vercel/analytics/next';
+import { GoogleAnalytics } from '@next/third-parties/google';
+
+const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -54,6 +57,7 @@ export default function RootLayout({
           <Navbar />
           <ContentWrapper>{children}</ContentWrapper>
           <Analytics />
+          {gaId && <GoogleAnalytics gaId={gaId} />}
         </body>
       </html>
     </AuthProvider>
