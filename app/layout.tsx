@@ -6,6 +6,7 @@ import { AuthProvider } from './components/AuthContext';
 import ContentWrapper from './components/ContentWrapper';
 import { Analytics } from '@vercel/analytics/next';
 import Script from 'next/script';
+import GoogleAnalyticsTracker from './components/GoogleAnalyticsTracker';
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -43,7 +44,7 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <ContentWrapper>{children}</ContentWrapper>
-
+          <GoogleAnalyticsTracker />
           <Analytics />
 
           {gaId && (
