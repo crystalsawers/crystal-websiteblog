@@ -7,6 +7,7 @@ import ContentWrapper from './components/ContentWrapper';
 import { Analytics } from '@vercel/analytics/next';
 import Script from 'next/script';
 import GoogleAnalyticsTracker from './components/GoogleAnalyticsTracker';
+import { Suspense } from 'react';
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -44,7 +45,11 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <ContentWrapper>{children}</ContentWrapper>
-          <GoogleAnalyticsTracker />
+
+          <Suspense fallback={null}>
+            <GoogleAnalyticsTracker />
+          </Suspense>
+
           <Analytics />
 
           {gaId && (
