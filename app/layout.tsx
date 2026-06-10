@@ -24,11 +24,32 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Log, Lap, and Over',
+  metadataBase: new URL('https://loglapandover.co.nz'),
+
+  title: {
+    default: 'Log, Lap, and Over',
+    template: '%s | Log, Lap, and Over',
+  },
+
   description: 'Sport, music, side projects, and everything in between.',
+
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',
+  },
+
+  openGraph: {
+    title: 'Log, Lap, and Over',
+    description: 'Sport, music, side projects, and everything in between.',
+    siteName: 'Log, Lap, and Over',
+    type: 'website',
+    images: [
+      {
+        url: '/log-lap-and-over-high-resolution-logo-transparent.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 };
 
