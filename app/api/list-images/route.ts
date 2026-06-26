@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
-import admin from 'firebase-admin';
+import { initializeApp, cert, getApps } from 'firebase-admin/app';
+import { getStorage } from 'firebase-admin/storage';
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
+if (!getApps().length) {
+  initializeApp({
+    credential: cert({
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
       privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
@@ -12,7 +13,7 @@ if (!admin.apps.length) {
   });
 }
 
-const bucket = admin.storage().bucket();
+const bucket = getStorage().bucket();
 
 export async function GET() {
   try {

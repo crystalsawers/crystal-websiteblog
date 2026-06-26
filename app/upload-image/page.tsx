@@ -158,25 +158,28 @@ export default function ExistingFilesPage() {
 
           // Everything else (images + GIFs)
           return (
-            <Image
+            <div
               key={file.name}
-              src={file.url}
-              alt={file.name}
-              width={300}
-              height={150}
               style={{
+                position: 'relative',
                 width: '100%',
                 height: '150px',
-                objectFit: 'cover',
-                borderRadius: 4,
-                cursor: 'pointer',
-                border: file.url === url ? '3px solid red' : 'none', // selected border
               }}
-              onClick={() => setUrl(file.url)}
-              onMouseOver={(e) => (e.currentTarget.style.opacity = '0.5')}
-              onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
-              unoptimized
-            />
+            >
+              <Image
+                src={file.url}
+                alt={file.name}
+                fill
+                style={{
+                  objectFit: 'cover',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                  border: file.url === url ? '3px solid red' : 'none',
+                }}
+                onClick={() => setUrl(file.url)}
+                unoptimized
+              />
+            </div>
           );
         })}
       </div>
