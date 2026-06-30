@@ -63,7 +63,8 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div className="create-form mx-auto min-h-[700px] w-full rounded-lg bg-[#99ffd3] p-6 shadow-md">
+    // Change background back to #99ffd3 next week
+    <div className="create-form mx-auto min-h-[700px] w-full rounded-lg bg-[#d1ff00] p-6 shadow-md">
       <h2 className="create-form-title mb-4 text-center text-2xl font-bold text-black">
         Comment
       </h2>
@@ -129,7 +130,7 @@ const FeedbackForm = () => {
       {status && (
         <p
           className={`text-bold mt-4 text-center ${
-            status === 'Error sending feedback.' ? 'text-red-500' : 'text-white'
+            status === 'Error sending feedback.' ? 'text-red-500' : 'text-black'
           }`}
         >
           {status}

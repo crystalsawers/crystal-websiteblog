@@ -9,7 +9,7 @@
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
-  --navbar-text: #99ffd3;
+  --navbar-text: #d1ff00; /* Change all this colour refs to #99ffd3 next week */
 }
 
 /* Optional: detect user's color preference and adjust */
@@ -17,7 +17,7 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    --navbar-text: #99ffd3;
+    --navbar-text: #d1ff00;
   }
 }
 
@@ -109,7 +109,7 @@ main nav {
 
 /* Reusable classes */
 .card {
-  @apply mb-6 rounded-lg bg-[#99ffd3] p-6 shadow-md;
+  @apply mb-6 rounded-lg bg-[#d1ff00] p-6 shadow-md;
 }
 
 .card-grid {
@@ -133,7 +133,7 @@ main nav {
 }
 
 .page-title {
-  @apply mb-6 text-center text-2xl font-bold text-[#99ffd3];
+  @apply mb-6 text-center text-2xl font-bold text-[#d1ff00];
 }
 
 .card-img {
@@ -146,7 +146,7 @@ main nav {
 
 /* Login Page Styles */
 .login-card {
-  @apply mb-6 rounded-lg bg-[#99ffd3] p-6 shadow-md;
+  @apply mb-6 rounded-lg bg-[#d1ff00] p-6 shadow-md;
 }
 
 .login-card-title {
@@ -205,11 +205,12 @@ main nav {
 .create-post-input,
 .create-post-textarea,
 .create-post-category-select {
-  @apply mt-2 block w-full rounded-lg border border-gray-300 bg-[#99ffd3] px-6 py-4 font-medium text-black shadow-md focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:text-sm;
+  @apply mt-2 block w-full rounded-lg border border-gray-300 bg-[#d1ff00] px-6 py-4 font-medium text-black shadow-md focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:text-sm;
 }
 
 .create-post-textarea {
-  @apply h-64 bg-[#99ffd3];
+  @apply h-64 bg-[#d1ff00];
+  /*  */
 }
 
 .create-post-file-info {
@@ -334,7 +335,7 @@ main nav {
 .markdown-content code {
   font-family: monospace;
   background-color: black;
-  color: #99ffd3;
+  color: #d1ff00;
   padding: 0.2em 0.4em;
   border-radius: 4px;
 }
@@ -362,7 +363,7 @@ main nav {
 }
 
 .markdown-content th {
-  @apply bg-[#99ffd3];
+  @apply bg-[#d1ff00];
 }
 
 @media (max-width: 600px) {

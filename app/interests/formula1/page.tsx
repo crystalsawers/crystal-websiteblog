@@ -129,13 +129,19 @@ const Formula1 = () => {
 
   if (loading)
     return (
-      <p className="text-center text-[#99ffd3]">Loading Formula 1 posts...</p>
+      <p className="text-center text-[#d1ff00]">Loading Formula 1 posts...</p>
     );
   if (error) return <p>{error}</p>;
 
   return (
     <div className="responsive-container">
       <h1 className="page-title">Formula 1</h1>
+      {/* Temporary banner for the neon yellow theme */}
+      <div className="flex flex-col items-center text-[#d1ff00] italic">
+        This week's temporary neon yellow theme is dedicated to Lando Norris,
+        Formula 1 driver and 2025 World Champion, in honour of his home race in
+        Silverstone.
+      </div>
       <div className="mb-4 flex justify-between">
         <button
           onClick={handleBack}

@@ -235,17 +235,26 @@ const HomePage = () => {
       <div className="responsive-container">
         <h2 className="page-title mb-6 text-center">Latest Posts</h2>
 
+        {/* Temporary banner for the neon yellow theme */}
+        <div className="flex flex-col items-center text-[#d1ff00] italic">
+          This week's temporary neon yellow theme is dedicated to Lando Norris,
+          Formula 1 driver and 2025 World Champion, in honour of his home race
+          in Silverstone.
+        </div>
+
         {/* Series Filter */}
         <div className="mb-6 flex flex-col items-end">
           <label
             htmlFor="series-filter"
-            className="mb-2 text-sm font-medium text-[#99ffd3]"
+            // Change back to #99ffd3  next week
+            className="mb-2 text-sm font-medium text-[#d1ff00]"
           >
             Filter by Blog Series
           </label>
           <select
             id="series-filter"
-            className="w-64 rounded-md border border-gray-300 bg-[#99ffd3] p-2 text-black shadow-md focus:border-indigo-500 focus:ring focus:ring-indigo-300"
+            // Change back to #99ffd3  next week
+            className="w-64 rounded-md border border-gray-300 bg-[#d1ff00] p-2 text-black shadow-md focus:border-indigo-500 focus:ring focus:ring-indigo-300"
             value={selectedSeries || ''}
             onChange={(e) => setSelectedSeries(e.target.value || null)}
           >
@@ -279,7 +288,8 @@ const HomePage = () => {
         <div className="card-grid">
           {/* No Posts Yet */}
           {posts.length === 0 && selectedSeries ? (
-            <p className="text-center text-xl text-[#99ffd3]">
+            <p className="text-center text-xl text-[#d1ff00]">
+              {/* Change back to #99ffd3 next week */}
               No posts yet. Stay tuned for this upcoming series.
             </p>
           ) : (
@@ -471,10 +481,11 @@ const HomePage = () => {
         </div>
 
         {/* Pagination Controls */}
+        {/* Change buttons back to bg-emerald-500 & text-white next week */}
         {posts.length > 0 && (
           <div className="mt-6 text-center">
             <button
-              className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
+              className={`mr-2 rounded-md bg-[#d1ff00] px-4 py-2 text-black ${
                 currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
               }`}
               onClick={() => goToPage(1)}
@@ -483,7 +494,7 @@ const HomePage = () => {
               First
             </button>
             <button
-              className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
+              className={`mr-2 rounded-md bg-[#d1ff00] px-4 py-2 text-black ${
                 currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
               }`}
               onClick={() => goToPage(Math.max(currentPage - 1, 1))}
@@ -495,7 +506,7 @@ const HomePage = () => {
               Page {currentPage} of {totalPages}
             </span>
             <button
-              className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
+              className={`ml-2 rounded-md bg-[#d1ff00] px-4 py-2 text-black ${
                 currentPage === totalPages
                   ? 'cursor-not-allowed opacity-50'
                   : ''
@@ -506,7 +517,7 @@ const HomePage = () => {
               Next
             </button>
             <button
-              className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
+              className={`ml-2 rounded-md bg-[#d1ff00] px-4 py-2 text-black ${
                 currentPage === totalPages
                   ? 'cursor-not-allowed opacity-50'
                   : ''
