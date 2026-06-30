@@ -63,7 +63,7 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div className="create-form mx-auto min-h-[700px] w-full rounded-lg bg-emerald-500 p-6 shadow-md">
+    <div className="create-form mx-auto min-h-[700px] w-full rounded-lg bg-[#99ffd3] p-6 shadow-md">
       <h2 className="create-form-title mb-4 text-center text-2xl font-bold text-black">
         Comment
       </h2>
@@ -88,7 +88,7 @@ const FeedbackForm = () => {
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name"
           required
-          className="create-form-input w-full rounded-lg border border-gray-300 bg-[#99ffd3] p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="create-form-input w-full rounded-lg border border-gray-300 bg-white p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
 
         <label
@@ -104,7 +104,7 @@ const FeedbackForm = () => {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Your email"
           required
-          className="create-form-input w-full rounded-lg border border-gray-300 bg-[#99ffd3] p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="create-form-input w-full rounded-lg border border-gray-300 bg-white p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
 
         <label
@@ -119,7 +119,7 @@ const FeedbackForm = () => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Your feedback"
           required
-          className="create-form-textarea min-h-[300px] w-full resize-y rounded-lg border border-gray-300 bg-[#99ffd3] px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
+          className="create-form-textarea min-h-[300px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
         />
 
         <button type="submit" className="login-card-button">
