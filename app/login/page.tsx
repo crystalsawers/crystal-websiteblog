@@ -43,8 +43,7 @@ const LoginPage = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="login-card-input bg-[#d1ff00]"
-              // Change back to bg-[#99ffd3] as per the recent edits in globals.css
+              className="login-card-input bg-white"
             />
           </label>
           <label className="login-card-label">
@@ -53,7 +52,7 @@ const LoginPage = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="login-card-input bg-[#d1ff00]"
+              className="login-card-input bg-white"
             />
           </label>
           <button type="submit" className="login-card-button">

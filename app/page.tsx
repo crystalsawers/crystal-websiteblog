@@ -476,7 +476,7 @@ const HomePage = () => {
         {posts.length > 0 && (
           <div className="mt-6 text-center">
             <button
-              className={`mr-2 rounded-md bg-emerald-500 & text-white px-4 py-2 ${
+              className={`& mr-2 rounded-md bg-emerald-500 px-4 py-2 text-white ${
                 currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
               }`}
               onClick={() => goToPage(1)}
@@ -485,7 +485,7 @@ const HomePage = () => {
               First
             </button>
             <button
-              className={`mr-2 rounded-md bg-emerald-500 & text-white px-4 py-2 ${
+              className={`& mr-2 rounded-md bg-emerald-500 px-4 py-2 text-white ${
                 currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
               }`}
               onClick={() => goToPage(Math.max(currentPage - 1, 1))}
@@ -497,7 +497,7 @@ const HomePage = () => {
               Page {currentPage} of {totalPages}
             </span>
             <button
-              className={`ml-2 rounded-md bg-emerald-500 & text-white px-4 py-2 ${
+              className={`& ml-2 rounded-md bg-emerald-500 px-4 py-2 text-white ${
                 currentPage === totalPages
                   ? 'cursor-not-allowed opacity-50'
                   : ''
@@ -508,7 +508,7 @@ const HomePage = () => {
               Next
             </button>
             <button
-              className={`ml-2 rounded-md bg-emerald-500 & text-white px-4 py-2 ${
+              className={`& ml-2 rounded-md bg-emerald-500 px-4 py-2 text-white ${
                 currentPage === totalPages
                   ? 'cursor-not-allowed opacity-50'
                   : ''
