@@ -8,20 +8,19 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
   };
 
   return (
-    // Change colour back to #99ffd3 next week
     <footer
       ref={ref}
       className="shadow-t absolute bottom-0 left-0 w-full border-t border-gray-800 bg-black py-6 text-white"
     >
       <div className="container mx-auto flex flex-col items-center justify-between px-4 max-[799px]:flex-col lg:flex-row">
         {/* Copyright 2026 */}
-        <p className="mb-2 text-sm text-[#d1ff00] md:mb-0">
+        <p className="mb-2 text-sm text-[#99ffd3] md:mb-0">
           &copy; {new Date().getFullYear()} Log, Lap, and Over. All rights
           reserved.
         </p>
 
         {/* Slogan */}
-        <p className="mt-2 mb-3 text-center text-sm text-[#d1ff00] italic">
+        <p className="mt-2 mb-3 text-center text-sm text-[#99ffd3] italic">
           Sport, music, side projects, and everything in between.
         </p>
 
@@ -32,7 +31,7 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
             <Link
               href="https://github.com/crystalsawers"
               target="_blank"
-              className="text-[#d1ff00] transition-colors duration-200 hover:text-white"
+              className="text-[#99ffd3] transition-colors duration-200 hover:text-white"
               aria-label="GitHub"
             >
               <svg
@@ -48,7 +47,7 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
             {/* Email */}
             <Link
               href="mailto:loglapandover@gmail.com"
-              className="text-[#d1ff00] transition-colors duration-200 hover:text-white"
+              className="text-[#99ffd3] transition-colors duration-200 hover:text-white"
               aria-label="Email"
             >
               <svg
@@ -64,7 +63,7 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
             {/* Back to top button */}
             <button
               onClick={scrollToTop}
-              className="ml-2 text-[#d1ff00] transition-colors duration-200 hover:text-white"
+              className="ml-2 text-[#99ffd3] transition-colors duration-200 hover:text-white"
               aria-label="Back to top"
             >
               ↑ Back to Top

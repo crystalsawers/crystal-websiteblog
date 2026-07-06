@@ -149,9 +149,8 @@ const SubscribePage = () => {
   }
 
   return (
-    // Change background back to #99ffd3 next week
     <main className="mx-auto my-12 max-w-5xl px-8">
-      <div className="subscribe-card rounded-lg bg-[#d1ff00] p-6 shadow-md">
+      <div className="subscribe-card rounded-lg bg-[#99ffd3] p-6 shadow-md">
         <h1 className="mb-4 text-2xl font-bold text-black">
           {isSubscribing
             ? 'Subscribe to My Latest Posts'
