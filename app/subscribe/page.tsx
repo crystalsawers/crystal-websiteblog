@@ -128,7 +128,7 @@ const SubscribePage = () => {
         }
       } else {
         setMessage(
-          'There was an error. Please try again. Please contact loglapandover@gmail.com if there are any issues.',
+          'There was an error. Please try again. Please contact crystal@loglapandover.co.nz if there are any issues.',
         );
       }
     } else {
@@ -137,7 +137,7 @@ const SubscribePage = () => {
         setMessage('You have successfully unsubscribed.');
       } else {
         setMessage(
-          'There was an error. Please try again. Please contact loglapandover@gmail.com if there are any issues.',
+          'There was an error. Please try again. Please contact crystal@loglapandover.co.nz if there are any issues.',
         );
       }
     }

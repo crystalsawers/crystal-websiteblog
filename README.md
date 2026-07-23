@@ -1,4 +1,4 @@
-# Crystal's Blog (New Version)
+# Log, Lap, and Over (Personal Blog)
 
 ![Status](https://img.shields.io/badge/status-active-brightgreen.svg)
 
@@ -8,7 +8,6 @@ _1st Deployment as of 15 September 2024:_ [Visit the Blog](https://crystal-websi
 
 _Domain name change as of 27 September 2025: https://loglapandover.co.nz/_
 
-**Note:** the `https://crystal-websiteblog.vercel.app/` url will still work but it will redirect to the new one, but the `https://crystalsawers.co.nz/` one will NOT work.
 
 ## Table of Contents
 
@@ -44,7 +43,7 @@ If you are seeing my site thinking that it would be straight forward to be able 
 
 ## Project Timeframe
 
-**Start Date:** 13 September 2024  
+**Creation Date:** 13 September 2024  
 **Current Status:** Active
 
 ## Features
@@ -77,7 +76,6 @@ If you are seeing my site thinking that it would be straight forward to be able 
 
 **Crystal Sawers**
 
-- Email: [crystalsawers39@gmail.com](mailto:crystalsawers39@gmail.com)
-- Blog email (for any blog-related enquiries): [loglapandover@gmail.com](mailto:loglapandover@gmail.com)
+- Email for Blog Enquiries: [crystal@loglapandover.co.nz](mailto:crystal@loglapandover.co.nz)
 - GitHub: [crystalsawers](https://github.com/crystalsawers)
 - LinkedIn: [Crystal Sawers](https://www.linkedin.com/in/crystal-sawers-33b643259/)

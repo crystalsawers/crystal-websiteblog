@@ -121,7 +121,9 @@ const FeedbackForm = () => {
           required
           className="create-form-textarea min-h-[300px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
         />
-
+        <p className="text-black italic">
+          <strong> Note:</strong> If you want to send or submit any attachments like images or documents, please email them to <a href="mailto:crystal@loglapandover.co.nz" className="text-blue-700 font-bold underline">crystal@loglapandover.co.nz</a>. Also refer to the post title (or general feedback if not attached to one) in your email so that I can identify which post you are referring to. Thank you!
+        </p>
         <button type="submit" className="login-card-button">
           Send Feedback
         </button>
@@ -129,7 +131,7 @@ const FeedbackForm = () => {
       {status && (
         <p
           className={`text-bold mt-4 text-center ${
-            status === 'Error sending feedback.' ? 'text-red-500' : 'text-black'
+            status === 'Error sending feedback. Contact crystal@loglapandover.co.nz for assistance.' ? 'text-red-500' : 'text-black'
           }`}
         >
           {status}
