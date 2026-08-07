@@ -146,7 +146,7 @@ const Navbar = () => {
 
           <div className="flex items-center space-x-4">
             <SubscribeButton />
-            <FeedbackButton />
+            {/* <FeedbackButton /> */}
             <UploadButton />
             <LogoutButton />
             {/* Search Icon */}
@@ -306,7 +306,7 @@ const Navbar = () => {
 
           <div className="flex flex-col items-center space-y-2">
             <SubscribeButton mobileMenu />
-            <FeedbackButton mobileMenu />
+            {/* <FeedbackButton mobileMenu /> */}
             <LogoutButton mobileMenu />
             {/* Search Icon */}
             <button

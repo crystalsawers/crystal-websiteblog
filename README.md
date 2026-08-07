@@ -8,7 +8,6 @@ _1st Deployment as of 15 September 2024:_ [Visit the Blog](https://crystal-websi
 
 _Domain name change as of 27 September 2025: https://loglapandover.co.nz/_
 
-
 ## Table of Contents
 
 - [Log, Lap, and Over (formerly Crystal's Blog)](#crystals-blog-new-version)
