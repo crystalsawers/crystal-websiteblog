@@ -170,9 +170,17 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="create-post-page">
+    <div className="blog-home">
+
+    <header className="category-header about-header">
+      <div className="category-header-content">
+        <span className="section-eyebrow">POSTS</span>
+        <h1 className="category-title">Create Post</h1>
+      </div>
+    </header>
+
+
       <div className="create-post-form">
-        <h2 className="create-post-title">Create Post</h2>
 
         <form onSubmit={(e) => handleSubmit(e, false)}>
           <div className="mb-6">
@@ -307,7 +315,7 @@ const CreatePost = () => {
             <button
               type="button"
               onClick={() => router.push('/')}
-              className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+              className="create-post-close-button"
             >
               Close
             </button>
