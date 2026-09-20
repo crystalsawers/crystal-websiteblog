@@ -46,7 +46,7 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
 
             {/* Email */}
             <Link
-              href="mailto:loglapandover@gmail.com"
+              href="mailto:lcrystal@loglapandover.co.nz"
               className="text-[#99ffd3] transition-colors duration-200 hover:text-white"
               aria-label="Email"
             >

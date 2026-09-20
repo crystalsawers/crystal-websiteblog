@@ -72,7 +72,7 @@ const Navbar = () => {
 
             <div className="navbar-dropdown-menu">
               <Link href="/reviews/lifestyle">Lifestyle</Link>
-              <Link href="/reviews/misc">Misc</Link>
+              <Link href="/reviews/misc">Miscellaneous</Link>
             </div>
           </div>
 
@@ -167,7 +167,7 @@ const Navbar = () => {
             {reviewsOpen && (
               <div className="navbar-mobile-submenu">
                 <Link href="/reviews/lifestyle">Lifestyle</Link>
-                <Link href="/reviews/misc">Misc</Link>
+                <Link href="/reviews/misc">Miscellaneous</Link>
               </div>
             )}
           </div>
