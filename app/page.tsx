@@ -171,20 +171,20 @@ const HomePage = () => {
         const settingsRef = doc(db, 'settings', 'siteConfig');
         const settingsSnap = await getDoc(settingsRef);
 
-        const pinnedId = settingsSnap.data()?.pinnedPostId || null;
-        setPinnedPostId(pinnedId);
-
         const sortedPosts = sortPostsByDate(filteredPosts, 'date');
+
+        const publishedPosts = sortedPosts.filter((post) => !post.isDraft);
+        const draftPosts = sortedPosts.filter((post) => post.isDraft);
 
         const startIndex = (currentPage - 1) * postsPerPage;
 
-        const paginatedPosts = sortedPosts.slice(
+        const paginatedPublishedPosts = publishedPosts.slice(
           startIndex,
           startIndex + postsPerPage,
         );
 
-        setPosts(paginatedPosts);
-        setTotalPages(Math.ceil(sortedPosts.length / postsPerPage));
+        setPosts([...draftPosts, ...paginatedPublishedPosts]);
+        setTotalPages(Math.ceil(publishedPosts.length / postsPerPage));
       } catch (error) {
         console.error('Error fetching posts:', error);
       } finally {
@@ -235,9 +235,9 @@ const HomePage = () => {
 
   if (loading) return <Loading />;
 
-  const pinnedPost = posts.find((post) => post.id === pinnedPostId);
+  const draftPosts = posts.filter((post) => post.isDraft);
 
-  const regularPosts = posts.filter((post) => post.id !== pinnedPostId);
+  const regularPosts = posts.filter((post) => post.isDraft !== true);
 
   const getPostSection = (category: string) => {
     if (isReviewCategory(category)) return 'reviews';
@@ -326,82 +326,94 @@ const HomePage = () => {
           </div>
         ) : (
           <>
-            {pinnedPost && (
-              <article className="featured-post">
-                <div className="featured-post-image">
-                  {pinnedPost.imageUrl ? (
-                    <Image
-                      src={pinnedPost.imageUrl}
-                      alt={pinnedPost.title || 'Posted image'}
-                      fill
-                      priority
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      style={{
-                        objectFit: 'cover',
-                        objectPosition: specificPostIds.includes(pinnedPost.id)
-                          ? 'center'
-                          : 'top center',
-                      }}
-                    />
-                  ) : (
-                    <div className="image-placeholder">Featured Post</div>
-                  )}
-
-                  <div className="pinned-label">
-                    <FontAwesomeIcon icon={faThumbtack} />
-                    <span>Pinned</span>
-                  </div>
+            {/* DRAFT POSTS */}
+            {isAuthenticated && draftPosts.length > 0 && (
+              <>
+                <div className="posts-section-heading">
+                  <span className="section-eyebrow">DRAFTS</span>
                 </div>
 
-                <div className="featured-post-content">
-                  <div className="post-meta">
-                    <span>{pinnedPost.category}</span>
+                <div className="modern-post-grid draft-posts-grid">
+                  {draftPosts.map((post) => {
+                    const section = getPostSection(post.category);
 
-                    {pinnedPost.date && (
-                      <span>{formatDate(new Date(pinnedPost.date))}</span>
-                    )}
-                  </div>
+                    return (
+                      <article key={post.id} className="modern-post-card">
+                        {post.imageUrl && (
+                          <div className="modern-post-image">
+                            <Image
+                              src={post.imageUrl}
+                              alt={post.title || 'Posted image'}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 50vw"
+                              style={{
+                                objectFit: 'cover',
+                                objectPosition: specificPostIds.includes(
+                                  post.id,
+                                )
+                                  ? 'center'
+                                  : 'top center',
+                              }}
+                            />
+                          </div>
+                        )}
 
-                  {pinnedPost.title && (
-                    <h3 className="featured-post-title">{pinnedPost.title}</h3>
-                  )}
+                        <div className="modern-post-content">
+                          <div className="post-meta">
+                            <span>{post.category}</span>
 
-                  {pinnedPost.isDraft && (
-                    <span className="draft-label">Draft</span>
-                  )}
+                            {post.date && (
+                              <span>{formatDate(new Date(post.date))}</span>
+                            )}
+                          </div>
 
-                  <div className="featured-post-excerpt">
-                    {renderContent(pinnedPost.content)}
-                  </div>
+                          {post.title && (
+                            <h3 className="modern-post-title">{post.title}</h3>
+                          )}
 
-                  <a
-                    href={`/${getPostSection(pinnedPost.category)}/${pinnedPost.category}/${pinnedPost.id}`}
-                    className="featured-post-link"
-                  >
-                    Read more →
-                  </a>
+                          <span className="draft-label">Draft</span>
 
-                  {isAuthenticated && (
-                    <div className="post-admin-controls">
-                      <button
-                        onClick={() => handleEdit(pinnedPost)}
-                        className="edit-button"
-                      >
-                        Edit
-                      </button>
+                          {post.editedDate && (
+                            <p className="edited-date">
+                              Edited {formatDate(new Date(post.editedDate))}
+                            </p>
+                          )}
 
-                      <button
-                        onClick={() => handleDelete(pinnedPost)}
-                        className="delete-button"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  )}
+                          <div className="modern-post-excerpt">
+                            {renderContent(post.content)}
+                          </div>
+
+                          <a
+                            href={`/${section}/${post.category}/${post.id}`}
+                            className="modern-post-link"
+                          >
+                            Read more →
+                          </a>
+
+                          <div className="post-admin-controls">
+                            <button
+                              onClick={() => handleEdit(post)}
+                              className="edit-button"
+                            >
+                              Edit
+                            </button>
+
+                            <button
+                              onClick={() => handleDelete(post)}
+                              className="delete-button"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
-              </article>
+              </>
             )}
 
+            {/* RECENTLY PUBLISHED */}
             <div className="posts-section-heading">
               <span className="section-eyebrow">RECENTLY PUBLISHED</span>
             </div>
@@ -488,7 +500,8 @@ const HomePage = () => {
           </>
         )}
 
-        {posts.length > 0 && (
+        {/* Pagination */}
+        {regularPosts.length > 0 && (
           <div className="modern-pagination">
             <button
               onClick={() => goToPage(1)}

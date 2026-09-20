@@ -171,17 +171,14 @@ const CreatePost = () => {
 
   return (
     <div className="blog-home">
-
-    <header className="category-header about-header">
-      <div className="category-header-content">
-        <span className="section-eyebrow">POSTS</span>
-        <h1 className="category-title">Create Post</h1>
-      </div>
-    </header>
-
+      <header className="category-header about-header">
+        <div className="category-header-content">
+          <span className="section-eyebrow">POSTS</span>
+          <h1 className="category-title">Create Post</h1>
+        </div>
+      </header>
 
       <div className="create-post-form">
-
         <form onSubmit={(e) => handleSubmit(e, false)}>
           <div className="mb-6">
             <label htmlFor="title" className="create-post-label">

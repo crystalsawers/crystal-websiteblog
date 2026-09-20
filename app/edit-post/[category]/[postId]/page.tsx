@@ -46,8 +46,6 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
-  const [pinned, setPinned] = useState(false);
-  const [pinError, setPinError] = useState<string | null>(null);
   const [seriesList, setSeriesList] = useState<SeriesData[]>([]); // State to store series list
   const [selectedSeriesId, setSelectedSeriesId] = useState<string>(''); // State to store selected series
   const router = useRouter();
@@ -122,33 +120,6 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
     setImageUrl('');
   };
 
-  const handleTogglePin = async () => {
-    if (!unwrappedParams) return; // Make sure params are resolved
-
-    const { postId } = unwrappedParams;
-
-    const settingsRef = doc(db, 'settings', 'siteConfig');
-    const settingsSnap = await getDoc(settingsRef);
-    const pinnedPostId = settingsSnap.data()?.pinnedPostId;
-
-    if (pinnedPostId && pinnedPostId !== postId && !pinned) {
-      setPinError(
-        'Another post is already pinned. Unpin it before pinning this one.',
-      );
-      return;
-    }
-
-    setPinError(null);
-
-    if (!pinned) {
-      await updateDoc(settingsRef, { pinnedPostId: postId });
-    } else {
-      await updateDoc(settingsRef, { pinnedPostId: null });
-    }
-
-    setPinned(!pinned);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAuthenticated) return;
@@ -198,7 +169,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
         imageUrl: newImageUrl,
         isDraft: false,
         editedDate: new Date().toISOString(),
-        pinned,
+        // pinned,
         seriesId: seriesIds, // Store seriesIds as an array
       });
 
@@ -271,7 +242,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
         imageUrl: newImageUrl,
         isDraft: true,
         editedDate: new Date().toISOString(),
-        pinned,
+        // pinned,
         seriesId: selectedSeriesId,
       });
 
@@ -291,12 +262,18 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
   }
 
   return (
-    <div className="create-post-page">
-      <form onSubmit={handleSubmit} className="create-post-form">
-        <h2 className="create-post-title">Edit Post</h2>
+    <div className="blog-home">
+      <header className="category-header about-header">
+        <div className="category-header-content">
+          <span className="section-eyebrow">POSTS</span>
+          <h1 className="category-title">Edit Post</h1>
+        </div>
+      </header>
 
+      <form onSubmit={handleSubmit} className="create-post-form"></form>
+
+      <form onSubmit={handleSubmit} className="create-post-form">
         {error && <p className="create-post-error">{error}</p>}
-        {pinError && <p className="text-red-700">{pinError}</p>}
 
         <label className="create-post-label" htmlFor="title">
           Title:
@@ -378,14 +355,7 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
             </button>
           </div>
         )}
-        <div className="create-post-button-group mt-6 flex justify-center space-x-4">
-          <button
-            type="button"
-            onClick={handleTogglePin}
-            className={`rounded p-2 ${pinned ? 'bg-red-500' : 'bg-yellow-500'} text-white`}
-          >
-            {pinned ? 'Unpin Post' : 'Pin Post'}
-          </button>
+        <div className="create-post-button-group">
           <button
             type="button"
             onClick={handleSaveDraft}
@@ -393,13 +363,15 @@ const EditPostPage = ({ params }: EditPostPageProps) => {
           >
             Save as Draft
           </button>
+
           <button type="submit" className="create-post-button">
             Update Post
           </button>
+
           <button
             type="button"
             onClick={() => router.push('/')}
-            className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+            className="create-post-close-button"
           >
             Close
           </button>

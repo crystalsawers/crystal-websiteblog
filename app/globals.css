@@ -691,8 +691,6 @@ p > a {
   }
 }
 
-
-
 /* Rendered post content*/
 .markdown-content {
   line-height: 1.6;
@@ -943,10 +941,12 @@ p > a {
   padding: 0.65rem 1.1rem;
   border: 1px solid #99ffd3;
   border-radius: 0.25rem;
-  background: transparent;
-  color: #99ffd3;
-  font-size: 0.85rem;
-  font-weight: 600;
+  background: #99ffd3;
+  color: #0a0a0a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -954,8 +954,8 @@ p > a {
 }
 
 .admin-button:hover {
-  background: #99ffd3;
-  color: #0a0a0a;
+  background: #0a0a0a;
+  color: #99ffd3;
 }
 
 /* =========================================================
@@ -1102,10 +1102,15 @@ p > a {
 
 .posts-section-heading {
   margin-bottom: 1.5rem;
+  margin-top: 3rem;
 }
 
 .posts-section-heading .section-eyebrow {
   margin-bottom: 0;
+}
+
+.modern-post-grid {
+  margin-bottom: 3rem;
 }
 
 /* =========================================================

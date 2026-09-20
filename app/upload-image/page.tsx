@@ -9,7 +9,6 @@ type StorageFile = {
   url: string;
 };
 
-
 // Grab first frame of video for thumbnail
 
 function VideoThumbnail({
