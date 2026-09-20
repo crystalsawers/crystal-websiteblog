@@ -190,7 +190,8 @@ const Navbar = () => {
 
         <div className="navbar-mobile-actions">
           <SubscribeButton />
-          <LogoutButton mobileMenu />
+          <UploadButton />
+          <LogoutButton />
 
           <button
             onClick={toggleSearch}

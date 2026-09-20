@@ -177,7 +177,7 @@ p > a {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-left: 0.5rem;
+  margin-left: 0;
 }
 
 /* Search */
@@ -369,34 +369,108 @@ p > a {
   margin: 0 auto 1rem auto;
 }
 
-/* Login Page Styles */
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
 .login-card {
-  @apply mb-6 rounded-lg bg-[#99ffd3] p-6 shadow-md;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .login-card-title {
-  @apply mb-6 text-3xl font-bold text-gray-700;
+  margin: 0 0 2.5rem;
+  color: #99ffd3;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
 }
 
 .login-card-form {
-  @apply flex flex-col space-y-4;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .login-card-label {
-  @apply mb-2 block text-sm font-medium text-gray-700;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  color: #99ffd3;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .login-card-input {
-  @apply w-full rounded-lg border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #444;
+  border-radius: 0.25rem;
+  background: #d4d4d4;
+  color: #0a0a0a;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+}
+
+.login-card-input:focus {
+  border-color: #99ffd3;
 }
 
 .login-card-button {
-  @apply w-full rounded-lg bg-emerald-600 py-2 text-white hover:bg-emerald-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none;
+  display: block;
+  width: 180px;
+  margin: 0.5rem auto 0;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid #99ffd3;
+  border-radius: 0.25rem;
+  background: #99ffd3;
+  color: #0a0a0a;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.login-card-button:hover {
+  background: #0a0a0a;
+  color: #99ffd3;
 }
 
 .login-card-error {
-  @apply mt-2 text-center text-red-500;
+  margin: 0;
+  color: #ef4444;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
 }
+
+@media (max-width: 768px) {
+  .login-card {
+    width: 100%;
+  }
+
+  .login-card-title {
+    margin-bottom: 2rem;
+  }
+
+  .login-card-button {
+    width: 180px;
+  }
+}
+
 
 /* form input */
 

@@ -33,7 +33,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="mx-auto mt-10 max-w-md">
+    <div className="blog-home">
       <div className="login-card">
         <h1 className="login-card-title">Login</h1>
         <form onSubmit={handleSubmit} className="login-card-form">
