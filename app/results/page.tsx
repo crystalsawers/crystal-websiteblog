@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { formatDate } from '@/lib/utils/formatDate';
 import renderContent from '@/lib/utils/renderContent';
@@ -35,13 +34,13 @@ const isProjectCategory = (category: string): boolean => {
 };
 
 const ResultsPage = () => {
-  const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const postsPerPage = 10;
+
+  const postsPerPage = 12;
 
   const categories = useMemo(
     () => [
@@ -62,17 +61,25 @@ const ResultsPage = () => {
       const allPosts: Post[] = [];
 
       for (const category of categories) {
-        const q = query(collection(db, category), orderBy('date', 'desc'));
+        const q = query(
+          collection(db, category),
+          orderBy('date', 'desc'),
+        );
+
         const querySnapshot = await getDocs(q);
 
         querySnapshot.forEach((documentSnapshot) => {
           const data = documentSnapshot.data();
 
-          const title = (data.title || '').toLowerCase().replace(/\s+/g, '');
+          const title = (data.title || '')
+            .toLowerCase()
+            .replace(/\s+/g, '');
 
           if (
             titles.some((t) =>
-              title.includes(t.toLowerCase().replace(/\s+/g, '')),
+              title.includes(
+                t.toLowerCase().replace(/\s+/g, ''),
+              ),
             )
           ) {
             allPosts.push({
@@ -86,7 +93,7 @@ const ResultsPage = () => {
               type: data.type || 'default',
               isDraft: data.isDraft || false,
               seriesIds: data.seriesIds || [],
-            } as Post);
+            });
           }
         });
       }
@@ -99,15 +106,25 @@ const ResultsPage = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        // Extract search query
-        const queryParams = new URLSearchParams(window.location.search);
-        const searchQuery = queryParams.get('q') || '';
-        const results = await fetchSearchResults([searchQuery]);
-        console.log('RESULTS FROM SEARCH:', results);
+        const queryParams = new URLSearchParams(
+          window.location.search,
+        );
 
-        // Sorting and Pagination
-        const sortedPosts = sortPostsByDate(results, 'date');
-        const startIndex = (currentPage - 1) * postsPerPage;
+        const searchQuery = queryParams.get('q') || '';
+
+        const results = await fetchSearchResults([searchQuery]);
+
+        const visibleResults = results.filter(
+          (post) => !post.isDraft,
+        );
+
+        const sortedPosts = sortPostsByDate(
+          visibleResults,
+          'date',
+        );
+
+        const startIndex =
+          (currentPage - 1) * postsPerPage;
 
         const paginatedPosts = sortedPosts.slice(
           startIndex,
@@ -115,9 +132,14 @@ const ResultsPage = () => {
         );
 
         setPosts(paginatedPosts);
-        setTotalPages(Math.ceil(sortedPosts.length / postsPerPage));
+        setTotalPages(
+          Math.ceil(sortedPosts.length / postsPerPage),
+        );
       } catch (error) {
-        console.error('Error parsing search query:', error);
+        console.error(
+          'Error parsing search query:',
+          error,
+        );
         setError('Failed to load results');
       } finally {
         setLoading(false);
@@ -125,29 +147,47 @@ const ResultsPage = () => {
     };
 
     fetchResults();
-  }, [fetchSearchResults, router, currentPage]);
+  }, [fetchSearchResults, currentPage]);
 
   const goToPage = (page: number) => {
     setCurrentPage(page);
 
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(
+      window.location.search,
+    );
+
     searchParams.set('page', page.toString());
 
-    window.history.pushState({}, '', '?' + searchParams.toString());
+    window.history.pushState(
+      {},
+      '',
+      '?' + searchParams.toString(),
+    );
   };
 
   if (loading) return <Loading />;
+
   if (error) return <div>{error}</div>;
 
   return (
-    <div>
-      <div className="responsive-container">
-        <h2 className="page-title mb-6 text-center">Search Results</h2>
+    <div className="blog-home">
+      <section className="category-header">
+        <div className="category-header-content">
+          <span className="section-eyebrow">SEARCH</span>
 
-        {posts.length === 0 ? (
-          <p className="feedback-button text-center">No results found.</p>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <h2 className="section-title">
+            Search Results
+          </h2>
+        </div>
+      </section>
+
+      {posts.length === 0 ? (
+        <div className="empty-posts">
+          <p>No results found.</p>
+        </div>
+      ) : (
+        <>
+          <div className="modern-post-grid">
             {posts.map((post) => {
               const section = isReviewCategory(post.category)
                 ? 'reviews'
@@ -158,107 +198,139 @@ const ResultsPage = () => {
               if (!post.category) return null;
 
               return (
-                <div key={post.id} className="card">
+                <article
+                  key={post.id}
+                  className="modern-post-card"
+                >
                   {post.imageUrl && (
-                    <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
+                    <div className="modern-post-image">
                       <Image
                         src={post.imageUrl}
-                        alt={post.title || 'Posted image'}
+                        alt={
+                          post.title ||
+                          'Posted image'
+                        }
                         width={500}
                         height={300}
-                        priority={true}
                         style={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
                           width: '100%',
                           height: '100%',
                           objectFit: 'cover',
-                          objectPosition: 'top center',
+                          objectPosition:
+                            'top center',
                         }}
                       />
                     </div>
                   )}
 
-                  {post.title && (
-                    <div className={post.imageUrl ? 'pt-4' : ''}>
-                      <h2 className="card-title">{post.title}</h2>
+                  <div className="modern-post-content">
+                    <div className="post-meta">
+                      <span>
+                        {post.category}
+                      </span>
+
+                      {post.date && (
+                        <span>
+                          {formatDate(
+                            new Date(post.date),
+                          )}
+                        </span>
+                      )}
                     </div>
-                  )}
 
-                  {post.date && (
-                    <p className="card-text">
-                      <strong>Posted:</strong> {formatDate(new Date(post.date))}
-                    </p>
-                  )}
+                    {post.title && (
+                      <h2 className="modern-post-title">
+                        {post.title}
+                      </h2>
+                    )}
 
-                  {post.editedDate && (
-                    <p className="card-text">
-                      <strong>Edited:</strong>{' '}
-                      {formatDate(new Date(post.editedDate))}
-                    </p>
-                  )}
+                    {post.editedDate && (
+                      <p className="edited-date">
+                        Edited{' '}
+                        {formatDate(
+                          new Date(
+                            post.editedDate,
+                          ),
+                        )}
+                      </p>
+                    )}
 
-                  <div className="card-text line-clamp-3">
-                    {renderContent(post.content)}
+                    <div className="modern-post-excerpt">
+                      {renderContent(
+                        post.content,
+                      )}
+                    </div>
+
+                    <a
+                      href={`/${section}/${post.category}/${post.id}`}
+                      className="modern-post-link"
+                    >
+                      Read more →
+                    </a>
                   </div>
-
-                  <a
-                    href={`/${section}/${post.category}/${post.id}`}
-                    className="card-link"
-                  >
-                    Read more
-                  </a>
-                </div>
+                </article>
               );
             })}
           </div>
-        )}
-      </div>
 
-      {/* Pagination Controls */}
-      {posts.length > 0 && (
-        <div className="mt-6 text-center">
-          <button
-            className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
-              currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-            }`}
-            onClick={() => goToPage(1)}
-            disabled={currentPage === 1}
-          >
-            First
-          </button>
-          <button
-            className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
-              currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-            }`}
-            onClick={() => goToPage(Math.max(currentPage - 1, 1))}
-            disabled={currentPage === 1}
-          >
-            Prev
-          </button>
-          <span className="mx-2 text-lg">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
-              currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
-            }`}
-            onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
-          <button
-            className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
-              currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
-            }`}
-            onClick={() => goToPage(totalPages)}
-            disabled={currentPage === totalPages}
-          >
-            Last
-          </button>
-        </div>
+          <div className="modern-pagination">
+            <button
+              onClick={() => goToPage(1)}
+              disabled={currentPage === 1}
+              className="pagination-button"
+            >
+              First
+            </button>
+
+            <button
+              onClick={() =>
+                goToPage(
+                  Math.max(
+                    currentPage - 1,
+                    1,
+                  ),
+                )
+              }
+              disabled={currentPage === 1}
+              className="pagination-button"
+            >
+              Prev
+            </button>
+
+            <span className="pagination-current">
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              onClick={() =>
+                goToPage(
+                  Math.min(
+                    currentPage + 1,
+                    totalPages,
+                  ),
+                )
+              }
+              disabled={
+                currentPage === totalPages
+              }
+              className="pagination-button"
+            >
+              Next
+            </button>
+
+            <button
+              onClick={() =>
+                goToPage(totalPages)
+              }
+              disabled={
+                currentPage === totalPages
+              }
+              className="pagination-button"
+            >
+              Last
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

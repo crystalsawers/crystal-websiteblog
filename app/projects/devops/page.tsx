@@ -37,7 +37,7 @@ const DevOps = () => {
   const category = 'devops';
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const postsPerPage = 10;
+  const postsPerPage = 12;
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -49,8 +49,10 @@ const DevOps = () => {
         const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
           collection(db, category),
         );
+
         const items: DevOpsDocument[] = querySnapshot.docs.map((doc) => {
           const data = doc.data() as DevOpsDocument;
+
           return {
             id: doc.id,
             type: data.type,
@@ -65,14 +67,19 @@ const DevOps = () => {
 
         const sortedItems = sortPostsByDate(items, 'date');
 
+        const visibleItems = isAuthenticated
+          ? sortedItems
+          : sortedItems.filter((item) => !item.isDraft);
+
         const startIndex = (currentPage - 1) * postsPerPage;
-        const paginatedPosts = sortedItems.slice(
+
+        const paginatedPosts = visibleItems.slice(
           startIndex,
           startIndex + postsPerPage,
         );
 
         setData(paginatedPosts);
-        setTotalPages(Math.ceil(sortedItems.length / postsPerPage));
+        setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
       } catch (error) {
         setError('Error fetching DevOps data');
       } finally {
@@ -81,7 +88,7 @@ const DevOps = () => {
     };
 
     fetchData();
-  }, [searchParams, currentPage]);
+  }, [category, currentPage, searchParams, isAuthenticated]);
 
   const handleCreate = () => {
     router.push('/create-post');
@@ -93,6 +100,7 @@ const DevOps = () => {
 
   const handleEdit = (id: string) => {
     if (!isAuthenticated) return;
+
     router.push(`/edit-post/${category}/${id}`);
   };
 
@@ -109,7 +117,9 @@ const DevOps = () => {
 
     try {
       const docRef = doc(db, category, id);
+
       await deleteDoc(docRef);
+
       setData(data.filter((item) => item.id !== id));
     } catch (error) {
       console.error('Error deleting document:', error);
@@ -119,158 +129,194 @@ const DevOps = () => {
 
   const goToPage = (page: number) => {
     const searchParams = new URLSearchParams(window.location.search);
+
     searchParams.set('page', page.toString());
+
     window.history.pushState({}, '', '?' + searchParams.toString());
+
+    setCurrentPage(page);
   };
 
-  if (loading)
+  if (loading) {
     return (
-      <p className="text-center text-[#99ffd3]">Loading DevOps posts...</p>
+      <p className="text-center text-[#99ffd3]">
+        Loading DevOps posts...
+      </p>
     );
-  if (error) return <p>{error}</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
-    <div className="responsive-container">
-      <h1 className="page-title">Operations, DevOps, and Security</h1>
-      <div className="mb-4 flex justify-between">
+    <div className="blog-home">
+      {/* Page Header */}
+      <section className="category-header">
+        <div className="category-header-content">
+          <span className="section-eyebrow">PROJECTS</span>
+
+          <h2 className="section-title">
+            Operations, DevOps, and Security
+          </h2>
+
+          <p className="category-description">
+            DevOps projects, infrastructure, security, automation, and
+            everything else from the world of operations and development.
+          </p>
+        </div>
+      </section>
+
+      {/* Page Controls */}
+      <div className="category-controls">
         <button
           onClick={handleBack}
-          className="rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+          className="category-back-button"
         >
-          Back
+          ← Back
         </button>
+
         {isAuthenticated && (
           <button
             onClick={handleCreate}
-            className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+            className="admin-button"
           >
             Create Post
           </button>
         )}
       </div>
 
+      {/* Posts */}
       {data.length === 0 ? (
-        <p className="text-center text-[#99ffd3]">
-          No Operations, DevOps, and Security posts yet.
-        </p>
+        <div className="empty-posts">
+          <p>No Operations, DevOps, and Security posts yet.</p>
+        </div>
       ) : (
-        <div>
-          {data.map((item) => {
-            if (item.isDraft && !isAuthenticated) return null;
+        <div className="modern-post-grid">
+          {data.map((item) => (
+            <article key={item.id} className="modern-post-card">
+              {item.imageUrl && (
+                <div className="modern-post-image">
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.title || 'DevOps post image'}
+                    width={500}
+                    height={300}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'top center',
+                    }}
+                  />
+                </div>
+              )}
 
-            return (
-              <div key={item.id} className="card">
-                {item.imageUrl && (
-                  <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
-                    <Image
-                      src={item.imageUrl}
-                      alt={item.title || 'DevOps post image'}
-                      className="card-img"
-                      width={500}
-                      height={300}
-                      priority={true}
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        objectPosition: 'top center',
-                      }}
-                    />
-                  </div>
-                )}
+              <div className="modern-post-content">
+                <div className="post-meta">
+                  <span>DevOps</span>
+
+                  {item.date && (
+                    <span>
+                      {formatDate(new Date(item.date))}
+                    </span>
+                  )}
+                </div>
+
                 {item.title && (
-                  <div className={item.imageUrl ? 'pt-4' : ''}>
-                    <h2 className="card-title">{item.title}</h2>
-                    {/* Indicate if the post is a draft */}
-                    {item.isDraft && (
-                      <span className="text-bold text-red-500">Draft</span>
-                    )}
-                  </div>
+                  <h2 className="modern-post-title">
+                    {item.title}
+                  </h2>
                 )}
-                {item.date && (
-                  <p className="card-text">
-                    <strong>Posted:</strong> {formatDate(new Date(item.date))}
-                  </p>
+
+                {item.isDraft && (
+                  <span className="draft-label">
+                    Draft
+                  </span>
                 )}
+
                 {item.editedDate && (
-                  <p className="card-text">
-                    <strong>Edited:</strong>{' '}
-                    {formatDate(new Date(item.editedDate))}
+                  <p className="edited-date">
+                    Edited {formatDate(new Date(item.editedDate))}
                   </p>
                 )}
-                <div className="card-text line-clamp-3">
+
+                <div className="modern-post-excerpt">
                   {renderContent(item.content)}
                 </div>
-                <a href={`/projects/devops/${item.id}`} className="card-link">
-                  Read more
+
+                <a
+                  href={`/projects/devops/${item.id}`}
+                  className="modern-post-link"
+                >
+                  Read more →
                 </a>
+
                 {isAuthenticated && (
-                  <div className="mt-2 flex space-x-2">
+                  <div className="post-admin-controls">
                     <button
                       onClick={() => handleEdit(item.id)}
-                      className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                      className="edit-button"
                     >
                       Edit
                     </button>
+
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                      className="delete-button"
                     >
                       Delete
                     </button>
                   </div>
                 )}
               </div>
-            );
-          })}
+            </article>
+          ))}
         </div>
       )}
 
-      {/* Pagination Controls */}
-      <div className="mt-6 text-center">
-        <button
-          className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
-            currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-          }`}
-          onClick={() => goToPage(1)}
-          disabled={currentPage === 1}
-        >
-          First
-        </button>
-        <button
-          className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
-            currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-          }`}
-          onClick={() => goToPage(Math.max(currentPage - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          Prev
-        </button>
-        <span className="mx-2 text-lg">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
-            currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
-          }`}
-          onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-        <button
-          className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
-            currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
-          }`}
-          onClick={() => goToPage(totalPages)}
-          disabled={currentPage === totalPages}
-        >
-          Last
-        </button>
-      </div>
+      {/* Pagination */}
+      {data.length > 0 && (
+        <div className="modern-pagination">
+          <button
+            onClick={() => goToPage(1)}
+            disabled={currentPage === 1}
+            className="pagination-button"
+          >
+            First
+          </button>
+
+          <button
+            onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+            disabled={currentPage === 1}
+            className="pagination-button"
+          >
+            Prev
+          </button>
+
+          <span className="pagination-current">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            onClick={() =>
+              goToPage(Math.min(currentPage + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className="pagination-button"
+          >
+            Next
+          </button>
+
+          <button
+            onClick={() => goToPage(totalPages)}
+            disabled={currentPage === totalPages}
+            className="pagination-button"
+          >
+            Last
+          </button>
+        </div>
+      )}
     </div>
   );
 };
