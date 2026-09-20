@@ -375,7 +375,7 @@ main nav {
 
 
 /* =========================================================
-   SECRETBLOG-STYLE HOMEPAGE
+   HOMEPAGE
    Appended only — existing styles above remain unchanged
    ========================================================= */
 
@@ -453,7 +453,7 @@ main nav {
   margin: 0;
   color: #99ffd3;
   font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   letter-spacing: -0.035em;
 }
@@ -1059,9 +1059,9 @@ main nav {
 
 .category-title {
   margin: 0;
-  color: #ededed;
+  color: #99ffd3;
   font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   letter-spacing: -0.045em;
 }
@@ -1219,7 +1219,7 @@ main nav {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1.5rem;
-  color: #777;
+  color: #c2c2c2;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -1534,4 +1534,431 @@ main nav {
 
 .individual-post-content .markdown-content a {
   color: #99ffd3;
+}
+
+/* =========================================================
+   ABOUT PAGE
+   ========================================================= */
+
+.about-header {
+  text-align: center;
+}
+
+.about-header .category-header-content {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+}
+
+.about-header .category-title,
+.about-header .section-eyebrow {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.about-content {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.about-section {
+  padding: 0 0 3rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #292929;
+}
+
+.about-text {
+  color: #ededed;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.about-text p {
+  margin: 0;
+}
+
+.about-contact {
+  color: #ededed;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.about-contact p {
+  margin: 0 0 0.75rem;
+}
+
+.about-contact p:last-child {
+  margin-bottom: 0;
+}
+
+.about-contact strong {
+  color: #ededed;
+}
+
+.about-contact a {
+  color: #99ffd3;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.about-contact a:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .about-content {
+    width: 100%;
+  }
+
+  .about-section {
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .about-text,
+  .about-contact {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+}
+
+/* =========================================================
+   JOURNEY PAGE
+   ========================================================= */
+
+.journey-content {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.journey-section {
+  padding: 0 0 3rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #292929;
+}
+
+.journey-text {
+  color: #ededed;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.journey-text p {
+  margin: 0;
+}
+
+.journey-text ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.journey-text li {
+  margin-bottom: 1rem;
+}
+
+.journey-text li:last-child {
+  margin-bottom: 0;
+}
+
+.journey-text strong {
+  color: #ededed;
+}
+
+@media (max-width: 768px) {
+  .journey-content {
+    width: 100%;
+  }
+
+  .journey-section {
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .journey-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+}
+
+/* =========================================================
+   SUBSCRIBE PAGE
+   ========================================================= */
+
+.subscribe-content {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.subscribe-section {
+  padding: 2.5rem;
+  background: #99ffd3;
+  border-radius: 0.25rem;
+}
+
+.subscribe-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.subscribe-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subscribe-field label {
+  color: #0a0a0a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.subscribe-field input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #777;
+  border-radius: 0.25rem;
+  background: #ffffff;
+  color: #0a0a0a;
+  font-size: 1rem;
+  outline: none;
+}
+
+.subscribe-field input:focus {
+  border-color: #0a0a0a;
+}
+
+.subscribe-field input::placeholder {
+  color: #777;
+}
+
+.subscribe-button {
+  display: block;
+  width: 180px;
+  margin: 0 auto;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid #0a0a0a;
+  border-radius: 0.25rem;
+  background: #0a0a0a;
+  color: #99ffd3;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.subscribe-button:hover {
+  background: transparent;
+  color: #0a0a0a;
+}
+
+.subscribe-description {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(10, 10, 10, 0.25);
+  color: #0a0a0a;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.subscribe-description p {
+  margin: 0;
+}
+
+.subscribe-message {
+  margin-top: 1.5rem;
+  color: #0a0a0a;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.subscribe-message-error {
+  color: #b91c1c;
+}
+
+.subscribe-toggle {
+  margin-top: 1.5rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #0a0a0a;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.subscribe-toggle:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .subscribe-content {
+    width: 100%;
+  }
+
+  .subscribe-section {
+    padding: 1.5rem;
+  }
+
+  .subscribe-description {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .subscribe-button {
+    width: 100%;
+
+  }
+}
+
+/* =========================================================
+   FEEDBACK PAGE
+   ========================================================= */
+
+.feedback-content {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.feedback-post {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #292929;
+}
+
+.feedback-post p {
+  margin: 0.75rem 0 0;
+  color: #ededed;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1500px;
+}
+
+.feedback-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.feedback-field label {
+  color: #99ffd3;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.feedback-field input,
+.feedback-field textarea {
+  width: 100%;
+  border: 1px solid #444;
+  border-radius: 0.25rem;
+  background:  #d4d4d4;
+  color: black;
+  font-size: 1rem;
+  outline: none;
+}
+
+.feedback-field input {
+  padding: 0.9rem 1rem;
+}
+
+.feedback-field textarea {
+  min-height: 300px;
+  padding: 1rem;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.feedback-field input:focus,
+.feedback-field textarea:focus {
+  border-color: #99ffd3;
+}
+
+.feedback-field input::placeholder,
+.feedback-field textarea::placeholder {
+  color: #666;
+}
+
+.feedback-note {
+  color: #a8a8a8;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.feedback-note strong {
+  color: #ededed;
+}
+
+.feedback-note a {
+  color: #99ffd3;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.feedback-button {
+  display: block;
+  width: 180px;
+  margin: 0 auto;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid #99ffd3;
+  border-radius: 0.25rem;
+  background: #99ffd3;
+  color: #0a0a0a;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.feedback-button:hover {
+  background: #0a0a0a;
+  color: #99ffd3;
+}
+
+.feedback-status {
+  margin-top: 1.5rem;
+  color: #99ffd3;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.feedback-status-error {
+  color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .feedback-content {
+    width: 100%;
+  }
+
+  .feedback-button {
+    width: 180px;
+  }
+
+  .feedback-note {
+    font-size: 0.85rem;
+  }
 }

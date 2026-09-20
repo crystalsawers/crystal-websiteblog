@@ -68,82 +68,100 @@ const Journey = () => {
     );
   if (error) return <p>{error}</p>;
 
-  return (
-    <div className="responsive-container">
-      <h1 className="page-title">My Journey</h1>
-      {data.length === 0 ? (
-        <p>No Journey data available</p>
-      ) : (
-        data.map((item) => (
-          <div
-            key={item.id}
-            className="card mb-4 rounded bg-white p-4 shadow-md"
-          >
-            <h2 className="card-header text-xl font-semibold">
-              Start of My Journey
-            </h2>
-            <p className="card-text mb-4">{item.start_of_journey}</p>
-            <h2 className="card-header text-xl font-semibold">Milestones</h2>
-            <ul className="card-text mb-4 list-disc pl-5">
-              {item.milestones.map((milestone, index) => (
-                <li key={index} className="mb-2">
-                  <p>
+ return (
+  <div className="blog-home">
+    <header className="category-header about-header">
+      <div className="category-header-content">
+        <span className="section-eyebrow">JOURNEY</span>
+        <h1 className="category-title">My Journey</h1>
+      </div>
+    </header>
+
+    {data.length === 0 ? (
+      <div className="empty-posts">
+        <p>No Journey data available.</p>
+      </div>
+    ) : (
+      data.map((item) => (
+        <div key={item.id} className="journey-content">
+          <section className="journey-section">
+            <span className="section-eyebrow">START OF MY JOURNEY</span>
+            <div className="journey-text">
+              <p>{item.start_of_journey}</p>
+            </div>
+          </section>
+
+          <section className="journey-section">
+            <span className="section-eyebrow">MILESTONES</span>
+            <div className="journey-text">
+              <ul>
+                {item.milestones.map((milestone, index) => (
+                  <li key={index}>
                     <strong>
                       {formatDate(new Date(milestone.date)).split(' at ')[0]}
                     </strong>
                     : {milestone.description}
-                  </p>
-                </li>
-              ))}
-            </ul>
-            <h2 className="card-header text-xl font-semibold">
-              Challenges and Solutions
-            </h2>
-            <ul className="card-text mb-4 list-disc pl-5">
-              {item.challenges.map((challenge, index) => (
-                <li key={index} className="mb-2">
-                  <p>
-                    <strong>Challenge:</strong> {challenge.description}
-                  </p>
-                  <p>
-                    <strong>Solution:</strong> {challenge.solution}
-                  </p>
-                </li>
-              ))}
-            </ul>
-            <h2 className="card-header text-xl font-semibold">
-              Skills Developed
-            </h2>
-            <ul className="card-text mb-4 list-disc pl-5">
-              {item.skills.map((skill, index) => (
-                <li key={index} className="mb-2">
-                  <p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="journey-section">
+            <span className="section-eyebrow">CHALLENGES AND SOLUTIONS</span>
+            <div className="journey-text">
+              <ul>
+                {item.challenges.map((challenge, index) => (
+                  <li key={index}>
+                    <p>
+                      <strong>Challenge:</strong> {challenge.description}
+                    </p>
+                    <p>
+                      <strong>Solution:</strong> {challenge.solution}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="journey-section">
+            <span className="section-eyebrow">SKILLS DEVELOPED</span>
+            <div className="journey-text">
+              <ul>
+                {item.skills.map((skill, index) => (
+                  <li key={index}>
                     <strong>{skill.name}:</strong> {skill.details}
-                  </p>
-                </li>
-              ))}
-            </ul>
-            <h2 className="card-header text-xl font-semibold">
-              Future Aspirations
-            </h2>
-            <p className="card-text mb-4">{item.future_aspirations}</p>
-            {isAuthenticated && (
-              <div className="mt-2 flex space-x-2">
-                <button
-                  onClick={() =>
-                    (window.location.href = `/journey/edit-journey?id=${item.id}`)
-                  }
-                  className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-                >
-                  Edit
-                </button>
-              </div>
-            )}
-          </div>
-        ))
-      )}
-    </div>
-  );
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="journey-section">
+            <span className="section-eyebrow">FUTURE ASPIRATIONS</span>
+            <div className="journey-text">
+              <p>{item.future_aspirations}</p>
+            </div>
+          </section>
+
+          {isAuthenticated && (
+            <div className="post-admin-controls">
+              <button
+                onClick={() =>
+                  (window.location.href = `/journey/edit-journey?id=${item.id}`)
+                }
+                className="edit-button"
+              >
+                Edit
+              </button>
+            </div>
+          )}
+        </div>
+      ))
+    )}
+  </div>
+);
 };
 
 export default Journey;

@@ -149,46 +149,66 @@ const SubscribePage = () => {
   }
 
   return (
-    <main className="mx-auto my-12 max-w-5xl px-8">
-      <div className="subscribe-card rounded-lg bg-[#99ffd3] p-6 shadow-md">
-        <h1 className="mb-4 text-2xl font-bold text-black">
+  <div className="blog-home">
+    <header className="category-header about-header">
+      <div className="category-header-content">
+        <span className="section-eyebrow">SUBSCRIBE</span>
+        <h1 className="category-title">
           {isSubscribing
             ? 'Subscribe to My Latest Posts'
             : 'Unsubscribe from My Posts'}
         </h1>
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-          <input
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="create-form-input bg-white"
-          />
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="create-form-input bg-white"
-          />
-          <button type="submit" className="login-card-button">
-            {isSubscribing ? 'Subscribe' : 'Unsubscribe'}
-          </button>
-        </form>
-        <p className="mt-4 text-black">
-          The subscription is completely free! There is no money involved here.
-          When you subscribe you only stay updated with my latest posts, unless
-          you unsubscribe of course.
-        </p>
+      </div>
+    </header>
+
+    <div className="subscribe-content">
+      <section className="subscribe-section">
+        <div className="subscribe-form">
+          <form onSubmit={handleSubmit}>
+            <div className="subscribe-field">
+              <label htmlFor="subscribe-name">Name</label>
+              <input
+                id="subscribe-name"
+                type="text"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="subscribe-field">
+              <label htmlFor="subscribe-email">Email</label>
+              <input
+                id="subscribe-email"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit" className="subscribe-button">
+              {isSubscribing ? 'Subscribe' : 'Unsubscribe'}
+            </button>
+          </form>
+        </div>
+
+        <div className="subscribe-description">
+          <p>
+            The subscription is completely free! There is no money involved
+            here. When you subscribe you only stay updated with my latest
+            posts, unless you unsubscribe of course.
+          </p>
+        </div>
 
         {message && (
           <p
-            className={`mt-4 ${
+            className={`subscribe-message ${
               message.includes('error') || message.includes('issues')
-                ? 'text-red-700' // Render red text for error messages
-                : 'text-black' // Render black text for success messages
+                ? 'subscribe-message-error'
+                : ''
             }`}
           >
             {message}
@@ -197,13 +217,14 @@ const SubscribePage = () => {
 
         <button
           onClick={() => setIsSubscribing(!isSubscribing)}
-          className="mt-4 text-black underline"
+          className="subscribe-toggle"
         >
           {isSubscribing ? 'Want to unsubscribe?' : 'Want to subscribe?'}
         </button>
-      </div>
-    </main>
-  );
+      </section>
+    </div>
+  </div>
+);
 };
 
 export default SubscribePage;

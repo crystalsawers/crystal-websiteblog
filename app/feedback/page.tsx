@@ -63,95 +63,90 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div className="create-form mx-auto min-h-[700px] w-full rounded-lg bg-[#99ffd3] p-6 shadow-md">
-      <h2 className="create-form-title mb-4 text-center text-2xl font-bold text-black">
-        Comment
-      </h2>
+  <div className="blog-home">
+    <header className="category-header about-header">
+      <div className="category-header-content">
+        <span className="section-eyebrow">FEEDBACK</span>
+        <h1 className="category-title">Comment</h1>
+      </div>
+    </header>
 
+    <div className="feedback-content">
       {postId && postTitle && (
-        <p className="mb-5 text-center text-xl font-bold text-black">
-          For Post: {postTitle}
-        </p>
+        <div className="feedback-post">
+          <span className="section-eyebrow">COMMENTING ON</span>
+          <p>{postTitle}</p>
+        </div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-        <label
-          className="create-form-label mb-1 text-sm font-medium text-black"
-          htmlFor="name"
-        >
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Your name"
-          required
-          className="create-form-input w-full rounded-lg border border-gray-300 bg-white p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        />
+      <form onSubmit={handleSubmit} className="feedback-form">
+        <div className="feedback-field">
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Your name"
+            required
+          />
+        </div>
 
-        <label
-          className="create-form-label mb-1 text-sm font-medium text-black"
-          htmlFor="email"
-        >
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Your email"
-          required
-          className="create-form-input w-full rounded-lg border border-gray-300 bg-white p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        />
+        <div className="feedback-field">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Your email"
+            required
+          />
+        </div>
 
-        <label
-          className="create-form-label mb-1 text-sm font-medium text-black"
-          htmlFor="message"
-        >
-          Message
-        </label>
-        <textarea
-          id="message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Your feedback"
-          required
-          className="create-form-textarea min-h-[300px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
-        />
-        <p className="text-black italic">
-          <strong> Note:</strong> If you want to send or submit any attachments
+        <div className="feedback-field">
+          <label htmlFor="message">Message</label>
+          <textarea
+            id="message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Your feedback"
+            required
+          />
+        </div>
+
+        <div className="feedback-note">
+          <strong>Note:</strong> If you want to send or submit any attachments
           like images or documents, please email them to{' '}
-          <a
-            href="mailto:crystal@loglapandover.co.nz"
-            className="font-bold text-blue-700 underline"
-          >
+          <a href="mailto:crystal@loglapandover.co.nz">
             crystal@loglapandover.co.nz
           </a>
-          . Also refer to the post title (or general feedback if not attached to
-          one) in your email so that I can identify which post you are referring
-          to, and check your spam if I reply and you don't see it. Thank you!
-        </p>
-        <button type="submit" className="login-card-button">
+          . Also refer to the post title (or general feedback if not attached
+          to one) in your email so that I can identify which post you are
+          referring to, and check your spam if I reply and you don't see it.
+          Thank you!
+        </div>
+
+        <button type="submit" className="feedback-button">
           Send Feedback
         </button>
       </form>
+
       {status && (
         <p
-          className={`text-bold mt-4 text-center ${
+          className={`feedback-status ${
             status ===
             'Error sending feedback. Contact crystal@loglapandover.co.nz for assistance.'
-              ? 'text-red-500'
-              : 'text-black'
+              ? 'feedback-status-error'
+              : ''
           }`}
         >
           {status}
         </p>
       )}
     </div>
-  );
+  </div>
+);
 };
 
 export default FeedbackForm;
