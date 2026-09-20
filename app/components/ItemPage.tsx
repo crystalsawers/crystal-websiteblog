@@ -254,11 +254,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
   };
 
   if (loading) {
-    return (
-      <p className="text-center text-[#99ffd3]">
-        Loading...
-      </p>
-    );
+    return <p className="text-center text-[#99ffd3]">Loading...</p>;
   }
 
   if (fetchError) {
@@ -275,20 +271,14 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
         <>
           {/* TOP CONTROLS */}
           <div className="post-page-controls">
-            <button
-              onClick={handleBack}
-              className="post-page-button"
-            >
+            <button onClick={handleBack} className="post-page-button">
               ← Back
             </button>
 
             <div className="post-admin-buttons">
               {isAuthenticated && (
                 <>
-                  <button
-                    onClick={handleEdit}
-                    className="post-page-button"
-                  >
+                  <button onClick={handleEdit} className="post-page-button">
                     Edit
                   </button>
 
@@ -326,28 +316,20 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
                 </span>
 
                 {data.title && (
-                  <h1 className="individual-post-title">
-                    {data.title}
-                  </h1>
+                  <h1 className="individual-post-title">{data.title}</h1>
                 )}
 
                 <div className="individual-post-meta">
                   {data.date && (
-                    <span>
-                      Posted {formatDate(new Date(data.date))}
-                    </span>
+                    <span>Posted {formatDate(new Date(data.date))}</span>
                   )}
 
                   {data.editedDate && (
-                    <span>
-                      Edited {formatDate(new Date(data.editedDate))}
-                    </span>
+                    <span>Edited {formatDate(new Date(data.editedDate))}</span>
                   )}
 
                   {data.isDraft && (
-                    <span className="individual-post-draft">
-                      Draft
-                    </span>
+                    <span className="individual-post-draft">Draft</span>
                   )}
                 </div>
               </header>
@@ -388,9 +370,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
                       onClick={() => handleReaction(reaction.id)}
                       disabled={reacting}
                       className={`individual-post-reaction ${
-                        activeReaction === reaction.id
-                          ? 'active'
-                          : ''
+                        activeReaction === reaction.id ? 'active' : ''
                       }`}
                       aria-label={`${reaction.id} (${
                         reactionCounts[reaction.id] || 0
@@ -401,9 +381,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
                         {reaction.emoji}
                       </span>
 
-                      <span>
-                        {reactionCounts[reaction.id] || 0}
-                      </span>
+                      <span>{reactionCounts[reaction.id] || 0}</span>
                     </button>
                   ))}
                 </div>

@@ -17,13 +17,7 @@ const UploadButton = ({ mobileMenu = false }: { mobileMenu?: boolean }) => {
     router.push('/upload-image');
   };
 
-  return (
-    <button
-      onClick={handleUpload}
-    >
-      Upload
-    </button>
-  );
+  return <button onClick={handleUpload}>Upload</button>;
 };
 
 export default UploadButton;

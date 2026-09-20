@@ -16,11 +16,7 @@ const SubscribeButton = () => {
     return null;
   }
 
-  return (
-    <button onClick={handleSubscribe}>
-      Subscribe
-    </button>
-  );
+  return <button onClick={handleSubscribe}>Subscribe</button>;
 };
 
 export default SubscribeButton;

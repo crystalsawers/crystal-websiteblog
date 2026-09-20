@@ -249,7 +249,6 @@ const HomePage = () => {
 
   return (
     <div className="blog-home">
-
       {/*
       =========================================================
       OPTIONAL FEATURE / BANNER TEMPLATE
@@ -359,16 +358,12 @@ const HomePage = () => {
                     <span>{pinnedPost.category}</span>
 
                     {pinnedPost.date && (
-                      <span>
-                        {formatDate(new Date(pinnedPost.date))}
-                      </span>
+                      <span>{formatDate(new Date(pinnedPost.date))}</span>
                     )}
                   </div>
 
                   {pinnedPost.title && (
-                    <h3 className="featured-post-title">
-                      {pinnedPost.title}
-                    </h3>
+                    <h3 className="featured-post-title">{pinnedPost.title}</h3>
                   )}
 
                   {pinnedPost.isDraft && (
@@ -439,9 +434,7 @@ const HomePage = () => {
                         <span>{post.category}</span>
 
                         {post.date && (
-                          <span>
-                            {formatDate(new Date(post.date))}
-                          </span>
+                          <span>{formatDate(new Date(post.date))}</span>
                         )}
                       </div>
 
@@ -518,9 +511,7 @@ const HomePage = () => {
             </span>
 
             <button
-              onClick={() =>
-                goToPage(Math.min(currentPage + 1, totalPages))
-              }
+              onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
               disabled={currentPage === totalPages}
               className="pagination-button"
             >

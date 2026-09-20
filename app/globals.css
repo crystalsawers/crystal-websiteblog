@@ -12,8 +12,6 @@
   --navbar-text: #99ffd3;
 }
 
-
-
 /* Base styles */
 body {
   background: var(--background);
@@ -29,7 +27,6 @@ h2 {
 main {
   @apply mx-auto my-12 max-w-5xl px-8;
 }
-
 
 main > h2 {
   @apply mb-4 pb-2 text-base text-gray-200;
@@ -245,24 +242,24 @@ p > a {
     border-top: 1px solid #292929;
   }
 
-.navbar-mobile > a,
-.navbar-mobile-group > button,
-.navbar-mobile-actions > button:not(.navbar-search) {
-  display: block;
-  margin-bottom: 0;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-  color: #99ffd3 !important;
-  font-family: inherit !important;
-  font-size: 0.75rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.18em !important;
-  line-height: 1 !important;
-  text-transform: uppercase !important;
-  text-decoration: none;
-  cursor: pointer;
-}
+  .navbar-mobile > a,
+  .navbar-mobile-group > button,
+  .navbar-mobile-actions > button:not(.navbar-search) {
+    display: block;
+    margin-bottom: 0;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #99ffd3 !important;
+    font-family: inherit !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.18em !important;
+    line-height: 1 !important;
+    text-transform: uppercase !important;
+    text-decoration: none;
+    cursor: pointer;
+  }
 
   .navbar-mobile > a:hover,
   .navbar-mobile-group > button:hover,
@@ -300,14 +297,13 @@ p > a {
     color: #99ffd3;
   }
 
-.navbar-mobile-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 0;
-}
-
+  .navbar-mobile-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0;
+  }
 }
 
 @media (max-width: 600px) {
@@ -470,7 +466,6 @@ p > a {
     width: 180px;
   }
 }
-
 
 /* form input */
 
@@ -677,7 +672,6 @@ p > a {
 .markdown-content a {
   text-decoration: underline;
 }
-
 
 /* =========================================================
    HOMEPAGE
@@ -2121,7 +2115,6 @@ p > a {
 
   .subscribe-button {
     width: 100%;
-
   }
 }
 
@@ -2175,7 +2168,7 @@ p > a {
   width: 100%;
   border: 1px solid #444;
   border-radius: 0.25rem;
-  background:  #d4d4d4;
+  background: #d4d4d4;
   color: black;
   font-size: 1rem;
   outline: none;
@@ -2266,4 +2259,40 @@ p > a {
   .feedback-note {
     font-size: 0.85rem;
   }
+}
+
+/* =========================================================
+   IMAGE UPLOAD
+   ========================================================= */
+
+.upload-media-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.upload-media-button {
+  display: block;
+  width: 180px;
+  margin: 0 auto;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid #99ffd3;
+  border-radius: 0.25rem;
+  background: #99ffd3;
+  color: #0a0a0a;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.upload-media-button:hover {
+  background: #0a0a0a;
+  color: #99ffd3;
 }

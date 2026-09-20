@@ -37,176 +37,174 @@ const Navbar = () => {
   };
 
   return (
-  <div className="navbar">
-    <div className="navbar-main">
-      <Link href="/" className="navbar-brand">
-        <Image
-          src={Logo}
-          alt="Blog logo"
-          width={60}
-          placeholder="blur"
-          priority={true}
-          className="navbar-logo"
-        />
+    <div className="navbar">
+      <div className="navbar-main">
+        <Link href="/" className="navbar-brand">
+          <Image
+            src={Logo}
+            alt="Blog logo"
+            width={60}
+            placeholder="blur"
+            priority={true}
+            className="navbar-logo"
+          />
 
-        <h1>Log, Lap, and Over</h1>
-      </Link>
+          <h1>Log, Lap, and Over</h1>
+        </Link>
 
-      {/* Desktop Navigation */}
-      <div className="navbar-desktop">
-        <Link href="/about">About</Link>
-        <Link href="/journey">Journey</Link>
+        {/* Desktop Navigation */}
+        <div className="navbar-desktop">
+          <Link href="/about">About</Link>
+          <Link href="/journey">Journey</Link>
 
-        <div className="navbar-dropdown group">
-          <button>Interests</button>
+          <div className="navbar-dropdown group">
+            <button>Interests</button>
 
-          <div className="navbar-dropdown-menu">
-            <Link href="/interests/cricket">Cricket</Link>
-            <Link href="/interests/formula1">Formula 1</Link>
-            <Link href="/interests/music">Music</Link>
-          </div>
-        </div>
-
-        <div className="navbar-dropdown group">
-          <button>Reviews</button>
-
-          <div className="navbar-dropdown-menu">
-            <Link href="/reviews/lifestyle">Lifestyle</Link>
-            <Link href="/reviews/misc">Misc</Link>
-          </div>
-        </div>
-
-        <div className="navbar-dropdown group">
-          <button>Projects</button>
-
-          <div className="navbar-dropdown-menu">
-            <Link href="/projects/embedded">Embedded Systems</Link>
-            <Link href="/projects/devops">DevOps & Security</Link>
-            <Link href="/projects/apps">Apps & Other IT</Link>
-          </div>
-        </div>
-
-        <div className="navbar-actions">
-          <SubscribeButton />
-          <UploadButton />
-          <LogoutButton />
-
-          <button
-            onClick={toggleSearch}
-            className="navbar-search"
-            aria-label="Search"
-          >
-            <FontAwesomeIcon icon={faSearch} />
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu Button */}
-      <button
-        onClick={toggleMenu}
-        className="navbar-menu-toggle"
-        aria-label="Toggle Menu"
-      >
-        {isOpen ? (
-          <svg
-            className="navbar-menu-icon"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        ) : (
-          <svg
-            className="navbar-menu-icon"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            />
-          </svg>
-        )}
-      </button>
-    </div>
-
-    {/* Mobile Navigation */}
-    {isOpen && (
-      <div className="navbar-mobile">
-        <Link href="/about">About</Link>
-        <Link href="/journey">Journey</Link>
-
-        <div className="navbar-mobile-group">
-          <button onClick={() => setInterestsOpen(!interestsOpen)}>
-            Interests
-          </button>
-
-          {interestsOpen && (
-            <div className="navbar-mobile-submenu">
+            <div className="navbar-dropdown-menu">
               <Link href="/interests/cricket">Cricket</Link>
               <Link href="/interests/formula1">Formula 1</Link>
               <Link href="/interests/music">Music</Link>
             </div>
-          )}
-        </div>
+          </div>
 
-        <div className="navbar-mobile-group">
-          <button onClick={() => setReviewsOpen(!reviewsOpen)}>
-            Reviews
-          </button>
+          <div className="navbar-dropdown group">
+            <button>Reviews</button>
 
-          {reviewsOpen && (
-            <div className="navbar-mobile-submenu">
+            <div className="navbar-dropdown-menu">
               <Link href="/reviews/lifestyle">Lifestyle</Link>
               <Link href="/reviews/misc">Misc</Link>
             </div>
-          )}
-        </div>
+          </div>
 
-        <div className="navbar-mobile-group">
-          <button onClick={() => setProjectsOpen(!projectsOpen)}>
-            Projects
-          </button>
+          <div className="navbar-dropdown group">
+            <button>Projects</button>
 
-          {projectsOpen && (
-            <div className="navbar-mobile-submenu">
-              <Link href="/projects/embedded">Embedded</Link>
-              <Link href="/projects/devops">DevOps</Link>
-              <Link href="/projects/apps">
-                Apps, Software, and Other IT
-              </Link>
+            <div className="navbar-dropdown-menu">
+              <Link href="/projects/embedded">Embedded Systems</Link>
+              <Link href="/projects/devops">DevOps & Security</Link>
+              <Link href="/projects/apps">Apps & Other IT</Link>
             </div>
+          </div>
+
+          <div className="navbar-actions">
+            <SubscribeButton />
+            <UploadButton />
+            <LogoutButton />
+
+            <button
+              onClick={toggleSearch}
+              className="navbar-search"
+              aria-label="Search"
+            >
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={toggleMenu}
+          className="navbar-menu-toggle"
+          aria-label="Toggle Menu"
+        >
+          {isOpen ? (
+            <svg
+              className="navbar-menu-icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ) : (
+            <svg
+              className="navbar-menu-icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
           )}
-        </div>
-
-        <div className="navbar-mobile-actions">
-          <SubscribeButton />
-          <UploadButton />
-          <LogoutButton />
-
-          <button
-            onClick={toggleSearch}
-            className="navbar-search"
-            aria-label="Search"
-          >
-            <FontAwesomeIcon icon={faSearch} />
-          </button>
-        </div>
+        </button>
       </div>
-    )}
 
-    {isSearchVisible && <SearchBar onSearch={handleSearch} />}
-  </div>
-);
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="navbar-mobile">
+          <Link href="/about">About</Link>
+          <Link href="/journey">Journey</Link>
+
+          <div className="navbar-mobile-group">
+            <button onClick={() => setInterestsOpen(!interestsOpen)}>
+              Interests
+            </button>
+
+            {interestsOpen && (
+              <div className="navbar-mobile-submenu">
+                <Link href="/interests/cricket">Cricket</Link>
+                <Link href="/interests/formula1">Formula 1</Link>
+                <Link href="/interests/music">Music</Link>
+              </div>
+            )}
+          </div>
+
+          <div className="navbar-mobile-group">
+            <button onClick={() => setReviewsOpen(!reviewsOpen)}>
+              Reviews
+            </button>
+
+            {reviewsOpen && (
+              <div className="navbar-mobile-submenu">
+                <Link href="/reviews/lifestyle">Lifestyle</Link>
+                <Link href="/reviews/misc">Misc</Link>
+              </div>
+            )}
+          </div>
+
+          <div className="navbar-mobile-group">
+            <button onClick={() => setProjectsOpen(!projectsOpen)}>
+              Projects
+            </button>
+
+            {projectsOpen && (
+              <div className="navbar-mobile-submenu">
+                <Link href="/projects/embedded">Embedded</Link>
+                <Link href="/projects/devops">DevOps</Link>
+                <Link href="/projects/apps">Apps, Software, and Other IT</Link>
+              </div>
+            )}
+          </div>
+
+          <div className="navbar-mobile-actions">
+            <SubscribeButton />
+            <UploadButton />
+            <LogoutButton />
+
+            <button
+              onClick={toggleSearch}
+              className="navbar-search"
+              aria-label="Search"
+            >
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {isSearchVisible && <SearchBar onSearch={handleSearch} />}
+    </div>
+  );
 };
 
 export default Navbar;

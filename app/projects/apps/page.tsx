@@ -156,9 +156,7 @@ const Apps = () => {
         <div className="category-header-content">
           <span className="section-eyebrow">PROJECTS</span>
 
-          <h2 className="section-title">
-            Apps, Software, and Other IT
-          </h2>
+          <h2 className="section-title">Apps, Software, and Other IT</h2>
 
           <p className="category-description">
             Apps, software, tools, technology, and everything else from the
@@ -169,18 +167,12 @@ const Apps = () => {
 
       {/* Page Controls */}
       <div className="category-controls">
-        <button
-          onClick={handleBack}
-          className="category-back-button"
-        >
+        <button onClick={handleBack} className="category-back-button">
           ← Back
         </button>
 
         {isAuthenticated && (
-          <button
-            onClick={handleCreate}
-            className="admin-button"
-          >
+          <button onClick={handleCreate} className="admin-button">
             Create Post
           </button>
         )}
@@ -216,24 +208,14 @@ const Apps = () => {
                 <div className="post-meta">
                   <span>Apps & IT</span>
 
-                  {item.date && (
-                    <span>
-                      {formatDate(new Date(item.date))}
-                    </span>
-                  )}
+                  {item.date && <span>{formatDate(new Date(item.date))}</span>}
                 </div>
 
                 {item.title && (
-                  <h2 className="modern-post-title">
-                    {item.title}
-                  </h2>
+                  <h2 className="modern-post-title">{item.title}</h2>
                 )}
 
-                {item.isDraft && (
-                  <span className="draft-label">
-                    Draft
-                  </span>
-                )}
+                {item.isDraft && <span className="draft-label">Draft</span>}
 
                 {item.editedDate && (
                   <p className="edited-date">
@@ -299,9 +281,7 @@ const Apps = () => {
           </span>
 
           <button
-            onClick={() =>
-              goToPage(Math.min(currentPage + 1, totalPages))
-            }
+            onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="pagination-button"
           >

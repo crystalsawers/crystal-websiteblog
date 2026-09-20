@@ -133,9 +133,7 @@ const Lifestyle = () => {
 
   if (loading)
     return (
-      <p className="text-center text-[#99ffd3]">
-        Loading Lifestyle posts...
-      </p>
+      <p className="text-center text-[#99ffd3]">Loading Lifestyle posts...</p>
     );
 
   if (error) return <p>{error}</p>;
@@ -146,9 +144,7 @@ const Lifestyle = () => {
         <div className="category-header-content">
           <span className="section-eyebrow">REVIEWS</span>
 
-          <h2 className="section-title">
-            Lifestyle
-          </h2>
+          <h2 className="section-title">Lifestyle</h2>
 
           <p className="category-description">
             Lifestyle reviews, recommendations, experiences, opinions, and
@@ -158,18 +154,12 @@ const Lifestyle = () => {
       </section>
 
       <div className="category-controls">
-        <button
-          onClick={handleBack}
-          className="category-back-button"
-        >
+        <button onClick={handleBack} className="category-back-button">
           ← Back
         </button>
 
         {isAuthenticated && (
-          <button
-            onClick={handleCreate}
-            className="admin-button"
-          >
+          <button onClick={handleCreate} className="admin-button">
             Create Post
           </button>
         )}
@@ -183,18 +173,12 @@ const Lifestyle = () => {
         <>
           <div className="modern-post-grid">
             {data.map((item) => (
-              <article
-                key={item.id}
-                className="modern-post-card"
-              >
+              <article key={item.id} className="modern-post-card">
                 {item.imageUrl && (
                   <div className="modern-post-image">
                     <Image
                       src={item.imageUrl}
-                      alt={
-                        item.title ||
-                        'Lifestyle post image'
-                      }
+                      alt={item.title || 'Lifestyle post image'}
                       width={500}
                       height={300}
                       style={{
@@ -212,28 +196,19 @@ const Lifestyle = () => {
                     <span>Lifestyle</span>
 
                     {item.date && (
-                      <span>
-                        {formatDate(new Date(item.date))}
-                      </span>
+                      <span>{formatDate(new Date(item.date))}</span>
                     )}
                   </div>
 
                   {item.title && (
-                    <h2 className="modern-post-title">
-                      {item.title}
-                    </h2>
+                    <h2 className="modern-post-title">{item.title}</h2>
                   )}
 
-                  {item.isDraft && (
-                    <span className="draft-label">
-                      Draft
-                    </span>
-                  )}
+                  {item.isDraft && <span className="draft-label">Draft</span>}
 
                   {item.editedDate && (
                     <p className="edited-date">
-                      Edited{' '}
-                      {formatDate(new Date(item.editedDate))}
+                      Edited {formatDate(new Date(item.editedDate))}
                     </p>
                   )}
 
@@ -280,9 +255,7 @@ const Lifestyle = () => {
             </button>
 
             <button
-              onClick={() =>
-                goToPage(Math.max(currentPage - 1, 1))
-              }
+              onClick={() => goToPage(Math.max(currentPage - 1, 1))}
               disabled={currentPage === 1}
               className="pagination-button"
             >
@@ -294,11 +267,7 @@ const Lifestyle = () => {
             </span>
 
             <button
-              onClick={() =>
-                goToPage(
-                  Math.min(currentPage + 1, totalPages),
-                )
-              }
+              onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
               disabled={currentPage === totalPages}
               className="pagination-button"
             >

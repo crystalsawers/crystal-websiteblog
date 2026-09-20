@@ -26,13 +26,7 @@ const LogoutButton = ({ mobileMenu = false }: { mobileMenu?: boolean }) => {
     return null;
   }
 
-  return (
-    <button
-      onClick={handleLogout}
-    >
-      Logout
-    </button>
-  );
+  return <button onClick={handleLogout}>Logout</button>;
 };
 
 export default LogoutButton;

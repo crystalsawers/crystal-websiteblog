@@ -42,8 +42,7 @@ export const formatDate = (
     .formatToParts(dateObj)
     .find((part) => part.type === 'timeZoneName')?.value;
 
-  const nzTimezone =
-    offsetString === 'GMT+13:00' ? 'NZDT' : 'NZST';
+  const nzTimezone = offsetString === 'GMT+13:00' ? 'NZDT' : 'NZST';
 
   return `${formattedDate} ${nzTimezone}`;
 };

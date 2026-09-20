@@ -61,25 +61,18 @@ const ResultsPage = () => {
       const allPosts: Post[] = [];
 
       for (const category of categories) {
-        const q = query(
-          collection(db, category),
-          orderBy('date', 'desc'),
-        );
+        const q = query(collection(db, category), orderBy('date', 'desc'));
 
         const querySnapshot = await getDocs(q);
 
         querySnapshot.forEach((documentSnapshot) => {
           const data = documentSnapshot.data();
 
-          const title = (data.title || '')
-            .toLowerCase()
-            .replace(/\s+/g, '');
+          const title = (data.title || '').toLowerCase().replace(/\s+/g, '');
 
           if (
             titles.some((t) =>
-              title.includes(
-                t.toLowerCase().replace(/\s+/g, ''),
-              ),
+              title.includes(t.toLowerCase().replace(/\s+/g, '')),
             )
           ) {
             allPosts.push({
@@ -106,25 +99,17 @@ const ResultsPage = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const queryParams = new URLSearchParams(
-          window.location.search,
-        );
+        const queryParams = new URLSearchParams(window.location.search);
 
         const searchQuery = queryParams.get('q') || '';
 
         const results = await fetchSearchResults([searchQuery]);
 
-        const visibleResults = results.filter(
-          (post) => !post.isDraft,
-        );
+        const visibleResults = results.filter((post) => !post.isDraft);
 
-        const sortedPosts = sortPostsByDate(
-          visibleResults,
-          'date',
-        );
+        const sortedPosts = sortPostsByDate(visibleResults, 'date');
 
-        const startIndex =
-          (currentPage - 1) * postsPerPage;
+        const startIndex = (currentPage - 1) * postsPerPage;
 
         const paginatedPosts = sortedPosts.slice(
           startIndex,
@@ -132,14 +117,9 @@ const ResultsPage = () => {
         );
 
         setPosts(paginatedPosts);
-        setTotalPages(
-          Math.ceil(sortedPosts.length / postsPerPage),
-        );
+        setTotalPages(Math.ceil(sortedPosts.length / postsPerPage));
       } catch (error) {
-        console.error(
-          'Error parsing search query:',
-          error,
-        );
+        console.error('Error parsing search query:', error);
         setError('Failed to load results');
       } finally {
         setLoading(false);
@@ -152,17 +132,11 @@ const ResultsPage = () => {
   const goToPage = (page: number) => {
     setCurrentPage(page);
 
-    const searchParams = new URLSearchParams(
-      window.location.search,
-    );
+    const searchParams = new URLSearchParams(window.location.search);
 
     searchParams.set('page', page.toString());
 
-    window.history.pushState(
-      {},
-      '',
-      '?' + searchParams.toString(),
-    );
+    window.history.pushState({}, '', '?' + searchParams.toString());
   };
 
   if (loading) return <Loading />;
@@ -175,9 +149,7 @@ const ResultsPage = () => {
         <div className="category-header-content">
           <span className="section-eyebrow">SEARCH</span>
 
-          <h2 className="section-title">
-            Search Results
-          </h2>
+          <h2 className="section-title">Search Results</h2>
         </div>
       </section>
 
@@ -198,26 +170,19 @@ const ResultsPage = () => {
               if (!post.category) return null;
 
               return (
-                <article
-                  key={post.id}
-                  className="modern-post-card"
-                >
+                <article key={post.id} className="modern-post-card">
                   {post.imageUrl && (
                     <div className="modern-post-image">
                       <Image
                         src={post.imageUrl}
-                        alt={
-                          post.title ||
-                          'Posted image'
-                        }
+                        alt={post.title || 'Posted image'}
                         width={500}
                         height={300}
                         style={{
                           width: '100%',
                           height: '100%',
                           objectFit: 'cover',
-                          objectPosition:
-                            'top center',
+                          objectPosition: 'top center',
                         }}
                       />
                     </div>
@@ -225,40 +190,25 @@ const ResultsPage = () => {
 
                   <div className="modern-post-content">
                     <div className="post-meta">
-                      <span>
-                        {post.category}
-                      </span>
+                      <span>{post.category}</span>
 
                       {post.date && (
-                        <span>
-                          {formatDate(
-                            new Date(post.date),
-                          )}
-                        </span>
+                        <span>{formatDate(new Date(post.date))}</span>
                       )}
                     </div>
 
                     {post.title && (
-                      <h2 className="modern-post-title">
-                        {post.title}
-                      </h2>
+                      <h2 className="modern-post-title">{post.title}</h2>
                     )}
 
                     {post.editedDate && (
                       <p className="edited-date">
-                        Edited{' '}
-                        {formatDate(
-                          new Date(
-                            post.editedDate,
-                          ),
-                        )}
+                        Edited {formatDate(new Date(post.editedDate))}
                       </p>
                     )}
 
                     <div className="modern-post-excerpt">
-                      {renderContent(
-                        post.content,
-                      )}
+                      {renderContent(post.content)}
                     </div>
 
                     <a
@@ -283,14 +233,7 @@ const ResultsPage = () => {
             </button>
 
             <button
-              onClick={() =>
-                goToPage(
-                  Math.max(
-                    currentPage - 1,
-                    1,
-                  ),
-                )
-              }
+              onClick={() => goToPage(Math.max(currentPage - 1, 1))}
               disabled={currentPage === 1}
               className="pagination-button"
             >
@@ -302,29 +245,16 @@ const ResultsPage = () => {
             </span>
 
             <button
-              onClick={() =>
-                goToPage(
-                  Math.min(
-                    currentPage + 1,
-                    totalPages,
-                  ),
-                )
-              }
-              disabled={
-                currentPage === totalPages
-              }
+              onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
+              disabled={currentPage === totalPages}
               className="pagination-button"
             >
               Next
             </button>
 
             <button
-              onClick={() =>
-                goToPage(totalPages)
-              }
-              disabled={
-                currentPage === totalPages
-              }
+              onClick={() => goToPage(totalPages)}
+              disabled={currentPage === totalPages}
               className="pagination-button"
             >
               Last

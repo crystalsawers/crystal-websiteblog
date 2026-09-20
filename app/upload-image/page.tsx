@@ -9,6 +9,41 @@ type StorageFile = {
   url: string;
 };
 
+
+// Grab first frame of video for thumbnail
+
+function VideoThumbnail({
+  file,
+  selected,
+  onClick,
+}: {
+  file: StorageFile;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <video
+      key={file.name}
+      src={file.url}
+      muted
+      playsInline
+      preload="metadata"
+      style={{
+        width: '100%',
+        height: '150px',
+        objectFit: 'cover',
+        border: selected ? '3px solid red' : 'none',
+        borderRadius: 4,
+        cursor: 'pointer',
+        backgroundColor: '#000',
+      }}
+      onClick={onClick}
+      onMouseOver={(e) => (e.currentTarget.style.opacity = '0.5')}
+      onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
+    />
+  );
+}
+
 export default function ExistingFilesPage() {
   const [authed, setAuthed] = useState(false);
   const [checking, setChecking] = useState(true);
@@ -54,14 +89,19 @@ export default function ExistingFilesPage() {
 
   return (
     <div style={{ padding: '2rem', width: '100%', margin: '0 auto' }}>
-      <h1 className="page-title">Image Upload Library</h1>
+      <header className="category-header about-header">
+        <div className="category-header-content">
+          <span className="section-eyebrow">UPLOAD</span>
+          <h1 className="category-title">Image Upload Library</h1>
+        </div>
+      </header>
 
       {files.length === 0 && (
         <p className="text-center text-[#99ffd3]">Loading...</p>
       )}
 
       {/* Upload Button */}
-      <div style={{ marginBottom: '1rem' }}>
+      <div className="upload-media-container">
         <input
           type="file"
           id="fileInput"
@@ -96,23 +136,10 @@ export default function ExistingFilesPage() {
             }
           }}
         />
+
         <button
           onClick={() => document.getElementById('fileInput')?.click()}
-          style={{
-            backgroundColor: '#00c853',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            padding: '0.5rem 1rem',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-          }}
-          onMouseOver={(e) =>
-            (e.currentTarget.style.backgroundColor = '#00b34d')
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.backgroundColor = '#00c853')
-          }
+          className="upload-media-button"
         >
           Add Media
         </button>
@@ -130,28 +157,12 @@ export default function ExistingFilesPage() {
           const isVideo = file.url.match(/\.(mp4|mov|mkv|webm)$/i);
 
           if (isVideo) {
-            // Video element should display first frame automatically, but it's not working currently
             return (
-              <video
+              <VideoThumbnail
                 key={file.name}
-                src={file.url}
-                controls
-                muted
-                loop
-                style={{
-                  ...{
-                    width: '100%',
-                    height: '150px',
-                    objectFit: 'cover',
-                    borderRadius: 4,
-                    cursor: 'pointer',
-                    backgroundColor: '#000',
-                  },
-                  border: file.url === url ? '3px solid red' : 'none', // selected border
-                }}
+                file={file}
+                selected={file.url === url}
                 onClick={() => setUrl(file.url)}
-                onMouseOver={(e) => (e.currentTarget.style.opacity = '0.5')}
-                onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
               />
             );
           }

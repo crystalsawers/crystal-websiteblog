@@ -149,82 +149,82 @@ const SubscribePage = () => {
   }
 
   return (
-  <div className="blog-home">
-    <header className="category-header about-header">
-      <div className="category-header-content">
-        <span className="section-eyebrow">SUBSCRIBE</span>
-        <h1 className="category-title">
-          {isSubscribing
-            ? 'Subscribe to My Latest Posts'
-            : 'Unsubscribe from My Posts'}
-        </h1>
-      </div>
-    </header>
-
-    <div className="subscribe-content">
-      <section className="subscribe-section">
-        <div className="subscribe-form">
-          <form onSubmit={handleSubmit}>
-            <div className="subscribe-field">
-              <label htmlFor="subscribe-name">Name</label>
-              <input
-                id="subscribe-name"
-                type="text"
-                placeholder="Enter your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="subscribe-field">
-              <label htmlFor="subscribe-email">Email</label>
-              <input
-                id="subscribe-email"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <button type="submit" className="subscribe-button">
-              {isSubscribing ? 'Subscribe' : 'Unsubscribe'}
-            </button>
-          </form>
+    <div className="blog-home">
+      <header className="category-header about-header">
+        <div className="category-header-content">
+          <span className="section-eyebrow">SUBSCRIBE</span>
+          <h1 className="category-title">
+            {isSubscribing
+              ? 'Subscribe to My Latest Posts'
+              : 'Unsubscribe from My Posts'}
+          </h1>
         </div>
+      </header>
 
-        <div className="subscribe-description">
-          <p>
-            The subscription is completely free! There is no money involved
-            here. When you subscribe you only stay updated with my latest
-            posts, unless you unsubscribe of course.
-          </p>
-        </div>
+      <div className="subscribe-content">
+        <section className="subscribe-section">
+          <div className="subscribe-form">
+            <form onSubmit={handleSubmit}>
+              <div className="subscribe-field">
+                <label htmlFor="subscribe-name">Name</label>
+                <input
+                  id="subscribe-name"
+                  type="text"
+                  placeholder="Enter your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
 
-        {message && (
-          <p
-            className={`subscribe-message ${
-              message.includes('error') || message.includes('issues')
-                ? 'subscribe-message-error'
-                : ''
-            }`}
+              <div className="subscribe-field">
+                <label htmlFor="subscribe-email">Email</label>
+                <input
+                  id="subscribe-email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <button type="submit" className="subscribe-button">
+                {isSubscribing ? 'Subscribe' : 'Unsubscribe'}
+              </button>
+            </form>
+          </div>
+
+          <div className="subscribe-description">
+            <p>
+              The subscription is completely free! There is no money involved
+              here. When you subscribe you only stay updated with my latest
+              posts, unless you unsubscribe of course.
+            </p>
+          </div>
+
+          {message && (
+            <p
+              className={`subscribe-message ${
+                message.includes('error') || message.includes('issues')
+                  ? 'subscribe-message-error'
+                  : ''
+              }`}
+            >
+              {message}
+            </p>
+          )}
+
+          <button
+            onClick={() => setIsSubscribing(!isSubscribing)}
+            className="subscribe-toggle"
           >
-            {message}
-          </p>
-        )}
-
-        <button
-          onClick={() => setIsSubscribing(!isSubscribing)}
-          className="subscribe-toggle"
-        >
-          {isSubscribing ? 'Want to unsubscribe?' : 'Want to subscribe?'}
-        </button>
-      </section>
+            {isSubscribing ? 'Want to unsubscribe?' : 'Want to subscribe?'}
+          </button>
+        </section>
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default SubscribePage;

@@ -68,19 +68,19 @@ const Formula1 = () => {
 
         const sortedItems = sortPostsByDate(items, 'date');
 
-const visibleItems = isAuthenticated
-  ? sortedItems
-  : sortedItems.filter((item) => !item.isDraft);
+        const visibleItems = isAuthenticated
+          ? sortedItems
+          : sortedItems.filter((item) => !item.isDraft);
 
-const startIndex = (currentPage - 1) * postsPerPage;
+        const startIndex = (currentPage - 1) * postsPerPage;
 
-const paginatedPosts = visibleItems.slice(
-  startIndex,
-  startIndex + postsPerPage,
-);
+        const paginatedPosts = visibleItems.slice(
+          startIndex,
+          startIndex + postsPerPage,
+        );
 
-setData(paginatedPosts);
-setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
+        setData(paginatedPosts);
+        setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
       } catch (error) {
         setError('Error fetching Formula 1 data');
       } finally {
@@ -140,9 +140,7 @@ setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
 
   if (loading) {
     return (
-      <p className="text-center text-[#99ffd3]">
-        Loading Formula 1 posts...
-      </p>
+      <p className="text-center text-[#99ffd3]">Loading Formula 1 posts...</p>
     );
   }
 
@@ -160,25 +158,20 @@ setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
           <h2 className="section-title">Formula 1</h2>
 
           <p className="category-description">
-      Race weekend reviews, thinkpieces, opinions, and everything else from the world of F1.
-    </p>
+            Race weekend reviews, thinkpieces, opinions, and everything else
+            from the world of F1.
+          </p>
         </div>
       </section>
 
       {/* Page Controls */}
       <div className="category-controls">
-        <button
-          onClick={handleBack}
-          className="category-back-button"
-        >
+        <button onClick={handleBack} className="category-back-button">
           ← Back
         </button>
 
         {isAuthenticated && (
-          <button
-            onClick={handleCreatePost}
-            className="admin-button"
-          >
+          <button onClick={handleCreatePost} className="admin-button">
             Create Post
           </button>
         )}
@@ -220,23 +213,15 @@ setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
                     <span>Formula 1</span>
 
                     {item.date && (
-                      <span>
-                        {formatDate(new Date(item.date))}
-                      </span>
+                      <span>{formatDate(new Date(item.date))}</span>
                     )}
                   </div>
 
                   {item.title && (
-                    <h2 className="modern-post-title">
-                      {item.title}
-                    </h2>
+                    <h2 className="modern-post-title">{item.title}</h2>
                   )}
 
-                  {item.isDraft && (
-                    <span className="draft-label">
-                      Draft
-                    </span>
-                  )}
+                  {item.isDraft && <span className="draft-label">Draft</span>}
 
                   {item.editedDate && (
                     <p className="edited-date">
@@ -303,9 +288,7 @@ setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
           </span>
 
           <button
-            onClick={() =>
-              goToPage(Math.min(currentPage + 1, totalPages))
-            }
+            onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="pagination-button"
           >

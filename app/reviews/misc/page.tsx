@@ -146,30 +146,22 @@ const Miscellaneous = () => {
         <div className="category-header-content">
           <span className="section-eyebrow">REVIEWS</span>
 
-          <h2 className="section-title">
-            Miscellaneous
-          </h2>
+          <h2 className="section-title">Miscellaneous</h2>
 
           <p className="category-description">
-            Miscellaneous reviews, thoughts, opinions, and everything else
-            that does not quite fit into another category.
+            Miscellaneous reviews, thoughts, opinions, and everything else that
+            does not quite fit into another category.
           </p>
         </div>
       </section>
 
       <div className="category-controls">
-        <button
-          onClick={handleBack}
-          className="category-back-button"
-        >
+        <button onClick={handleBack} className="category-back-button">
           ← Back
         </button>
 
         {isAuthenticated && (
-          <button
-            onClick={handleCreate}
-            className="admin-button"
-          >
+          <button onClick={handleCreate} className="admin-button">
             Create Post
           </button>
         )}
@@ -183,18 +175,12 @@ const Miscellaneous = () => {
         <>
           <div className="modern-post-grid">
             {data.map((item) => (
-              <article
-                key={item.id}
-                className="modern-post-card"
-              >
+              <article key={item.id} className="modern-post-card">
                 {item.imageUrl && (
                   <div className="modern-post-image">
                     <Image
                       src={item.imageUrl}
-                      alt={
-                        item.title ||
-                        'Miscellaneous post image'
-                      }
+                      alt={item.title || 'Miscellaneous post image'}
                       width={500}
                       height={300}
                       style={{
@@ -212,28 +198,19 @@ const Miscellaneous = () => {
                     <span>Miscellaneous</span>
 
                     {item.date && (
-                      <span>
-                        {formatDate(new Date(item.date))}
-                      </span>
+                      <span>{formatDate(new Date(item.date))}</span>
                     )}
                   </div>
 
                   {item.title && (
-                    <h2 className="modern-post-title">
-                      {item.title}
-                    </h2>
+                    <h2 className="modern-post-title">{item.title}</h2>
                   )}
 
-                  {item.isDraft && (
-                    <span className="draft-label">
-                      Draft
-                    </span>
-                  )}
+                  {item.isDraft && <span className="draft-label">Draft</span>}
 
                   {item.editedDate && (
                     <p className="edited-date">
-                      Edited{' '}
-                      {formatDate(new Date(item.editedDate))}
+                      Edited {formatDate(new Date(item.editedDate))}
                     </p>
                   )}
 
@@ -280,9 +257,7 @@ const Miscellaneous = () => {
             </button>
 
             <button
-              onClick={() =>
-                goToPage(Math.max(currentPage - 1, 1))
-              }
+              onClick={() => goToPage(Math.max(currentPage - 1, 1))}
               disabled={currentPage === 1}
               className="pagination-button"
             >
@@ -294,11 +269,7 @@ const Miscellaneous = () => {
             </span>
 
             <button
-              onClick={() =>
-                goToPage(
-                  Math.min(currentPage + 1, totalPages),
-                )
-              }
+              onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
               disabled={currentPage === totalPages}
               className="pagination-button"
             >

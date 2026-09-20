@@ -52,74 +52,74 @@ const About = () => {
   if (error) return <p>{error}</p>;
 
   return (
-  <div className="blog-home">
-    <header className="category-header about-header">
-  <div className="category-header-content">
-    <span className="section-eyebrow">ABOUT</span>
-    <h1 className="category-title">About Me</h1>
-  </div>
-</header>
-
-    {data.length === 0 ? (
-      <div className="empty-posts">
-        <p>No About Me data available.</p>
-      </div>
-    ) : (
-      data.map((item) => (
-        <div key={item.id} className="about-content">
-          <section className="about-section">
-            <span className="section-eyebrow">INTRODUCTION</span>
-            <div className="about-text">
-              <p>{item.introduction}</p>
-            </div>
-          </section>
-
-          <section className="about-section">
-            <span className="section-eyebrow">PERSONAL STORY</span>
-            <div className="about-text">
-              <p>{item.personal_story}</p>
-            </div>
-          </section>
-
-          <section className="about-section">
-            <span className="section-eyebrow">CONTACT</span>
-
-            <div className="about-contact">
-              <p>
-                <strong>Email for Blog-related Enquiries:</strong>{' '}
-                <a href={`mailto:${item.contact_info.blog_email}`}>
-                  {item.contact_info.blog_email}
-                </a>
-              </p>
-
-              <p>
-                <strong>Github:</strong>{' '}
-                <a
-                  href={item.contact_info.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {item.contact_info.github}
-                </a>
-              </p>
-            </div>
-          </section>
-
-          {isAuthenticated && (
-            <div className="post-admin-controls">
-              <button
-                onClick={() => router.push('/about/edit-about')}
-                className="edit-button"
-              >
-                Edit
-              </button>
-            </div>
-          )}
+    <div className="blog-home">
+      <header className="category-header about-header">
+        <div className="category-header-content">
+          <span className="section-eyebrow">ABOUT</span>
+          <h1 className="category-title">About Me</h1>
         </div>
-      ))
-    )}
-  </div>
-);
+      </header>
+
+      {data.length === 0 ? (
+        <div className="empty-posts">
+          <p>No About Me data available.</p>
+        </div>
+      ) : (
+        data.map((item) => (
+          <div key={item.id} className="about-content">
+            <section className="about-section">
+              <span className="section-eyebrow">INTRODUCTION</span>
+              <div className="about-text">
+                <p>{item.introduction}</p>
+              </div>
+            </section>
+
+            <section className="about-section">
+              <span className="section-eyebrow">PERSONAL STORY</span>
+              <div className="about-text">
+                <p>{item.personal_story}</p>
+              </div>
+            </section>
+
+            <section className="about-section">
+              <span className="section-eyebrow">CONTACT</span>
+
+              <div className="about-contact">
+                <p>
+                  <strong>Email for Blog-related Enquiries:</strong>{' '}
+                  <a href={`mailto:${item.contact_info.blog_email}`}>
+                    {item.contact_info.blog_email}
+                  </a>
+                </p>
+
+                <p>
+                  <strong>Github:</strong>{' '}
+                  <a
+                    href={item.contact_info.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.contact_info.github}
+                  </a>
+                </p>
+              </div>
+            </section>
+
+            {isAuthenticated && (
+              <div className="post-admin-controls">
+                <button
+                  onClick={() => router.push('/about/edit-about')}
+                  className="edit-button"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+          </div>
+        ))
+      )}
+    </div>
+  );
 };
 
 export default About;

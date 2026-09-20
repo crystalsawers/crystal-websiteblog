@@ -138,11 +138,7 @@ const Music = () => {
   };
 
   if (loading) {
-    return (
-      <p className="text-center text-[#99ffd3]">
-        Loading Music posts...
-      </p>
-    );
+    return <p className="text-center text-[#99ffd3]">Loading Music posts...</p>;
   }
 
   if (error) {
@@ -159,26 +155,20 @@ const Music = () => {
           <h2 className="section-title">Music</h2>
 
           <p className="category-description">
-            Music ratings, reviews, thoughts and everything
-            else from the world of music.
+            Music ratings, reviews, thoughts and everything else from the world
+            of music.
           </p>
         </div>
       </section>
 
       {/* Page Controls */}
       <div className="category-controls">
-        <button
-          onClick={handleBack}
-          className="category-back-button"
-        >
+        <button onClick={handleBack} className="category-back-button">
           ← Back
         </button>
 
         {isAuthenticated && (
-          <button
-            onClick={handleCreate}
-            className="admin-button"
-          >
+          <button onClick={handleCreate} className="admin-button">
             Create Post
           </button>
         )}
@@ -214,24 +204,14 @@ const Music = () => {
                 <div className="post-meta">
                   <span>Music</span>
 
-                  {item.date && (
-                    <span>
-                      {formatDate(new Date(item.date))}
-                    </span>
-                  )}
+                  {item.date && <span>{formatDate(new Date(item.date))}</span>}
                 </div>
 
                 {item.title && (
-                  <h2 className="modern-post-title">
-                    {item.title}
-                  </h2>
+                  <h2 className="modern-post-title">{item.title}</h2>
                 )}
 
-                {item.isDraft && (
-                  <span className="draft-label">
-                    Draft
-                  </span>
-                )}
+                {item.isDraft && <span className="draft-label">Draft</span>}
 
                 {item.editedDate && (
                   <p className="edited-date">
@@ -297,9 +277,7 @@ const Music = () => {
           </span>
 
           <button
-            onClick={() =>
-              goToPage(Math.min(currentPage + 1, totalPages))
-            }
+            onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="pagination-button"
           >

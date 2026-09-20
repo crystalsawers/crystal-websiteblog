@@ -67,19 +67,19 @@ const Cricket = () => {
 
         const sortedItems = sortPostsByDate(items, 'date');
 
-const visibleItems = isAuthenticated
-  ? sortedItems
-  : sortedItems.filter((item) => !item.isDraft);
+        const visibleItems = isAuthenticated
+          ? sortedItems
+          : sortedItems.filter((item) => !item.isDraft);
 
-const startIndex = (currentPage - 1) * postsPerPage;
+        const startIndex = (currentPage - 1) * postsPerPage;
 
-const paginatedPosts = visibleItems.slice(
-  startIndex,
-  startIndex + postsPerPage,
-);
+        const paginatedPosts = visibleItems.slice(
+          startIndex,
+          startIndex + postsPerPage,
+        );
 
-setData(paginatedPosts);
-setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
+        setData(paginatedPosts);
+        setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
       } catch (error) {
         setError('Error fetching Cricket data');
       } finally {
@@ -139,9 +139,7 @@ setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
 
   if (loading) {
     return (
-      <p className="text-center text-[#99ffd3]">
-        Loading Cricket posts...
-      </p>
+      <p className="text-center text-[#99ffd3]">Loading Cricket posts...</p>
     );
   }
 
@@ -159,25 +157,20 @@ setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
           <h2 className="section-title">Cricket</h2>
 
           <p className="category-description">
-          Match reviews, thinkpieces, opinions, and everything else from the beautiful game of cricket.
-        </p>
+            Match reviews, thinkpieces, opinions, and everything else from the
+            beautiful game of cricket.
+          </p>
         </div>
       </section>
 
       {/* Page Controls */}
       <div className="category-controls">
-        <button
-          onClick={handleBack}
-          className="category-back-button"
-        >
+        <button onClick={handleBack} className="category-back-button">
           ← Back
         </button>
 
         {isAuthenticated && (
-          <button
-            onClick={handleCreate}
-            className="admin-button"
-          >
+          <button onClick={handleCreate} className="admin-button">
             Create Post
           </button>
         )}
@@ -217,23 +210,15 @@ setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
                     <span>Cricket</span>
 
                     {item.date && (
-                      <span>
-                        {formatDate(new Date(item.date))}
-                      </span>
+                      <span>{formatDate(new Date(item.date))}</span>
                     )}
                   </div>
 
                   {item.title && (
-                    <h2 className="modern-post-title">
-                      {item.title}
-                    </h2>
+                    <h2 className="modern-post-title">{item.title}</h2>
                   )}
 
-                  {item.isDraft && (
-                    <span className="draft-label">
-                      Draft
-                    </span>
-                  )}
+                  {item.isDraft && <span className="draft-label">Draft</span>}
 
                   {item.editedDate && (
                     <p className="edited-date">
@@ -300,9 +285,7 @@ setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
           </span>
 
           <button
-            onClick={() =>
-              goToPage(Math.min(currentPage + 1, totalPages))
-            }
+            onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="pagination-button"
           >
