@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthContext';
 
-const SubscribeButton = ({ mobileMenu = false }: { mobileMenu?: boolean }) => {
+const SubscribeButton = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
 
@@ -17,14 +17,7 @@ const SubscribeButton = ({ mobileMenu = false }: { mobileMenu?: boolean }) => {
   }
 
   return (
-    <button
-      onClick={handleSubscribe}
-      className={
-        mobileMenu
-          ? 'text-md block w-full text-center text-[var(--navbar-text)] hover:text-white'
-          : 'block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base'
-      }
-    >
+    <button onClick={handleSubscribe}>
       Subscribe
     </button>
   );

@@ -39,65 +39,296 @@ p > a {
   @apply underline;
 }
 
-/* Navbar styles */
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
 .navbar {
-  @apply mx-auto my-10 flex max-w-5xl items-center justify-between border-b-2 border-gray-700 pb-4;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto 3rem;
+  border-bottom: 1px solid #292929;
 }
 
-nav {
-  @apply mx-auto my-10 flex max-w-5xl items-center gap-5 border-b-2 border-gray-700 pb-4;
+.navbar-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1.25rem 0;
 }
 
-nav a,
-nav span,
-.logout-button,
-.subscribe-button,
-.feedback-button {
-  color: var(--navbar-text);
+/* Brand */
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #99ffd3;
+  text-decoration: none;
 }
 
-nav a:hover {
-  @apply text-white;
+.navbar-logo {
+  width: 50px;
+  height: auto;
 }
 
-main nav {
-  @apply border-0;
+.navbar-brand h1 {
+  margin: 0;
+  padding: 0;
+  color: #99ffd3 !important;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .navbar {
-    @apply flex-col items-center;
-    @apply px-4;
+/* Desktop navigation */
+
+.navbar-desktop {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-desktop > a,
+.navbar-dropdown > button,
+.navbar-actions > button,
+.navbar-actions > a {
+  display: block;
+  margin-bottom: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #99ffd3;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.navbar-desktop > a:hover,
+.navbar-dropdown > button:hover,
+.navbar-actions > button:hover,
+.navbar-actions > a:hover {
+  color: #ffffff;
+}
+
+/* Dropdowns */
+
+.navbar-dropdown {
+  position: relative;
+}
+
+.navbar-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  left: -0.75rem;
+  z-index: 50;
+  display: flex;
+  visibility: hidden;
+  flex-direction: column;
+  width: 210px;
+  padding: 0.5rem;
+  border: 1px solid #292929;
+  background: #0a0a0a;
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+}
+
+.navbar-dropdown:hover .navbar-dropdown-menu {
+  visibility: visible;
+  opacity: 1;
+}
+
+.navbar-dropdown-menu a {
+  display: block;
+  margin-bottom: 0;
+  padding: 0.7rem 0.75rem;
+  color: #99ffd3;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.navbar-dropdown-menu a:hover {
+  background: #151515;
+  color: #ffffff;
+}
+
+/* Actions */
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 0.5rem;
+}
+
+/* Search */
+
+.navbar-search {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #99ffd3 !important;
+  font-family: inherit;
+  font-size: 0.85rem !important;
+  letter-spacing: normal !important;
+  cursor: pointer;
+}
+
+.navbar-search:hover {
+  color: #ffffff !important;
+}
+
+/* Mobile menu button */
+
+.navbar-menu-toggle {
+  display: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #99ffd3;
+  cursor: pointer;
+}
+
+.navbar-menu-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Mobile navigation */
+
+.navbar-mobile {
+  display: none;
+}
+
+/* Responsive */
+
+@media (max-width: 1100px) {
+  .navbar-desktop {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .navbar-desktop {
+    display: none;
   }
 
-  .navbar-links {
-    @apply mt-4 flex-col space-y-2;
+  .navbar-menu-toggle {
+    display: block;
+  }
+
+  .navbar-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 0 1rem;
+    border-top: 1px solid #292929;
+  }
+
+.navbar-mobile > a,
+.navbar-mobile-group > button,
+.navbar-mobile-actions > button:not(.navbar-search) {
+  display: block;
+  margin-bottom: 0;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #99ffd3 !important;
+  font-family: inherit !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.18em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+  .navbar-mobile > a:hover,
+  .navbar-mobile-group > button:hover,
+  .navbar-mobile-actions > button:not(.navbar-search):hover {
+    color: #ffffff;
+  }
+
+  .navbar-mobile-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar-mobile-submenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 0.65rem;
+  }
+
+  .navbar-mobile-submenu a {
+    display: block;
+    margin-bottom: 0;
+    color: #8f8f8f;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .navbar-mobile-submenu a:hover {
+    color: #99ffd3;
+  }
+
+.navbar-mobile-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0;
+}
+
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    margin-bottom: 2rem;
+  }
+
+  .navbar-main {
+    padding: 1rem 0;
   }
 
   .navbar-logo {
-    @apply mb-4;
-  }
-}
-
-@media (max-width: 768px) {
-  .navbar {
-    @apply items-center;
+    width: 45px;
   }
 
-  .navbar-links {
-    @apply mt-4 flex-col space-y-2;
-    @apply w-full;
+  .navbar-brand {
+    gap: 0.5rem;
   }
 
-  .navbar-links a {
-    @apply text-center;
-  }
-}
-
-@media (max-width: 480px) {
-  .navbar-links {
-    @apply space-y-1 text-sm;
+  .navbar-brand h1 {
+    font-size: 0.75rem;
   }
 }
 

@@ -20,11 +20,6 @@ const UploadButton = ({ mobileMenu = false }: { mobileMenu?: boolean }) => {
   return (
     <button
       onClick={handleUpload}
-      className={
-        mobileMenu
-          ? 'text-md block w-full text-center text-[var(--navbar-text)] hover:text-white'
-          : 'block text-xs text-[var(--navbar-text)] hover:text-white sm:text-sm md:text-base'
-      }
     >
       Upload
     </button>
