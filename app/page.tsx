@@ -77,7 +77,6 @@ const fetchPosts = async (
         return;
       }
 
-      // Check if the post belongs to the selected series
       const postBelongsToSeries =
         !seriesId ||
         (Array.isArray(data.seriesIds) && data.seriesIds.includes(seriesId));
@@ -93,7 +92,7 @@ const fetchPosts = async (
           imageUrl: data.imageUrl || '',
           type: data.type || 'default',
           isDraft: data.isDraft || false,
-          seriesIds: data.seriesIds || [], // Ensure seriesIds is included
+          seriesIds: data.seriesIds || [],
         } as Post);
       }
     });
@@ -110,7 +109,7 @@ const HomePage = () => {
   const [pinnedPostId, setPinnedPostId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const postsPerPage = 10;
+  const postsPerPage = 12;
   const searchParams = useSearchParams();
   const [selectedSeries, setSelectedSeries] = useState<string | null>(null);
   const [seriesOptions, setSeriesOptions] = useState<
@@ -121,17 +120,18 @@ const HomePage = () => {
     'Y4f0mW8ZiX35uLxGyg1S',
     '02V6uLUBhnKstE8ofH6H',
     'vcVid0cpfoGh4KdozgcS',
-  ]; // make the ones I want centered
+  ];
 
-  // fetch the series collection from backend
   useEffect(() => {
     async function fetchSeries() {
       try {
         const seriesSnapshot = await getDocs(collection(db, 'series'));
+
         const seriesList = seriesSnapshot.docs.map((doc) => ({
           id: doc.id,
-          name: doc.data().name || 'Unnamed Series', // Fallback
+          name: doc.data().name || 'Unnamed Series',
         }));
+
         setSeriesOptions(seriesList);
       } catch (error) {
         console.error('Error fetching series:', error);
@@ -139,7 +139,7 @@ const HomePage = () => {
     }
 
     fetchSeries();
-  }, []); // Runs only once when the component mounts
+  }, []);
 
   useEffect(() => {
     const pageFromUrl = searchParams.get('page');
@@ -150,8 +150,8 @@ const HomePage = () => {
         setLoading(true);
 
         let seriesPostIds: string[] = [];
+
         if (selectedSeries) {
-          // Fetch postIds for the selected series
           const seriesRef = doc(db, 'series', selectedSeries);
           const seriesSnap = await getDoc(seriesRef);
 
@@ -162,21 +162,22 @@ const HomePage = () => {
           }
         }
 
-        // Fetch all posts and filter by seriesPostIds
         const fetchedPosts = await fetchPosts(isAuthenticated);
+
         const filteredPosts = selectedSeries
           ? fetchedPosts.filter((post) => seriesPostIds.includes(post.id))
           : fetchedPosts;
 
-        // Get site settings for pinned post
         const settingsRef = doc(db, 'settings', 'siteConfig');
         const settingsSnap = await getDoc(settingsRef);
+
         const pinnedId = settingsSnap.data()?.pinnedPostId || null;
         setPinnedPostId(pinnedId);
 
-        // Sort and paginate the posts
         const sortedPosts = sortPostsByDate(filteredPosts, 'date');
+
         const startIndex = (currentPage - 1) * postsPerPage;
+
         const paginatedPosts = sortedPosts.slice(
           startIndex,
           startIndex + postsPerPage,
@@ -209,7 +210,9 @@ const HomePage = () => {
 
     try {
       const postRef = doc(db, post.category, post.id);
+
       await deleteDoc(postRef);
+
       setPosts(posts.filter((p) => p.id !== post.id));
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -220,307 +223,320 @@ const HomePage = () => {
     router.push('/create-post');
   };
 
-  // Added: Update the URL when navigating between pages
   const goToPage = (page: number) => {
     const searchParams = new URLSearchParams(window.location.search);
+
     searchParams.set('page', page.toString());
+
     window.history.pushState({}, '', '?' + searchParams.toString());
+
+    setCurrentPage(page);
   };
 
   if (loading) return <Loading />;
 
-  /* RENDER */
-  return (
-    <div>
-      <div className="responsive-container">
-        <h2 className="page-title mb-6 text-center">Latest Posts</h2>
+  const pinnedPost = posts.find((post) => post.id === pinnedPostId);
 
-        {/* Series Filter */}
-        <div className="mb-6 flex flex-col items-end">
-          <label
-            htmlFor="series-filter"
-            className="mb-2 text-sm font-medium text-[#99ffd3]"
-          >
-            Filter by Blog Series
-          </label>
-          <select
-            id="series-filter"
-            className="w-64 rounded-md border border-gray-300 bg-[#99ffd3] p-2 text-black shadow-md focus:border-indigo-500 focus:ring focus:ring-indigo-300"
-            value={selectedSeries || ''}
-            onChange={(e) => setSelectedSeries(e.target.value || null)}
-          >
-            <option value="">All Series</option>
-            {seriesOptions.map((series) => (
-              <option key={series.id} value={series.id}>
-                {series.name}
-              </option>
-            ))}
-          </select>
+  const regularPosts = posts.filter((post) => post.id !== pinnedPostId);
+
+  const getPostSection = (category: string) => {
+    if (isReviewCategory(category)) return 'reviews';
+
+    if (isProjectCategory(category)) return 'projects';
+
+    return 'interests';
+  };
+
+  return (
+    <div className="blog-home">
+
+      {/*
+      =========================================================
+      OPTIONAL FEATURE / BANNER TEMPLATE
+      =========================================================
+*/}
+
+      {/* <section className="blog-hero">
+        <div className="blog-hero-content">
+          <span className="blog-eyebrow">FEATURED</span>
+
+          <h1 className="blog-hero-title">
+            A collection of things
+            <br />
+            worth exploring.
+          </h1>
+
+          <p className="blog-hero-text">
+            Featured posts, projects, ideas and other things from the blog.
+          </p>
+        </div>
+      </section> */}
+
+      {/*
+      =========================================================
+      */}
+
+      <section className="latest-section">
+        <div className="section-heading-row">
+          <div>
+            <span className="section-eyebrow">THE LATEST</span>
+
+            <h2 className="section-title">Latest Posts</h2>
+          </div>
+
+          <div className="series-filter">
+            <label htmlFor="series-filter">Blog Series</label>
+
+            <select
+              id="series-filter"
+              value={selectedSeries || ''}
+              onChange={(e) => {
+                setSelectedSeries(e.target.value || null);
+                setCurrentPage(1);
+              }}
+            >
+              <option value="">All Series</option>
+
+              {seriesOptions.map((series) => (
+                <option key={series.id} value={series.id}>
+                  {series.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {isAuthenticated && (
-          <div className="mb-6 flex justify-between">
+          <div className="admin-controls">
             <button
               onClick={() => router.push('/create-series')}
-              className="rounded bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-600"
+              className="admin-button"
             >
               Create New Series
             </button>
 
-            <button
-              onClick={handleCreatePost}
-              className="rounded bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-600"
-            >
+            <button onClick={handleCreatePost} className="admin-button">
               Create Post
             </button>
           </div>
         )}
 
-        <div className="card-grid">
-          {/* No Posts Yet */}
-          {posts.length === 0 && selectedSeries ? (
-            <p className="text-center text-xl text-[#99ffd3]">
-              {/* Change back to #99ffd3 next week */}
-              No posts yet. Stay tuned for this upcoming series.
-            </p>
-          ) : (
-            <>
-              {/* Render the pinned post if it exists */}
-              {pinnedPostId &&
-                posts.some((post) => post.id === pinnedPostId) &&
-                posts
-                  .filter((post) => post.id === pinnedPostId)
-                  .map((post) => (
-                    <div
-                      key={post.id}
-                      className="card relative mb-4 border-2 border-yellow-400 bg-yellow-50"
-                    >
-                      {post.imageUrl && (
-                        <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
-                          <Image
-                            src={post.imageUrl}
-                            alt={post.title || 'Posted image'}
-                            width={500}
-                            height={300}
-                            priority={true}
-                            style={{
-                              position: 'absolute',
-                              top: 0,
-                              left: 0,
-                              width: '100%',
-                              height: '100%',
-                              objectFit: 'cover',
-                              objectPosition: specificPostIds.includes(post.id)
-                                ? 'center'
-                                : 'top center',
-                            }}
-                            className="card-img"
-                          />
-                        </div>
-                      )}
-                      {post.title && (
-                        <div className={post.imageUrl ? 'pt-4' : ''}>
-                          <h2 className="card-title">{post.title}</h2>
-                          {post.isDraft && (
-                            <span className="font-semibold text-red-500">
-                              Draft
-                            </span>
-                          )}
-                        </div>
-                      )}
-                      {post.date && (
-                        <p className="card-text">
-                          <strong>Posted:</strong>{' '}
-                          {formatDate(new Date(post.date))}
-                        </p>
-                      )}
-                      {post.editedDate && (
-                        <p className="card-text">
-                          <strong>Edited:</strong>{' '}
-                          {formatDate(new Date(post.editedDate))}
-                        </p>
-                      )}
-                      <div className="card-text line-clamp-3">
-                        {renderContent(post.content)}
-                      </div>
-                      <a
-                        href={`/${
-                          isReviewCategory(post.category)
-                            ? 'reviews'
-                            : isProjectCategory(post.category)
-                              ? 'projects'
-                              : 'interests'
-                        }/${post.category}/${post.id}`}
-                        className="card-link"
+        {posts.length === 0 && selectedSeries ? (
+          <div className="empty-posts">
+            <p>No posts yet. Stay tuned for this upcoming series.</p>
+          </div>
+        ) : (
+          <>
+            {pinnedPost && (
+              <article className="featured-post">
+                <div className="featured-post-image">
+                  {pinnedPost.imageUrl ? (
+                    <Image
+                      src={pinnedPost.imageUrl}
+                      alt={pinnedPost.title || 'Posted image'}
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      style={{
+                        objectFit: 'cover',
+                        objectPosition: specificPostIds.includes(pinnedPost.id)
+                          ? 'center'
+                          : 'top center',
+                      }}
+                    />
+                  ) : (
+                    <div className="image-placeholder">Featured Post</div>
+                  )}
+
+                  <div className="pinned-label">
+                    <FontAwesomeIcon icon={faThumbtack} />
+                    <span>Pinned</span>
+                  </div>
+                </div>
+
+                <div className="featured-post-content">
+                  <div className="post-meta">
+                    <span>{pinnedPost.category}</span>
+
+                    {pinnedPost.date && (
+                      <span>
+                        {formatDate(new Date(pinnedPost.date))}
+                      </span>
+                    )}
+                  </div>
+
+                  {pinnedPost.title && (
+                    <h3 className="featured-post-title">
+                      {pinnedPost.title}
+                    </h3>
+                  )}
+
+                  {pinnedPost.isDraft && (
+                    <span className="draft-label">Draft</span>
+                  )}
+
+                  <div className="featured-post-excerpt">
+                    {renderContent(pinnedPost.content)}
+                  </div>
+
+                  <a
+                    href={`/${getPostSection(pinnedPost.category)}/${pinnedPost.category}/${pinnedPost.id}`}
+                    className="featured-post-link"
+                  >
+                    Read more →
+                  </a>
+
+                  {isAuthenticated && (
+                    <div className="post-admin-controls">
+                      <button
+                        onClick={() => handleEdit(pinnedPost)}
+                        className="edit-button"
                       >
-                        Read more
-                      </a>
-                      {isAuthenticated && (
-                        <div className="mt-2 flex space-x-2">
-                          <button
-                            onClick={() => handleEdit(post)}
-                            className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(post)}
-                            className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                      <div className="absolute right-5 bottom-5 flex items-center rounded px-2 py-1">
-                        <span className="text-xl font-semibold text-black">
-                          Pinned
-                        </span>
-                        <FontAwesomeIcon
-                          icon={faThumbtack}
-                          className="ml-2 text-yellow-400"
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(pinnedPost)}
+                        className="delete-button"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </article>
+            )}
+
+            <div className="posts-section-heading">
+              <span className="section-eyebrow">RECENTLY PUBLISHED</span>
+            </div>
+
+            <div className="modern-post-grid">
+              {regularPosts.map((post) => {
+                const section = getPostSection(post.category);
+
+                return (
+                  <article key={post.id} className="modern-post-card">
+                    {post.imageUrl && (
+                      <div className="modern-post-image">
+                        <Image
+                          src={post.imageUrl}
+                          alt={post.title || 'Posted image'}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          style={{
+                            objectFit: 'cover',
+                            objectPosition: specificPostIds.includes(post.id)
+                              ? 'center'
+                              : 'top center',
+                          }}
                         />
                       </div>
-                    </div>
-                  ))}
+                    )}
 
-              {/* Render the rest of the posts */}
-              {posts
-                .filter((post) => post.id !== pinnedPostId)
-                .map((post) => {
-                  const section = isReviewCategory(post.category)
-                    ? 'reviews'
-                    : isProjectCategory(post.category)
-                      ? 'projects'
-                      : 'interests';
-                  return (
-                    <div key={post.id} className="card mb-4">
-                      {post.imageUrl && (
-                        <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
-                          <Image
-                            src={post.imageUrl}
-                            alt={post.title || 'Posted image'}
-                            width={500}
-                            height={300}
-                            priority={true}
-                            style={{
-                              position: 'absolute',
-                              top: 0,
-                              left: 0,
-                              width: '100%',
-                              height: '100%',
-                              objectFit: 'cover',
-                              objectPosition: specificPostIds.includes(post.id)
-                                ? 'center'
-                                : 'top center',
-                            }}
-                            className="card-img"
-                          />
-                        </div>
-                      )}
+                    <div className="modern-post-content">
+                      <div className="post-meta">
+                        <span>{post.category}</span>
+
+                        {post.date && (
+                          <span>
+                            {formatDate(new Date(post.date))}
+                          </span>
+                        )}
+                      </div>
+
                       {post.title && (
-                        <div className={post.imageUrl ? 'pt-4' : ''}>
-                          <h2 className="card-title">{post.title}</h2>
-                          {post.isDraft && (
-                            <span className="font-semibold text-red-500">
-                              Draft
-                            </span>
-                          )}
-                        </div>
+                        <h3 className="modern-post-title">{post.title}</h3>
                       )}
-                      {post.date && (
-                        <p className="card-text">
-                          <strong>Posted:</strong>{' '}
-                          {formatDate(new Date(post.date))}
-                        </p>
+
+                      {post.isDraft && (
+                        <span className="draft-label">Draft</span>
                       )}
+
                       {post.editedDate && (
-                        <p className="card-text">
-                          <strong>Edited:</strong>{' '}
-                          {formatDate(new Date(post.editedDate))}
+                        <p className="edited-date">
+                          Edited {formatDate(new Date(post.editedDate))}
                         </p>
                       )}
-                      <div className="card-text line-clamp-3">
+
+                      <div className="modern-post-excerpt">
                         {renderContent(post.content)}
                       </div>
+
                       <a
                         href={`/${section}/${post.category}/${post.id}`}
-                        className="card-link"
+                        className="modern-post-link"
                       >
-                        Read more
+                        Read more →
                       </a>
+
                       {isAuthenticated && (
-                        <div className="mt-2 flex space-x-2">
+                        <div className="post-admin-controls">
                           <button
                             onClick={() => handleEdit(post)}
-                            className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                            className="edit-button"
                           >
                             Edit
                           </button>
+
                           <button
                             onClick={() => handleDelete(post)}
-                            className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                            className="delete-button"
                           >
                             Delete
                           </button>
                         </div>
                       )}
                     </div>
-                  );
-                })}
-            </>
-          )}
-        </div>
+                  </article>
+                );
+              })}
+            </div>
+          </>
+        )}
 
-        {/* Pagination Controls */}
-        {/* Change buttons back to bg-emerald-500 & text-white next week */}
         {posts.length > 0 && (
-          <div className="mt-6 text-center">
+          <div className="modern-pagination">
             <button
-              className={`& mr-2 rounded-md bg-emerald-500 px-4 py-2 text-white ${
-                currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-              }`}
               onClick={() => goToPage(1)}
               disabled={currentPage === 1}
+              className="pagination-button"
             >
               First
             </button>
+
             <button
-              className={`& mr-2 rounded-md bg-emerald-500 px-4 py-2 text-white ${
-                currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-              }`}
               onClick={() => goToPage(Math.max(currentPage - 1, 1))}
               disabled={currentPage === 1}
+              className="pagination-button"
             >
               Prev
             </button>
-            <span className="mx-2 text-lg">
+
+            <span className="pagination-current">
               Page {currentPage} of {totalPages}
             </span>
+
             <button
-              className={`& ml-2 rounded-md bg-emerald-500 px-4 py-2 text-white ${
-                currentPage === totalPages
-                  ? 'cursor-not-allowed opacity-50'
-                  : ''
-              }`}
-              onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
+              onClick={() =>
+                goToPage(Math.min(currentPage + 1, totalPages))
+              }
               disabled={currentPage === totalPages}
+              className="pagination-button"
             >
               Next
             </button>
+
             <button
-              className={`& ml-2 rounded-md bg-emerald-500 px-4 py-2 text-white ${
-                currentPage === totalPages
-                  ? 'cursor-not-allowed opacity-50'
-                  : ''
-              }`}
               onClick={() => goToPage(totalPages)}
               disabled={currentPage === totalPages}
+              className="pagination-button"
             >
               Last
             </button>
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 };
