@@ -25,7 +25,7 @@ interface Formula1Document {
   date?: string;
   editedDate?: string;
   imageUrl?: string;
-  isDraft?: boolean; // Added isDraft property
+  isDraft?: boolean;
 }
 
 const Formula1 = () => {
@@ -35,24 +35,25 @@ const Formula1 = () => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const category = 'formula1';
-  const specificPostIds = ['02V6uLUBhnKstE8ofH6H']; // Center this specific post
+  const specificPostIds = ['02V6uLUBhnKstE8ofH6H'];
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const postsPerPage = 10;
+  const postsPerPage = 12;
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Sync the current page from the URL query param
     const pageFromUrl = searchParams.get('page');
-    setCurrentPage(pageFromUrl ? parseInt(pageFromUrl) : 1); // Default to page 1 if no query parameter
+    setCurrentPage(pageFromUrl ? parseInt(pageFromUrl) : 1);
 
     const fetchData = async () => {
       try {
         const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
           collection(db, category),
         );
+
         const items: Formula1Document[] = querySnapshot.docs.map((doc) => {
           const data = doc.data() as Formula1Document;
+
           return {
             id: doc.id,
             type: data.type,
@@ -61,21 +62,25 @@ const Formula1 = () => {
             date: data.date,
             editedDate: data.editedDate,
             imageUrl: data.imageUrl,
-            isDraft: data.isDraft || false, // Default to false if not present
+            isDraft: data.isDraft || false,
           };
         });
 
         const sortedItems = sortPostsByDate(items, 'date');
 
-        // Pagination
-        const startIndex = (currentPage - 1) * postsPerPage;
-        const paginatedPosts = sortedItems.slice(
-          startIndex,
-          startIndex + postsPerPage,
-        );
+const visibleItems = isAuthenticated
+  ? sortedItems
+  : sortedItems.filter((item) => !item.isDraft);
 
-        setData(paginatedPosts);
-        setTotalPages(Math.ceil(sortedItems.length / postsPerPage));
+const startIndex = (currentPage - 1) * postsPerPage;
+
+const paginatedPosts = visibleItems.slice(
+  startIndex,
+  startIndex + postsPerPage,
+);
+
+setData(paginatedPosts);
+setTotalPages(Math.ceil(visibleItems.length / postsPerPage));
       } catch (error) {
         setError('Error fetching Formula 1 data');
       } finally {
@@ -96,6 +101,7 @@ const Formula1 = () => {
 
   const handleEdit = (id: string) => {
     if (!isAuthenticated) return;
+
     router.push(`/edit-post/${category}/${id}`);
   };
 
@@ -112,7 +118,9 @@ const Formula1 = () => {
 
     try {
       const docRef = doc(db, category, id);
+
       await deleteDoc(docRef);
+
       setData(data.filter((item) => item.id !== id));
     } catch (error) {
       console.error('Error deleting document:', error);
@@ -120,61 +128,82 @@ const Formula1 = () => {
     }
   };
 
-  // Added: Update the URL when navigating between pages
   const goToPage = (page: number) => {
     const searchParams = new URLSearchParams(window.location.search);
+
     searchParams.set('page', page.toString());
+
     window.history.pushState({}, '', '?' + searchParams.toString());
+
+    setCurrentPage(page);
   };
 
-  if (loading)
+  if (loading) {
     return (
-      <p className="text-center text-[#99ffd3]">Loading Formula 1 posts...</p>
+      <p className="text-center text-[#99ffd3]">
+        Loading Formula 1 posts...
+      </p>
     );
-  if (error) return <p>{error}</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
-    <div className="responsive-container">
-      <h1 className="page-title">Formula 1</h1>
-      <div className="mb-4 flex justify-between">
+    <div className="blog-home">
+      {/* Page Header */}
+      <section className="category-header">
+        <div className="category-header-content">
+          <span className="section-eyebrow">INTERESTS</span>
+
+          <h2 className="section-title">Formula 1</h2>
+
+          <p className="category-description">
+      Race weekend reviews, thinkpieces, opinions, and everything else from the world of F1.
+    </p>
+        </div>
+      </section>
+
+      {/* Page Controls */}
+      <div className="category-controls">
         <button
           onClick={handleBack}
-          className="rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+          className="category-back-button"
         >
-          Back
+          ← Back
         </button>
+
         {isAuthenticated && (
           <button
             onClick={handleCreatePost}
-            className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+            className="admin-button"
           >
             Create Post
           </button>
         )}
       </div>
 
+      {/* Posts */}
       {data.length === 0 ? (
-        <p>No Formula 1 posts yet</p>
+        <div className="empty-posts">
+          <p>No Formula 1 posts yet.</p>
+        </div>
       ) : (
-        <div className="card-grid">
+        <div className="modern-post-grid">
           {data.map((item) => {
-            // Only show draft posts if the user is authenticated
             if (item.isDraft && !isAuthenticated) return null;
 
             return (
-              <div key={item.id} className="card mb-4">
+              <article key={item.id} className="modern-post-card">
                 {item.imageUrl && (
-                  <div className="relative h-48 w-full overflow-hidden md:h-56 lg:h-70">
+                  <div className="modern-post-image">
                     <Image
                       src={item.imageUrl}
                       alt={item.title || 'Formula 1 post image'}
                       width={500}
                       height={300}
-                      priority={true}
                       style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
@@ -182,105 +211,116 @@ const Formula1 = () => {
                           ? 'center'
                           : 'top center',
                       }}
-                      className="card-img"
                     />
                   </div>
                 )}
-                {item.title && (
-                  <div className={item.imageUrl ? 'pt-4' : ''}>
-                    <h2 className="card-title">{item.title}</h2>
-                    {/* Indicate if the post is a draft */}
-                    {item.isDraft && (
-                      <span className="text-bold text-red-500">Draft</span>
+
+                <div className="modern-post-content">
+                  <div className="post-meta">
+                    <span>Formula 1</span>
+
+                    {item.date && (
+                      <span>
+                        {formatDate(new Date(item.date))}
+                      </span>
                     )}
                   </div>
-                )}
-                {item.date && (
-                  <p className="card-text">
-                    <strong>Posted:</strong> {formatDate(new Date(item.date))}
-                  </p>
-                )}
-                {item.editedDate && (
-                  <p className="card-text">
-                    <strong>Edited:</strong>{' '}
-                    {formatDate(new Date(item.editedDate))}
-                  </p>
-                )}
-                <div className="card-text line-clamp-3">
-                  {renderContent(item.content)}
-                </div>
 
-                <a
-                  href={`/interests/formula1/${item.id}`}
-                  className="card-link"
-                >
-                  Read more
-                </a>
+                  {item.title && (
+                    <h2 className="modern-post-title">
+                      {item.title}
+                    </h2>
+                  )}
 
-                {isAuthenticated && (
-                  <div className="mt-2 flex space-x-2">
-                    <button
-                      onClick={() => handleEdit(item.id)}
-                      className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-                    >
-                      Delete
-                    </button>
+                  {item.isDraft && (
+                    <span className="draft-label">
+                      Draft
+                    </span>
+                  )}
+
+                  {item.editedDate && (
+                    <p className="edited-date">
+                      Edited {formatDate(new Date(item.editedDate))}
+                    </p>
+                  )}
+
+                  <div className="modern-post-excerpt">
+                    {renderContent(item.content)}
                   </div>
-                )}
-              </div>
+
+                  <a
+                    href={`/interests/formula1/${item.id}`}
+                    className="modern-post-link"
+                  >
+                    Read more →
+                  </a>
+
+                  {isAuthenticated && (
+                    <div className="post-admin-controls">
+                      <button
+                        onClick={() => handleEdit(item.id)}
+                        className="edit-button"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(item.id)}
+                        className="delete-button"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </article>
             );
           })}
         </div>
       )}
 
-      {/* Pagination Controls */}
-      <div className="mt-6 text-center">
-        <button
-          className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
-            currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-          }`}
-          onClick={() => goToPage(1)}
-          disabled={currentPage === 1}
-        >
-          First
-        </button>
-        <button
-          className={`mr-2 rounded-md bg-emerald-500 px-4 py-2 ${
-            currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-          }`}
-          onClick={() => goToPage(Math.max(currentPage - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          Prev
-        </button>
-        <span className="mx-2 text-lg">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
-            currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
-          }`}
-          onClick={() => goToPage(Math.min(currentPage + 1, totalPages))}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-        <button
-          className={`ml-2 rounded-md bg-emerald-500 px-4 py-2 ${
-            currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
-          }`}
-          onClick={() => goToPage(totalPages)}
-          disabled={currentPage === totalPages}
-        >
-          Last
-        </button>
-      </div>
+      {/* Pagination */}
+      {data.length > 0 && (
+        <div className="modern-pagination">
+          <button
+            onClick={() => goToPage(1)}
+            disabled={currentPage === 1}
+            className="pagination-button"
+          >
+            First
+          </button>
+
+          <button
+            onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+            disabled={currentPage === 1}
+            className="pagination-button"
+          >
+            Prev
+          </button>
+
+          <span className="pagination-current">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            onClick={() =>
+              goToPage(Math.min(currentPage + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className="pagination-button"
+          >
+            Next
+          </button>
+
+          <button
+            onClick={() => goToPage(totalPages)}
+            disabled={currentPage === totalPages}
+            className="pagination-button"
+          >
+            Last
+          </button>
+        </div>
+      )}
     </div>
   );
 };

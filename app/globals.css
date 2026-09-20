@@ -1047,3 +1047,86 @@ main nav {
     font-size: 0.7rem;
   }
 }
+
+/* =========================================================
+   CATEGORY PAGE HEADER / CONTROLS
+   ========================================================= */
+
+.category-header {
+  width: 100%;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #292929;
+}
+
+.category-header-content {
+  max-width: 900px;
+}
+
+.category-title {
+  margin: 0;
+  color: #ededed;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.category-description {
+  max-width: 650px;
+  margin: 1.5rem 0 0;
+  color: #a8a8a8;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.category-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.category-back-button {
+  padding: 0.65rem 1.1rem;
+  border: 1px solid #99ffd3;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: #99ffd3;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.category-back-button:hover {
+  background: #99ffd3;
+  color: #0a0a0a;
+}
+
+@media (max-width: 768px) {
+  .category-header {
+    margin: 3rem 0 2rem;
+    padding: 2.5rem 0 1.5rem;
+  }
+
+  .category-title {
+    font-size: clamp(2.25rem, 11vw, 3.5rem);
+  }
+
+  .category-description {
+    font-size: 0.95rem;
+  }
+
+  .category-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .category-back-button {
+    width: 100%;
+  }
+}
