@@ -271,7 +271,7 @@ const ItemPage = ({ collectionName }: { collectionName: string }) => {
         <>
           {/* TOP CONTROLS */}
           <div className="post-page-controls">
-            <button onClick={handleBack} className="post-page-button">
+            <button onClick={handleBack} className="post-page-back-button">
               ← Back
             </button>
 
