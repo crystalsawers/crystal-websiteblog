@@ -1585,7 +1585,6 @@ p > a {
   gap: 0.75rem;
 }
 
-
 .post-page-button {
   padding: 0.65rem 1.1rem;
   border: 1px solid #99ffd3;
@@ -1601,7 +1600,6 @@ p > a {
     background 0.2s ease,
     color 0.2s ease;
 }
-
 
 .post-page-button:hover {
   background: #99ffd3;
@@ -1621,9 +1619,9 @@ p > a {
 
 .post-page-back-button {
   padding: 0.65rem 1.1rem;
-  border: 1px solid #dadada;
+  border: 1px solid #c2c2c2;
   border-radius: 0.25rem;
-  background: #dadada;
+  background: #c2c2c2;
   color: black;
   font-size: 0.85rem;
   font-weight: 700;
@@ -1636,7 +1634,7 @@ p > a {
 }
 
 .post-page-back-button:hover {
-  background: #dadada;
+  background: #c2c2c2;
   color: #0a0a0a;
 }
 
@@ -2457,4 +2455,96 @@ p > a {
 .upload-media-button:hover {
   background: #0a0a0a;
   color: #99ffd3;
+}
+
+/* =========================================================
+/* =========================================================
+   LOADING PAGE
+   ========================================================= */
+
+.loading-page {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #99ffd3 !important;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  color: #99ffd3 !important;
+}
+
+.loading-page h2.loading-title {
+  display: block;
+  margin: 0;
+  padding: 0;
+  color: #99ffd3 !important;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.5;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.loading-page p.loading-message {
+  display: block;
+  margin: 0;
+  padding: 0;
+  color: #99ffd3 !important;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* =========================================================
+   NOT FOUND PAGE
+   ========================================================= */
+
+.not-found-page {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.not-found-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.not-found-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.not-found-message {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.not-found-link {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.not-found-link:hover {
+  color: #ffffff !important;
 }
