@@ -691,7 +691,10 @@ p > a {
   }
 }
 
-/* Rendered post content*/
+/* =========================================================
+   RENDERED MARKDOWN CONTENT
+   ========================================================= */
+
 .markdown-content {
   line-height: 1.6;
 }
@@ -804,7 +807,6 @@ p > a {
 
 /* =========================================================
    HOMEPAGE
-   Appended only — existing styles above remain unchanged
    ========================================================= */
 
 /* Homepage wrapper */
@@ -1960,7 +1962,9 @@ p > a {
 
 .individual-post-content .markdown-content h1,
 .individual-post-content .markdown-content h2,
-.individual-post-content .markdown-content h3 {
+.individual-post-content .markdown-content h3,
+.individual-post-content .markdown-content strong,
+.individual-post-content .markdown-content a {
   color: #99ffd3;
 }
 
@@ -1977,6 +1981,10 @@ p > a {
   background: #99ffd3;
 }
 
+.individual-post-content .markdown-content th strong {
+  color: #0a0a0a;
+}
+
 .individual-post-content .markdown-content td {
   color: #ededed;
   border-color: #444;
@@ -1987,12 +1995,8 @@ p > a {
   color: #bdbdbd;
 }
 
-.individual-post-content .markdown-content strong {
-  color: #ffffff;
-}
-
-.individual-post-content .markdown-content a {
-  color: #99ffd3;
+.individual-post-content .markdown-content em {
+  color: #faccf4;
 }
 
 /* =========================================================
